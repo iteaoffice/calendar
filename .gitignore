@@ -1,0 +1,5 @@
+/.idea
+/log
+/vendor
+/tests/data
+clover.xml

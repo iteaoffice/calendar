@@ -1,0 +1,48 @@
+{
+    "name": "debranova/calendar",
+    "type": "library",
+    "license": "proprietary",
+    "description": "General code for Debranova Calendar items",
+    "keywords": ["calendar"],
+    "homepage": "http://debranova.org",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.debranova.org"
+        }
+    ],
+    "authors": [
+        {
+            "name": "Johan van der Heide",
+            "email": "johan.van.der.heide@itea2.org"
+        },
+        {
+            "name": "Andre Hebben",
+            "email": "andre.hebben@artemis-ia.eu"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "zendframework/zendframework": "2.2.*",
+        "doctrine/doctrine-orm-module": "dev-master",
+        "gedmo/doctrine-extensions": "dev-master",
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "phpmd/phpmd": "1.4.*",
+        "phploc/phploc": "*",
+        "doctrine/data-fixtures": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Calendar\\": "src/",
+            "CalendarTest\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0",
+            "dev-develop": "1.0.1-dev"
+        }
+    }
+}
