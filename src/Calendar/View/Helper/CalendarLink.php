@@ -26,61 +26,50 @@ class CalendarLink extends AbstractHelper
 {
 
     /**
-     * @param \Calendar\Entity\Calendar $subArea
-     * @param                         $action
-     * @param                         $show
+     * @param \Calendar\Entity\Calendar $calendar
+     * @param                           $action
+     * @param                           $show
+     * @param                           $which
      *
      * @return string
      * @throws \RuntimeException
      * @throws \Exception
      */
-    public function __invoke(Entity\Calendar $subArea = null, $action = 'view', $show = 'name')
+    public function __invoke(Entity\Calendar $calendar = null, $action = 'view', $show = 'name', $which = 'upcoming')
     {
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
         $isAllowed = $this->view->plugin('isAllowed');
 
-        if (!$isAllowed('calendar', $action)) {
-            if ($action === 'view' && $show === 'name') {
-                return $subArea;
-            }
-
-            return '';
-        }
 
         switch ($action) {
             case 'new':
-                $router  = 'zfcadmin/calendar-manager/new';
-                $text    = sprintf($translate("txt-new-area"));
-                $subArea = new Entity\Calendar();
+                $router   = 'zfcadmin/calendar-manager/new';
+                $text     = sprintf($translate("txt-new-area"));
+                $calendar = new Entity\Calendar();
                 break;
             case 'edit':
                 $router = 'zfcadmin/calendar-manager/edit';
-                $text   = sprintf($translate("txt-edit-calendar-%s"), $subArea);
+                $text   = sprintf($translate("txt-edit-calendar-%s"), $calendar);
                 break;
-            case 'view':
-                $router = 'calendar/calendar';
-                $text   = sprintf($translate("txt-view-calendar-%s"), $subArea);
+            case 'overview':
+                $router   = 'community/calendar/overview';
+                $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
+                $calendar = new Entity\Calendar();
+                break;
+            case 'view-community':
+                $router = 'community/calendar/calendar';
+                $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
                 break;
             default:
                 throw new \Exception(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
         }
 
-        if (is_null($subArea)) {
-            throw new \RuntimeException(
-                sprintf(
-                    "Area needs to be an instance of %s, %s given in %s",
-                    "Calendar\Entity\Calendar",
-                    get_class($subArea),
-                    __CLASS__
-                )
-            );
-        }
-
         $params = array(
-            'id'     => $subArea->getId(),
-            'entity' => 'calendar'
+            'id'     => $calendar->getId(),
+            'entity' => 'calendar',
+            'which'  => $which
         );
 
         $classes     = array();
@@ -101,10 +90,13 @@ class CalendarLink extends AbstractHelper
                 $classes[]     = "btn btn-primary";
                 break;
             case 'name':
-                $linkContent[] = $subArea->getName();
+                $linkContent[] = $calendar->getCalendar();
+                break;
+            case 'text-which-tab':
+                $linkContent[] = ucfirst($which);
                 break;
             default:
-                $linkContent[] = $subArea;
+                $linkContent[] = $calendar;
                 break;
         }
 

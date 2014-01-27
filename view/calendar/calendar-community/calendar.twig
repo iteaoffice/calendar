@@ -1,0 +1,31 @@
+<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }}</h1>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li><a href="#calendar" data-toggle="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
+    <li><a href="#documents" data-toggle="tab">{{ translate("txt-documents")|capitalize }}</a></li>
+    <li><a href="#attendees" data-toggle="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="calendar">
+        <h2>{{ translate("txt-calendar-item-details") }}</h2>
+
+        <dl class="dl-horizontal">
+            <dt>{{ translate("txt-project") }}</dt>
+            <dd></dd>
+            <dt>{{ translate("txt-date") }}</dt>
+            <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
+            <dt>{{ translate("txt-type") }}</dt>
+            <dd>{{ calendar.type }}</dd>
+            <dt>{{ translate("txt-location") }}</dt>
+            <dd>{{ calendar.location }}</dd>
+            <dt>{{ translate("txt-documents") }}</dt>
+            <dd>{{ translate("txt-%s-documents-with-%s-as-size")|format(calendar.documents.count,12) }}</dd>
+        </dl>
+
+    </div>
+    <div class="tab-pane" id="documents">...</div>
+    <div class="tab-pane" id="attendees">...</div>
+</div>

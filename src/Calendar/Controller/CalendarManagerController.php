@@ -175,7 +175,7 @@ class CalendarManagerController extends AbstractActionController implements
      */
     public function getCalendarService()
     {
-        return $this->getServiceLocator()->get('calendar_generic_service');
+        return $this->getServiceLocator()->get('calendar_calendar_service');
     }
 
     /**

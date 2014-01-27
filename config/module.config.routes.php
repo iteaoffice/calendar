@@ -9,6 +9,43 @@
  */
 return array(
     'router' => array(
-        'routes' => array()
+        'routes' => array(
+            'community' => array(
+                'child_routes' => array(
+                    'calendar' => array(
+                        'type'          => 'Segment',
+                        'priority'      => 1000,
+                        'options'       => array(
+                            'route'    => '/calendar',
+                            'defaults' => array(
+                                'controller' => 'calendar-community',
+                                'action'     => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes'  => array(
+                            'overview' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/overview[/:which].html',
+                                    'defaults' => array(
+                                        'action' => 'overview',
+                                    ),
+                                ),
+                            ),
+                            'calendar' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/view/[:id].html',
+                                    'defaults' => array(
+                                        'action' => 'calendar',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        )
     )
 );

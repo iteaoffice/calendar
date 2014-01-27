@@ -101,16 +101,16 @@ class CalendarController extends AbstractActionController implements
     }
 
     /**
-     * Trigger to switch layout
+     * @param \Zend\Mvc\Controller\string $layout
      *
-     * @param $layout
+     * @return void|\Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface
      */
     public function layout($layout)
     {
         if (false === $layout) {
             $this->getEvent()->getViewModel()->setTemplate('layout/nolayout');
         } else {
-            $this->getEvent()->getViewModel()->setTemplate('layout/' . $layout);
+            $this->getEvent()->getViewModel()->setTemplate($layout);
         }
     }
 
@@ -141,7 +141,7 @@ class CalendarController extends AbstractActionController implements
      */
     public function getCalendarService()
     {
-        return $this->getServiceLocator()->get('calendar_generic_service');
+        return $this->getServiceLocator()->get('calendar_calendar_service');
     }
 
     /**

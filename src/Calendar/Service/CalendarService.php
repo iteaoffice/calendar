@@ -9,6 +9,9 @@
  */
 namespace Calendar\Service;
 
+use Calendar\Entity;
+use Contact\Entity\Contact;
+
 /**
  * CalendarService
  *
@@ -22,22 +25,94 @@ namespace Calendar\Service;
 class CalendarService extends ServiceAbstract
 {
     /**
+     * Constant to determine which affiliations must be taken from the database
+     */
+    const WHICH_UPCOMING = 'upcoming';
+    const WHICH_UPDATED  = 'updated';
+    const WHICH_PAST     = 'past';
+
+    /**
+     * @var Entity\Calendar
+     */
+    protected $calendar;
+    /**
      * @var CalendarService
      */
     protected $calendarService;
 
     /**
-     * Find 1 entity based on the name
+     * @param int $id
      *
-     * @param   $entity
-     * @param   $name
-     *
-     * @return object
+     * @return CalendarService;
      */
-    public function findEntityByName($entity, $name)
+    public function setProjectId($id)
     {
-        return $this->getEntityManager()->getRepository($this->getFullEntityName($entity))->findOneBy(
-            array('name' => $name)
+        $this->setCalendar($this->findEntityById('calendar', $id));
+
+        return $this;
+    }
+
+    /**
+     * @param Contact $contact
+     *
+     * @return bool
+     */
+    public function calendarHasContact(Contact $contact)
+    {
+        $calendarContact = $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('contact'))
+            ->findOneBy(array(
+                'calendar' => $this->getCalendar(),
+                'contact'  => $contact
+            ));
+
+        return !is_null($calendarContact);
+    }
+
+    /**
+     * @param string $which
+     *
+     * @return Entity\Calendar[]
+     */
+    public function findCalendarItems($which = self::WHICH_UPCOMING)
+    {
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('calendar'))
+            ->findCalendarItems($which);
+    }
+
+
+    /**
+     * Return an array of all which-values
+     *
+     * @return array
+     */
+    public function getWhichValues()
+    {
+        return array(
+            self::WHICH_UPCOMING,
+            self::WHICH_UPDATED,
+            self::WHICH_PAST
         );
+    }
+
+    /**
+     * @param \Calendar\Entity\Calendar $calendar
+     *
+     * @return $this;
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return \Calendar\Entity\Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
     }
 }

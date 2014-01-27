@@ -42,7 +42,10 @@ return array(
             /* If this guard is specified here (i.e. it is enabled), it will block
              * access to all routes unless they are specified here.
              */
-            'BjyAuthorize\Guard\Route' => array(),
+            'BjyAuthorize\Guard\Route' => array(
+                array('route' => 'community/calendar/overview', 'roles' => array('office')),
+                array('route' => 'community/calendar/calendar', 'roles' => array('office')),
+            ),
         ),
     ),
 );
