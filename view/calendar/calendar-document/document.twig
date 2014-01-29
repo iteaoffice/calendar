@@ -1,0 +1,10 @@
+<h1>{{ translate("txt-document-%s")|format(document) }}</h1>
+
+<dl class="dl-horizontal">
+    <dt>{{ translate("txt-title") }}</dt>
+    <dd>{{ document.document }} {{ calendarDocumentLink(document,'download','icon') }}</dd>
+    <dt>{{ translate("txt-content-type") }}</dt>
+    <dd>{{ document.contentType.description }}</dd>
+    <dt>{{ translate("txt-size") }}</dt>
+    <dd>{{ document.size|parse_size }}</dd>
+</dl>

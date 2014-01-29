@@ -15,9 +15,13 @@ return array(
                 'label' => _("txt-calendar"),
                 'route' => 'community/calendar',
                 'pages' => array(
-                    'calendars' => array(
+                    'calendars'       => array(
                         'label' => _("txt-calendar"),
                         'route' => 'community/calendar/overview',
+                    ),
+                    'review-calendar' => array(
+                        'label' => _("txt-review-calendar"),
+                        'route' => 'community/calendar/review-calendar',
                     ),
                 ),
             ),

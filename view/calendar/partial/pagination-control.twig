@@ -1,0 +1,69 @@
+{% set extremePagesLimit = 3 %}
+{% set nearbyPagesLimit = 2 %}
+{{ translate("txt-%s-items-on-%s-pages")|format(paginator.adapter.count,paginator.pageRange) }}
+<ul class="pagination pull-right">
+    {% if paginator.currentPageNumber > 1 %}
+        <li>
+            {{ calendarPaginationLink(entity, (paginator.currentPageNumber - 1) , 'previous') }}
+        </li>
+    {% endif %}
+
+    {% for i in range(1, extremePagesLimit) %}
+        {% if ( i < paginator.currentPageNumber-nearbyPagesLimit ) %}
+
+            <li>
+                {{ calendarPaginationLink(entity, i, i) }}
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if extremePagesLimit + 1 < paginator.currentPageNumber - nearbyPagesLimit %}
+        <li><a>...</a></li>
+    {% endif %}
+
+    {% for i in range(paginator.currentPageNumber-nearbyPagesLimit, paginator.currentPageNumber - 1) %}
+        {% if ( i > 0 ) %}
+            <li>
+                {{ calendarPaginationLink(entity, i, i) }}
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    <li {% if paginator.currentPageNumber %}class="active"{% endif %}>
+        {{ calendarPaginationLink(entity, paginator.currentPageNumber , paginator.currentPageNumber) }}
+    </li>
+
+    {% if paginator.currentPageNumber < paginator.pageRange %}
+
+        {% for i in range(paginator.currentPageNumber + 1, paginator.pageRange) %}
+
+            {% if (loop.index <= nearbyPagesLimit and i <= paginator.pageRange ) %}
+                <li>
+                    {{ calendarPaginationLink(entity, i, i) }}
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if  (paginator.pageRange - extremePagesLimit) > (paginator.currentPageNumber + nearbyPagesLimit ) %}
+            <li><a>...</a></li>
+        {% endif %}
+
+        {% for i in range(paginator.pageRange-extremePagesLimit+1, paginator.pageRange) %}
+            {% if ( i > paginator.currentPageNumber+extremePagesLimit ) %}
+                <li>
+                    {{ calendarPaginationLink(entity, i, i) }}
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if paginator.currentPageNumber < paginator.pageRange %}
+        <li>
+            {{ publicationLink(null, 'list','paginator', (paginator.currentPageNumber + 1), translate("txt-next")) }}
+        </li>
+    {% endif %}
+
+    <li>
+        {{ calendarPaginationLink(entity, 'all', 'all') }}
+    </li>
+</ul>

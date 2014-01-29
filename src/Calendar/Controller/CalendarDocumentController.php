@@ -13,10 +13,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\Paginator\Paginator;
-
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 
 use Calendar\Service\FormServiceAwareInterface;
 use Calendar\Service\CalendarService;
@@ -25,7 +21,7 @@ use Calendar\Service\FormService;
 /**
  *
  */
-class CalendarCommunityController extends AbstractActionController implements
+class CalendarDocumentController extends AbstractActionController implements
     FormServiceAwareInterface,
     ServiceLocatorAwareInterface
 {
@@ -44,68 +40,56 @@ class CalendarCommunityController extends AbstractActionController implements
     protected $serviceLocator;
 
     /**
-     * Trigger to switch layout
+     * Download a document
      *
-     * @param $layout
-     *
-     * @return void
+     * @return int
      */
-    public function layout($layout)
+    public function downloadAction()
     {
-        if (false === $layout) {
-            $this->getEvent()->getViewModel()->setTemplate('layout/nolayout');
-        } else {
-            $this->getEvent()->getViewModel()->setTemplate($layout);
+        set_time_limit(0);
+
+        $document = $this->getCalendarService()->findEntityById(
+            'document',
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
+
+        if (is_null($document) || sizeof($document->getObject()) === 0) {
+            return $this->notFoundAction();
         }
+        /**
+         * Due to the BLOB issue, we treat this as an array and we need to capture the first element
+         */
+        $object = $document->getObject()->first()->getObject();
+
+        $response = $this->getResponse();
+        $response->setContent(stream_get_contents($object));
+
+        $response->getHeaders()
+            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="' . $document->parseFilename() . '.' .
+                $document->getContentType()->getExtension() . '"'
+            )
+            ->addHeaderLine("Pragma: public")
+            ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
+            ->addHeaderLine('Content-Length: ' . $document->getSize());
+
+        return $this->response;
     }
 
     /**
      * @return ViewModel
      */
-    public function overviewAction()
+    public function documentAction()
     {
-        $which = $this->getEvent()->getRouteMatch()->getParam('which', 'upcoming');
-        $page  = $this->getEvent()->getRouteMatch()->getParam('page', 1);
+        $document = $this->getCalendarService()->findEntityById(
+            'document',
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
 
-        $calendarItems = $this->getCalendarService()->findCalendarItems($which);
-        $paginator     = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
-        $paginator->setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 15);
-        $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator->getDefaultItemCountPerPage()));
-
-        $whichValues = $this->getCalendarService()->getWhichValues();
-
-        return new ViewModel(array(
-            'which'       => $which,
-            'paginator'   => $paginator,
-            'whichValues' => $whichValues
-        ));
-    }
-
-    /**
-     * Special action which produces an HTML version of the review calendar
-     *
-     * @return ViewModel
-     */
-    public function reviewCalendarAction()
-    {
-        $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_REVIEWS)->getResult();
-
-        return new ViewModel(array(
-            'calendarItems' => $calendarItems,
-        ));
-    }
-
-
-    /**
-     * @return ViewModel
-     */
-    public function calendarAction()
-    {
-        $calendar = $this->getCalendarService()->findEntityById('calendar',
-            $this->getEvent()->getRouteMatch()->getParam('id'));
-
-        return new ViewModel(array('calendar' => $calendar));
+        return new ViewModel(array('document' => $document));
     }
 
 

@@ -13,6 +13,7 @@ $config = array(
             'calendar'           => 'Calendar\Controller\CalendarController',
             'calendar-community' => 'Calendar\Controller\CalendarCommunityController',
             'calendar-manager'   => 'Calendar\Controller\CalendarManagerController',
+            'calendar-document'  => 'Calendar\Controller\CalendarDocumentController',
         ),
     ),
     'view_manager'    => array(

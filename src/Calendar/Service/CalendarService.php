@@ -30,6 +30,7 @@ class CalendarService extends ServiceAbstract
     const WHICH_UPCOMING = 'upcoming';
     const WHICH_UPDATED  = 'updated';
     const WHICH_PAST     = 'past';
+    const WHICH_REVIEWS  = 'reviews';
 
     /**
      * @var Entity\Calendar
@@ -70,17 +71,32 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param string $which
+     * This function will return a boolean value to see if a contact can view the calendar
      *
-     * @return Entity\Calendar[]
+     * @param Contact $contact
+     *
+     * @return bool
      */
-    public function findCalendarItems($which = self::WHICH_UPCOMING)
+    public function canViewCalendar(Contact $contact)
     {
         return $this->getEntityManager()
             ->getRepository($this->getFullEntityName('calendar'))
-            ->findCalendarItems($which);
+            ->canViewCalendar($this->getCalendar(), $contact);
     }
 
+    /**
+     * @param string $which
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function findCalendarItems($which = self::WHICH_UPCOMING)
+    {
+        $contact = $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity();
+
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('calendar'))
+            ->findCalendarItems($which, true, $contact);
+    }
 
     /**
      * Return an array of all which-values
@@ -92,7 +108,8 @@ class CalendarService extends ServiceAbstract
         return array(
             self::WHICH_UPCOMING,
             self::WHICH_UPDATED,
-            self::WHICH_PAST
+            self::WHICH_PAST,
+            self::WHICH_REVIEWS
         );
     }
 

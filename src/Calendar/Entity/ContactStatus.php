@@ -66,8 +66,15 @@ class ContactStatus
      */
     public function __construct()
     {
-        $this->calendarContact = new Collections\ArrayCollection();
         $this->scheduleContact = new Collections\ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->status;
     }
 
     /**
@@ -132,5 +139,38 @@ class ContactStatus
     public function getStatusChange()
     {
         return $this->statusChange;
+    }
+
+    /**
+     * @param \Calendar\Entity\Contact[] $calendarContact
+     */
+    public function setCalendarContact($calendarContact)
+    {
+        $this->calendarContact = $calendarContact;
+    }
+
+    /**
+     * @return \Calendar\Entity\Contact[]
+     */
+    public function getCalendarContact()
+    {
+        return $this->calendarContact;
+    }
+
+
+    /**
+     * @param \Calendar\Entity\ScheduleContact[] $scheduleContact
+     */
+    public function setScheduleContact($scheduleContact)
+    {
+        $this->scheduleContact = $scheduleContact;
+    }
+
+    /**
+     * @return \Calendar\Entity\ScheduleContact[]
+     */
+    public function getScheduleContact()
+    {
+        return $this->scheduleContact;
     }
 }

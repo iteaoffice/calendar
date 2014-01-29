@@ -20,5 +20,8 @@ return array(
                 return new Helper\CalendarServiceProxy($sm);
             },
     ),
-    'invokables' => array()
+    'invokables' => array(
+        'calendarDocumentLink'   => 'Calendar\View\Helper\DocumentLink',
+        'calendarPaginationLink' => 'Calendar\View\Helper\PaginationLink'
+    )
 );

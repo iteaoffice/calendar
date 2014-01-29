@@ -26,10 +26,10 @@ class CalendarLink extends AbstractHelper
 {
 
     /**
-     * @param \Calendar\Entity\Calendar $calendar
-     * @param                           $action
-     * @param                           $show
-     * @param                           $which
+     * @param Entity\Calendar $calendar
+     * @param string          $action
+     * @param string          $show
+     * @param string          $which
      *
      * @return string
      * @throws \RuntimeException
@@ -40,8 +40,6 @@ class CalendarLink extends AbstractHelper
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
-        $isAllowed = $this->view->plugin('isAllowed');
-
 
         switch ($action) {
             case 'new':

@@ -24,21 +24,62 @@ return array(
                         ),
                         'may_terminate' => true,
                         'child_routes'  => array(
-                            'overview' => array(
+                            'overview'        => array(
                                 'type'    => 'Segment',
                                 'options' => array(
-                                    'route'    => '/overview[/:which].html',
+                                    'route'    => '/overview[/:which][/page-:page].html',
                                     'defaults' => array(
                                         'action' => 'overview',
                                     ),
                                 ),
                             ),
-                            'calendar' => array(
+                            'calendar'        => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/view/[:id].html',
                                     'defaults' => array(
-                                        'action' => 'calendar',
+                                        'action'    => 'calendar',
+                                        'privilege' => 'view',
+                                    ),
+                                ),
+                            ),
+                            'review-calendar' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/review-calendar.html',
+                                    'defaults' => array(
+                                        'action' => 'review-calendar',
+                                    ),
+                                ),
+                            ),
+                            'document'        => array(
+                                'type'          => 'Segment',
+                                'options'       => array(
+                                    'route'    => '/document',
+                                    'defaults' => array(
+                                        'controller' => 'calendar-document',
+                                        'action'     => 'document',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes'  => array(
+                                    'document' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/[:id].html',
+                                            'defaults' => array(
+                                                'action' => 'document',
+                                            ),
+                                        ),
+                                    ),
+                                    'download' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/download/[:id]/[:filename].[:ext]',
+                                            'defaults' => array(
+                                                'action' => 'download',
+                                            ),
+                                        ),
                                     ),
                                 ),
                             ),

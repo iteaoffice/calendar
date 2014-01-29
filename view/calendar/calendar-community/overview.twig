@@ -25,7 +25,7 @@
                 </tr>
             </head>
             <tbody>
-            {% for calendar in calendarItems %}
+            {% for calendar in paginator.getCurrentItems() %}
                 {% set calendarService = calendarServiceProxy(calendar) %}
                 <tr {% if calendarService.calendarHasContact(zfcUserIdentity()) %}class="active"{% endif %}>
                     <td>
@@ -41,5 +41,7 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% include 'calendar/partial/pagination-control' %}
     </div>
 </div>

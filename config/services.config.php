@@ -10,6 +10,8 @@
 
 return array(
     'factories' => array(
-
+        'calendar_acl_assertion_calendar' => function ($sm) {
+                return new \Calendar\Acl\Assertion\Calendar($sm);
+            },
     ),
 );
