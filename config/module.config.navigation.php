@@ -26,19 +26,19 @@ return array(
                 ),
             ),
         ),
-        'admin'     => array(
-            // And finally, here is where we define our page hierarchy
-            'calendar' => array(
-                'label'    => _("txt-calendar-admin"),
-                'resource' => 'zfcadmin',
-                'route'    => 'zfcadmin/calendar-manager/list',
-                'pages'    => array(
-                    'contacts' => array(
-                        'label' => "txt-calendars",
-                        'route' => 'zfcadmin/calendar-manager/list',
-                    ),
-                ),
-            ),
-        ),
+//        'admin'     => array(
+//            // And finally, here is where we define our page hierarchy
+//            'calendar' => array(
+//                'label'    => _("txt-calendar-admin"),
+//                'resource' => 'zfcadmin',
+//                'route'    => 'zfcadmin/calendar-manager/list',
+//                'pages'    => array(
+//                    'contacts' => array(
+//                        'label' => "txt-calendars",
+//                        'route' => 'zfcadmin/calendar-manager/list',
+//                    ),
+//                ),
+//            ),
+//        ),
     ),
 );
