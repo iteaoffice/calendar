@@ -1,0 +1,21 @@
+<h2>{{ translate("txt-upcoming-events") }}</h2>
+<table class="table table-condensed table-listed table-hover">
+    <head>
+    </head>
+    <tbody>
+    {% for calendar in calendarItems %}
+        {% set calendarService = calendarServiceProxy(calendar) %}
+        <tr {% if zfcUserIdentity() and calendarService.calendarHasContact(zfcUserIdentity()) %}class="active"{% endif %}>
+            <td><span class="label label-article-type-event"><span class="glyphicon glyphicon-file"
+                                                                   title="Article type Event"></span></span></td>
+            <td>{{ calendarLink(calendar,'view', 'name') }}</td>
+            <td>
+                {% if zfcUserIdentity() and calendarService.calendarHasContact(zfcUserIdentity()) %}
+                    <span class="glyphicon glyphicon-user"></span>
+                {% endif %}
+                {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+            <td>{{ calendar.location }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

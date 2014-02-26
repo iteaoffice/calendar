@@ -12,6 +12,9 @@ namespace Calendar\Service;
 use Calendar\Entity;
 use Contact\Entity\Contact;
 
+use Project\Entity\Project;
+use Calendar\Entity\Calendar;
+
 /**
  * CalendarService
  *
@@ -97,6 +100,30 @@ class CalendarService extends ServiceAbstract
             ->getRepository($this->getFullEntityName('calendar'))
             ->findCalendarItems($which, true, $contact);
     }
+
+    /**
+     * @param Project $project
+     *
+     * @return Calendar[]
+     */
+    public function findCalendarByProject(Project $project)
+    {
+        $calendar = array();
+
+        /**
+         * Add the calendar items from the project
+         */
+        foreach ($project->getProjectCalendar() as $calendarItem) {
+            $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+        }
+
+        foreach ($project->getCall()->getCalendar() as $calendarItem) {
+            $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+        }
+
+        return $calendar;
+    }
+
 
     /**
      * Return an array of all which-values

@@ -26,7 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Calendar")
  */
-class Calendar
+class Calendar extends EntityAbstract
 {
     /**
      * Constant for final = 0 (tentative)
@@ -140,6 +140,12 @@ class Calendar
      * @var \Project\Entity\Calendar\Calendar
      */
     private $projectCalendar;
+    /**
+     * @ORM\OneToOne(targetEntity="Program\Entity\Call\Calendar", cascade={"persist"}, mappedBy="calendar")
+     * @Annotation\Exclude()
+     * @var \Program\Entity\Call\Calendar
+     */
+    private $callCalendar;
 
     /**
      * Class constructor
@@ -150,6 +156,73 @@ class Calendar
         $this->document        = new Collections\ArrayCollection();
         $this->schedule        = new Collections\ArrayCollection();
         $this->projectCalendar = new Collections\ArrayCollection();
+        $this->callCalendar    = new Collections\ArrayCollection();
+    }
+
+    /**
+     * Magic Getter
+     *
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter
+     *
+     * @param $property
+     * @param $value
+     *
+     * @return void
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * Set input filter
+     *
+     * @param InputFilterInterface $inputFilter
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new \Exception("Setting an inputFilter is currently not supported");
+    }
+
+    /**
+     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
+     */
+    public function getInputFilter()
+    {
+        if (!$this->inputFilter) {
+            $inputFilter = new InputFilter();
+            $factory     = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'calendar',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $this->inputFilter = $inputFilter;
+        }
+
+        return $this->inputFilter;
     }
 
     /**
@@ -446,5 +519,21 @@ class Calendar
     public function getProjectCalendar()
     {
         return $this->projectCalendar;
+    }
+
+    /**
+     * @param \Program\Entity\Call\Calendar $callCalendar
+     */
+    public function setCallCalendar($callCalendar)
+    {
+        $this->callCalendar = $callCalendar;
+    }
+
+    /**
+     * @return \Program\Entity\Call\Calendar
+     */
+    public function getCallCalendar()
+    {
+        return $this->callCalendar;
     }
 }

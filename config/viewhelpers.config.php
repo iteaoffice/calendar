@@ -16,6 +16,9 @@ return array(
         'calendarLink'         => function ($sm) {
                 return new Helper\CalendarLink($sm);
             },
+        'calendarHandler'      => function ($sm) {
+                return new Helper\CalendarHandler($sm);
+            },
         'calendarServiceProxy' => function ($sm) {
                 return new Helper\CalendarServiceProxy($sm);
             },

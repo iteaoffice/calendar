@@ -1,0 +1,10 @@
+<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }}</h1>
+
+<dl class="dl-horizontal">
+    <dt>{{ translate("txt-date") }}</dt>
+    <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
+    <dt>{{ translate("txt-type") }}</dt>
+    <dd>{{ calendar.type }}</dd>
+    <dt>{{ translate("txt-location") }}</dt>
+    <dd>{{ calendar.location }}</dd>
+</dl>

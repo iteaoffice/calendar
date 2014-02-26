@@ -1,0 +1,30 @@
+<h1>{{ translate("txt-upcoming-events") }}</h1>
+
+<p>{{ translate("txt-upcoming-events-explanation") }}</p>
+
+{% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
+    <table class="table table-hover">
+        {% set calendarService = calendarServiceProxy(calendar) %}
+        <tr>
+            <th colspan="2"><strong>{{ calendarLink(calendar,'view','name') }}</strong></th>
+        </tr>
+        <tr>
+            <td class="col-md-4">{{ translate("txt-date") }}</td>
+            <td class="col-md-8">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+        </tr>
+        {% if calendar.location %}
+            <tr>
+                <td>{{ translate("txt-location") }}</td>
+                <td>{{ calendar.location }}</td>
+            </tr>
+        {% endif %}
+        {% if calendar.description %}
+            <tr>
+                <td>{{ translate("txt-more-info") }}</td>
+                <td>{{ calendar.description }}</td>
+            </tr>
+        {% endif %}
+    </table>
+    <hr>
+    <br>
+{% endfor %}

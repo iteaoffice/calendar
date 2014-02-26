@@ -41,6 +41,10 @@ class CalendarLink extends AbstractHelper
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
 
+        $params = array(
+            'entity' => 'calendar'
+        );
+
         switch ($action) {
             case 'new':
                 $router   = 'zfcadmin/calendar-manager/new';
@@ -56,6 +60,11 @@ class CalendarLink extends AbstractHelper
                 $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
                 $calendar = new Entity\Calendar();
                 break;
+            case 'view':
+                $router             = 'route-' . $calendar->get("underscore_full_entity_name");
+                $params['calendar'] = $calendar->getId();
+                $text               = sprintf($translate("txt-view-calendar-item-%s"), $calendar->getCalendar());
+                break;
             case 'view-community':
                 $router = 'community/calendar/calendar';
                 $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
@@ -64,11 +73,8 @@ class CalendarLink extends AbstractHelper
                 throw new \Exception(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
         }
 
-        $params = array(
-            'id'     => $calendar->getId(),
-            'entity' => 'calendar',
-            'which'  => $which
-        );
+        $params['id']    = $calendar->getId();
+        $params['which'] = $which;
 
         $classes     = array();
         $linkContent = array();

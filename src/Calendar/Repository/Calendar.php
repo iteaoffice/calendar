@@ -9,6 +9,7 @@
  */
 namespace Calendar\Repository;
 
+use Contact\Entity\Access;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -70,14 +71,15 @@ class Calendar extends EntityRepository
              * When no contact is given, simply return all the public calendar items
              */
             if (is_null($contact)) {
-                throw new \InvalidArgumentException("Contact cannot be null when you want to filter on access");
+                $contact = new Contact();
+                $contact->setId(0);
+                $access = new Access();
+                $access->setAccess('public');
+                $contact->setAccess(array($access));
             }
 
             $qb = $this->filterForAccess($qb, $contact);
         }
-
-        /* print($qb->getQuery()->getSQL());
-         die();*/
 
         return $qb->getQuery();
     }
@@ -112,13 +114,12 @@ class Calendar extends EntityRepository
      */
     public function filterForAccess(QueryBuilder $qb, Contact $contact)
     {
-        //Filter based on the type accesstype
+        //Filter based on the type access type
         $subSelect = $this->_em->createQueryBuilder();
         $subSelect->select('type');
         $subSelect->from('Calendar\Entity\Type', 'type');
         $subSelect->join('type.access', 'access');
         $subSelect->andWhere($qb->expr()->in('access.access', $contact->getRoles()));
-
 
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
         $subSelectCalendarContact->select('calendar2');
