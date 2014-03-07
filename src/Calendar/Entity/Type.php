@@ -26,6 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="calendar_type")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Type
 {
@@ -80,6 +81,35 @@ class Type
      * @var \Contact\Entity\Access[]
      */
     private $access;
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function removeCachedCssFile()
+    {
+        if (file_exists($this->getCacheCssFileName())) {
+            unlink($this->getCacheCssFileName());
+        }
+    }
+
+    /**
+     * Return a link to the Css Filename
+     *
+     * @return string
+     */
+    public function getCacheCssFileName()
+    {
+        return __DIR__ . '/../../../../../../public' . DIRECTORY_SEPARATOR . 'assets' .
+        DIRECTORY_SEPARATOR . DEBRANOVA_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+    }
+
+    /**
+     * Return a normalized CSS name for the type
+     */
+    public function parseCssName()
+    {
+        return 'calendar-type-' . $this->getId();
+    }
 
     /**
      * Class constructor

@@ -1,0 +1,6 @@
+{% for calendarType in calendarTypes %}
+    .{{ calendarType.parseCssName }} {
+    background-color: #{{ calendarType.color }};
+    color: #{{ calendarType.colorFont }};
+    }
+{% endfor %}

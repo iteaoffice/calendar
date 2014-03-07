@@ -11,6 +11,7 @@ namespace Calendar\Form;
 
 use Zend\Form\Fieldset;
 use Zend\Form\Annotation\AnnotationBuilder;
+use Zend\Form\Element\Radio;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
@@ -45,6 +46,17 @@ class ObjectFieldset extends Fieldset
                 $element->setOptions(
                     array(
                         'object_manager' => $entityManager
+                    )
+                );
+            }
+
+            if ($element instanceof Radio) {
+                $attributes        = $element->getAttributes();
+                $valueOptionsArray = 'get' . ucfirst($attributes['array']);
+
+                $element->setOptions(
+                    array(
+                        'value_options' => $object->$valueOptionsArray()
                     )
                 );
             }

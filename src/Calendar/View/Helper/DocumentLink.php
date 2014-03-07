@@ -52,6 +52,14 @@ class DocumentLink extends AbstractHelper
                 $router = 'community/calendar/document/document';
                 $text   = sprintf($translate("txt-view-calendar-document-%s"), $document->getDocument());
                 break;
+            case 'document-admin':
+                $router = 'zfcadmin/calendar-manager/document/document';
+                $text   = sprintf($translate("txt-view-calendar-document-%s"), $document->getDocument());
+                break;
+            case 'edit':
+                $router = 'zfcadmin/calendar-manager/document/edit';
+                $text   = sprintf($translate("txt-edit-calendar-document-%s"), $document->getDocument());
+                break;
             case 'download':
                 $params['filename'] = $document->parseFileName();
                 $params['ext']      = $document->getContentType()->getExtension();

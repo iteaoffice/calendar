@@ -9,150 +9,38 @@
  */
 namespace Calendar\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-
-use Calendar\Service\CalendarService;
-use Calendar\Service\FormServiceAwareInterface;
-use Calendar\Service\FormService;
-use Calendar\Entity;
+use Calendar\Entity\Type;
 
 /**
- * @category    Calendar
- * @package     Controller
+ *
  */
-class CalendarController extends AbstractActionController implements
-    FormServiceAwareInterface, ServiceLocatorAwareInterface
+class CalendarController extends CalendarAbstractController
 {
-    /**
-     * @var CalendarService
-     */
-    protected $calendarService;
-    /**
-     * @var FormService
-     */
-    protected $formService;
 
     /**
-     * Message container
-     * @return array|void
+     * @return \Zend\Stdlib\ResponseInterface
      */
-    public function indexAction()
+    public function calendarTypeColorCssAction()
     {
-    }
+        $calendarTypes = $this->getCalendarService()->findAll('Type');
 
-    /**
-     * Give a list of calendars
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function calendarsAction()
-    {
-        $calendars = $this->getCalendarService()->findAll('calendar');
+        $calendarType  = new Type();
+        $cacheFileName = $calendarType->getCacheCssFileName();
 
-        return new ViewModel(array('calendars' => $calendars));
-    }
-
-    /**
-     * Show the details of 1 calendar
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function calendarAction()
-    {
-        $calendar = $this->getCalendarService()->findEntityById(
-            'calendar',
-            $this->getEvent()->getRouteMatch()->getParam('id')
+        $renderer = $this->getServiceLocator()->get('ZfcTwigRenderer');
+        $css      = $renderer->render('calendar/calendar/calendar-type-color-css', array(
+                'calendarTypes' => $calendarTypes
+            )
         );
 
-        return new ViewModel(array('calendar' => $calendar));
-    }
+        //Save a copy of the file in the caching-folder
+        file_put_contents($cacheFileName, $css);
 
-    /**
-     * Edit an entity
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function editAction()
-    {
-        $this->layout(false);
-        $entity = $this->getCalendarService()->findEntityById(
-            $this->getEvent()->getRouteMatch()->getParam('entity'),
-            $this->getEvent()->getRouteMatch()->getParam('id')
-        );
+        $response = $this->getResponse();
+        $response->getHeaders()->addHeaderLine('Content-Type: text/css');
+        $response->setContent($css);
 
-        $form = $this->getFormService()->prepare($entity->get('entity_name'), $entity, $_POST);
-        $form->setAttribute('class', 'form-vertical live-form-edit');
-        $form->setAttribute('id', 'calendar-' . strtolower($entity->get('entity_name')) . '-' . $entity->getId());
-
-        if ($this->getRequest()->isPost() && $form->isValid()) {
-            $this->getCalendarService()->updateEntity($form->getData());
-
-            $view = new ViewModel(array($this->getEvent()->getRouteMatch()->getParam('entity') => $form->getData()));
-            $view->setTemplate(
-                "calendar/partial/" . $this->getEvent()->getRouteMatch()->getParam('entity') . '.twig'
-            );
-
-            return $view;
-        }
-
-        return new ViewModel(array('form' => $form, 'entity' => $entity));
-    }
-
-    /**
-     * @param \Zend\Mvc\Controller\string $layout
-     *
-     * @return void|\Zend\Mvc\Controller\Plugin\Layout|\Zend\View\Model\ModelInterface
-     */
-    public function layout($layout)
-    {
-        if (false === $layout) {
-            $this->getEvent()->getViewModel()->setTemplate('layout/nolayout');
-        } else {
-            $this->getEvent()->getViewModel()->setTemplate($layout);
-        }
-    }
-
-    /**
-     * @return FormService
-     */
-    public function getFormService()
-    {
-        return $this->formService;
-    }
-
-    /**
-     * @param $formService
-     *
-     * @return CalendarController
-     */
-    public function setFormService($formService)
-    {
-        $this->formService = $formService;
-
-        return $this;
-    }
-
-    /**
-     * Gateway to the Calendar Service
-     *
-     * @return CalendarService
-     */
-    public function getCalendarService()
-    {
-        return $this->getServiceLocator()->get('calendar_calendar_service');
-    }
-
-    /**
-     * @param $calendarService
-     *
-     * @return CalendarController
-     */
-    public function setCalendarService($calendarService)
-    {
-        $this->calendarService = $calendarService;
-
-        return $this;
+        return $response;
     }
 }

@@ -9,55 +9,19 @@
  */
 namespace Calendar\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\Paginator\Paginator;
 
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 
-use Calendar\Service\FormServiceAwareInterface;
 use Calendar\Service\CalendarService;
-use Calendar\Service\FormService;
 
 /**
  *
  */
-class CalendarCommunityController extends AbstractActionController implements
-    FormServiceAwareInterface,
-    ServiceLocatorAwareInterface
+class CalendarCommunityController extends CalendarAbstractController
 {
-
-    /**
-     * @var CalendarService;
-     */
-    protected $calendarService;
-    /**
-     * @var FormService
-     */
-    protected $formService;
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
-     * Trigger to switch layout
-     *
-     * @param $layout
-     *
-     * @return void
-     */
-    public function layout($layout)
-    {
-        if (false === $layout) {
-            $this->getEvent()->getViewModel()->setTemplate('layout/nolayout');
-        } else {
-            $this->getEvent()->getViewModel()->setTemplate($layout);
-        }
-    }
 
     /**
      * @return ViewModel
@@ -96,78 +60,21 @@ class CalendarCommunityController extends AbstractActionController implements
         ));
     }
 
-
     /**
      * @return ViewModel
      */
     public function calendarAction()
     {
-        $calendar = $this->getCalendarService()->findEntityById('calendar',
-            $this->getEvent()->getRouteMatch()->getParam('id'));
+        $calendarService = $this->getCalendarService()->setCalendarId(
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
 
-        return new ViewModel(array('calendar' => $calendar));
-    }
+        if (is_null($calendarService->getCalendar()->getId())) {
+            return $this->notFoundAction();
+        }
 
-
-    /**
-     * @return \Calendar\Service\FormService
-     */
-    public function getFormService()
-    {
-        return $this->formService;
-    }
-
-    /**
-     * @param $formService
-     *
-     * @return CalendarManagerController
-     */
-    public function setFormService($formService)
-    {
-        $this->formService = $formService;
-
-        return $this;
-    }
-
-    /**
-     * Gateway to the Calendar Service
-     *
-     * @return CalendarService
-     */
-    public function getCalendarService()
-    {
-        return $this->getServiceLocator()->get('calendar_calendar_service');
-    }
-
-    /**
-     * @param $calendarService
-     *
-     * @return CalendarManagerController
-     */
-    public function setCalendarService($calendarService)
-    {
-        $this->calendarService = $calendarService;
-
-        return $this;
-    }
-
-    /**
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return CalendarManagerController|void
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
+        return new ViewModel(array(
+            'calendar' => $calendarService->getCalendar(),
+        ));
     }
 }

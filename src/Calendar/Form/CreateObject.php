@@ -12,7 +12,7 @@ namespace Calendar\Form;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManager;
 
-use Content\Entity\EntityAbstract;
+use Calendar\Entity\EntityAbstract;
 
 /**
  *
@@ -35,7 +35,7 @@ class CreateObject extends Form
 
         $entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
 
-        $objectSpecificFieldset = '\Content\Form\\' . ucfirst($object->get('entity_name')) . 'Fieldset';
+        $objectSpecificFieldset = '\Calendar\Form\\' . ucfirst($object->get('entity_name')) . 'Fieldset';
         /**
          * Load a specific fieldSet when present
          */
@@ -54,6 +54,28 @@ class CreateObject extends Form
             array(
                 'type' => 'Zend\Form\Element\Csrf',
                 'name' => 'csrf'
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'Zend\Form\Element\Submit',
+                'name'       => 'cancel',
+                'attributes' => array(
+                    'class' => "btn btn-warning",
+                    'value' => _("txt-cancel")
+                )
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'Zend\Form\Element\Submit',
+                'name'       => 'delete',
+                'attributes' => array(
+                    'class' => "btn btn-danger",
+                    'value' => _("txt-delete")
+                )
             )
         );
 

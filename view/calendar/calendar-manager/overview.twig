@@ -1,0 +1,55 @@
+{% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
+
+<h1>{{ translate("txt-calendar") }}</h1>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    {% for whichValue in whichValues %}
+        <li {% if (which == whichValue) %}class="active"{% endif %}>
+            {{ calendarLink(null,'overview-admin', 'text-which-tab', whichValue) }}
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="upcoming">
+        <h2>{{ translate("txt-%s-events")|format(which|capitalize) }}</h2>
+
+        <table class="table table-condensed table-listed">
+            <head>
+                <tr>
+                    <th>{{ translate("txt-date") }}</th>
+                    <th>{{ translate("txt-event-meeting") }}</th>
+                    <th>{{ translate("txt-location") }}</th>
+                    <th>{{ translate("txt-type") }}</th>
+                </tr>
+            </head>
+            <tbody>
+            {% for calendar in paginator.getCurrentItems() %}
+                {% if calendar.calendar %}
+                    {% set calendarService = calendarServiceProxy(calendar.calendar) %}
+                    <tr {% if calendarService.calendarHasContact(zfcUserIdentity()) %}class="active"{% endif %}>
+                        <td>
+                            {% if calendarService.calendarHasContact(zfcUserIdentity()) %}
+                                <span class="glyphicon glyphicon-user"></span>
+                            {% endif %}
+                            {{ calendar.calendar.dateFrom|from_to_date(calendar.calendar.dateEnd) }}</td>
+                        <td>{{ calendarLink(calendar.calendar,'view-admin', 'name') }}</td>
+                        <td>{{ calendar.calendar.location }}</td>
+                        <td class="{{ calendar.calendar.type.parseCssName() }}">{{ calendar.calendar.type }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ calendar.date|string_date }}</td>
+                        <td colspan="2">{{ calendar.item }}</td>
+                        <td>{{ translate("txt-bithday") }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'calendar/partial/pagination-control' %}
+    </div>
+</div>

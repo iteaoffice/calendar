@@ -9,36 +9,17 @@
  */
 namespace Calendar\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\Validator\File\FilesSize;
 
-use Calendar\Service\FormServiceAwareInterface;
-use Calendar\Service\CalendarService;
-use Calendar\Service\FormService;
+use Calendar\Form\CreateCalendarDocument;
+
 
 /**
  *
  */
-class CalendarDocumentController extends AbstractActionController implements
-    FormServiceAwareInterface,
-    ServiceLocatorAwareInterface
+class CalendarDocumentController extends CalendarAbstractController
 {
-
-    /**
-     * @var CalendarService;
-     */
-    protected $calendarService;
-    /**
-     * @var FormService
-     */
-    protected $formService;
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
     /**
      * Download a document
      *
@@ -49,7 +30,7 @@ class CalendarDocumentController extends AbstractActionController implements
         set_time_limit(0);
 
         $document = $this->getCalendarService()->findEntityById(
-            'document',
+            'Document',
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
 
@@ -92,66 +73,93 @@ class CalendarDocumentController extends AbstractActionController implements
         return new ViewModel(array('document' => $document));
     }
 
-
     /**
-     * @return \Calendar\Service\FormService
+     * @return ViewModel
      */
-    public function getFormService()
+    public function editAction()
     {
-        return $this->formService;
-    }
+        $document = $this->getCalendarService()->findEntityById(
+            'document',
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
 
-    /**
-     * @param $formService
-     *
-     * @return CalendarManagerController
-     */
-    public function setFormService($formService)
-    {
-        $this->formService = $formService;
+        if (is_null($document)) {
+            return $this->notFoundAction();
+        }
 
-        return $this;
-    }
+        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 
-    /**
-     * Gateway to the Calendar Service
-     *
-     * @return CalendarService
-     */
-    public function getCalendarService()
-    {
-        return $this->getServiceLocator()->get('calendar_calendar_service');
-    }
+        $data = array_merge_recursive(
+            $this->getRequest()->getPost()->toArray(),
+            $this->getRequest()->getFiles()->toArray()
+        );
 
-    /**
-     * @param $calendarService
-     *
-     * @return CalendarManagerController
-     */
-    public function setCalendarService($calendarService)
-    {
-        $this->calendarService = $calendarService;
+        $form = new CreateCalendarDocument($entityManager);
+        $form->bind($document);
+        $form->getInputFilter()->get('file')->setRequired(false);
+        $form->setData($data);
 
-        return $this;
-    }
+        if ($this->getRequest()->isPost() && $form->isValid()) {
 
-    /**
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
+            $document = $form->getData();
+            /**
+             * Remove the file if delete is pressed
+             */
+            if (isset($data['delete'])) {
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return CalendarManagerController|void
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
+                $this->flashMessenger()->setNamespace('success')->addMessage(
+                    sprintf(_("txt-calendar-document-%s-successfully-removed"), $document->parseFileName())
+                );
 
-        return $this;
+                $this->getDocumentService()->removeEntity($document);
+
+                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar',
+                    array('id' => $document->getCalendar()->getId())
+                );
+            }
+
+            /**
+             * Handle when
+             */
+            if (!isset($data['cancel'])) {
+                $file = $form->get('file')->getValue();
+
+                if (!empty($file['name']) && $file['error'] === 0) {
+
+                    /**
+                     * Update the document
+                     */
+                    $fileSizeValidator = new FilesSize(PHP_INT_MAX);
+                    $fileSizeValidator->isValid($file);
+                    $document->setSize($fileSizeValidator->size);
+                    $document->setContentType($this->getGeneralService()->findContentTypeByContentTypeName($file['type']));
+
+                    /**
+                     * Update the object
+                     */
+                    $documentObject = $document->getObject()->first();
+                    $documentObject->setObject(file_get_contents($file['tmp_name']));
+                    $this->getCalendarService()->updateEntity($documentObject);
+                }
+
+
+                $this->getCalendarService()->updateEntity($document);
+
+                $this->flashMessenger()->setNamespace('success')->addMessage(
+                    sprintf(_("txt-calendar-document-%s-successfully-updated"), $document->parseFileName())
+                );
+            }
+
+            $this->redirect()->toRoute('zfcadmin/calendar-manager/document/document',
+                array('id' => $document->getId())
+            );
+        } else {
+            var_dump($form->getInputFilter()->getMessages());
+        }
+
+        return new ViewModel(array(
+            'document' => $document,
+            'form'     => $form
+        ));
     }
 }

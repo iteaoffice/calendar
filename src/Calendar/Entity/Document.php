@@ -12,8 +12,8 @@ namespace Calendar\Entity;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\FileInput;
 use Zend\Form\Annotation;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="calendar_document")
  * @ORM\Entity
  */
-class Document
+class Document extends EntityAbstract
 {
     /**
      * @ORM\Column(name="document_id", type="integer", nullable=false)
@@ -86,6 +86,102 @@ class Document
      * @var \Calendar\Entity\DocumentObject
      */
     private $object;
+
+    /**
+     * Magic Getter
+     *
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter
+     *
+     * @param $property
+     * @param $value
+     *
+     * @return void
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * Set input filter
+     *
+     * @param InputFilterInterface $inputFilter
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new \Exception("Setting an inputFilter is currently not supported");
+    }
+
+    /**
+     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
+     */
+    public function getInputFilter()
+    {
+        if (!$this->inputFilter) {
+            $inputFilter = new InputFilter();
+            $factory     = new InputFactory();
+
+            $inputFilter->add(
+                $factory->createInput(array(
+                        'name'       => 'document',
+                        'required'   => false,
+                        'filters'    => array(
+                            array('name' => 'StripTags'),
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'StringLength',
+                                'options' => array(
+                                    'encoding' => 'UTF-8',
+                                    'min'      => 5,
+                                    'max'      => 100,
+                                ),
+                            ),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(array(
+                        'name'     => 'contact',
+                        'required' => false,
+                    )
+                )
+            );
+
+
+            $fileUpload = new FileInput('file');
+            $fileUpload->setRequired(true);
+            $fileUpload->getValidatorChain()->attachByName(
+                'File\Size',
+                array(
+                    'min' => '20kB',
+                    'max' => '8MB',
+                )
+            );
+
+            $inputFilter->add($fileUpload);
+
+            $this->inputFilter = $inputFilter;
+        }
+
+        return $this->inputFilter;
+    }
 
     /**
      * Parse a filename

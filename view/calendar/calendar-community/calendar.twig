@@ -2,7 +2,7 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
-    <li><a href="#calendar" data-toggle="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
+    <li class="active"><a href="#calendar" data-toggle="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
     <li><a href="#documents" data-toggle="tab">{{ translate("txt-documents")|capitalize }}</a></li>
     <li><a href="#attendees" data-toggle="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
 </ul>
@@ -36,14 +36,16 @@
     <ul class="nav nav-pills nav-nos-menu">
         <li class="active"><a href="#total-calendar-documents"
                               data-toggle="pill">{{ translate("txt-total-calendar-documents") }}</a></li>
-        <li><a href="#proposal-documents-documents"
-               data-toggle="pill">{{ translate("txt-proposal-documents-documents") }}</a></li>
-        <li><a href="#report-documents"
-               data-toggle="pill">{{ translate("txt-report-documents") }}</a></li>
-        <li><a href="#project-results"
-               data-toggle="pill">{{ translate("txt-project-results") }}</a></li>
-        <li><a href="#workpackage-deliverables"
-               data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
+        {% if calendar.projectCalendar %}
+            <li><a href="#proposal-documents-documents"
+                   data-toggle="pill">{{ translate("txt-proposal-documents-documents") }}</a></li>
+            <li><a href="#report-documents"
+                   data-toggle="pill">{{ translate("txt-report-documents") }}</a></li>
+            <li><a href="#project-results"
+                   data-toggle="pill">{{ translate("txt-project-results") }}</a></li>
+            <li><a href="#workpackage-deliverables"
+                   data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
+        {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -82,98 +84,100 @@
 
         </div>
 
-        <div class="tab-pane" id="proposal-documents-documents">
+        {% if calendar.projectCalendar %}
+            <div class="tab-pane" id="proposal-documents-documents">
 
-            <h3>{{ translate("txt-proposal-documents-documents") }}</h3>
+                <h3>{{ translate("txt-proposal-documents-documents") }}</h3>
 
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            {% set version = projectService.getLatestProjectVersion() %}
+                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+                {% set version = projectService.getLatestProjectVersion() %}
 
-            <p>{{ translate("txt-find-here-documents-for-version-of-type-%s")|format(version.versionType) }}</p>
+                <p>{{ translate("txt-find-here-documents-for-version-of-type-%s")|format(version.versionType) }}</p>
 
-            <p>{{ translate("txt-this-version-%s-has-been-%s-and-submitted-on-%s")|format(
-                version.versionType,
-                translate(version.getApproved(true)),
-                version.dateReviewed|date('d-m-Y')
-                ) }}</p>
+                <p>{{ translate("txt-this-version-%s-has-been-%s-and-submitted-on-%s")|format(
+                    version.versionType,
+                    translate(version.getApproved(true)),
+                    version.dateReviewed|date('d-m-Y')
+                    ) }}</p>
 
-            {% if version.versionDocument.count() > 0 %}
-                <table class="table table-striped table-hover table-bordered">
+                {% if version.versionDocument.count() > 0 %}
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th>{{ translate("txt-document") }}</th>
+                            <th>{{ translate("txt-content-type") }}</th>
+                            <th>{{ translate("txt-created") }}</th>
+                            <th>{{ translate("txt-size") }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for document in version.versionDocument %}
+                            <tr>
+                                <td>
+                                    {{ versionDocumentLink(document,'document-community') }}
+                                    {{ versionDocumentLink(document,'download','icon') }}
+                                </td>
+                                <td>{{ document.contentType.description }}</td>
+                                <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
+                                <td>{{ document.size|parse_size }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
+                {% endif %}
+
+            </div>
+
+            <div class="tab-pane" id="report-documents">
+
+                <h3>{{ translate("txt-report-documents") }}</h3>
+
+                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+
+                <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>{{ translate("txt-document") }}</th>
-                        <th>{{ translate("txt-content-type") }}</th>
-                        <th>{{ translate("txt-created") }}</th>
-                        <th>{{ translate("txt-size") }}</th>
+                        <th>{{ translate("txt-report") }}</th>
+                        <th>{{ translate("txt-contact") }}</th>
+                        <th>{{ translate("txt-date") }}</th>
+                        <th>{{ translate("txt-amount-of-documents") }}</th>
+                        <th>{{ translate("txt-download") }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for document in version.versionDocument %}
+                    {% for report in projectService.project.report %}
                         <tr>
-                            <td>
-                                {{ versionDocumentLink(document,'document-community') }}
-                                {{ versionDocumentLink(document,'download','icon') }}
-                            </td>
-                            <td>{{ document.contentType.description }}</td>
-                            <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
-                            <td>{{ document.size|parse_size }}</td>
+                            <td>{{ reportLink(report,'report-community', 'name') }}</td>
+                            <td>{{ report.contact.displayName }}</td>
+                            <td>{{ report.dateCreated|string_date }}</td>
+                            <td>{{ report.item.count() }}</td>
+                            <td>{{ reportLink(report,'download', 'icon') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-            {% else %}
-                {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
-            {% endif %}
 
-        </div>
+            </div>
 
-        <div class="tab-pane" id="report-documents">
+            <div class="tab-pane" id="project-results">
 
-            <h3>{{ translate("txt-report-documents") }}</h3>
+                <h3>{{ translate("txt-project-results") }}</h3>
 
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>{{ translate("txt-report") }}</th>
-                    <th>{{ translate("txt-contact") }}</th>
-                    <th>{{ translate("txt-date") }}</th>
-                    <th>{{ translate("txt-amount-of-documents") }}</th>
-                    <th>{{ translate("txt-download") }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for report in projectService.project.report %}
-                    <tr>
-                        <td>{{ reportLink(report,'report-community', 'name') }}</td>
-                        <td>{{ report.contact.displayName }}</td>
-                        <td>{{ report.dateCreated|string_date }}</td>
-                        <td>{{ report.item.count() }}</td>
-                        <td>{{ reportLink(report,'download', 'icon') }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
-        </div>
-
-        <div class="tab-pane" id="project-results">
-
-            <h3>{{ translate("txt-project-results") }}</h3>
-
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
 
 
-        </div>
+            </div>
 
-        <div class="tab-pane" id="workpackage-deliverables">
+            <div class="tab-pane" id="workpackage-deliverables">
 
-            <h3>{{ translate("txt-workpackage-deliverables") }}</h3>
+                <h3>{{ translate("txt-workpackage-deliverables") }}</h3>
 
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
 
-        </div>
+            </div>
+        {% endif %}
 
     </div>
 

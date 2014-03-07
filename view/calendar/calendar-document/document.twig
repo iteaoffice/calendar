@@ -1,6 +1,8 @@
 <h1>{{ translate("txt-document-%s")|format(document) }}</h1>
 
 <dl class="dl-horizontal">
+    <dt>{{ translate("txt-calendar") }}</dt>
+    <dd>{{ calendarLink(document.calendar,'view-community','text') }}</dd>
     <dt>{{ translate("txt-title") }}</dt>
     <dd>{{ document.document }} {{ calendarDocumentLink(document,'download','icon') }}</dd>
     <dt>{{ translate("txt-content-type") }}</dt>
@@ -8,3 +10,5 @@
     <dt>{{ translate("txt-size") }}</dt>
     <dd>{{ document.size|parse_size }}</dd>
 </dl>
+
+{{ calendarDocumentLink(document, 'edit', 'button') }}

@@ -60,13 +60,23 @@ class CalendarLink extends AbstractHelper
                 $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
                 $calendar = new Entity\Calendar();
                 break;
+            case 'overview-admin':
+                $router   = 'zfcadmin/calendar-manager/overview';
+                $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
+                $calendar = new Entity\Calendar();
+                break;
             case 'view':
                 $router             = 'route-' . $calendar->get("underscore_full_entity_name");
                 $params['calendar'] = $calendar->getId();
+                $params['docRef']   = $calendar->getDocRef();
                 $text               = sprintf($translate("txt-view-calendar-item-%s"), $calendar->getCalendar());
                 break;
             case 'view-community':
                 $router = 'community/calendar/calendar';
+                $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
+                break;
+            case 'view-admin':
+                $router = 'zfcadmin/calendar-manager/calendar';
                 $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
                 break;
             default:

@@ -1,0 +1,48 @@
+{% do headScript().appendFile('assets/js/jquery.timepicker.js', 'text/javascript') %}
+{% do headScript().appendFile('assets/js/jquery.slideraccess.js', 'text/javascript') %}
+{% do headLink().appendStylesheet('assets/css/jquery.timepicker.css') %}
+{% do headLink().appendStylesheet(
+'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css'
+) %}
+
+{% do form.prepare() %}
+{% do form.setAttribute('class','form-horizontal') %}
+{{ form().openTag(form)|raw }}
+
+
+{% set calendar = form.get('calendar') %}
+
+{{ ztbformelement(calendar.get('calendar')) }}
+{{ ztbformelement(calendar.get('type')) }}
+{{ ztbformelement(calendar.get('location')) }}
+{{ ztbformelement(calendar.get('final')) }}
+{{ ztbformelement(calendar.get('onHomepage')) }}
+{{ ztbformelement(calendar.get('sequence')) }}
+{{ ztbformelement(calendar.get('dateFrom')) }}
+{{ ztbformelement(calendar.get('dateEnd')) }}
+{{ ztbformelement(calendar.get('description')) }}
+{{ ztbformelement(calendar.get('call')) }}
+{{ ztbformelement(calendar.get('imageUrl')) }}
+{{ ztbformelement(calendar.get('url')) }}
+
+{{ ztbformelement(form.get('csrf')) }}
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ ztbformelement(form.get('submit')) }}
+        {{ ztbformelement(form.get('delete')) }}
+        {{ ztbformelement(form.get('cancel')) }}
+    </div>
+</div>
+
+
+{{ form().closeTag()|raw }}
+
+<script type="text/javascript">
+    $('input[type=datetime]').datetimepicker({
+        addSliderAccess: true,
+        sliderAccessArgs: { touchonly: false },
+        timeFormat: 'HH:mm',
+        dateFormat: 'yy-mm-dd'
+    });
+</script>

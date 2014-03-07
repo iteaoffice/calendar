@@ -49,9 +49,9 @@ class CalendarService extends ServiceAbstract
      *
      * @return CalendarService;
      */
-    public function setProjectId($id)
+    public function setCalendarId($id)
     {
-        $this->setCalendar($this->findEntityById('calendar', $id));
+        $this->setCalendar($this->findEntityById('Calendar', $id));
 
         return $this;
     }

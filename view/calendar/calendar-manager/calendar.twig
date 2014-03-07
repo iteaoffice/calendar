@@ -1,0 +1,125 @@
+<h1>{{ translate("txt-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#general" data-toggle="tab">{{ translate("txt-general-information") }}</a></li>
+    <li><a href="#document" data-toggle="tab">{{ translate("txt-documents") }}</a></li>
+    <li><a href="#attendee" data-toggle="tab">{{ translate("txt-attendees") }}</a></li>
+    {#<li><a href="#schedule" data-toggle="tab">{{ translate("txt-effort") }}</a></li>#}
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="general">
+        <h3>{{ translate("txt-calendar-details") }}</h3>
+
+        <dl class="dl-horizontal">
+            <dt>{{ translate("txt-calendar-name") }}</dt>
+            <dd>{{ calendarLink(calendarService.calendar,'view-community', 'name') }}</dd>
+            <dt>{{ translate("txt-date") }}</dt>
+            <dd>{{ calendarService.calendar.dateFrom|from_to_date(calendarService.calendar.dateEnd) }}</dd>
+            <dt>{{ translate("txt-calendar-type") }}</dt>
+            <dd>{{ calendarService.calendar.type }}</dd>
+            {% if calendarService.calendar.projectCalendar %}
+                {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+                <dt>{{ translate("txt-project-name") }}</dt>
+                <dd>{{ projectLink(projectService,'view-community','name') }}</dd>
+            {% endif %}
+            <dt>{{ translate("txt-location") }}</dt>
+            <dd>{{ calendarService.calendar.location }}</dd>
+            <dt>{{ translate("txt-docref") }}</dt>
+            <dd>{{ calendarService.calendar.docRef }}</dd>
+            <dt>{{ translate("txt-state") }}</dt>
+            <dd>{{ translate(calendarService.calendar.getFinal(true)) }}</dd>
+            <dt>{{ translate("txt-on-homepage") }}</dt>
+            <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}</dd>
+            <dt>{{ translate("txt-description") }}</dt>
+            <dd>{{ calenderService.calender.description }}</dd>
+            <dt>{{ translate("txt-image-url") }}</dt>
+            <dd>{{ calenderService.calender.imageUrl }}</dd>
+            <dt>{{ translate("txt-url") }}</dt>
+            <dd>{{ calenderService.calender.url }}</dd>
+            {% if calendarService.calendar.dateCreated %}
+                <dt>{{ translate("txt-date-created") }}</dt>
+                <dd>{{ calendarService.calendar.dateCreated|string_date }}
+                    {{ translate("txt-by-%s")|format(calendarService.calendar.contact.displayName()) }}</dd>
+            {% endif %}
+            {% if calendarService.calendar.lastUpdate %}
+                <dt>{{ translate("txt-last-update") }}</dt>
+                <dd>{{ calendarService.lastUpdate|string_date }}</dd>
+            {% endif %}
+            <dt>{{ translate("txt-access") }}</dt>
+            {% for access in calendarService.calendar.type.access %}
+                <dd><code>{{ access }}</code></dd>
+            {% endfor %}
+        </dl>
+
+        {{ calendarLink(calendarService.calendar,'edit', 'button') }}
+
+    </div>
+    <div class="tab-pane" id="document">
+
+        {% if calendarService.calendar.document.count() > 0 %}
+
+            <table class="table table-bordered table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th>{{ translate("txt-document") }}</th>
+                    <th>{{ translate("txt-date") }}</th>
+                    <th>{{ translate("txt-size") }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in calendarService.calendar.document %}
+                    <tr>
+                        <td>{{ calendarDocumentLink(document,'document-admin','name') }}
+                            {{ calendarDocumentLink(document,'download','icon') }}
+                        </td>
+                        <td>{{ document.dateCreated|string_date }}</td>
+                        <td>{{ document.size|parse_size }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-documents-uploaded-for-this-calendar-%s")|
+            format(calenserService.calendar))|raw }}
+        {% endif %}
+
+        <h4>{{ translate("txt-upload-new-calendar-documents") }}</h4>
+
+        {% do form.prepare() %}
+        {% do form.setAttribute('class','form-inline') %}
+
+        {{ form().openTag(form)|raw }}
+
+        <div class="form-group col-md-6">
+            {{ formlabel(form.get('document')) }}
+            {{ formelement(form.get('document')) }}
+        </div>
+        <div class="form-group col-md-6">
+            {{ formlabel(form.get('file')) }}
+            {{ formelement(form.get('file')) }}
+            {{ formelementerrors(form.get('file')) }}
+        </div>
+
+        <br>
+        {{ formelement(form.get('csrf')) }}
+        {{ formelement(form.get('submit')) }}
+
+        {{ form().closeTag()|raw }}
+
+    </div>
+    <div class="tab-pane" id="attendee">
+
+        {% if calendarService.calendar.calendarContact.count() > 0 %}
+
+
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-attandeed-defined-for-this-calendar-%s")|
+            format(calenserService.calendar))|raw }}
+        {% endif %}
+
+
+    </div>
+</div>
