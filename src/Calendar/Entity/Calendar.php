@@ -253,14 +253,6 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string)$this->calendar;
-    }
-
-    /**
      * Magic Getter
      *
      * @param $property
@@ -496,7 +488,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
 
             $this->inputFilter = $inputFilter;
         }

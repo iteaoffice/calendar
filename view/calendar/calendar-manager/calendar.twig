@@ -32,13 +32,21 @@
             <dt>{{ translate("txt-state") }}</dt>
             <dd>{{ translate(calendarService.calendar.getFinal(true)) }}</dd>
             <dt>{{ translate("txt-on-homepage") }}</dt>
-            <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}</dd>
-            <dt>{{ translate("txt-description") }}</dt>
-            <dd>{{ calenderService.calender.description }}</dd>
-            <dt>{{ translate("txt-image-url") }}</dt>
-            <dd>{{ calenderService.calender.imageUrl }}</dd>
-            <dt>{{ translate("txt-url") }}</dt>
-            <dd>{{ calenderService.calender.url }}</dd>
+            <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}
+                {{ translate("txt-sequence:-%s")|format(calendarService.calendar.sequence) }}
+            </dd>
+            {% if calenderService.calender.description %}
+                <dt>{{ translate("txt-description") }}</dt>
+                <dd>{{ calenderService.calender.description }}</dd>
+            {% endif %}
+            {% if calenderService.calender.imageUrl %}
+                <dt>{{ translate("txt-image-url") }}</dt>
+                <dd>{{ calenderService.calender.imageUrl }}</dd>
+            {% endif %}
+            {% if calenderService.calender.url %}
+                <dt>{{ translate("txt-url") }}</dt>
+                <dd>{{ calenderService.calender.url }}</dd>
+            {% endif %}
             {% if calendarService.calendar.dateCreated %}
                 <dt>{{ translate("txt-date-created") }}</dt>
                 <dd>{{ calendarService.calendar.dateCreated|string_date }}
@@ -59,6 +67,7 @@
     </div>
     <div class="tab-pane" id="document">
 
+        <h2>{{ translate("txt-calendar-documents") }}</h2>
         {% if calendarService.calendar.document.count() > 0 %}
 
             <table class="table table-bordered table-condensed table-hover">
@@ -83,7 +92,7 @@
             </table>
         {% else %}
             {{ ztbalert().info(translate("txt-no-documents-uploaded-for-this-calendar-%s")|
-            format(calenserService.calendar))|raw }}
+            format(calendarService.calendar))|raw }}
         {% endif %}
 
         <h4>{{ translate("txt-upload-new-calendar-documents") }}</h4>
@@ -112,12 +121,13 @@
     </div>
     <div class="tab-pane" id="attendee">
 
+        <h2>{{ translate("txt-calendar-attendees") }}</h2>
         {% if calendarService.calendar.calendarContact.count() > 0 %}
 
 
         {% else %}
             {{ ztbalert().info(translate("txt-no-attandeed-defined-for-this-calendar-%s")|
-            format(calenserService.calendar))|raw }}
+            format(calendarService.calendar))|raw }}
         {% endif %}
 
 

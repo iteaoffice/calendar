@@ -13,9 +13,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\AuthenticationService;
 
-use Doctrine\ORM\EntityManager;
-
-use Calendar\Entity\EntityAbstract;
+use Calendar\Entity;
 
 /**
  * ServiceAbstract
@@ -53,7 +51,7 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
      * @param      $id
      * @param bool $populate
      *
-     * @return object
+     * @return null|Entity\Calendar
      */
     public function findEntityById($entity, $id, $populate = false)
     {
@@ -64,11 +62,11 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
     }
 
     /**
-     * @param \Calendar\Entity\EntityAbstract $entity
+     * @param Entity\EntityAbstract $entity
      *
-     * @return \Calendar\Entity\EntityAbstract
+     * @return Entity\EntityAbstract
      */
-    public function newEntity(EntityAbstract $entity)
+    public function newEntity(Entity\EntityAbstract $entity)
     {
         if (method_exists($entity, 'getLastUpdateBy')) {
             $authService = $this->getServiceLocator()->get('zfcuser_auth_service');
@@ -86,11 +84,11 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
     }
 
     /**
-     * @param \Calendar\Entity\EntityAbstract $entity
+     * @param Entity\EntityAbstract $entity
      *
-     * @return \Calendar\Entity\EntityAbstract
+     * @return Entity\EntityAbstract
      */
-    public function updateEntity(EntityAbstract $entity)
+    public function updateEntity(Entity\EntityAbstract $entity)
     {
         if (method_exists($entity, 'getLastUpdateBy')) {
             $authService = $this->getServiceLocator()->get('zfcuser_auth_service');
@@ -108,11 +106,11 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
     }
 
     /**
-     * @param \Calendar\Entity\EntityAbstract $entity
+     * @param Entity\EntityAbstract $entity
      *
      * @return bool
      */
-    public function removeEntity(EntityAbstract $entity)
+    public function removeEntity(Entity\EntityAbstract $entity)
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();

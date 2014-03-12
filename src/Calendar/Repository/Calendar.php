@@ -64,6 +64,21 @@ class Calendar extends EntityRepository
             case CalendarService::WHICH_UPDATED;
                 $qb->orderBy('c.dateUpdated', 'DESC');
                 break;
+            case CalendarService::WHICH_ON_HOMEPAGE;
+                $qb->andWhere('c.dateEnd >= ?1');
+                $qb->setParameter(1, new \DateTime());
+
+                $qb->andWhere('c.onHomepage >= ?2');
+                $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
+
+                $qb->andWhere('c.final >= ?3');
+                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+
+
+                $qb->orderBy('c.sequence', 'ASC');
+                $qb->addOrderBy('c.dateFrom', 'ASC');
+
+                break;
         }
 
         if ($filterForAccess) {

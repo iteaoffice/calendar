@@ -30,10 +30,11 @@ class CalendarService extends ServiceAbstract
     /**
      * Constant to determine which affiliations must be taken from the database
      */
-    const WHICH_UPCOMING = 'upcoming';
-    const WHICH_UPDATED  = 'updated';
-    const WHICH_PAST     = 'past';
-    const WHICH_REVIEWS  = 'reviews';
+    const WHICH_UPCOMING    = 'upcoming';
+    const WHICH_UPDATED     = 'updated';
+    const WHICH_PAST        = 'past';
+    const WHICH_REVIEWS     = 'reviews';
+    const WHICH_ON_HOMEPAGE = 'on-homepage';
 
     /**
      * @var Entity\Calendar
@@ -57,6 +58,26 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
+     * @param $docRef
+     *
+     * @return null|Entity\Calendar
+     */
+    public function findCalendarByDocRef($docRef)
+    {
+        $calendar = $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))->findOneBy(
+            array(
+                'docRef' => $docRef
+            )
+        );
+
+        if (is_null($calendar)) {
+            return null;
+        }
+
+        return $calendar;
+    }
+
+    /**
      * @param Contact $contact
      *
      * @return bool
@@ -64,7 +85,7 @@ class CalendarService extends ServiceAbstract
     public function calendarHasContact(Contact $contact)
     {
         $calendarContact = $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('contact'))
+            ->getRepository($this->getFullEntityName('Contact'))
             ->findOneBy(array(
                 'calendar' => $this->getCalendar(),
                 'contact'  => $contact
@@ -83,7 +104,7 @@ class CalendarService extends ServiceAbstract
     public function canViewCalendar(Contact $contact)
     {
         return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('calendar'))
+            ->getRepository($this->getFullEntityName('Calendar'))
             ->canViewCalendar($this->getCalendar(), $contact);
     }
 
@@ -97,7 +118,7 @@ class CalendarService extends ServiceAbstract
         $contact = $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity();
 
         return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('calendar'))
+            ->getRepository($this->getFullEntityName('Calendar'))
             ->findCalendarItems($which, true, $contact);
     }
 

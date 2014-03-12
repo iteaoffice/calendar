@@ -107,8 +107,8 @@ class CalendarHandler extends AbstractHelper
     public function parseCalendarSmall()
     {
         $calendarItems = $this->calendarService
-            ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults($this->getLimit())
+            ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
+            ->setMaxResults((int)$this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-small',
@@ -116,7 +116,7 @@ class CalendarHandler extends AbstractHelper
     }
 
     /**
-     * Create a list of all countries which are active (have projects)
+     * Produce a list of upcoming events
      *
      * @return string
      */
@@ -124,7 +124,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults($this->getLimit())
+            ->setMaxResults((int)$this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render('calendar/partial/list/calendar',
@@ -169,6 +169,26 @@ class CalendarHandler extends AbstractHelper
         $this->setCalendar($this->calendarService->findEntityById('Calendar', $id));
 
         return $this->getCalendar();
+    }
+
+    /**
+     * Set the newsService based on the DocRef
+     *
+     * @param $docRef
+     *
+     * @return Calendar
+     */
+    public function setCalendarDocRef($docRef)
+    {
+        $calendar = $this->calendarService->findCalendarByDocRef($docRef);
+
+        if (is_null($calendar)) {
+            return sprintf('The selected new swith docRef <code>%s</code> cannot be found', $docRef);
+        }
+
+        $this->setCalendar($calendar);
+
+        return $calendar;
     }
 
     /**

@@ -13,7 +13,6 @@ return array(
     'calendar/calendar-manager/overview'          => __DIR__ . '//view/calendar/calendar-manager/overview.twig',
     'calendar/partial/entity/calendar'            => __DIR__ . '//view/calendar/partial/entity/calendar.twig',
     'calendar/partial/form/calendar'              => __DIR__ . '//view/calendar/partial/form/calendar.twig',
-    'calendar/partial/form/document'              => __DIR__ . '//view/calendar/partial/form/document.twig',
     'calendar/partial/list/calendar-small'        => __DIR__ . '//view/calendar/partial/list/calendar-small.twig',
     'calendar/partial/list/calendar'              => __DIR__ . '//view/calendar/partial/list/calendar.twig',
     'calendar/partial/pagination-control'         => __DIR__ . '//view/calendar/partial/pagination-control.twig',
