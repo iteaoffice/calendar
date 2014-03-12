@@ -103,7 +103,7 @@ class Calendar extends EntityAbstract
     private $docRef;
     /**
      * @ORM\Column(name="date_from", type="datetime", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\Datetime")
+     * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d h:m"})
      * @Annotation\Required(true)
      * @var \DateTime
@@ -111,7 +111,7 @@ class Calendar extends EntityAbstract
     private $dateFrom;
     /**
      * @ORM\Column(name="date_end", type="datetime", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\Datetime")
+     * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-date-end","help-block": "txt-date-end-explanation", "format": "Y-m-d h:m"})
      * @var \DateTime
      */
