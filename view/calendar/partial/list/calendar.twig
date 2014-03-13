@@ -3,7 +3,7 @@
 <p>{{ translate("txt-upcoming-events-explanation") }}</p>
 
 {% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
-    <table class="table table-hover">
+    <table class="table table-hover table-striped">
         {% set calendarService = calendarServiceProxy(calendar) %}
         <tr>
             <th colspan="2"><strong>{{ calendarLink(calendar,'view','name') }}</strong></th>

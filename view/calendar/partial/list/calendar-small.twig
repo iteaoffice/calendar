@@ -1,5 +1,5 @@
-<h2>{{ translate("txt-upcoming-events") }}</h2>
-<table class="table table-condensed table-listed table-hover">
+<h3 class="home">{{ translate("txt-upcoming-events") }}</h3>
+<table class="table table-condensed">
     <tbody>
     {% for calendar in calendarItems %}
         {% set calendarService = calendarServiceProxy(calendar) %}
