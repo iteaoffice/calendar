@@ -24,6 +24,12 @@
                 <td>{{ calendar.description|raw }}</td>
             </tr>
         {% endif %}
+        {% if calendar.url %}
+            <tr>
+                <td>Link</td>
+                <td><a href="http://{{ calendar.url }}">{{ calendar.url }}</a></td>
+            </tr>
+        {% endif %}
     </table>
     <hr>
     <br>

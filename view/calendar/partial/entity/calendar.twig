@@ -11,4 +11,8 @@
         <dt>More information</dt>
         <dd>{{ calendar.description|raw }}</dd>
     {% endif %}
+    {% if calendar.url %}
+        <dt>Link</dt>
+        <dd><a href="http://{{ calendar.url }}">{{ calendar.url }}</a></dd>
+    {% endif %}
 </dl>
