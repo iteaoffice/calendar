@@ -20,8 +20,8 @@
         {% endif %}
         {% if calendar.description %}
             <tr>
-                <td>{{ translate("txt-more-info") }}</td>
-                <td>{{ calendar.description }}</td>
+                <td>More information</td>
+                <td>{{ calendar.description|raw }}</td>
             </tr>
         {% endif %}
     </table>
