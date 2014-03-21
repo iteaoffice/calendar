@@ -14,6 +14,7 @@ namespace Calendar\View\Helper;
 use Zend\View\Helper\AbstractHelper;
 
 use Calendar\Entity;
+use Calendar\Service\CalendarService;
 
 /**
  * Create a link to an calendar
@@ -30,12 +31,20 @@ class CalendarLink extends AbstractHelper
      * @param string          $action
      * @param string          $show
      * @param string          $which
+     * @param null            $alternativeShow
+     * @param null            $year
      *
      * @return string
-     * @throws \RuntimeException
      * @throws \Exception
      */
-    public function __invoke(Entity\Calendar $calendar = null, $action = 'view', $show = 'name', $which = 'upcoming')
+    public function __invoke(
+        Entity\Calendar $calendar = null,
+        $action = 'view',
+        $show = 'name',
+        $which = CalendarService::WHICH_UPCOMING,
+        $alternativeShow = null,
+        $year = null
+    )
     {
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
@@ -54,6 +63,22 @@ class CalendarLink extends AbstractHelper
             case 'edit':
                 $router = 'zfcadmin/calendar-manager/edit';
                 $text   = sprintf($translate("txt-edit-calendar-%s"), $calendar);
+                break;
+            case 'list':
+
+                /**
+                 * Push the docRef in the params array
+                 */
+                $router = 'route-content_entity_node';
+                /**
+                 * @todo: hardcoded docRef here. Can we avoid this? Maybe by finding a node having the new
+                 *      overview as handler
+                 */
+                $params['docRef'] = 'upcoming-events';
+                $params['year']   = $year;
+
+                $text     = sprintf($translate("txt-upcoming-events"));
+                $calendar = new Entity\Calendar();
                 break;
             case 'overview':
                 $router   = 'community/calendar/overview';
@@ -108,6 +133,10 @@ class CalendarLink extends AbstractHelper
                 break;
             case 'text-which-tab':
                 $linkContent[] = ucfirst($which);
+                break;
+            case 'alternativeShow':
+
+                $linkContent[] = $alternativeShow;
                 break;
             default:
                 $linkContent[] = $calendar;

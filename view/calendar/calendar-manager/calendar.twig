@@ -35,17 +35,17 @@
             <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}
                 {{ translate("txt-sequence:-%s")|format(calendarService.calendar.sequence) }}
             </dd>
-            {% if calenderService.calender.description %}
+            {% if calendarService.calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
-                <dd>{{ calenderService.calender.description }}</dd>
+                <dd>{{ calendarService.calendar.description }}</dd>
             {% endif %}
-            {% if calenderService.calender.imageUrl %}
+            {% if calendarService.calendar.imageUrl %}
                 <dt>{{ translate("txt-image-url") }}</dt>
-                <dd>{{ calenderService.calender.imageUrl }}</dd>
+                <dd>{{ calendarService.calendar.imageUrl }}</dd>
             {% endif %}
-            {% if calenderService.calender.url %}
+            {% if calendarService.calendar.url %}
                 <dt>{{ translate("txt-url") }}</dt>
-                <dd>{{ calenderService.calender.url }}</dd>
+                <dd><a href="{{ calendarService.calendar.url }}">{{ calendarService.calendar.url }}</a></dd>
             {% endif %}
             {% if calendarService.calendar.dateCreated %}
                 <dt>{{ translate("txt-date-created") }}</dt>

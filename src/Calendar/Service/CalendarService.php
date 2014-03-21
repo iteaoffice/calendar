@@ -110,16 +110,17 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param string $which
+     * @param null   $year
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which = self::WHICH_UPCOMING)
+    public function findCalendarItems($which = self::WHICH_UPCOMING, $year = null)
     {
         $contact = $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity();
 
         return $this->getEntityManager()
             ->getRepository($this->getFullEntityName('Calendar'))
-            ->findCalendarItems($which, true, $contact);
+            ->findCalendarItems($which, true, $contact, $year);
     }
 
     /**

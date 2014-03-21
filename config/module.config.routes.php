@@ -12,12 +12,12 @@ return array(
         'routes' => array(
             'assets'    => array(
                 'type'          => 'Literal',
+                'priority'      => 999,
                 'options'       => array(
-                    'route'    => '/assets/' . DEBRANOVA_HOST,
-                    'defaults' => array(
-                        'controller' => 'index',
-                        'action'     => 'index',
-                    ),
+                    'route' => '/assets/' . DEBRANOVA_HOST,
+//                    'defaults' => array(
+//                        'controller' => 'calendar-index',
+//                    ),
                 ),
                 'may_terminate' => true,
                 'child_routes'  => array(
@@ -26,6 +26,7 @@ return array(
                         'options' => array(
                             'route'    => "/css/calendar-type-color.css",
                             'defaults' => array(
+                                //Explicitly add the controller here as the assets are collected
                                 'controller' => 'calendar-index',
                                 'action'     => 'calendar-type-color-css',
                             ),

@@ -1,4 +1,6 @@
-<h3 class="home">{{ translate("txt-upcoming-events") }}</h3>
+{{ calendarLink(null,'list', 'alternativeShow', 'upcoming', '<h3 class="home">'  ~
+translate("txt-upcoming-events") ~ '</h3>') }}
+
 <table class="table table-condensed">
     <tbody>
     {% for calendar in calendarItems %}

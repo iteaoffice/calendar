@@ -166,7 +166,7 @@ class Calendar extends EntityAbstract
     private $description;
     /**
      * @ORM\Column(name="url", type="string", length=60, nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Zend\Form\Element\Url")
      * @Annotation\Options({"label":"txt-url","help-block": "txt-calendar-url-explanation"})
      * @var string
      */

@@ -27,11 +27,11 @@ class Calendar extends EntityRepository
      * @param         $which
      * @param bool    $filterForAccess
      * @param Contact $contact
+     * @param null    $year
      *
      * @return \Doctrine\ORM\Query
-     * @throws \InvalidArgumentException
      */
-    public function findCalendarItems($which, $filterForAccess = true, Contact $contact = null)
+    public function findCalendarItems($which, $filterForAccess = true, Contact $contact = null, $year = null)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('c');
@@ -39,7 +39,7 @@ class Calendar extends EntityRepository
 
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
-                $qb->andWhere('c.dateEnd >= ?1');
+                $qb->andWhere('c.dateFrom >= ?1');
                 $qb->orderBy('c.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
                 break;
@@ -68,10 +68,10 @@ class Calendar extends EntityRepository
                 $qb->andWhere('c.dateEnd >= ?1');
                 $qb->setParameter(1, new \DateTime());
 
-                $qb->andWhere('c.onHomepage >= ?2');
+                $qb->andWhere('c.onHomepage = ?2');
                 $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
 
-                $qb->andWhere('c.final >= ?3');
+                $qb->andWhere('c.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
 
@@ -94,6 +94,14 @@ class Calendar extends EntityRepository
             }
 
             $qb = $this->filterForAccess($qb, $contact);
+        }
+
+        if (!is_null($year)) {
+            $emConfig = $this->getEntityManager()->getConfiguration();
+            $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+
+            $qb->andWhere('YEAR(c.dateEnd) = ?8');
+            $qb->setParameter(8, (int)$year);
         }
 
         return $qb->getQuery();

@@ -44,6 +44,10 @@ class CalendarHandler extends AbstractHelper
      */
     protected $limit = 5;
     /**
+     * @var int
+     */
+    protected $year;
+    /**
      * @var TwigRenderer;
      */
     protected $zfcTwigRenderer;
@@ -72,26 +76,23 @@ class CalendarHandler extends AbstractHelper
     public function render()
     {
 
-        $translate = $this->getView()->plugin('translate');
-
         switch ($this->getHandler()->getHandler()) {
 
             case 'calendar_item':
-
                 return $this->parseCalendarItem();
                 break;
-
             case 'calendar':
-
                 return $this->parseCalendar($this->getLimit());
                 break;
-
+            case 'calendar_past':
+                return $this->parsePastCalendar($this->getLimit());
+                break;
             case 'calendar_small':
-
-
                 return $this->parseCalendarSmall($this->getLimit());
                 break;
-
+            case 'calendar_year_selector':
+                return $this->parseYearSelector();
+                break;
             default:
                 return sprintf("No handler available for <code>%s</code> in class <code>%s</code>",
                     $this->getHandler()->getHandler(),
@@ -132,6 +133,22 @@ class CalendarHandler extends AbstractHelper
     }
 
     /**
+     * Produce a list of upcoming events
+     *
+     * @return string
+     */
+    public function parsePastCalendar()
+    {
+        $calendarItems = $this->calendarService
+            ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
+            ->setMaxResults((int)$this->getLimit())
+            ->getResult();
+
+        return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-past',
+            array('calendarItems' => $calendarItems));
+    }
+
+    /**
      * Show the details of 1 calendar item
      *
      * @return string
@@ -140,6 +157,28 @@ class CalendarHandler extends AbstractHelper
     {
         return $this->zfcTwigRenderer->render('calendar/partial/entity/calendar',
             array('calendar' => $this->getCalendar()));
+    }
+
+    /**
+     * Create a list of calls
+     *
+     * @return string
+     */
+    public function parseYearSelector()
+    {
+
+        /**
+         * take the last three years for the calendar
+         */
+        $years = range(date("Y"), date("Y") - 2);
+
+        return $this->zfcTwigRenderer->render(
+            'calendar/partial/year-selector',
+            array(
+                'years'        => $years,
+                'selectedYear' => $this->getYear()
+            )
+        );
     }
 
 
@@ -221,5 +260,21 @@ class CalendarHandler extends AbstractHelper
     public function getLimit()
     {
         return $this->limit;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = (int)$year;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
     }
 }
