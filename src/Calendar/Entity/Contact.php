@@ -9,17 +9,7 @@
  */
 namespace Calendar\Entity;
 
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\Form\Annotation;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-
-use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-
-use Gedmo\Mapping\Annotation as Gedmo;
-
 
 /**
  * Contact
@@ -74,9 +64,8 @@ class Contact
      */
     public function __toString()
     {
-        return (string)$this->role;
+        return (string) $this->role;
     }
-
 
     /**
      * @param \Calendar\Entity\Calendar $calendar

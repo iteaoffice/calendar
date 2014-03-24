@@ -37,8 +37,8 @@
         <li class="active"><a href="#total-calendar-documents"
                               data-toggle="pill">{{ translate("txt-total-calendar-documents") }}</a></li>
         {% if calendar.projectCalendar %}
-            <li><a href="#proposal-documents-documents"
-                   data-toggle="pill">{{ translate("txt-proposal-documents-documents") }}</a></li>
+            <li><a href="#proposal-documents"
+                   data-toggle="pill">{{ translate("txt-proposal-documents") }}</a></li>
             <li><a href="#report-documents"
                    data-toggle="pill">{{ translate("txt-report-documents") }}</a></li>
             <li><a href="#project-results"
@@ -85,9 +85,9 @@
         </div>
 
         {% if calendar.projectCalendar %}
-            <div class="tab-pane" id="proposal-documents-documents">
+            <div class="tab-pane" id="proposal-documents">
 
-                <h3>{{ translate("txt-proposal-documents-documents") }}</h3>
+                <h3>{{ translate("txt-proposal-documents") }}</h3>
 
                 {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
                 {% set version = projectService.getLatestProjectVersion() %}

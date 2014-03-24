@@ -74,7 +74,6 @@ class Calendar extends EntityRepository
                 $qb->andWhere('c.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
-
                 $qb->orderBy('c.sequence', 'ASC');
                 $qb->addOrderBy('c.dateFrom', 'ASC');
 
@@ -101,7 +100,7 @@ class Calendar extends EntityRepository
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
 
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
-            $qb->setParameter(8, (int)$year);
+            $qb->setParameter(8, (int) $year);
         }
 
         return $qb->getQuery();
@@ -130,8 +129,8 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param  QueryBuilder $qb
-     * @param  Contact      $contact
+     * @param QueryBuilder $qb
+     * @param Contact      $contact
      *
      * @return QueryBuilder $qb
      */
@@ -150,7 +149,6 @@ class Calendar extends EntityRepository
         $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
         $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
-
 
         $qb->andWhere(
             $qb->expr()->orX(

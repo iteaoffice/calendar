@@ -70,7 +70,6 @@ class Calendar extends EntityAbstract
         self::ON_HOMEPAGE     => 'txt-on-homepage'
     );
 
-
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
      * @ORM\Id
@@ -500,7 +499,7 @@ class Calendar extends EntityAbstract
      */
     public function __toString()
     {
-        return (string)$this->calendar;
+        return (string) $this->calendar;
     }
 
     /**
@@ -518,7 +517,6 @@ class Calendar extends EntityAbstract
     {
         return $this->onHomepageTemplates;
     }
-
 
     /**
      * @param string $calendar

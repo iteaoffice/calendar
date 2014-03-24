@@ -14,7 +14,6 @@ namespace Calendar\View\Helper;
 use Zend\View\HelperPluginManager;
 use Zend\View\Helper\AbstractHelper;
 
-
 use ZfcTwig\View\TwigRenderer;
 use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar;
@@ -109,7 +108,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-small',
@@ -125,7 +124,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render('calendar/partial/list/calendar',
@@ -141,7 +140,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-past',
@@ -180,7 +179,6 @@ class CalendarHandler extends AbstractHelper
             )
         );
     }
-
 
     /**
      * @param \Content\Entity\Handler $handler
@@ -267,7 +265,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function setYear($year)
     {
-        $this->year = (int)$year;
+        $this->year = (int) $year;
     }
 
     /**

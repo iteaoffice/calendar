@@ -38,7 +38,6 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
      */
     protected $projectService;
 
-
     /**
      * @param ServiceLocatorInterface $serviceLocator
      * @param array                   $pages
@@ -73,7 +72,6 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                         'docRef' => $this->projectService->getProject()->getDocRef()
                     )
                 );
-
 
                 $pages['project']['pages']['projects']['pages']['project']['pages']['calendar'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
@@ -126,7 +124,6 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                         'docRef' => $this->projectService->getProject()->getDocRef()
                     )
                 );
-
 
                 $pages['project']['pages']['projects']['pages']['project']['pages']['calendar'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),

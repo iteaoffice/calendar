@@ -9,7 +9,6 @@
  */
 namespace Calendar\Controller;
 
-use Zend\View\Model\ViewModel;
 use Calendar\Entity\Type;
 
 /**

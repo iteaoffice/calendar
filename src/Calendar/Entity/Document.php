@@ -15,7 +15,6 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\FileInput;
 use Zend\Form\Annotation;
 
-use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -164,7 +163,6 @@ class Document extends EntityAbstract
                 )
             );
 
-
             $fileUpload = new FileInput('file');
             $fileUpload->setRequired(true);
             $fileUpload->getValidatorChain()->attachByName(
@@ -198,7 +196,7 @@ class Document extends EntityAbstract
      */
     public function __toString()
     {
-        return (string)$this->getDocument();
+        return (string) $this->getDocument();
     }
 
     /**

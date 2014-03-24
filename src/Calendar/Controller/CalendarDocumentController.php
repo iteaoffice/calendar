@@ -14,7 +14,6 @@ use Zend\Validator\File\FilesSize;
 
 use Calendar\Form\CreateCalendarDocument;
 
-
 /**
  *
  */
@@ -141,7 +140,6 @@ class CalendarDocumentController extends CalendarAbstractController
                     $documentObject->setObject(file_get_contents($file['tmp_name']));
                     $this->getCalendarService()->updateEntity($documentObject);
                 }
-
 
                 $this->getCalendarService()->updateEntity($document);
 

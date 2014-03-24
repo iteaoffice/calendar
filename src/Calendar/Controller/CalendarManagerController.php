@@ -9,7 +9,6 @@
  */
 namespace Calendar\Controller;
 
-
 use Zend\View\Model\ViewModel;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
@@ -148,7 +147,6 @@ class CalendarManagerController extends CalendarAbstractController
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/overview');
             }
 
-
             $calendar->setContact($this->zfcUserAuthentication()->getIdentity());
             $calendar = $this->getCalendarService()->newEntity($calendar);
 
@@ -191,7 +189,6 @@ class CalendarManagerController extends CalendarAbstractController
         $form->setData($data);
 
         if ($this->getRequest()->isPost() && $form->isValid()) {
-
 
             $document = $form->getData();
             $document->setCalendar($calendarService->getCalendar());

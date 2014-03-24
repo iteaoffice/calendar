@@ -146,7 +146,6 @@ class CalendarService extends ServiceAbstract
         return $calendar;
     }
 
-
     /**
      * Return an array of all which-values
      *

@@ -9,11 +9,7 @@
  */
 namespace Calendar\Entity;
 
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\Factory as InputFactory;
 use Zend\Form\Annotation;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,7 +70,7 @@ class ContactStatus
      */
     public function __toString()
     {
-        return (string)$this->status;
+        return (string) $this->status;
     }
 
     /**
@@ -156,7 +152,6 @@ class ContactStatus
     {
         return $this->calendarContact;
     }
-
 
     /**
      * @param \Calendar\Entity\ScheduleContact[] $scheduleContact
