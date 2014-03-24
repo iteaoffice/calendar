@@ -74,7 +74,7 @@ class CalendarLink extends AbstractHelper
                  * @todo: hardcoded docRef here. Can we avoid this? Maybe by finding a node having the new
                  *      overview as handler
                  */
-                $params['docRef'] = 'upcoming-events';
+                $params['docRef'] = 'past-events';
                 $params['year']   = $year;
 
                 $text     = sprintf($translate("txt-upcoming-events"));
