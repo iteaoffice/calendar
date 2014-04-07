@@ -9,7 +9,7 @@
  */
 namespace Calendar\Repository;
 
-use Contact\Entity\Access;
+use Admin\Entity\Access;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 

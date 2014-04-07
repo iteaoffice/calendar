@@ -62,16 +62,16 @@ class Type
      */
     private $calendar;
     /**
-     * @ORM\ManyToMany(targetEntity="Contact\Entity\Access", inversedBy="calendarType")
+     * @ORM\ManyToMany(targetEntity="Admin\Entity\Access", inversedBy="calendarType")
      * @ORM\OrderBy=({"name"="ASC"})
      * @ORM\JoinTable(name="calendar_type_access",
      *            joinColumns={@ORM\JoinColumn(name="type_id", referencedColumnName="type_id")},
      *            inverseJoinColumns={@ORM\JoinColumn(name="access_id", referencedColumnName="access_id")}
      * )
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
-     * @Annotation\Options({"target_class":"Contact\Entity\Access"})
+     * @Annotation\Options({"target_class":"Admin\Entity\Access"})
      * @Annotation\Attributes({"label":"txt-access"})
-     * @var \Contact\Entity\Access[]
+     * @var \Admin\Entity\Access[]
      */
     private $access;
 
@@ -122,7 +122,7 @@ class Type
     }
 
     /**
-     * @param \Contact\Entity\Access[] $access
+     * @param \Admin\Entity\Access[] $access
      */
     public function setAccess($access)
     {
@@ -130,7 +130,7 @@ class Type
     }
 
     /**
-     * @return \Contact\Entity\Access[]
+     * @return \Admin\Entity\Access[]
      */
     public function getAccess()
     {

@@ -69,15 +69,21 @@ class CalendarLink extends AbstractHelper
                 /**
                  * Push the docRef in the params array
                  */
-                $router = 'route-content_entity_node';
+                $router         = 'route-content_entity_node';
+                $params['year'] = $year;
                 /**
-                 * @todo: hardcoded docRef here. Can we avoid this? Maybe by finding a node having the new
-                 *      overview as handler
+                 * @todo: hardcoded docRef here. Can we avoid this? Maybe by finding a node having the new overview as handler
                  */
-                $params['docRef'] = 'past-events';
-                $params['year']   = $year;
-
-                $text     = sprintf($translate("txt-upcoming-events"));
+                switch ($which) {
+                    case CalendarService::WHICH_UPCOMING:
+                        $params['docRef'] = 'upcoming-events';
+                        $text             = sprintf($translate("txt-upcoming-events"));
+                        break;
+                    case CalendarService::WHICH_PAST:
+                        $params['docRef'] = 'past-events';
+                        $text             = sprintf($translate("txt-past-events"));
+                        break;
+                }
                 $calendar = new Entity\Calendar();
                 break;
             case 'overview':
