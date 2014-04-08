@@ -140,7 +140,7 @@ class CalendarService extends ServiceAbstract
         }
 
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            $calendar[$calendarItem->getId()] = $calendarItem->getCalendar();
+            $calendar[$calendarItem->getId()] = $calendarItem;
         }
 
         return $calendar;
