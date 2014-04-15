@@ -42,20 +42,21 @@ class CalendarManagerController extends CalendarAbstractController
             /**
              * Produce a index which holds the current year
              */
-            $index = sprintf("%s%s%s",
+            $index = sprintf("%s%s%s000000",
                 $year,
                 $birthDay->getDateOfBirth()->format("m"),
                 $birthDay->getDateOfBirth()->format("d")
             );
 
             $calender[$index] = array(
-                'item' => sprintf(_("txt-birthday-of-%s-(%s)"), $birthDay->getDisplayName(), $birthDay->getDateOfBirth()->format("Y")),
-                'date' => \DateTime::createFromFormat("Ymd", $index)
+                'item' => sprintf(_("Birthday of %s (%s)"), $birthDay->getDisplayName(), $birthDay->getDateOfBirth()->format("Y")),
+                'date' => \DateTime::createFromFormat("Ymdhis", $index)
             );
         }
 
+
         foreach ($calendarItems as $calendarItem) {
-            $calender[$calendarItem->getDateFrom()->format('Ymd')] = array(
+            $calender[$calendarItem->getDateFrom()->format('Ymdhis')] = array(
                 'item'     => $calendarItem->getCalendar(),
                 'calendar' => $calendarItem,
                 'date'     => null

@@ -60,10 +60,18 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                 return false;
             }
 
+
             if (!is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
                 $this->projectService->setProject($this->calendarService->getCalendar()->getProjectCalendar()->getProject());
 
-                $pages['project']['pages']['projects']['pages']['project'] = array(
+                $pages['calendar']['pages']['calendar'] = array(
+                    'label'      => _("txt-review-calendar"),
+                    'route'      => 'community/calendar/review-calendar',
+                    'routeMatch' => $this->routeMatch,
+                    'router'     => $router,
+                );
+
+                $pages['calendar']['pages']['calendar']['pages']['project'] = array(
                     'label'      => $this->projectService->parseFullname(),
                     'route'      => 'community/project/project',
                     'routeMatch' => $this->routeMatch,
@@ -73,7 +81,7 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                     )
                 );
 
-                $pages['project']['pages']['projects']['pages']['project']['pages']['calendar'] = array(
+                $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
                         $this->calendarService->getCalendar()->getCalendar(),
                         $this->calendarService->getCalendar()->getLocation()),
@@ -90,6 +98,13 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
             if (is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
 
                 $pages['calendar']['pages']['calendar'] = array(
+                    'label'      => _("txt-calendar"),
+                    'route'      => 'community/calendar/overview',
+                    'routeMatch' => $this->routeMatch,
+                    'router'     => $router,
+                );
+
+                $pages['calendar']['pages']['calendar']['pages']['item'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
                         $this->calendarService->getCalendar()->getCalendar(),
                         $this->calendarService->getCalendar()->getLocation()),
@@ -112,10 +127,17 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                 return false;
             }
 
+            $pages['calendar']['pages']['calendar'] = array(
+                'label'      => _("txt-calendar"),
+                'route'      => 'zfcadmin/calendar-manager/overview',
+                'routeMatch' => $this->routeMatch,
+                'router'     => $router,
+            );
+
             if (!is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
                 $this->projectService->setProject($this->calendarService->getCalendar()->getProjectCalendar()->getProject());
 
-                $pages['project']['pages']['projects']['pages']['project'] = array(
+                $pages['calendar']['pages']['calendar']['pages']['project'] = array(
                     'label'      => $this->projectService->parseFullname(),
                     'route'      => 'community/project/project',
                     'routeMatch' => $this->routeMatch,
@@ -125,7 +147,7 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
                     )
                 );
 
-                $pages['project']['pages']['projects']['pages']['project']['pages']['calendar'] = array(
+                $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
                         $this->calendarService->getCalendar()->getCalendar(),
                         $this->calendarService->getCalendar()->getLocation()),
@@ -141,11 +163,96 @@ class CalendarNavigationFactory extends DefaultNavigationFactory
 
             if (is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
 
-                $pages['calendar']['pages']['calendar'] = array(
+                $pages['calendar']['pages']['calendar']['pages']['item'] = array(
                     'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
                         $this->calendarService->getCalendar()->getCalendar(),
                         $this->calendarService->getCalendar()->getLocation()),
                     'route'      => 'zfcadmin/calendar-manager/calendar',
+                    'routeMatch' => $this->routeMatch,
+                    'active'     => true,
+                    'router'     => $router,
+                    'params'     => array(
+                        'id' => $this->calendarService->getCalendar()->getId()
+                    )
+                );
+            }
+        }
+
+        if ($this->routeMatch->getMatchedRouteName() === 'zfcadmin/calendar-manager/edit') {
+
+            $this->calendarService->setCalendarId($this->routeMatch->getParam('id'));
+
+            if (is_null($this->calendarService->getCalendar()->getId())) {
+                return false;
+            }
+
+            $pages['calendar']['pages']['calendar'] = array(
+                'label'      => _("txt-calendar"),
+                'route'      => 'zfcadmin/calendar-manager/overview',
+                'routeMatch' => $this->routeMatch,
+                'router'     => $router,
+            );
+
+            if (!is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
+                $this->projectService->setProject($this->calendarService->getCalendar()->getProjectCalendar()->getProject());
+
+                $pages['calendar']['pages']['calendar']['pages']['project'] = array(
+                    'label'      => $this->projectService->parseFullname(),
+                    'route'      => 'community/project/project',
+                    'routeMatch' => $this->routeMatch,
+                    'router'     => $router,
+                    'params'     => array(
+                        'docRef' => $this->projectService->getProject()->getDocRef()
+                    )
+                );
+
+                $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar'] = array(
+                    'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
+                        $this->calendarService->getCalendar()->getCalendar(),
+                        $this->calendarService->getCalendar()->getLocation()),
+                    'route'      => 'zfcadmin/calendar-manager/calendar',
+                    'routeMatch' => $this->routeMatch,
+                    'active'     => true,
+                    'router'     => $router,
+                    'params'     => array(
+                        'id' => $this->calendarService->getCalendar()->getId()
+                    )
+                );
+
+                $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar']['pages']['edit'] = array(
+                    'label'      => sprintf(_("txt-edit-calendar-item-%s-at-%s"),
+                        $this->calendarService->getCalendar()->getCalendar(),
+                        $this->calendarService->getCalendar()->getLocation()),
+                    'route'      => 'zfcadmin/calendar-manager/edit',
+                    'routeMatch' => $this->routeMatch,
+                    'active'     => true,
+                    'router'     => $router,
+                    'params'     => array(
+                        'id' => $this->calendarService->getCalendar()->getId()
+                    )
+                );
+            }
+
+            if (is_null($this->calendarService->getCalendar()->getProjectCalendar())) {
+
+                $pages['calendar']['pages']['calendar']['pages']['item'] = array(
+                    'label'      => sprintf(_("txt-calendar-item-%s-at-%s"),
+                        $this->calendarService->getCalendar()->getCalendar(),
+                        $this->calendarService->getCalendar()->getLocation()),
+                    'route'      => 'zfcadmin/calendar-manager/calendar',
+                    'routeMatch' => $this->routeMatch,
+                    'active'     => true,
+                    'router'     => $router,
+                    'params'     => array(
+                        'id' => $this->calendarService->getCalendar()->getId()
+                    )
+                );
+
+                $pages['calendar']['pages']['calendar']['pages']['item']['pages']['edit'] = array(
+                    'label'      => sprintf(_("txt-edit-calendar-item-%s-at-%s"),
+                        $this->calendarService->getCalendar()->getCalendar(),
+                        $this->calendarService->getCalendar()->getLocation()),
+                    'route'      => 'zfcadmin/calendar-manager/edit',
                     'routeMatch' => $this->routeMatch,
                     'active'     => true,
                     'router'     => $router,

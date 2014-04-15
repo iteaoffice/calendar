@@ -34,11 +34,11 @@ return array(
                 'resource' => 'zfcadmin',
                 'pages'    => array(
                     'calendar'          => array(
-                        'label' => "txt-calendar",
+                        'label' => _("txt-calendar"),
                         'route' => 'zfcadmin/calendar-manager/overview',
                     ),
                     'new-calendar-item' => array(
-                        'label' => "txt-add-calendar-item",
+                        'label' => _("txt-add-calendar-item"),
                         'route' => 'zfcadmin/calendar-manager/new',
                     ),
                 ),
