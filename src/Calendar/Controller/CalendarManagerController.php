@@ -56,7 +56,7 @@ class CalendarManagerController extends CalendarAbstractController
 
 
         foreach ($calendarItems as $calendarItem) {
-            $calender[$calendarItem->getDateFrom()->format('Ymdhis')] = array(
+            $calender[$calendarItem->getDateFrom()->format('Ymdhis') . $calendarItem->getId()] = array(
                 'item'     => $calendarItem->getCalendar(),
                 'calendar' => $calendarItem,
                 'date'     => null

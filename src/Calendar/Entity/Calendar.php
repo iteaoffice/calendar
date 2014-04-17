@@ -103,7 +103,7 @@ class Calendar extends EntityAbstract
     /**
      * @ORM\Column(name="date_from", type="datetime", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\DateTime")
-     * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d h:i"})
+     * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
      * @Annotation\Required(true)
      * @var \DateTime
@@ -112,7 +112,7 @@ class Calendar extends EntityAbstract
     /**
      * @ORM\Column(name="date_end", type="datetime", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\DateTime")
-     * @Annotation\Options({"label":"txt-date-end","help-block": "txt-date-end-explanation", "format": "Y-m-d h:i"})
+     * @Annotation\Options({"label":"txt-date-end","help-block": "txt-date-end-explanation", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
      * @var \DateTime
      */
@@ -363,7 +363,7 @@ class Calendar extends EntityAbstract
                         'validators' => array(
                             array('name'    => 'DateTime',
                                   'options' => array(
-                                      'pattern' => 'yyyy-mm-dd hh:mm',
+                                      'pattern' => 'yyyy-mm-dd HH:mm',
                                   )
                             )
                         )
@@ -383,7 +383,7 @@ class Calendar extends EntityAbstract
                         'validators' => array(
                             array('name'    => 'DateTime',
                                   'options' => array(
-                                      'pattern' => 'yyyy-mm-dd hh:mm',
+                                      'pattern' => 'yyyy-mm-dd HH:mm',
                                   )
                             ),
                             array(

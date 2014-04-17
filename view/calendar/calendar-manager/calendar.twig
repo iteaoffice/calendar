@@ -18,6 +18,10 @@
             <dd>{{ calendarLink(calendarService.calendar,'view-community', 'name') }}</dd>
             <dt>{{ translate("txt-date") }}</dt>
             <dd>{{ calendarService.calendar.dateFrom|from_to_date(calendarService.calendar.dateEnd) }}</dd>
+            <dt>{{ translate("txt-date-from") }}</dt>
+            <dd>{{ calendarService.calendar.dateFrom|date }}</dd>
+            <dt>{{ translate("txt-date-end") }}</dt>
+            <dd>{{ calendarService.calendar.dateEnd|date }}</dd>
             <dt>{{ translate("txt-calendar-type") }}</dt>
             <dd>{{ calendarService.calendar.type }}</dd>
             {% if calendarService.calendar.projectCalendar %}

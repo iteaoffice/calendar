@@ -7,3 +7,7 @@ _("txt-date-end-explanation");
 _("txt-calendar-description-explanation");
 _("txt-image-url-explanation");
 _("txt-calendar-url-explanation");
+_("txt-calendar-explanation");
+_("txt-draft");
+_("txt-tentative");
+_("txt-location-explanation");
