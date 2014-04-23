@@ -93,9 +93,11 @@ class CalendarHandler extends AbstractHelper
                 return $this->parseYearSelector();
                 break;
             default:
-                return sprintf("No handler available for <code>%s</code> in class <code>%s</code>",
+                return sprintf(
+                    "No handler available for <code>%s</code> in class <code>%s</code>",
                     $this->getHandler()->getHandler(),
-                    __CLASS__);
+                    __CLASS__
+                );
         }
     }
 
@@ -108,11 +110,13 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults((int) $this->getLimit())
+            ->setMaxResults((int)$this->getLimit())
             ->getResult();
 
-        return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-small',
-            array('calendarItems' => $calendarItems));
+        return $this->zfcTwigRenderer->render(
+            'calendar/partial/list/calendar-small',
+            array('calendarItems' => $calendarItems)
+        );
     }
 
     /**
@@ -124,11 +128,13 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults((int) $this->getLimit())
+            ->setMaxResults((int)$this->getLimit())
             ->getResult();
 
-        return $this->zfcTwigRenderer->render('calendar/partial/list/calendar',
-            array('calendarItems' => $calendarItems));
+        return $this->zfcTwigRenderer->render(
+            'calendar/partial/list/calendar',
+            array('calendarItems' => $calendarItems)
+        );
     }
 
     /**
@@ -140,11 +146,13 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-            ->setMaxResults((int) $this->getLimit())
+            ->setMaxResults((int)$this->getLimit())
             ->getResult();
 
-        return $this->zfcTwigRenderer->render('calendar/partial/list/calendar-past',
-            array('calendarItems' => $calendarItems));
+        return $this->zfcTwigRenderer->render(
+            'calendar/partial/list/calendar-past',
+            array('calendarItems' => $calendarItems)
+        );
     }
 
     /**
@@ -154,8 +162,10 @@ class CalendarHandler extends AbstractHelper
      */
     public function parseCalendarItem()
     {
-        return $this->zfcTwigRenderer->render('calendar/partial/entity/calendar',
-            array('calendar' => $this->getCalendar()));
+        return $this->zfcTwigRenderer->render(
+            'calendar/partial/entity/calendar',
+            array('calendar' => $this->getCalendar())
+        );
     }
 
     /**
@@ -265,7 +275,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function setYear($year)
     {
-        $this->year = (int) $year;
+        $this->year = (int)$year;
     }
 
     /**

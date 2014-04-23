@@ -45,8 +45,12 @@ return array(
             'BjyAuthorize\Guard\Route' => array(
                 array('route' => 'assets/calendar-type-color-css', 'roles' => array()),
                 array('route' => 'community/calendar/overview', 'roles' => array('office')),
-                array('route' => 'community/calendar/calendar', 'roles' => array('office'), 'assertion' =>
-                    'calendar_acl_assertion_calendar'),
+                array(
+                    'route'     => 'community/calendar/calendar',
+                    'roles'     => array('office'),
+                    'assertion' =>
+                        'calendar_acl_assertion_calendar'
+                ),
                 array('route' => 'community/calendar/review-calendar', 'roles' => array('office')),
                 array('route' => 'community/calendar/document/document', 'roles' => array('office')),
                 array('route' => 'community/calendar/document/download', 'roles' => array('office')),

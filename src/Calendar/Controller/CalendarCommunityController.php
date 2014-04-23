@@ -22,7 +22,6 @@ use Calendar\Service\CalendarService;
  */
 class CalendarCommunityController extends CalendarAbstractController
 {
-
     /**
      * @return ViewModel
      */
@@ -39,11 +38,13 @@ class CalendarCommunityController extends CalendarAbstractController
 
         $whichValues = $this->getCalendarService()->getWhichValues();
 
-        return new ViewModel(array(
-            'which'       => $which,
-            'paginator'   => $paginator,
-            'whichValues' => $whichValues
-        ));
+        return new ViewModel(
+            array(
+                'which'       => $which,
+                'paginator'   => $paginator,
+                'whichValues' => $whichValues
+            )
+        );
     }
 
     /**
@@ -55,9 +56,11 @@ class CalendarCommunityController extends CalendarAbstractController
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_REVIEWS)->getResult();
 
-        return new ViewModel(array(
-            'calendarItems' => $calendarItems,
-        ));
+        return new ViewModel(
+            array(
+                'calendarItems' => $calendarItems,
+            )
+        );
     }
 
     /**
@@ -73,8 +76,10 @@ class CalendarCommunityController extends CalendarAbstractController
             return $this->notFoundAction();
         }
 
-        return new ViewModel(array(
-            'calendar' => $calendarService->getCalendar(),
-        ));
+        return new ViewModel(
+            array(
+                'calendar' => $calendarService->getCalendar(),
+            )
+        );
     }
 }

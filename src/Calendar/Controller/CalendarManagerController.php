@@ -42,18 +42,22 @@ class CalendarManagerController extends CalendarAbstractController
             /**
              * Produce a index which holds the current year
              */
-            $index = sprintf("%s%s%s000000",
+            $index = sprintf(
+                "%s%s%s000000",
                 $year,
                 $birthDay->getDateOfBirth()->format("m"),
                 $birthDay->getDateOfBirth()->format("d")
             );
 
             $calender[$index] = array(
-                'item' => sprintf(_("Birthday of %s (%s)"), $birthDay->getDisplayName(), $birthDay->getDateOfBirth()->format("Y")),
+                'item' => sprintf(
+                    _("Birthday of %s (%s)"),
+                    $birthDay->getDisplayName(),
+                    $birthDay->getDateOfBirth()->format("Y")
+                ),
                 'date' => \DateTime::createFromFormat("Ymdhis", $index)
             );
         }
-
 
         foreach ($calendarItems as $calendarItem) {
             $calender[$calendarItem->getDateFrom()->format('Ymdhis') . $calendarItem->getId()] = array(
@@ -71,11 +75,13 @@ class CalendarManagerController extends CalendarAbstractController
 
         $whichValues = $this->getCalendarService()->getWhichValues();
 
-        return new ViewModel(array(
-            'which'       => $which,
-            'paginator'   => $paginator,
-            'whichValues' => $whichValues
-        ));
+        return new ViewModel(
+            array(
+                'which'       => $which,
+                'paginator'   => $paginator,
+                'whichValues' => $whichValues
+            )
+        );
     }
 
     /**
@@ -104,8 +110,10 @@ class CalendarManagerController extends CalendarAbstractController
             $calendar = $this->getCalendarService()->newEntity($calendar);
 
             $this->flashMessenger()->setNamespace('success')->addMessage(
-                sprintf(_("txt-calendar-item-%s-has-been-created-successfully"),
-                    $calendar->getCalendar())
+                sprintf(
+                    _("txt-calendar-item-%s-has-been-created-successfully"),
+                    $calendar->getCalendar()
+                )
             );
 
             $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', array('id' => $calendar->getId()));
@@ -135,8 +143,10 @@ class CalendarManagerController extends CalendarAbstractController
              * Return when cancel is pressed
              */
             if (isset($data['cancel'])) {
-                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar',
-                    array('id' => $calendar->getId()));
+                return $this->redirect()->toRoute(
+                    'zfcadmin/calendar-manager/calendar',
+                    array('id' => $calendar->getId())
+                );
             }
 
             /**
@@ -152,8 +162,10 @@ class CalendarManagerController extends CalendarAbstractController
             $calendar = $this->getCalendarService()->newEntity($calendar);
 
             $this->flashMessenger()->setNamespace('success')->addMessage(
-                sprintf(_("txt-calendar-item-%s-has-been-updated-successfully"),
-                    $calendar->getCalendar())
+                sprintf(
+                    _("txt-calendar-item-%s-has-been-updated-successfully"),
+                    $calendar->getCalendar()
+                )
             );
 
             $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', array('id' => $calendar->getId()));
@@ -212,7 +224,8 @@ class CalendarManagerController extends CalendarAbstractController
             $this->getCalendarService()->updateEntity($documentObject);
 
             $this->flashMessenger()->addInfoMessage(
-                sprintf(_("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
+                sprintf(
+                    _("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
                     $document->getDocument(),
                     $calendarService->getCalendar()->getCalendar()
                 )
@@ -222,13 +235,19 @@ class CalendarManagerController extends CalendarAbstractController
              * Document uploaded
              */
 
-            return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', array(
-                'id' => $calendarService->getCalendar()->getId()));
+            return $this->redirect()->toRoute(
+                'zfcadmin/calendar-manager/calendar',
+                array(
+                    'id' => $calendarService->getCalendar()->getId()
+                )
+            );
         }
 
-        return new ViewModel(array(
-            'calendarService' => $calendarService,
-            'form'            => $form
-        ));
+        return new ViewModel(
+            array(
+                'calendarService' => $calendarService,
+                'form'            => $form
+            )
+        );
     }
 }

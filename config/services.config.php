@@ -14,10 +14,10 @@ use Calendar\Entity;
 return array(
     'factories' => array(
         'calendar_acl_assertion_calendar' => function ($sm) {
-                return new \Calendar\Acl\Assertion\Calendar($sm);
-            },
+            return new \Calendar\Acl\Assertion\Calendar($sm);
+        },
         'calendar_calendar_form'          => function ($sm) {
-                return new Form\CreateObject($sm, new Entity\Calendar());
-            },
+            return new Form\CreateObject($sm, new Entity\Calendar());
+        },
     ),
 );

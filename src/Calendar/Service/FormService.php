@@ -16,7 +16,6 @@ use Zend\Form;
 
 class FormService implements ServiceLocatorAwareInterface
 {
-
     /**
      * @var \Zend\Form\Form
      */

@@ -19,7 +19,6 @@ class Version
      * DebraNova-Website version identification - see compareVersion()
      */
     const VERSION = '1.0.1-dev';
-
     /**
      * The latest stable version Zend Framework available
      *
@@ -61,14 +60,20 @@ class Version
             $apiResponse = Json::decode(file_get_contents($url), Json::TYPE_ARRAY);
 
             // Simplify the API response into a simple array of version numbers
-            $tags = array_map(function ($tag) {
-                return substr($tag['ref'], 18); // Reliable because we're filtering on 'refs/tags/release-'
-            }, $apiResponse);
+            $tags = array_map(
+                function ($tag) {
+                    return substr($tag['ref'], 18); // Reliable because we're filtering on 'refs/tags/release-'
+                },
+                $apiResponse
+            );
 
             // Fetch the latest version number from the array
-            static::$latestVersion = array_reduce($tags, function ($a, $b) {
-                return version_compare($a, $b, '>') ? $a : $b;
-            });
+            static::$latestVersion = array_reduce(
+                $tags,
+                function ($a, $b) {
+                    return version_compare($a, $b, '>') ? $a : $b;
+                }
+            );
         }
 
         return static::$latestVersion;

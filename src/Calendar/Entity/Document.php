@@ -134,7 +134,8 @@ class Document extends EntityAbstract
             $factory     = new InputFactory();
 
             $inputFilter->add(
-                $factory->createInput(array(
+                $factory->createInput(
+                    array(
                         'name'       => 'document',
                         'required'   => false,
                         'filters'    => array(
@@ -156,7 +157,8 @@ class Document extends EntityAbstract
             );
 
             $inputFilter->add(
-                $factory->createInput(array(
+                $factory->createInput(
+                    array(
                         'name'     => 'contact',
                         'required' => false,
                     )
@@ -196,7 +198,7 @@ class Document extends EntityAbstract
      */
     public function __toString()
     {
-        return (string) $this->getDocument();
+        return (string)$this->getDocument();
     }
 
     /**

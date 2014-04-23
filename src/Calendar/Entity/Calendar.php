@@ -48,7 +48,6 @@ class Calendar extends EntityAbstract
      * Constant for on homepage = 1 (on homepage)
      */
     const ON_HOMEPAGE = 1;
-
     /**
      * Textual versions of the final
      *
@@ -59,7 +58,6 @@ class Calendar extends EntityAbstract
         self::FINAL_TENTATIVE => 'txt-tentative',
         self::FINAL_FINAL     => 'txt-final'
     );
-
     /**
      * Textual versions of the on homepage
      *
@@ -69,7 +67,6 @@ class Calendar extends EntityAbstract
         self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
         self::ON_HOMEPAGE     => 'txt-on-homepage'
     );
-
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
      * @ORM\Id
@@ -361,10 +358,11 @@ class Calendar extends EntityAbstract
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name'    => 'DateTime',
-                                  'options' => array(
-                                      'pattern' => 'yyyy-mm-dd HH:mm',
-                                  )
+                            array(
+                                'name'    => 'DateTime',
+                                'options' => array(
+                                    'pattern' => 'yyyy-mm-dd HH:mm',
+                                )
                             )
                         )
                     )
@@ -381,10 +379,11 @@ class Calendar extends EntityAbstract
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name'    => 'DateTime',
-                                  'options' => array(
-                                      'pattern' => 'yyyy-mm-dd HH:mm',
-                                  )
+                            array(
+                                'name'    => 'DateTime',
+                                'options' => array(
+                                    'pattern' => 'yyyy-mm-dd HH:mm',
+                                )
                             ),
                             array(
                                 'name'    => 'Callback',

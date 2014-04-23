@@ -36,9 +36,7 @@ class DocumentLink extends AbstractHelper
         Entity\Document $document = null,
         $action = 'view',
         $show = 'text'
-
-    )
-    {
+    ) {
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
@@ -64,7 +62,10 @@ class DocumentLink extends AbstractHelper
                 $params['filename'] = $document->parseFileName();
                 $params['ext']      = $document->getContentType()->getExtension();
                 $router             = 'community/calendar/document/download';
-                $text               = sprintf($translate("txt-download-calendar-document-%s"), $document->getDocument());
+                $text               = sprintf(
+                    $translate("txt-download-calendar-document-%s"),
+                    $document->getDocument()
+                );
                 break;
 
             default:

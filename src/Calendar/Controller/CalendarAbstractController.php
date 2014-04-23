@@ -28,7 +28,6 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     FormServiceAwareInterface,
     ServiceLocatorAwareInterface
 {
-
     /**
      * @var FormService
      */

@@ -30,12 +30,11 @@ class CalendarService extends ServiceAbstract
     /**
      * Constant to determine which affiliations must be taken from the database
      */
-    const WHICH_UPCOMING    = 'upcoming';
-    const WHICH_UPDATED     = 'updated';
-    const WHICH_PAST        = 'past';
-    const WHICH_REVIEWS     = 'reviews';
+    const WHICH_UPCOMING = 'upcoming';
+    const WHICH_UPDATED = 'updated';
+    const WHICH_PAST = 'past';
+    const WHICH_REVIEWS = 'reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
-
     /**
      * @var Entity\Calendar
      */
@@ -86,10 +85,12 @@ class CalendarService extends ServiceAbstract
     {
         $calendarContact = $this->getEntityManager()
             ->getRepository($this->getFullEntityName('Contact'))
-            ->findOneBy(array(
-                'calendar' => $this->getCalendar(),
-                'contact'  => $contact
-            ));
+            ->findOneBy(
+                array(
+                    'calendar' => $this->getCalendar(),
+                    'contact'  => $contact
+                )
+            );
 
         return !is_null($calendarContact);
     }

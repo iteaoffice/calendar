@@ -24,7 +24,6 @@ use Content\Entity;
  */
 class PaginationLink extends AbstractHelper
 {
-
     /**
      * @param $entity
      * @param $page

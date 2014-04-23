@@ -61,10 +61,10 @@ class Calendar extends EntityRepository
 
                 $qb->andWhere($qb->expr()->in('c.id', $projectCalendarSubSelect->getDQL()));
                 break;
-            case CalendarService::WHICH_UPDATED;
+            case CalendarService::WHICH_UPDATED:
                 $qb->orderBy('c.dateUpdated', 'DESC');
                 break;
-            case CalendarService::WHICH_ON_HOMEPAGE;
+            case CalendarService::WHICH_ON_HOMEPAGE:
                 $qb->andWhere('c.dateEnd >= ?1');
                 $qb->setParameter(1, new \DateTime());
 
@@ -100,7 +100,7 @@ class Calendar extends EntityRepository
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
 
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
-            $qb->setParameter(8, (int) $year);
+            $qb->setParameter(8, (int)$year);
         }
 
         return $qb->getQuery();

@@ -16,7 +16,6 @@ use Calendar\Entity\Type;
  */
 class CalendarController extends CalendarAbstractController
 {
-
     /**
      * @return \Zend\Stdlib\ResponseInterface
      */
@@ -28,7 +27,9 @@ class CalendarController extends CalendarAbstractController
         $cacheFileName = $calendarType->getCacheCssFileName();
 
         $renderer = $this->getServiceLocator()->get('ZfcTwigRenderer');
-        $css      = $renderer->render('calendar/calendar/calendar-type-color-css', array(
+        $css      = $renderer->render(
+            'calendar/calendar/calendar-type-color-css',
+            array(
                 'calendarTypes' => $calendarTypes
             )
         );

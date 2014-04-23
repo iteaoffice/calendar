@@ -38,7 +38,7 @@ class ObjectFieldset extends Fieldset
         /**
          * Go over the different form elements and add them to the form
          */
-        foreach ($builder->createForm($object)->getElements() AS $element) {
+        foreach ($builder->createForm($object)->getElements() as $element) {
             /**
              * Go over each element to add the objectManager to the EntitySelect
              */

@@ -25,7 +25,6 @@ class Module implements
     Feature\ConfigProviderInterface,
     Feature\BootstrapListenerInterface
 {
-
     public function getAutoloaderConfig()
     {
         return array(

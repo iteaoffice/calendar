@@ -112,7 +112,8 @@ class CalendarDocumentController extends CalendarAbstractController
 
                 $this->getDocumentService()->removeEntity($document);
 
-                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar',
+                return $this->redirect()->toRoute(
+                    'zfcadmin/calendar-manager/calendar',
                     array('id' => $document->getCalendar()->getId())
                 );
             }
@@ -131,7 +132,9 @@ class CalendarDocumentController extends CalendarAbstractController
                     $fileSizeValidator = new FilesSize(PHP_INT_MAX);
                     $fileSizeValidator->isValid($file);
                     $document->setSize($fileSizeValidator->size);
-                    $document->setContentType($this->getGeneralService()->findContentTypeByContentTypeName($file['type']));
+                    $document->setContentType(
+                        $this->getGeneralService()->findContentTypeByContentTypeName($file['type'])
+                    );
 
                     /**
                      * Update the object
@@ -148,16 +151,19 @@ class CalendarDocumentController extends CalendarAbstractController
                 );
             }
 
-            $this->redirect()->toRoute('zfcadmin/calendar-manager/document/document',
+            $this->redirect()->toRoute(
+                'zfcadmin/calendar-manager/document/document',
                 array('id' => $document->getId())
             );
         } else {
             var_dump($form->getInputFilter()->getMessages());
         }
 
-        return new ViewModel(array(
-            'document' => $document,
-            'form'     => $form
-        ));
+        return new ViewModel(
+            array(
+                'document' => $document,
+                'form'     => $form
+            )
+        );
     }
 }

@@ -11,9 +11,8 @@ namespace CalendarTest\Entity;
 
 use Calendar\Entity\Calendar;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase
+class CalendarTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testCanCreateEntity()
     {
         $calendar = new Calendar();

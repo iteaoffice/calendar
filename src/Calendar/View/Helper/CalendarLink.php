@@ -25,7 +25,6 @@ use Calendar\Service\CalendarService;
  */
 class CalendarLink extends AbstractHelper
 {
-
     /**
      * @param Entity\Calendar $calendar
      * @param string          $action
@@ -44,8 +43,7 @@ class CalendarLink extends AbstractHelper
         $which = CalendarService::WHICH_UPCOMING,
         $alternativeShow = null,
         $year = null
-    )
-    {
+    ) {
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
