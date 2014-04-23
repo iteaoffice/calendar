@@ -66,7 +66,7 @@ class Calendar implements AssertionInterface
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $calendarId = (int)$this->serviceManager->get("Application")->getMvcEvent()->getRouteMatch()->getParam(
+            $calendarId = (int) $this->serviceManager->get("Application")->getMvcEvent()->getRouteMatch()->getParam(
                 'id'
             );
             $privilege  = $this->serviceManager->get("Application")->getMvcEvent()->getRouteMatch()->getParam(

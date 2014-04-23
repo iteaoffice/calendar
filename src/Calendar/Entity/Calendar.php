@@ -500,7 +500,7 @@ class Calendar extends EntityAbstract
      */
     public function __toString()
     {
-        return (string)$this->calendar;
+        return (string) $this->calendar;
     }
 
     /**

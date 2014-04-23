@@ -110,7 +110,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render(
@@ -128,7 +128,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render(
@@ -146,7 +146,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-            ->setMaxResults((int)$this->getLimit())
+            ->setMaxResults((int) $this->getLimit())
             ->getResult();
 
         return $this->zfcTwigRenderer->render(
@@ -275,7 +275,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function setYear($year)
     {
-        $this->year = (int)$year;
+        $this->year = (int) $year;
     }
 
     /**
