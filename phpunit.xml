@@ -1,0 +1,32 @@
+<phpunit bootstrap="tests/ProjectTest/Bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         verbose="true"
+         stopOnFailure="false"
+         processIsolation="false"
+         backupGlobals="false"
+         syntaxCheck="true"
+        >
+    <testsuite name="debranova/calendar Test Suite">
+        <directory>./tests/CalendarTest</directory>
+    </testsuite>
+
+    <php>
+        <const name="DEBRANOVA_HOST" value="test"/>
+        <const name="DEBRANOVA_APP" value="test"/>
+        <const name="DEBRANOVA_APPLICATION" value="test"/>
+        <const name="DEBRANOVA_ENV" value="development"/>
+    </php>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-clover" target="./coverage.clover"/>
+    </logging>
+</phpunit>

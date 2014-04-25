@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+SRC_DIR="`pwd`"
+cd "`dirname "$0"`"
+cd ".."
+
+git push origin develop
+
+REV="`git rev-parse HEAD`"
+
+php ocular.phar code-coverage:upload --format=php-clover --repository=g/debranova/calendar --revision="$REV"  coverage.clover
