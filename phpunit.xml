@@ -1,4 +1,4 @@
-<phpunit bootstrap="tests/ProjectTest/Bootstrap.php"
+<phpunit bootstrap="tests/CalendarTest/Bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
