@@ -12,12 +12,10 @@ namespace Calendar\Form;
 use Zend\Form\Fieldset;
 use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Form\Element\Radio;
-
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Element\EntitySelect;
 use DoctrineORMModule\Form\Element\EntityMultiCheckbox;
-
 use Calendar\Entity;
 
 class ObjectFieldset extends Fieldset

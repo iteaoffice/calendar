@@ -12,7 +12,6 @@ namespace Calendar\Repository;
 use Admin\Entity\Access;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-
 use Calendar\Entity;
 use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;

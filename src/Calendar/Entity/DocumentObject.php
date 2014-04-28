@@ -11,7 +11,6 @@ namespace Calendar\Entity;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**

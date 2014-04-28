@@ -13,10 +13,19 @@ use Calendar\Entity\EntityAbstract;
 
 interface ServiceInterface
 {
+    /**
+     * @return string
+     */
     public function getFullEntityName($entity);
 
+    /**
+     * @return EntityAbstract
+     */
     public function updateEntity(EntityAbstract $entity);
 
+    /**
+     * @return EntityAbstract
+     */
     public function newEntity(EntityAbstract $entity);
 
     public function getEntityManager();

@@ -14,9 +14,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\FileInput;
 use Zend\Form\Annotation;
-
 use Doctrine\ORM\Mapping as ORM;
-
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**

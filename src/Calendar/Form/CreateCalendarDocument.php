@@ -10,9 +10,7 @@
 namespace Calendar\Form;
 
 use Zend\Form\Form;
-
 use Doctrine\ORM\EntityManager;
-
 use Calendar\Entity\Document;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 

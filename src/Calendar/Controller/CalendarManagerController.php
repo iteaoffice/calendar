@@ -12,7 +12,6 @@ namespace Calendar\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
-
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Document;

@@ -12,7 +12,6 @@ namespace Calendar\Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\AuthenticationService;
-
 use Calendar\Entity;
 
 /**
@@ -47,9 +46,9 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
     /**
      * Find 1 entity based on the id
      *
-     * @param      $entity
-     * @param      $id
-     * @param bool $populate
+     * @param string $entity
+     * @param        $id
+     * @param bool   $populate
      *
      * @return null|Entity\Calendar
      */

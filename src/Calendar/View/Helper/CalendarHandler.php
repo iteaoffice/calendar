@@ -13,11 +13,9 @@ namespace Calendar\View\Helper;
 
 use Zend\View\HelperPluginManager;
 use Zend\View\Helper\AbstractHelper;
-
 use ZfcTwig\View\TwigRenderer;
 use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar;
-
 use Content\Entity\Handler;
 
 /**
@@ -57,7 +55,6 @@ class CalendarHandler extends AbstractHelper
     public function __construct(HelperPluginManager $helperPluginManager)
     {
         $this->calendarService = $helperPluginManager->getServiceLocator()->get('calendar_calendar_service');
-        $this->calendarService = $helperPluginManager->getServiceLocator()->get('calendar_calendar_service');
         $this->routeMatch      = $helperPluginManager->getServiceLocator()
             ->get('application')
             ->getMvcEvent()
@@ -75,22 +72,50 @@ class CalendarHandler extends AbstractHelper
     public function render()
     {
 
+        $translate    = $this->getView()->plugin('translate');
+        $calendarLink = $this->getView()->plugin('calendarLink');
+
         switch ($this->getHandler()->getHandler()) {
 
             case 'calendar_item':
-                return $this->parseCalendarItem();
+
+                $this->getView()->headTitle()->append($translate("txt-calendar"));
+                $this->getView()->headTitle()->append((string) $this->getCalendar());
+
+                $this->getView()->headMeta()->setProperty('og:type', $translate("txt-calendar"));
+                $this->getView()->headMeta()->setProperty('og:title', $this->getCalendar());
+                $this->getView()->headMeta()->setProperty(
+                    'og:description',
+                    $this->getCalendar()->getDescription()
+                );
+                $this->getView()->headMeta()->setProperty(
+                    'og:url',
+                    $calendarLink->__invoke(
+                        $this->getCalendar(),
+                        'view',
+                        'social'
+                    )
+                );
+
+                return $this->parseCalendarItem($this->getCalendar());
                 break;
             case 'calendar':
+
+                $this->getView()->headTitle()->append($translate("txt-calendar"));
+
                 return $this->parseCalendar($this->getLimit());
                 break;
             case 'calendar_past':
+
+                $this->getView()->headTitle()->append($translate("txt-past-events"));
+
                 return $this->parsePastCalendar($this->getLimit());
                 break;
             case 'calendar_small':
                 return $this->parseCalendarSmall($this->getLimit());
                 break;
             case 'calendar_year_selector':
-                return $this->parseYearSelector();
+                return $this->parseYearSelector($this->getYear());
                 break;
             default:
                 return sprintf(
@@ -158,22 +183,26 @@ class CalendarHandler extends AbstractHelper
     /**
      * Show the details of 1 calendar item
      *
+     * @param Calendar $calendar
+     *
      * @return string
      */
-    public function parseCalendarItem()
+    public function parseCalendarItem(Calendar $calendar)
     {
         return $this->zfcTwigRenderer->render(
             'calendar/partial/entity/calendar',
-            array('calendar' => $this->getCalendar())
+            array('calendar' => $calendar)
         );
     }
 
     /**
      * Create a list of calls
      *
+     * @param int $year
+     *
      * @return string
      */
-    public function parseYearSelector()
+    public function parseYearSelector($year)
     {
 
         /**
@@ -185,7 +214,7 @@ class CalendarHandler extends AbstractHelper
             'calendar/partial/year-selector',
             array(
                 'years'        => $years,
-                'selectedYear' => $this->getYear()
+                'selectedYear' => $year
             )
         );
     }

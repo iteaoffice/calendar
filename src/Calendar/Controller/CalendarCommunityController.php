@@ -11,10 +11,8 @@ namespace Calendar\Controller;
 
 use Zend\View\Model\ViewModel;
 use Zend\Paginator\Paginator;
-
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-
 use Calendar\Service\CalendarService;
 
 /**

@@ -13,7 +13,6 @@ namespace Calendar;
 
 use Zend\ModuleManager\Feature; //Makes the module class more strict
 use Zend\EventManager\EventInterface;
-
 use Calendar\Service\FormServiceAwareInterface;
 
 /**

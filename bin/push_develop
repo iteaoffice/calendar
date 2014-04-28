@@ -7,4 +7,4 @@ git push origin develop
 
 REV="`git rev-parse HEAD`"
 
-php ocular.phar code-coverage:upload --format=php-clover --repository=g/debranova/calendar --revision="$REV"  coverage.clover
+php ocular.phar code-coverage:upload --format=php-clover --repository=g/debranova/calendar --revision="$REV"  clover.xml

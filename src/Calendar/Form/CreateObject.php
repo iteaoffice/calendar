@@ -11,7 +11,6 @@ namespace Calendar\Form;
 
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManager;
-
 use Calendar\Entity\EntityAbstract;
 
 /**

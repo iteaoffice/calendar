@@ -13,8 +13,6 @@ namespace Calendar\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 
-use Content\Entity;
-
 /**
  * Create a link to an article
  *

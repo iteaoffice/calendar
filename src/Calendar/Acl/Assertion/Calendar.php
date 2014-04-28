@@ -13,9 +13,7 @@ use Zend\Permissions\Acl\Assertion\AssertionInterface;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
-
 use Zend\ServiceManager\ServiceManager;
-
 use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar as CalendarEntity;
 

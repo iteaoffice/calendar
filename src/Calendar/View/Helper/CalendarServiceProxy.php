@@ -13,7 +13,6 @@ namespace Calendar\View\Helper;
 
 use Zend\View\HelperPluginManager;
 use Zend\View\Helper\AbstractHelper;
-
 use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar;
 

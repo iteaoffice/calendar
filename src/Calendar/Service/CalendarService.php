@@ -11,7 +11,6 @@ namespace Calendar\Service;
 
 use Calendar\Entity;
 use Contact\Entity\Contact;
-
 use Project\Entity\Project;
 use Calendar\Entity\Calendar;
 
@@ -110,8 +109,8 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param string $which
-     * @param null   $year
+     * @param string  $which
+     * @param integer $year
      *
      * @return \Doctrine\ORM\Query
      */
@@ -150,7 +149,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return an array of all which-values
      *
-     * @return array
+     * @return string[]
      */
     public function getWhichValues()
     {

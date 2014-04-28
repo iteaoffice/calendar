@@ -11,7 +11,6 @@ namespace Calendar\Controller;
 
 use Zend\View\Model\ViewModel;
 use Zend\Validator\File\FilesSize;
-
 use Calendar\Form\CreateCalendarDocument;
 
 /**
