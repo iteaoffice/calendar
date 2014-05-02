@@ -16,7 +16,7 @@ use Zend\EventManager\EventInterface;
 use Calendar\Service\FormServiceAwareInterface;
 
 /**
- *
+ * @author
  */
 class Module implements
     Feature\AutoloaderProviderInterface,
