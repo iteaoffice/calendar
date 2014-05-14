@@ -11,173 +11,215 @@
 
 namespace Calendar\View\Helper;
 
-use Zend\View\HelperPluginManager;
-use Zend\View\Helper\AbstractHelper;
-use ZfcTwig\View\TwigRenderer;
-use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar;
-use Content\Entity\Handler;
+use Calendar\Service\CalendarService;
+use Content\Entity\Content;
+use Zend\Mvc\Router\Http\RouteMatch;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Helper\AbstractHelper;
+use ZfcTwig\View\HelperPluginManager;
+use ZfcTwig\View\TwigRenderer;
 
 /**
  * Class CountryHandler
  * @package Country\View\Helper
  */
-class CalendarHandler extends AbstractHelper
+class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInterface
 {
     /**
-     * @var CalendarService
+     * @var HelperPluginManager
      */
-    protected $calendarService;
-    /**
-     * @var Handler
-     */
-    protected $handler;
-    /**
-     * @var Calendar;
-     */
-    protected $calendar;
-    /**
-     * @var int
-     */
-    protected $limit = 5;
+    protected $serviceLocator;
     /**
      * @var int
      */
     protected $year;
     /**
-     * @var TwigRenderer;
+     * @var int
      */
-    protected $zfcTwigRenderer;
+    protected $limit = 5;
 
     /**
-     * @param HelperPluginManager $helperPluginManager
-     */
-    public function __construct(HelperPluginManager $helperPluginManager)
-    {
-        $this->calendarService = $helperPluginManager->getServiceLocator()->get('calendar_calendar_service');
-        $this->routeMatch      = $helperPluginManager->getServiceLocator()
-            ->get('application')
-            ->getMvcEvent()
-            ->getRouteMatch();
-        /**
-         * Load the TwigRenderer directly form the plugin manager to avoid a fallback to the standard PhpRenderer
-         */
-        $this->zfcTwigRenderer = $helperPluginManager->getServiceLocator()->get('ZfcTwigRenderer');
-    }
-
-    /**
+     * @param Content $content
+     *
      * @return string
-     * @throws \InvalidArgumentException
      */
-    public function render()
+    public function __invoke(Content $content)
     {
+        $this->extractContentParam($content);
 
-        $translate    = $this->getView()->plugin('translate');
-        $calendarLink = $this->getView()->plugin('calendarLink');
-
-        switch ($this->getHandler()->getHandler()) {
+        switch ($content->getHandler()->getHandler()) {
 
             case 'calendar_item':
 
-                $this->getView()->headTitle()->append($translate("txt-calendar"));
-                $this->getView()->headTitle()->append((string) $this->getCalendar());
-
-                $this->getView()->headMeta()->setProperty('og:type', $translate("txt-calendar"));
-                $this->getView()->headMeta()->setProperty('og:title', $this->getCalendar());
-                $this->getView()->headMeta()->setProperty(
-                    'og:description',
-                    $this->getCalendar()->getDescription()
+                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+                $this->serviceLocator->get('headtitle')->append((string) $this->getCalendarService()->getCalendar());
+                $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
+                $this->serviceLocator->get('headmeta')->setProperty(
+                    'og:title',
+                    $this->getCalendarService()->getCalendar()
                 );
-                $this->getView()->headMeta()->setProperty(
+                $this->serviceLocator->get('headmeta')->setProperty(
+                    'og:description',
+                    $this->getCalendarService()->getCalendar()->getDescription()
+                );
+                /**
+                 * @var $calendarLink CalendarLink
+                 */
+                $calendarLink = $this->serviceLocator->get('calendarLink');
+                $this->serviceLocator->get('headmeta')->setProperty(
                     'og:url',
-                    $calendarLink->__invoke(
-                        $this->getCalendar(),
+                    $calendarLink(
+                        $this->getCalendarService()->getCalendar(),
                         'view',
                         'social'
                     )
                 );
 
-                return $this->parseCalendarItem($this->getCalendar());
-                break;
+                return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
+
             case 'calendar':
 
-                $this->getView()->headTitle()->append($translate("txt-calendar"));
+                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
 
                 return $this->parseCalendar($this->getLimit());
-                break;
+
             case 'calendar_past':
 
-                $this->getView()->headTitle()->append($translate("txt-past-events"));
+                $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
 
                 return $this->parsePastCalendar($this->getLimit());
-                break;
+
             case 'calendar_small':
                 return $this->parseCalendarSmall($this->getLimit());
-                break;
+
             case 'calendar_year_selector':
                 return $this->parseYearSelector($this->getYear());
-                break;
+
             default:
                 return sprintf(
                     "No handler available for <code>%s</code> in class <code>%s</code>",
-                    $this->getHandler()->getHandler(),
+                    $content->getHandler()->getHandler(),
                     __CLASS__
                 );
         }
     }
 
-    /**
-     * Create a list of all countries which are active (have projects)
-     *
-     * @return string
-     */
-    public function parseCalendarSmall()
+    public function extractContentParam(Content $content)
     {
-        $calendarItems = $this->calendarService
-            ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults((int) $this->getLimit())
-            ->getResult();
+        //Give default the docRef to the handler, this does not harm
+        if (!is_null($this->getRouteMatch()->getParam('docRef'))) {
+            $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
+        }
 
-        return $this->zfcTwigRenderer->render(
-            'calendar/partial/list/calendar-small',
-            array('calendarItems' => $calendarItems)
-        );
+        foreach ($content->getContentParam() as $param) {
+            /**
+             * When the parameterId is 0 (so we want to get the article from the URL
+             */
+            switch ($param->getParameter()->getParam()) {
+                case 'docRef':
+
+                    if (!is_null($calendar = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                        $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
+                    }
+                    break;
+
+                case 'limit':
+                    if ('0' === $param->getParameterId()) {
+                        $this->setLimit(null);
+                    } else {
+                        $this->setLimit($param->getParameterId());
+                    }
+                    break;
+                case 'year':
+                    if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                        $this->setYear($year);
+                    } elseif ('0' === $param->getParameterId()) {
+                        $this->setYear(date('Y'));
+                    } else {
+                        $this->setYear($param->getParameterId());
+                    }
+                    break;
+                default:
+                    $this->setCalendarId($param->getParameterId());
+                    break;
+            }
+        }
     }
 
     /**
-     * Produce a list of upcoming events
-     *
-     * @return string
+     * @return RouteMatch
      */
-    public function parseCalendar()
+    public function getRouteMatch()
     {
-        $calendarItems = $this->calendarService
-            ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-            ->setMaxResults((int) $this->getLimit())
-            ->getResult();
-
-        return $this->zfcTwigRenderer->render(
-            'calendar/partial/list/calendar',
-            array('calendarItems' => $calendarItems)
-        );
+        return $this->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
     }
 
     /**
-     * Produce a list of upcoming events
+     * Get the service locator.
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator->getServiceLocator();
+    }
+
+    /**
+     * Set the service locator.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return AbstractHelper
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * Set the newsService based on the DocRef
+     *
+     * @param $docRef
+     *
+     * @return Calendar
+     */
+    public function setCalendarDocRef($docRef)
+    {
+        $calendar = $this->getCalendarService()->findCalendarByDocRef($docRef);
+
+        return $this->getCalendarService()->setCalendar($calendar);
+    }
+
+    /**
+     * @return CalendarService
+     */
+    public function getCalendarService()
+    {
+        return $this->getServiceLocator()->get('calendar_calendar_service');
+    }
+
+    /**
+     * @param $id
+     *
+     * @return CalendarService
+     */
+    public function setCalendarId($id)
+    {
+        return $this->getCalendarService()->setCalendarId($id);
+    }
+
+    /**
+     * @param $string
      *
      * @return string
      */
-    public function parsePastCalendar()
+    public function translate($string)
     {
-        $calendarItems = $this->calendarService
-            ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-            ->setMaxResults((int) $this->getLimit())
-            ->getResult();
-
-        return $this->zfcTwigRenderer->render(
-            'calendar/partial/list/calendar-past',
-            array('calendarItems' => $calendarItems)
-        );
+        return $this->serviceLocator->get('translate')->__invoke($string);
     }
 
     /**
@@ -189,9 +231,103 @@ class CalendarHandler extends AbstractHelper
      */
     public function parseCalendarItem(Calendar $calendar)
     {
-        return $this->zfcTwigRenderer->render(
+        return $this->getRenderer()->render(
             'calendar/partial/entity/calendar',
             array('calendar' => $calendar)
+        );
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    public function getRenderer()
+    {
+        return $this->getServiceLocator()->get('ZfcTwigRenderer');
+    }
+
+    /**
+     * Produce a list of upcoming events
+     *
+     * @return string
+     */
+    public function parseCalendar()
+    {
+        $calendarItems = $this->getCalendarService()
+                              ->findCalendarItems(CalendarService::WHICH_UPCOMING)
+                              ->setMaxResults((int) $this->getLimit())
+                              ->getResult();
+
+        return $this->getRenderer()->render(
+            'calendar/partial/list/calendar',
+            array('calendarItems' => $calendarItems)
+        );
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * Produce a list of upcoming events
+     *
+     * @return string
+     */
+    public function parsePastCalendar()
+    {
+        $calendarItems = $this->getCalendarService()
+                              ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
+                              ->setMaxResults((int) $this->getLimit())
+                              ->getResult();
+
+        return $this->getRenderer()->render(
+            'calendar/partial/list/calendar-past',
+            array('calendarItems' => $calendarItems)
+        );
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = (int) $year;
+    }
+
+    /**
+     * Create a list of all countries which are active (have projects)
+     *
+     * @return string
+     */
+    public function parseCalendarSmall()
+    {
+        $calendarItems = $this->getCalendarService()
+                              ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
+                              ->setMaxResults((int) $this->getLimit())
+                              ->getResult();
+
+        return $this->getRenderer()->render(
+            'calendar/partial/list/calendar-small',
+            array('calendarItems' => $calendarItems)
         );
     }
 
@@ -210,108 +346,12 @@ class CalendarHandler extends AbstractHelper
          */
         $years = range(date("Y"), date("Y") - 2);
 
-        return $this->zfcTwigRenderer->render(
+        return $this->getRenderer()->render(
             'calendar/partial/year-selector',
             array(
                 'years'        => $years,
                 'selectedYear' => $year
             )
         );
-    }
-
-    /**
-     * @param \Content\Entity\Handler $handler
-     */
-    public function setHandler($handler)
-    {
-        $this->handler = $handler;
-    }
-
-    /**
-     * @return \Content\Entity\Handler
-     */
-    public function getHandler()
-    {
-        return $this->handler;
-    }
-
-    /**
-     * @param $id
-     *
-     * @return Calendar
-     */
-    public function setCalendarId($id)
-    {
-        $this->setCalendar($this->calendarService->findEntityById('Calendar', $id));
-
-        return $this->getCalendar();
-    }
-
-    /**
-     * Set the newsService based on the DocRef
-     *
-     * @param $docRef
-     *
-     * @return Calendar
-     */
-    public function setCalendarDocRef($docRef)
-    {
-        $calendar = $this->calendarService->findCalendarByDocRef($docRef);
-
-        if (is_null($calendar)) {
-            return sprintf('The selected new swith docRef <code>%s</code> cannot be found', $docRef);
-        }
-
-        $this->setCalendar($calendar);
-
-        return $calendar;
-    }
-
-    /**
-     * @param \Calendar\Entity\Calendar $calendar
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-    }
-
-    /**
-     * @return \Calendar\Entity\Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param int $limit
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    /**
-     * @param int $year
-     */
-    public function setYear($year)
-    {
-        $this->year = (int) $year;
-    }
-
-    /**
-     * @return int
-     */
-    public function getYear()
-    {
-        return $this->year;
     }
 }

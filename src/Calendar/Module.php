@@ -11,9 +11,10 @@
  */
 namespace Calendar;
 
-use Zend\ModuleManager\Feature; //Makes the module class more strict
-use Zend\EventManager\EventInterface;
 use Calendar\Service\FormServiceAwareInterface;
+use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature;
+use Zend\Mvc\MvcEvent;
 
 /**
  * @author
@@ -91,6 +92,14 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
-        // TODO: Implement onBootstrap() method.
+        $app = $e->getParam('application');
+        $em  = $app->getEventManager();
+
+        $em->attach(
+            MvcEvent::EVENT_DISPATCH,
+            function ($event) {
+                $event->getApplication()->getServiceManager()->get('calendar_navigation_service')->update();
+            }
+        );
     }
 }

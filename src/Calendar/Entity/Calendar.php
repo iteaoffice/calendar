@@ -9,14 +9,14 @@
  */
 namespace Calendar\Entity;
 
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\Form\Annotation;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Validator\Callback;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Zend\Form\Annotation;
+use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\Callback;
 
 /**
  * Calendar
@@ -27,17 +27,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Calendar extends EntityAbstract
 {
     /**
-     * Constant for final = 0 (tentative)
+     * Constant for final = -1 (draft)
      */
-    const FINAL_TENTATIVE = 0;
+    const FINAL_DRAFT = -1;
     /**
      * Constant for final = 1 (final)
      */
     const FINAL_FINAL = 1;
     /**
-     * Constant for final = -1 (draft)
+     * Constant for final = 0 (tentative)
      */
-    const FINAL_DRAFT = -1;
+    const FINAL_TENTATIVE = 0;
     /**
      * Constant for not on homepage = 0 (not on homepage)
      */
@@ -202,19 +202,19 @@ class Calendar extends EntityAbstract
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="calendar")
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Contact[]
+     * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
     private $calendarContact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Document[]
+     * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
      */
     private $document;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Schedule", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Schedule[]
+     * @var \Calendar\Entity\Schedule[]|Collections\ArrayCollection
      */
     private $schedule;
     /**
@@ -233,7 +233,7 @@ class Calendar extends EntityAbstract
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
      * @Annotation\Attributes({"label":"txt-program-call"})
-     * @var \Program\Entity\Call\Call[]
+     * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
      */
     private $call;
 
@@ -494,14 +494,6 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->calendar;
-    }
-
-    /**
      * @return array
      */
     public function getFinalTemplates()
@@ -518,11 +510,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param string $calendar
+     * @return string
      */
-    public function setCalendar($calendar)
+    public function __toString()
     {
-        $this->calendar = $calendar;
+        return (string) $this->calendar;
     }
 
     /**
@@ -534,11 +526,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param \Calendar\Entity\Contact[] $calendarContact
+     * @param string $calendar
      */
-    public function setCalendarContact($calendarContact)
+    public function setCalendar($calendar)
     {
-        $this->calendarContact = $calendarContact;
+        $this->calendar = $calendar;
     }
 
     /**
@@ -550,11 +542,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param \Calendar\Entity\Contact $contact
+     * @param \Calendar\Entity\Contact[] $calendarContact
      */
-    public function setContact($contact)
+    public function setCalendarContact($calendarContact)
     {
-        $this->contact = $contact;
+        $this->calendarContact = $calendarContact;
     }
 
     /**
@@ -563,6 +555,22 @@ class Calendar extends EntityAbstract
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * @param \Calendar\Entity\Contact $contact
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
     }
 
     /**
@@ -576,9 +584,9 @@ class Calendar extends EntityAbstract
     /**
      * @return \DateTime
      */
-    public function getDateCreated()
+    public function getDateEnd()
     {
-        return $this->dateCreated;
+        return $this->dateEnd;
     }
 
     /**
@@ -592,9 +600,9 @@ class Calendar extends EntityAbstract
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateFrom()
     {
-        return $this->dateEnd;
+        return $this->dateFrom;
     }
 
     /**
@@ -608,9 +616,9 @@ class Calendar extends EntityAbstract
     /**
      * @return \DateTime
      */
-    public function getDateFrom()
+    public function getDatePlan()
     {
-        return $this->dateFrom;
+        return $this->datePlan;
     }
 
     /**
@@ -624,9 +632,9 @@ class Calendar extends EntityAbstract
     /**
      * @return \DateTime
      */
-    public function getDatePlan()
+    public function getDateUpdated()
     {
-        return $this->datePlan;
+        return $this->dateUpdated;
     }
 
     /**
@@ -638,11 +646,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getDateUpdated()
+    public function getDescription()
     {
-        return $this->dateUpdated;
+        return $this->description;
     }
 
     /**
@@ -654,11 +662,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return string
+     * @return \Calendar\Entity\Document[]|Collections\ArrayCollection
      */
-    public function getDescription()
+    public function getDocument()
     {
-        return $this->description;
+        return $this->document;
     }
 
     /**
@@ -667,22 +675,6 @@ class Calendar extends EntityAbstract
     public function setDocument($document)
     {
         $this->document = $document;
-    }
-
-    /**
-     * @return \Calendar\Entity\Document[]
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param int $final
-     */
-    public function setFinal($final)
-    {
-        $this->final = $final;
     }
 
     /**
@@ -700,11 +692,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param int $id
+     * @param int $final
      */
-    public function setId($id)
+    public function setFinal($final)
     {
-        $this->id = $id;
+        $this->final = $final;
     }
 
     /**
@@ -713,6 +705,22 @@ class Calendar extends EntityAbstract
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        return $this->imageUrl;
     }
 
     /**
@@ -726,9 +734,9 @@ class Calendar extends EntityAbstract
     /**
      * @return string
      */
-    public function getImageUrl()
+    public function getLocation()
     {
-        return $this->imageUrl;
+        return $this->location;
     }
 
     /**
@@ -740,11 +748,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return string
+     * @return \Calendar\Entity\Schedule[]|Collections\ArrayCollection
      */
-    public function getLocation()
+    public function getSchedule()
     {
-        return $this->location;
+        return $this->schedule;
     }
 
     /**
@@ -756,11 +764,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return \Calendar\Entity\Schedule[]
+     * @return \Calendar\Entity\Type
      */
-    public function getSchedule()
+    public function getType()
     {
-        return $this->schedule;
+        return $this->type;
     }
 
     /**
@@ -772,11 +780,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return \Calendar\Entity\Type
+     * @return string
      */
-    public function getType()
+    public function getUrl()
     {
-        return $this->type;
+        return $this->url;
     }
 
     /**
@@ -788,11 +796,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return string
+     * @return \Project\Entity\Calendar\Calendar
      */
-    public function getUrl()
+    public function getProjectCalendar()
     {
-        return $this->url;
+        return $this->projectCalendar;
     }
 
     /**
@@ -804,11 +812,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return \Project\Entity\Calendar\Calendar
+     * @return \Program\Entity\Call\Call[]|Collections\ArrayCollection
      */
-    public function getProjectCalendar()
+    public function getCall()
     {
-        return $this->projectCalendar;
+        return $this->call;
     }
 
     /**
@@ -820,22 +828,6 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @return \Program\Entity\Call\Call[]
-     */
-    public function getCall()
-    {
-        return $this->call;
-    }
-
-    /**
-     * @param string $docRef
-     */
-    public function setDocRef($docRef)
-    {
-        $this->docRef = $docRef;
-    }
-
-    /**
      * @return string
      */
     public function getDocRef()
@@ -844,11 +836,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param int $onHomepage
+     * @param string $docRef
      */
-    public function setOnHomepage($onHomepage)
+    public function setDocRef($docRef)
     {
-        $this->onHomepage = $onHomepage;
+        $this->docRef = $docRef;
     }
 
     /**
@@ -866,11 +858,11 @@ class Calendar extends EntityAbstract
     }
 
     /**
-     * @param int $sequence
+     * @param int $onHomepage
      */
-    public function setSequence($sequence)
+    public function setOnHomepage($onHomepage)
     {
-        $this->sequence = $sequence;
+        $this->onHomepage = $onHomepage;
     }
 
     /**
@@ -879,5 +871,13 @@ class Calendar extends EntityAbstract
     public function getSequence()
     {
         return $this->sequence;
+    }
+
+    /**
+     * @param int $sequence
+     */
+    public function setSequence($sequence)
+    {
+        $this->sequence = $sequence;
     }
 }

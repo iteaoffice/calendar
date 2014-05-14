@@ -7,6 +7,8 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+namespace Calendar;
+
 return array(
     'router' => array(
         'routes' => array(
@@ -15,9 +17,6 @@ return array(
                 'priority'      => 999,
                 'options'       => array(
                     'route' => '/assets/' . DEBRANOVA_HOST,
-//                    'defaults' => array(
-//                        'controller' => 'calendar-index',
-//                    ),
                 ),
                 'may_terminate' => true,
                 'child_routes'  => array(
@@ -42,6 +41,7 @@ return array(
                         'options'       => array(
                             'route'    => '/calendar',
                             'defaults' => array(
+                                'namespace'  => __NAMESPACE__,
                                 'controller' => 'calendar-community',
                                 'action'     => 'index',
                             ),
@@ -119,6 +119,7 @@ return array(
                         'options'       => array(
                             'route'    => '/calendar',
                             'defaults' => array(
+                                'namespace'  => __NAMESPACE__,
                                 'controller' => 'calendar-manager',
                                 'action'     => 'index',
                             ),

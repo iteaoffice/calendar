@@ -30,6 +30,11 @@
                 <td><a href="{{ calendar.url }}">{{ calendar.url }}</a></td>
             </tr>
         {% endif %}
+        {% if calendar.imageUrl %}
+            <tr>
+                <td colspan="2"><img src="{{ calendar.imageUrl }}"></td>
+            </tr>
+        {% endif %}
     </table>
     <hr>
     <br>

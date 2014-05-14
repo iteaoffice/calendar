@@ -8,7 +8,7 @@
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 $config = array(
-    'controllers'     => array(
+    'controllers'  => array(
         'invokables' => array(
             'calendar-index'     => 'Calendar\Controller\CalendarController',
             'calendar-community' => 'Calendar\Controller\CalendarCommunityController',
@@ -16,18 +16,10 @@ $config = array(
             'calendar-document'  => 'Calendar\Controller\CalendarDocumentController',
         ),
     ),
-    'view_manager'    => array(
+    'view_manager' => array(
         'template_map' => include __DIR__ . '/../template_map.php',
     ),
-    'service_manager' => array(
-        'invokables' => array(
-            'calendar_calendar_service'     => 'Calendar\Service\CalendarService',
-            'calendar_form_service'         => 'Calendar\Service\FormService',
-            'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
-
-        )
-    ),
-    'doctrine'        => array(
+    'doctrine'     => array(
         'driver'       => array(
             'calendar_annotation_driver' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
