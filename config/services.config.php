@@ -22,7 +22,6 @@ return array(
         },
     ),
     'invokables' => array(
-
         'calendar_calendar_service'     => 'Calendar\Service\CalendarService',
         'calendar_form_service'         => 'Calendar\Service\FormService',
         'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
