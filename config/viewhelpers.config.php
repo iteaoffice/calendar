@@ -12,7 +12,7 @@ namespace Calendar;
 use Calendar\View\Helper;
 
 return array(
-    'factories'  => array(
+    'factories' => array(
         'calendarLink'         => function ($sm) {
             return new Helper\CalendarLink($sm);
         },
@@ -23,8 +23,5 @@ return array(
             return new Helper\CalendarServiceProxy($sm);
         },
     ),
-    'invokables' => array(
-        'calendarDocumentLink'   => 'Calendar\View\Helper\DocumentLink',
-        'calendarPaginationLink' => 'Calendar\View\Helper\PaginationLink'
-    )
+
 );

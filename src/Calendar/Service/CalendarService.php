@@ -10,9 +10,9 @@
 namespace Calendar\Service;
 
 use Calendar\Entity;
+use Calendar\Entity\Calendar;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
-use Calendar\Entity\Calendar;
 
 /**
  * CalendarService
@@ -29,10 +29,10 @@ class CalendarService extends ServiceAbstract
     /**
      * Constant to determine which affiliations must be taken from the database
      */
-    const WHICH_UPCOMING = 'upcoming';
-    const WHICH_UPDATED = 'updated';
-    const WHICH_PAST = 'past';
-    const WHICH_REVIEWS = 'reviews';
+    const WHICH_UPCOMING    = 'upcoming';
+    const WHICH_UPDATED     = 'updated';
+    const WHICH_PAST        = 'past';
+    const WHICH_REVIEWS     = 'reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
     /**
      * @var Entity\Calendar
@@ -53,6 +53,14 @@ class CalendarService extends ServiceAbstract
         $this->setCalendar($this->findEntityById('Calendar', $id));
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return is_null($this->calendar) || is_null($this->calendar->getId());
     }
 
     /**
@@ -83,13 +91,13 @@ class CalendarService extends ServiceAbstract
     public function calendarHasContact(Contact $contact)
     {
         $calendarContact = $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))
-            ->findOneBy(
-                array(
-                    'calendar' => $this->getCalendar(),
-                    'contact'  => $contact
-                )
-            );
+                                ->getRepository($this->getFullEntityName('Contact'))
+                                ->findOneBy(
+                                    array(
+                                        'calendar' => $this->getCalendar(),
+                                        'contact'  => $contact
+                                    )
+                                );
 
         return !is_null($calendarContact);
     }
@@ -104,8 +112,8 @@ class CalendarService extends ServiceAbstract
     public function canViewCalendar(Contact $contact)
     {
         return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Calendar'))
-            ->canViewCalendar($this->getCalendar(), $contact);
+                    ->getRepository($this->getFullEntityName('Calendar'))
+                    ->canViewCalendar($this->getCalendar(), $contact);
     }
 
     /**
@@ -119,8 +127,8 @@ class CalendarService extends ServiceAbstract
         $contact = $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity();
 
         return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Calendar'))
-            ->findCalendarItems($which, true, $contact, $year);
+                    ->getRepository($this->getFullEntityName('Calendar'))
+                    ->findCalendarItems($which, true, $contact, $year);
     }
 
     /**
@@ -130,7 +138,7 @@ class CalendarService extends ServiceAbstract
      */
     public function findCalendarByProject(Project $project)
     {
-        $calendar = array();
+        $calendar = [];
 
         /**
          * Add the calendar items from the project

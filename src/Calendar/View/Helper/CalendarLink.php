@@ -114,8 +114,8 @@ class CalendarLink extends AbstractHelper
         $params['id']    = $calendar->getId();
         $params['which'] = $which;
 
-        $classes     = array();
-        $linkContent = array();
+        $classes     = [];
+        $linkContent = [];
 
         switch ($show) {
             case 'icon':

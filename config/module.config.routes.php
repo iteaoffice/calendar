@@ -5,200 +5,200 @@
  * @category    Calendar
  * @package     Config
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright   Copyright (c] 2004-2014 ITEA Office (http://itea3.org]
  */
 namespace Calendar;
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'assets'    => array(
+return [
+    'router' => [
+        'routes' => [
+            'assets'    => [
                 'type'          => 'Literal',
                 'priority'      => 999,
-                'options'       => array(
+                'options'       => [
                     'route' => '/assets/' . DEBRANOVA_HOST,
-                ),
+                ],
                 'may_terminate' => true,
-                'child_routes'  => array(
-                    'calendar-type-color-css' => array(
+                'child_routes'  => [
+                    'calendar-type-color-css' => [
                         'type'    => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route'    => "/css/calendar-type-color.css",
-                            'defaults' => array(
+                            'defaults' => [
                                 //Explicitly add the controller here as the assets are collected
                                 'controller' => 'calendar-index',
                                 'action'     => 'calendar-type-color-css',
-                            ),
-                        ),
-                    ),
-                )
-            ),
-            'community' => array(
-                'child_routes' => array(
-                    'calendar' => array(
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'community' => [
+                'child_routes' => [
+                    'calendar' => [
                         'type'          => 'Segment',
                         'priority'      => 1000,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/calendar',
-                            'defaults' => array(
+                            'defaults' => [
                                 'namespace'  => __NAMESPACE__,
                                 'controller' => 'calendar-community',
                                 'action'     => 'index',
-                            ),
-                        ),
+                            ],
+                        ],
                         'may_terminate' => true,
-                        'child_routes'  => array(
-                            'overview'        => array(
+                        'child_routes'  => [
+                            'overview'        => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/overview[/:which][/page-:page].html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'overview',
-                                    ),
-                                ),
-                            ),
-                            'calendar'        => array(
+                                    ],
+                                ],
+                            ],
+                            'calendar'        => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/view/[:id].html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action'    => 'calendar',
                                         'privilege' => 'view',
-                                    ),
-                                ),
-                            ),
-                            'review-calendar' => array(
+                                    ],
+                                ],
+                            ],
+                            'review-calendar' => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/review-calendar.html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'review-calendar',
-                                    ),
-                                ),
-                            ),
-                            'document'        => array(
+                                    ],
+                                ],
+                            ],
+                            'document'        => [
                                 'type'          => 'Segment',
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/document',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'calendar-document',
                                         'action'     => 'document',
-                                    ),
-                                ),
+                                    ],
+                                ],
                                 'may_terminate' => true,
-                                'child_routes'  => array(
-                                    'document' => array(
+                                'child_routes'  => [
+                                    'document' => [
                                         'type'    => 'Segment',
-                                        'options' => array(
+                                        'options' => [
                                             'route'    => '/[:id].html',
-                                            'defaults' => array(
+                                            'defaults' => [
                                                 'action' => 'document',
-                                            ),
-                                        ),
-                                    ),
-                                    'download' => array(
+                                            ],
+                                        ],
+                                    ],
+                                    'download' => [
                                         'type'    => 'Segment',
-                                        'options' => array(
+                                        'options' => [
                                             'route'    => '/download/[:id]/[:filename].[:ext]',
-                                            'defaults' => array(
+                                            'defaults' => [
                                                 'action' => 'download',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            'zfcadmin'  => array(
-                'child_routes' => array(
-                    'calendar-manager' => array(
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'zfcadmin'  => [
+                'child_routes' => [
+                    'calendar-manager' => [
                         'type'          => 'Segment',
                         'priority'      => 1000,
-                        'options'       => array(
+                        'options'       => [
                             'route'    => '/calendar',
-                            'defaults' => array(
+                            'defaults' => [
                                 'namespace'  => __NAMESPACE__,
                                 'controller' => 'calendar-manager',
                                 'action'     => 'index',
-                            ),
-                        ),
+                            ],
+                        ],
                         'may_terminate' => true,
-                        'child_routes'  => array(
-                            'overview' => array(
+                        'child_routes'  => [
+                            'overview' => [
                                 'type'     => 'Segment',
                                 'priority' => 1000,
-                                'options'  => array(
+                                'options'  => [
                                     'route'    => '/overview[/:which][/page-:page].html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'overview',
-                                    ),
-                                ),
-                            ),
-                            'calendar' => array(
+                                    ],
+                                ],
+                            ],
+                            'calendar' => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/view/[:id].html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action'    => 'calendar',
                                         'privilege' => 'view',
-                                    ),
-                                ),
-                            ),
-                            'new'      => array(
+                                    ],
+                                ],
+                            ],
+                            'new'      => [
                                 'type'    => 'Literal',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/new.html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'new',
-                                    ),
-                                ),
-                            ),
-                            'edit'     => array(
+                                    ],
+                                ],
+                            ],
+                            'edit'     => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/edit/[:id].html',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'edit',
-                                    ),
-                                ),
-                            ),
-                            'document' => array(
+                                    ],
+                                ],
+                            ],
+                            'document' => [
                                 'type'          => 'Segment',
-                                'options'       => array(
+                                'options'       => [
                                     'route'    => '/document',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'controller' => 'calendar-document',
                                         'action'     => 'document',
-                                    ),
-                                ),
+                                    ],
+                                ],
                                 'may_terminate' => true,
-                                'child_routes'  => array(
-                                    'document' => array(
+                                'child_routes'  => [
+                                    'document' => [
                                         'type'    => 'Segment',
-                                        'options' => array(
+                                        'options' => [
                                             'route'    => '/[:id].html',
-                                            'defaults' => array(
+                                            'defaults' => [
                                                 'action' => 'document',
-                                            ),
-                                        ),
-                                    ),
-                                    'edit'     => array(
+                                            ]
+                                        ]
+                                    ],
+                                    'edit'     => [
                                         'type'    => 'Segment',
-                                        'options' => array(
+                                        'options' => [
                                             'route'    => '/edit/[:id].html',
-                                            'defaults' => array(
+                                            'defaults' => [
                                                 'action' => 'edit',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        )
-    )
-);
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

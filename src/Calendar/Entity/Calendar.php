@@ -389,7 +389,7 @@ class Calendar extends EntityAbstract
                                     'messages' => array(
                                         Callback::INVALID_VALUE => 'The end date should be greater than start date',
                                     ),
-                                    'callback' => function ($value, $context = array()) {
+                                    'callback' => function ($value, $context = []) {
                                         $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
                                         $dateEnd  = \DateTime::createFromFormat('Y-m-d H:i', $value);
 

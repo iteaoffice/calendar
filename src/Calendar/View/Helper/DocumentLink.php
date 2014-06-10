@@ -72,8 +72,8 @@ class DocumentLink extends AbstractHelper
         }
 
         $params['id'] = $document->getId();
-        $classes      = array();
-        $linkContent  = array();
+        $classes      = [];
+        $linkContent  = [];
 
         switch ($show) {
             case 'icon':

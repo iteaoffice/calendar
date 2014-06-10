@@ -64,7 +64,7 @@ class FormService implements ServiceLocatorAwareInterface
      *
      * @return array|object
      */
-    public function prepare($className, $entity = null, $data = array())
+    public function prepare($className, $entity = null, $data = [])
     {
         $form = $this->getForm($className, $entity, true);
         $form->setData($data);

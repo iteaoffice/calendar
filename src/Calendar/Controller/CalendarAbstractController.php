@@ -9,26 +9,44 @@
  */
 namespace Calendar\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use General\Service\GeneralService;
-use Calendar\Service\FormServiceAwareInterface;
 use Calendar\Service\CalendarService;
+use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
+use Calendar\Service\FormServiceAwareInterface;
 use Contact\Service\ContactService;
+use Contact\Service\ContactServiceAwareInterface;
+use General\Service\GeneralService;
+use General\Service\GeneralServiceAwareInterface;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  *
  */
 abstract class CalendarAbstractController extends AbstractActionController implements
     FormServiceAwareInterface,
-    ServiceLocatorAwareInterface
+    ServiceLocatorAwareInterface,
+    ContactServiceAwareInterface,
+    CalendarServiceAwareInterface,
+    GeneralServiceAwareInterface
 {
     /**
      * @var FormService
      */
     protected $formService;
+    /**
+     * @var ContactService
+     */
+    protected $contactService;
+    /**
+     * @var CalendarService;
+     */
+    protected $calendarService;
+    /**
+     * @var GeneralService
+     */
+    protected $generalService;
     /**
      * @var ServiceLocatorInterface
      */
@@ -55,33 +73,63 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     }
 
     /**
-     * Gateway to the contact service
-     *
      * @return ContactService
      */
     public function getContactService()
     {
-        return $this->getServiceLocator()->get('contact_contact_service');
+        return $this->contactService;
     }
 
     /**
-     * Gateway to the Calendar Service
+     * @param $contactService
      *
+     * @return CalendarAbstractController
+     */
+    public function setContactService(ContactService $contactService)
+    {
+        $this->contactService = $contactService;
+
+        return $this;
+    }
+
+    /**
      * @return CalendarService
      */
     public function getCalendarService()
     {
-        return $this->getServiceLocator()->get('calendar_calendar_service');
+        return $this->calendarService;
     }
 
     /**
-     * Gateway to the Program Service
+     * @param $calendarService
      *
+     * @return CalendarAbstractController
+     */
+    public function setCalendarService(CalendarService $calendarService)
+    {
+        $this->calendarService = $calendarService;
+
+        return $this;
+    }
+
+    /**
      * @return GeneralService
      */
     public function getGeneralService()
     {
-        return $this->getServiceLocator()->get('general_general_service');
+        return $this->generalService;
+    }
+
+    /**
+     * @param $generalService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setGeneralService(GeneralService $generalService)
+    {
+        $this->generalService = $generalService;
+
+        return $this;
     }
 
     /**

@@ -9,39 +9,13 @@
  */
 namespace Calendar\Acl\Assertion;
 
-use Zend\Permissions\Acl\Assertion\AssertionInterface;
+use Calendar\Entity\Calendar as CalendarEntity;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
-use Zend\ServiceManager\ServiceManager;
-use Calendar\Service\CalendarService;
-use Calendar\Entity\Calendar as CalendarEntity;
 
-class Calendar implements AssertionInterface
+class Calendar extends AssertionAbstract
 {
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-    /**
-     * @var CalendarService
-     */
-    protected $calendarService;
-
-    /**
-     * @param ServiceManager $serviceManager
-     */
-    public function __construct(ServiceManager $serviceManager)
-    {
-        $this->serviceManager  = $serviceManager;
-        $this->calendarService = $this->serviceManager->get("calendar_calendar_service");
-        if ($this->serviceManager->get('zfcuser_auth_service')->hasIdentity()) {
-            $this->contact = $this->serviceManager->get('zfcuser_auth_service')->getIdentity();
-        } else {
-            $this->contact = null;
-        }
-    }
-
     /**
      * Returns true if and only if the assertion conditions are met
      *
@@ -64,28 +38,19 @@ class Calendar implements AssertionInterface
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $calendarId = (int) $this->serviceManager->get("Application")->getMvcEvent()->getRouteMatch()->getParam(
-                'id'
-            );
-            $privilege  = $this->serviceManager->get("Application")->getMvcEvent()->getRouteMatch()->getParam(
-                'privilege'
-            );
+            $calendarId = (int) $this->getRouteMatch()->getParam('id');
+            $privilege  = $this->getRouteMatch()->getParam('privilege');
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $calendar = $this->calendarService->findEntityById('calendar', $calendarId);
+            $this->getCalendarService()->setCalendarId($calendarId);
         } else {
-            $calendar = $resource;
+            $this->getCalendarService()->setCalendar($resource);
         }
-
-        /**
-         * Add the $calendar to the service to be able to do additional queries
-         */
-        $this->calendarService->setCalendar($calendar);
 
         switch ($privilege) {
             case 'view':
-                return $this->calendarService->canViewCalendar($this->contact);
+                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
                 break;
         }
 

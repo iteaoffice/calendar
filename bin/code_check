@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+SRC_DIR="`pwd`"
+cd "`dirname "$0"`"
+
+php ./../../../../php-cs-fixer.phar fix -v ./..
+./../../../bin/phpcs -n --standard=PSR2 ./../src/

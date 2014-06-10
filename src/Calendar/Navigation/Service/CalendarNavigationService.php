@@ -102,7 +102,7 @@ class CalendarNavigationService
 
         $communityCalendar = $this->getNavigation()->findOneBy('route', 'community/calendar');
 
-        if (is_null($this->getCalendarService()->getCalendar()->getId())) {
+        if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
 

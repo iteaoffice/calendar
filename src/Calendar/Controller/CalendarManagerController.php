@@ -36,7 +36,7 @@ class CalendarManagerController extends CalendarAbstractController
         $birthDays     = $this->getContactService()->findContactsWithDateOfBirth();
         $calendarItems = $this->getCalendarService()->findCalendarItems($which)->getResult();
 
-        $calender = array();
+        $calender = [];
         foreach ($birthDays as $birthDay) {
             /**
              * Produce a index which holds the current year
