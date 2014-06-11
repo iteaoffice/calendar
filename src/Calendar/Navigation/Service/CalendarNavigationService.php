@@ -236,7 +236,7 @@ class CalendarNavigationService
     {
         $calendarManager = $this->getNavigation()->findOneBy('route', 'zfcadmin/calendar-manager');
 
-        if (is_null($this->getCalendarService()->getCalendar()->getId())) {
+        if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
 

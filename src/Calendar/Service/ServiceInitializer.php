@@ -44,9 +44,12 @@ class ServiceInitializer implements InitializerInterface
             CalendarServiceAwareInterface::class => 'calendar_calendar_service',
         ];
 
-        foreach ($arrayCheck as $interface => $serviceName) {
-            if (isset(class_implements($instance)[$interface])) {
-                $this->setInterface($instance, $interface, $serviceLocator->get($serviceName));
+        /**
+         * Go over each interface to see if we should add an interface
+         */
+        foreach (class_implements($instance) as $interface) {
+            if (array_key_exists($interface, $arrayCheck)) {
+                $this->setInterface($instance, $interface, $serviceLocator->get($arrayCheck[$interface]));
             }
         }
 
