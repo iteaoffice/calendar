@@ -24,16 +24,8 @@ return [
          */
         'rule_providers'     => [
             'BjyAuthorize\Provider\Rule\Config' => [
-                'allow' => [
-                    // allow guests and users (and admins, through inheritance]
-                    // the "wear" privilege on the resource "pants"d
-                    [['public'], 'calendar', ['listings', 'view']],
-                    [['office'], 'calendar', ['edit', 'new', 'delete']]
-                ],
-                // Don't mix allow/deny rules if you are using role inheritance.
-                // There are some weird bugs.
-                'deny'  => [ // ...
-                ],
+                'allow' => [],
+                'deny'  => [],
             ],
         ],
         /* Currently, only controller and route guards exist

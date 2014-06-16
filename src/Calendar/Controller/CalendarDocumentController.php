@@ -9,9 +9,9 @@
  */
 namespace Calendar\Controller;
 
-use Zend\View\Model\ViewModel;
-use Zend\Validator\File\FilesSize;
 use Calendar\Form\CreateCalendarDocument;
+use Zend\Validator\File\FilesSize;
+use Zend\View\Model\ViewModel;
 
 /**
  *
@@ -44,16 +44,16 @@ class CalendarDocumentController extends CalendarAbstractController
         $response->setContent(stream_get_contents($object));
 
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-            ->addHeaderLine(
-                'Content-Disposition',
-                'attachment; filename="' . $document->parseFilename() . '.' .
-                $document->getContentType()->getExtension() . '"'
-            )
-            ->addHeaderLine("Pragma: public")
-            ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
-            ->addHeaderLine('Content-Length: ' . $document->getSize());
+                 ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+                 ->addHeaderLine(
+                     'Content-Disposition',
+                     'attachment; filename="' . $document->parseFilename() . '.' .
+                     $document->getContentType()->getExtension() . '"'
+                 )
+                 ->addHeaderLine("Pragma: public")
+                 ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
+                 ->addHeaderLine('Content-Length: ' . $document->getSize());
 
         return $this->response;
     }
@@ -154,8 +154,6 @@ class CalendarDocumentController extends CalendarAbstractController
                 'zfcadmin/calendar-manager/document/document',
                 array('id' => $document->getId())
             );
-        } else {
-            var_dump($form->getInputFilter()->getMessages());
         }
 
         return new ViewModel(

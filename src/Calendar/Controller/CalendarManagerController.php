@@ -9,6 +9,7 @@
  */
 namespace Calendar\Controller;
 
+use Zend\Validator\File\FilesSize;
 use Zend\View\Model\ViewModel;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;

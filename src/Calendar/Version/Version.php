@@ -9,6 +9,8 @@
  */
 namespace Calendar\Version;
 
+use Zend\Json\Json;
+
 /**
  * @category    Calendar
  * @package     Version

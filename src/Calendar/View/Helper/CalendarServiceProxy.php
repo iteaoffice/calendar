@@ -33,7 +33,7 @@ class CalendarServiceProxy extends AbstractHelper
      */
     public function __construct(HelperPluginManager $helperPluginManager)
     {
-        $this->calendarService = $helperPluginManager->getServiceLocator()->get('calendar_calendar_service');
+        $this->calendarService = clone $helperPluginManager->getServiceLocator()->get('calendar_calendar_service');
     }
 
     /**

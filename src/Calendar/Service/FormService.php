@@ -10,14 +10,14 @@
  */
 namespace Calendar\Service;
 
+use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Form;
 
 class FormService implements ServiceLocatorAwareInterface
 {
     /**
-     * @var \Zend\Form\Form
+     * @var Form
      */
     protected $form;
     /**
@@ -88,7 +88,7 @@ class FormService implements ServiceLocatorAwareInterface
     public function getCalendarService()
     {
         if (null === $this->calendarService) {
-            $this->calendarService = $this->getServiceLocator()->get('calendar_generic_service');
+            $this->calendarService = $this->getServiceLocator()->get('calendar_calendar_service');
         }
 
         return $this->calendarService;
