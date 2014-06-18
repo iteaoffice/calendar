@@ -38,12 +38,10 @@ class ServiceInitializer implements InitializerInterface
         if (!is_object($instance)) {
             return;
         }
-
         $arrayCheck = [
             EntityManagerAwareInterface::class   => 'doctrine.entitymanager.orm_default',
             CalendarServiceAwareInterface::class => 'calendar_calendar_service',
         ];
-
         /**
          * Go over each interface to see if we should add an interface
          */

@@ -9,9 +9,9 @@
  */
 namespace Calendar\Entity;
 
-use Zend\Form\Annotation;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
 
 /**
  * CalendarContactRole
@@ -55,7 +55,7 @@ class ContactRole
      */
     public function __toString()
     {
-        return (string) $this->role;
+        return (string)$this->role;
     }
 
     /**

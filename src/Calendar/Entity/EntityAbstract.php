@@ -9,8 +9,8 @@
  */
 namespace Calendar\Entity;
 
-use Zend\InputFilter\InputFilterAwareInterface;
 use Project\Entity\EntityInterface;
+use Zend\InputFilter\InputFilterAwareInterface;
 
 /**
  * Annotations class

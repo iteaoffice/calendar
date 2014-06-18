@@ -9,10 +9,10 @@
  */
 namespace Calendar\Form;
 
-use Zend\Form\Form;
-use Doctrine\ORM\EntityManager;
 use Calendar\Entity\Document;
+use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use Zend\Form\Form;
 
 /**
  *
@@ -25,16 +25,12 @@ class CreateCalendarDocument extends Form
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
-
         $document = new Document();
-
         $doctrineHydrator = new DoctrineHydrator($entityManager);
         $this->setHydrator($doctrineHydrator)->setObject($document);
-
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('id', 'create-document');
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Text',
@@ -50,14 +46,12 @@ class CreateCalendarDocument extends Form
                 )
             )
         );
-
         $this->add(
             array(
                 'type' => 'Zend\Form\Element\Csrf',
                 'name' => 'csrf',
             )
         );
-
         $this->add(
             array(
                 'type'       => '\Zend\Form\Element\File',
@@ -71,7 +65,6 @@ class CreateCalendarDocument extends Form
                 ),
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',
@@ -82,7 +75,6 @@ class CreateCalendarDocument extends Form
                 )
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',
@@ -93,7 +85,6 @@ class CreateCalendarDocument extends Form
                 )
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',

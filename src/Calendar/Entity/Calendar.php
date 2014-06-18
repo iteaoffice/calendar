@@ -319,7 +319,6 @@ class Calendar extends EntityAbstract
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $factory     = new InputFactory();
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -332,7 +331,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -345,7 +343,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -366,7 +363,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -401,7 +397,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -418,7 +413,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -435,7 +429,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -451,7 +444,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -464,7 +456,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -477,7 +468,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -486,7 +476,6 @@ class Calendar extends EntityAbstract
                     )
                 )
             );
-
             $this->inputFilter = $inputFilter;
         }
 
@@ -514,7 +503,7 @@ class Calendar extends EntityAbstract
      */
     public function __toString()
     {
-        return (string) $this->calendar;
+        return (string)$this->calendar;
     }
 
     /**

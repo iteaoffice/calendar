@@ -9,9 +9,9 @@
  */
 namespace Calendar\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CalendarDocumentObject

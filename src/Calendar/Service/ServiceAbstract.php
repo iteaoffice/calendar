@@ -9,10 +9,10 @@
  */
 namespace Calendar\Service;
 
+use Calendar\Entity;
+use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Authentication\AuthenticationService;
-use Calendar\Entity;
 
 /**
  * ServiceAbstract
@@ -75,7 +75,6 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
                 $entity->setLastUpdateBy('guest');
             }
         }
-
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
@@ -97,7 +96,6 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
                 $entity->setLastUpdateBy('guest');
             }
         }
-
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 

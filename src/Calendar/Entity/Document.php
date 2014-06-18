@@ -9,13 +9,13 @@
  */
 namespace Calendar\Entity;
 
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\FileInput;
-use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Zend\Form\Annotation;
+use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\FileInput;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
 
 /**
  * CalendarDocument
@@ -130,7 +130,6 @@ class Document extends EntityAbstract
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $factory     = new InputFactory();
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -153,7 +152,6 @@ class Document extends EntityAbstract
                     )
                 )
             );
-
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -162,7 +160,6 @@ class Document extends EntityAbstract
                     )
                 )
             );
-
             $fileUpload = new FileInput('file');
             $fileUpload->setRequired(true);
             $fileUpload->getValidatorChain()->attachByName(
@@ -172,9 +169,7 @@ class Document extends EntityAbstract
                     'max' => '8MB',
                 )
             );
-
             $inputFilter->add($fileUpload);
-
             $this->inputFilter = $inputFilter;
         }
 
@@ -196,7 +191,7 @@ class Document extends EntityAbstract
      */
     public function __toString()
     {
-        return (string) $this->getDocument();
+        return (string)$this->getDocument();
     }
 
     /**

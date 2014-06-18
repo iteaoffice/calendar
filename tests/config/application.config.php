@@ -21,7 +21,6 @@ return array(
         'Mailing',
         'Project',
         'Contact',
-
     ),
     'module_listener_options' => array(
         'config_glob_paths' => array(

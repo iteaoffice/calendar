@@ -22,10 +22,8 @@ class CalendarController extends CalendarAbstractController
     public function calendarTypeColorCssAction()
     {
         $calendarTypes = $this->getCalendarService()->findAll('Type');
-
         $calendarType  = new Type();
         $cacheFileName = $calendarType->getCacheCssFileName();
-
         $renderer = $this->getServiceLocator()->get('ZfcTwigRenderer');
         $css      = $renderer->render(
             'calendar/calendar/calendar-type-color-css',
@@ -33,10 +31,8 @@ class CalendarController extends CalendarAbstractController
                 'calendarTypes' => $calendarTypes
             )
         );
-
         //Save a copy of the file in the caching-folder
         file_put_contents($cacheFileName, $css);
-
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Content-Type: text/css');
         $response->setContent($css);

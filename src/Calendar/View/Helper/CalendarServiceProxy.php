@@ -8,13 +8,12 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\View\Helper;
 
-use Zend\View\HelperPluginManager;
-use Zend\View\Helper\AbstractHelper;
-use Calendar\Service\CalendarService;
 use Calendar\Entity\Calendar;
+use Calendar\Service\CalendarService;
+use Zend\View\Helper\AbstractHelper;
+use Zend\View\HelperPluginManager;
 
 /**
  * Class CalendarServiceProxy

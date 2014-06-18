@@ -32,9 +32,7 @@ class CalendarNavigationServiceFactory implements FactoryInterface
         $calendarNavigationService->setTranslator($serviceLocator->get('viewhelpermanager')->get('translate'));
         $calendarNavigationService->setCalendarService($serviceLocator->get('calendar_calendar_service'));
         $calendarNavigationService->setProjectService($serviceLocator->get('project_project_service'));
-
         $application = $serviceLocator->get('application');
-
         $calendarNavigationService->setRouteMatch($application->getMvcEvent()->getRouteMatch());
         $calendarNavigationService->setRouter($application->getMvcEvent()->getRouter());
         $calendarNavigationService->setNavigation($serviceLocator->get('navigation'));

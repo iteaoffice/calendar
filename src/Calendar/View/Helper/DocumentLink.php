@@ -11,8 +11,8 @@
  */
 namespace Calendar\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Calendar\Entity;
+use Zend\View\Helper\AbstractHelper;
 
 /**
  * Create a link to an project
@@ -39,11 +39,9 @@ class DocumentLink extends AbstractHelper
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
-
         $params = array(
             'entity' => 'document'
         );
-
         switch ($action) {
             case 'document-community':
                 $router = 'community/calendar/document/document';
@@ -66,15 +64,12 @@ class DocumentLink extends AbstractHelper
                     $document->getDocument()
                 );
                 break;
-
             default:
                 throw new \InvalidArgumentException(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
         }
-
         $params['id'] = $document->getId();
         $classes      = [];
         $linkContent  = [];
-
         switch ($show) {
             case 'icon':
                 if ($action === 'edit') {
@@ -96,7 +91,6 @@ class DocumentLink extends AbstractHelper
                 $linkContent[] = $document->getDocument();
                 break;
         }
-
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
         return sprintf(

@@ -32,15 +32,12 @@ class PaginationLink extends AbstractHelper
     public function __invoke($entity, $page, $show)
     {
         $router = 'community/calendar/overview';
-
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
-
         $params = array(
             'entity' => $entity,
             'page'   => $page
         );
-
         $uri = '<a href="%s" title="%s">%s</a>';
 
         return sprintf(

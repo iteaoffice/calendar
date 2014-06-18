@@ -23,5 +23,4 @@ return array(
             return new Helper\CalendarServiceProxy($sm);
         },
     ),
-
 );

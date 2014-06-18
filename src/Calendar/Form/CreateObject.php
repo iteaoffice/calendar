@@ -9,9 +9,9 @@
  */
 namespace Calendar\Form;
 
+use Calendar\Entity\EntityAbstract;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManager;
-use Calendar\Entity\EntityAbstract;
 
 /**
  *
@@ -29,11 +29,8 @@ class CreateObject extends Form
     public function __construct(ServiceManager $serviceManager, EntityAbstract $object)
     {
         parent::__construct($object->get('underscore_entity_name'));
-
         $this->serviceManager = $serviceManager;
-
         $entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
-
         $objectSpecificFieldset = '\Calendar\Form\\' . ucfirst($object->get('entity_name')) . 'Fieldset';
         /**
          * Load a specific fieldSet when present
@@ -43,19 +40,15 @@ class CreateObject extends Form
         } else {
             $objectFieldset = new ObjectFieldset($entityManager, $object);
         }
-
         $objectFieldset->setUseAsBaseFieldset(true);
         $this->add($objectFieldset);
-
         $this->setAttribute('method', 'post');
-
         $this->add(
             array(
                 'type' => 'Zend\Form\Element\Csrf',
                 'name' => 'csrf'
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',
@@ -66,7 +59,6 @@ class CreateObject extends Form
                 )
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',
@@ -77,7 +69,6 @@ class CreateObject extends Form
                 )
             )
         );
-
         $this->add(
             array(
                 'type'       => 'Zend\Form\Element\Submit',

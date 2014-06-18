@@ -75,7 +75,6 @@ class CalendarService extends ServiceAbstract
                 'docRef' => $docRef
             )
         );
-
         if (is_null($calendar)) {
             return null;
         }
@@ -139,14 +138,12 @@ class CalendarService extends ServiceAbstract
     public function findCalendarByProject(Project $project)
     {
         $calendar = [];
-
         /**
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
             $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
         }
-
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
             $calendar[$calendarItem->getId()] = $calendarItem;
         }

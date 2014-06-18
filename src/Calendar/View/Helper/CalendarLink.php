@@ -11,9 +11,9 @@
  */
 namespace Calendar\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Calendar\Entity;
 use Calendar\Service\CalendarService;
+use Zend\View\Helper\AbstractHelper;
 
 /**
  * Create a link to an calendar
@@ -46,11 +46,9 @@ class CalendarLink extends AbstractHelper
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
-
         $params = array(
             'entity' => 'calendar'
         );
-
         switch ($action) {
             case 'new':
                 $router   = 'zfcadmin/calendar-manager/new';
@@ -62,7 +60,6 @@ class CalendarLink extends AbstractHelper
                 $text   = sprintf($translate("txt-edit-calendar-%s"), $calendar);
                 break;
             case 'list':
-
                 /**
                  * Push the docRef in the params array
                  */
@@ -110,13 +107,10 @@ class CalendarLink extends AbstractHelper
             default:
                 throw new \Exception(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
         }
-
         $params['id']    = $calendar->getId();
         $params['which'] = $which;
-
         $classes     = [];
         $linkContent = [];
-
         switch ($show) {
             case 'icon':
                 if ($action === 'edit') {
@@ -138,14 +132,12 @@ class CalendarLink extends AbstractHelper
                 $linkContent[] = ucfirst($which);
                 break;
             case 'alternativeShow':
-
                 $linkContent[] = $alternativeShow;
                 break;
             default:
                 $linkContent[] = $calendar;
                 break;
         }
-
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
         return sprintf(

@@ -94,7 +94,6 @@ class Module implements
     {
         $app = $e->getParam('application');
         $em  = $app->getEventManager();
-
         $em->attach(
             MvcEvent::EVENT_DISPATCH,
             function ($event) {

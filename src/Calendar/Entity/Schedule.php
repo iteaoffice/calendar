@@ -9,9 +9,9 @@
  */
 namespace Calendar\Entity;
 
-use Zend\Form\Annotation;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
 
 /**
  * CalendarSchedule

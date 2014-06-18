@@ -9,11 +9,11 @@
  */
 namespace Calendar\Controller;
 
-use Zend\View\Model\ViewModel;
-use Zend\Paginator\Paginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Calendar\Service\CalendarService;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
+use Zend\Paginator\Paginator;
+use Zend\View\Model\ViewModel;
 
 /**
  *
@@ -27,13 +27,11 @@ class CalendarCommunityController extends CalendarAbstractController
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', 'upcoming');
         $page  = $this->getEvent()->getRouteMatch()->getParam('page', 1);
-
         $calendarItems = $this->getCalendarService()->findCalendarItems($which);
         $paginator     = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
         $paginator->setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 15);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator->getDefaultItemCountPerPage()));
-
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel(
@@ -69,7 +67,6 @@ class CalendarCommunityController extends CalendarAbstractController
         $calendarService = $this->getCalendarService()->setCalendarId(
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
-
         if (is_null($calendarService->getCalendar()->getId())) {
             return $this->notFoundAction();
         }

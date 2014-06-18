@@ -57,15 +57,12 @@ class CalendarNavigationService
         if (!is_null($this->getRouteMatch()) &&
             strtolower($this->getRouteMatch()->getParam('namespace')) === 'calendar'
         ) {
-
             if (strpos($this->getRouteMatch()->getMatchedRouteName(), 'community') !== false) {
                 $this->updateCommunityNavigation();
             }
-
             if (strpos($this->getRouteMatch()->getMatchedRouteName(), 'zfcadmin') !== false) {
                 $this->updateAdminNavigation();
             }
-
             if (!is_null($this->getRouteMatch()->getParam('id'))) {
                 $this->getCalendarService()->setCalendarId($this->getRouteMatch()->getParam('id'));
             }
@@ -99,27 +96,21 @@ class CalendarNavigationService
      */
     public function updateCommunityNavigation()
     {
-
         $communityCalendar = $this->getNavigation()->findOneBy('route', 'community/calendar');
-
         if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
-
         if ($this->getRouteMatch()->getMatchedRouteName() === 'community/calendar/calendar') {
-
             if (!is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
                 $this->projectService->setProject(
                     $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
                 );
-
                 $communityCalendar->addPage(
                     array(
                         'label' => $this->translate("txt-review-calendar"),
                         'route' => 'community/calendar/review-calendar'
                     )
                 );
-
                 $pages['calendar']['pages']['calendar']['pages']['project'] = array(
                     'label'  => $this->projectService->parseFullname(),
                     'route'  => 'community/project/project',
@@ -127,7 +118,6 @@ class CalendarNavigationService
                         'docRef' => $this->projectService->getProject()->getDocRef()
                     )
                 );
-
                 $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar'] = array(
                     'label'  => sprintf(
                         $this->translate("txt-calendar-item-%s-at-%s"),
@@ -141,14 +131,11 @@ class CalendarNavigationService
                     )
                 );
             }
-
             if (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-
                 $pages['calendar']['pages']['calendar'] = array(
                     'label' => $this->translate("txt-calendar"),
                     'route' => 'community/calendar/overview',
                 );
-
                 $pages['calendar']['pages']['calendar']['pages']['item'] = array(
                     'label'  => sprintf(
                         $this->translate("txt-calendar-item-%s-at-%s"),
@@ -235,20 +222,15 @@ class CalendarNavigationService
     public function updateAdminNavigation()
     {
         $calendarManager = $this->getNavigation()->findOneBy('route', 'zfcadmin/calendar-manager');
-
         if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
-
         switch ($this->getRouteMatch()->getMatchedRouteName()) {
             case 'zfcadmin/calendar-manager/calendar':
-
                 if (!is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-
                     $this->getProjectService()->setProject(
                         $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
                     );
-
                     $calendarManager->addPage(
                         array(
                             'label'  => $this->projectService->parseFullname(),
@@ -291,17 +273,12 @@ class CalendarNavigationService
                         )
                     );
                 }
-
                 break;
-
             case 'zfcadmin/calendar-manager/edit':
-
                 if (!is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-
                     $this->getProjectService()->setProject(
                         $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
                     );
-
                     $calendarManager->addPage(
                         array(
                             'label'  => $this->projectService->parseFullname(),
@@ -312,7 +289,6 @@ class CalendarNavigationService
                             ),
                             'pages'  => array(
                                 'project_calendar' => array(
-
                                     'label'  => sprintf(
                                         $this->translate("txt-calendar-item-%s-at-%s"),
                                         $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -374,7 +350,6 @@ class CalendarNavigationService
                         )
                     );
                 }
-
                 break;
         }
 

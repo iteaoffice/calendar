@@ -9,9 +9,9 @@
  */
 namespace Calendar\Entity;
 
-use Zend\Form\Annotation;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
 
 /**
  * CalendarType
@@ -117,7 +117,7 @@ class Type
      */
     public function __toString()
     {
-        return (string) $this->type;
+        return (string)$this->type;
     }
 
     /**

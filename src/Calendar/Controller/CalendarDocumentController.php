@@ -26,12 +26,10 @@ class CalendarDocumentController extends CalendarAbstractController
     public function downloadAction()
     {
         set_time_limit(0);
-
         $document = $this->getCalendarService()->findEntityById(
             'Document',
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
-
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
@@ -39,10 +37,8 @@ class CalendarDocumentController extends CalendarAbstractController
          * Due to the BLOB issue, we treat this as an array and we need to capture the first element
          */
         $object = $document->getObject()->first()->getObject();
-
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
-
         $response->getHeaders()
                  ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
                  ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
@@ -80,35 +76,27 @@ class CalendarDocumentController extends CalendarAbstractController
             'document',
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
-
         if (is_null($document)) {
             return $this->notFoundAction();
         }
-
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-
         $data = array_merge_recursive(
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()
         );
-
         $form = new CreateCalendarDocument($entityManager);
         $form->bind($document);
         $form->getInputFilter()->get('file')->setRequired(false);
         $form->setData($data);
-
         if ($this->getRequest()->isPost() && $form->isValid()) {
-
             $document = $form->getData();
             /**
              * Remove the file if delete is pressed
              */
             if (isset($data['delete'])) {
-
                 $this->flashMessenger()->setNamespace('success')->addMessage(
                     sprintf(_("txt-calendar-document-%s-successfully-removed"), $document->parseFileName())
                 );
-
                 $this->getDocumentService()->removeEntity($document);
 
                 return $this->redirect()->toRoute(
@@ -116,15 +104,12 @@ class CalendarDocumentController extends CalendarAbstractController
                     array('id' => $document->getCalendar()->getId())
                 );
             }
-
             /**
              * Handle when
              */
             if (!isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
-
                 if (!empty($file['name']) && $file['error'] === 0) {
-
                     /**
                      * Update the document
                      */
@@ -134,7 +119,6 @@ class CalendarDocumentController extends CalendarAbstractController
                     $document->setContentType(
                         $this->getGeneralService()->findContentTypeByContentTypeName($file['type'])
                     );
-
                     /**
                      * Update the object
                      */
@@ -142,14 +126,11 @@ class CalendarDocumentController extends CalendarAbstractController
                     $documentObject->setObject(file_get_contents($file['tmp_name']));
                     $this->getCalendarService()->updateEntity($documentObject);
                 }
-
                 $this->getCalendarService()->updateEntity($document);
-
                 $this->flashMessenger()->setNamespace('success')->addMessage(
                     sprintf(_("txt-calendar-document-%s-successfully-updated"), $document->parseFileName())
                 );
             }
-
             $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/document/document',
                 array('id' => $document->getId())

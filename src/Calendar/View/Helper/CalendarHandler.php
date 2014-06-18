@@ -8,7 +8,6 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
@@ -48,11 +47,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     public function __invoke(Content $content)
     {
         $this->extractContentParam($content);
-
         switch ($content->getHandler()->getHandler()) {
-
             case 'calendar_item':
-
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
                 $this->serviceLocator->get('headtitle')->append((string)$this->getCalendarService()->getCalendar());
                 $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
@@ -78,25 +74,18 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                 );
 
                 return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
-
             case 'calendar':
-
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
 
                 return $this->parseCalendar($this->getLimit());
-
             case 'calendar_past':
-
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
 
                 return $this->parsePastCalendar($this->getLimit());
-
             case 'calendar_small':
                 return $this->parseCalendarSmall($this->getLimit());
-
             case 'calendar_year_selector':
                 return $this->parseYearSelector($this->getYear());
-
             default:
                 return sprintf(
                     "No handler available for <code>%s</code> in class <code>%s</code>",
@@ -112,19 +101,16 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         if (!is_null($this->getRouteMatch()->getParam('docRef'))) {
             $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
         }
-
         foreach ($content->getContentParam() as $param) {
             /**
              * When the parameterId is 0 (so we want to get the article from the URL
              */
             switch ($param->getParameter()->getParam()) {
                 case 'docRef':
-
                     if (!is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
                     }
                     break;
-
                 case 'limit':
                     if ('0' === $param->getParameterId()) {
                         $this->setLimit(null);
@@ -340,7 +326,6 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseYearSelector($year)
     {
-
         /**
          * take the last three years for the calendar
          */
