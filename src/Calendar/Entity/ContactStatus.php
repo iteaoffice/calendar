@@ -69,7 +69,7 @@ class ContactStatus
      */
     public function __toString()
     {
-        return (string)$this->status;
+        return (string) $this->status;
     }
 
     /**

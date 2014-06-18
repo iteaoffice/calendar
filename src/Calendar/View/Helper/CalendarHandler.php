@@ -50,7 +50,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
-                $this->serviceLocator->get('headtitle')->append((string)$this->getCalendarService()->getCalendar());
+                $this->serviceLocator->get('headtitle')->append((string) $this->getCalendarService()->getCalendar());
                 $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
                 $this->serviceLocator->get('headmeta')->setProperty(
                     'og:title',
@@ -240,7 +240,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         $calendarItems = $this->getCalendarService()
                               ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-                              ->setMaxResults((int)$this->getLimit())
+                              ->setMaxResults((int) $this->getLimit())
                               ->getResult();
 
         return $this->getRenderer()->render(
@@ -274,7 +274,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         $calendarItems = $this->getCalendarService()
                               ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-                              ->setMaxResults((int)$this->getLimit())
+                              ->setMaxResults((int) $this->getLimit())
                               ->getResult();
 
         return $this->getRenderer()->render(
@@ -296,7 +296,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function setYear($year)
     {
-        $this->year = (int)$year;
+        $this->year = (int) $year;
     }
 
     /**
@@ -308,7 +308,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         $calendarItems = $this->getCalendarService()
                               ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-                              ->setMaxResults((int)$this->getLimit())
+                              ->setMaxResults((int) $this->getLimit())
                               ->getResult();
 
         return $this->getRenderer()->render(

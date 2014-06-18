@@ -37,7 +37,7 @@ class Calendar extends AssertionAbstract
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $calendarId = (int)$this->getRouteMatch()->getParam('id');
+            $calendarId = (int) $this->getRouteMatch()->getParam('id');
             $privilege  = $this->getRouteMatch()->getParam('privilege');
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first

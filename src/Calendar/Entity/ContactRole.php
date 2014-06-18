@@ -55,7 +55,7 @@ class ContactRole
      */
     public function __toString()
     {
-        return (string)$this->role;
+        return (string) $this->role;
     }
 
     /**
