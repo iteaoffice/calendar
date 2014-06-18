@@ -281,7 +281,6 @@ class Calendar extends EntityAbstract
     public function addCall(Collections\Collection $collection)
     {
         foreach ($collection as $call) {
-            //            $call->node = $this;
             $this->call->add($call);
         }
     }
@@ -503,7 +502,7 @@ class Calendar extends EntityAbstract
      */
     public function __toString()
     {
-        return (string) $this->calendar;
+        return (string)$this->calendar;
     }
 
     /**

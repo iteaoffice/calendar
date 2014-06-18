@@ -46,7 +46,7 @@ class CalendarLink extends AbstractHelper
         $translate = $this->view->plugin('translate');
         $url       = $this->view->plugin('url');
         $serverUrl = $this->view->plugin('serverUrl');
-        $params = array(
+        $params    = array(
             'entity' => 'calendar'
         );
         switch ($action) {
@@ -65,9 +65,6 @@ class CalendarLink extends AbstractHelper
                  */
                 $router         = 'route-content_entity_node';
                 $params['year'] = $year;
-                /**
-                 * @todo: hardcoded docRef here. Can we avoid this? Maybe by finding a node having the new overview as handler
-                 */
                 switch ($which) {
                     case CalendarService::WHICH_UPCOMING:
                         $params['docRef'] = 'upcoming-events';
@@ -109,8 +106,8 @@ class CalendarLink extends AbstractHelper
         }
         $params['id']    = $calendar->getId();
         $params['which'] = $which;
-        $classes     = [];
-        $linkContent = [];
+        $classes         = [];
+        $linkContent     = [];
         switch ($show) {
             case 'icon':
                 if ($action === 'edit') {
