@@ -10,6 +10,8 @@
 namespace Calendar\Navigation\Factory;
 
 use Calendar\Navigation\Service\CalendarNavigationService;
+use Calendar\Service\CalendarService;
+use Project\Service\ProjectService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -24,14 +26,14 @@ class CalendarNavigationServiceFactory implements FactoryInterface
     /**
      * @param ServiceLocatorInterface $serviceLocator
      *
-     * @return array|mixed
+     * @return CalendarNavigationService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $calendarNavigationService = new CalendarNavigationService();
         $calendarNavigationService->setTranslator($serviceLocator->get('viewhelpermanager')->get('translate'));
-        $calendarNavigationService->setCalendarService($serviceLocator->get('calendar_calendar_service'));
-        $calendarNavigationService->setProjectService($serviceLocator->get('project_project_service'));
+        $calendarNavigationService->setCalendarService($serviceLocator->get(CalendarService::class));
+        $calendarNavigationService->setProjectService($serviceLocator->get(ProjectService::class));
         $application = $serviceLocator->get('application');
         $calendarNavigationService->setRouteMatch($application->getMvcEvent()->getRouteMatch());
         $calendarNavigationService->setRouter($application->getMvcEvent()->getRouter());

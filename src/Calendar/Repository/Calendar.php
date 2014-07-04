@@ -126,7 +126,9 @@ class Calendar extends EntityRepository
         $subSelect->select('type');
         $subSelect->from('Calendar\Entity\Type', 'type');
         $subSelect->join('type.access', 'access');
-        $subSelect->andWhere($qb->expr()->in('access.access', $contact->getRoles()));
+        $subSelect->andWhere(
+            $qb->expr()->in('access.access', array_merge_recursive([Access::ACCESS_PUBLIC], $contact->getRoles()))
+        );
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
         $subSelectCalendarContact->select('calendar2');
         $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');

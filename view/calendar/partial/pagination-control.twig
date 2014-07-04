@@ -59,7 +59,7 @@
 
     {% if paginator.currentPageNumber < paginator.pageRange %}
         <li>
-            {{ publicationLink(null, 'list','paginator', (paginator.currentPageNumber + 1), translate("txt-next")) }}
+            {{ calendarPaginationLink(null, 'list','paginator', (paginator.currentPageNumber + 1), translate("txt-next")) }}
         </li>
     {% endif %}
 

@@ -11,9 +11,9 @@ use Calendar\Entity;
 use Calendar\Form;
 
 return array(
-    'factories' => array(
+    'factories' => [
         'calendar_calendar_form' => function ($sm) {
             return new Form\CreateObject($sm, new Entity\Calendar());
         },
-    ),
+    ],
 );

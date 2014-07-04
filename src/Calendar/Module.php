@@ -11,7 +11,6 @@
  */
 namespace Calendar;
 
-use Calendar\Service\FormServiceAwareInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
 use Zend\Mvc\MvcEvent;
@@ -63,24 +62,6 @@ class Module implements
     public function getViewHelperConfig()
     {
         return include __DIR__ . '/../../config/viewhelpers.config.php';
-    }
-
-    /**
-     * @return array
-     */
-    public function getControllerConfig()
-    {
-        return array(
-            'initializers' => array(
-                function ($instance, $sm) {
-                    if ($instance instanceof FormServiceAwareInterface) {
-                        $sm          = $sm->getServiceLocator();
-                        $formService = $sm->get('calendar_form_service');
-                        $instance->setFormService($formService);
-                    }
-                },
-            ),
-        );
     }
 
     /**

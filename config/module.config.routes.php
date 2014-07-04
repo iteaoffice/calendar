@@ -16,7 +16,7 @@ return [
                 'type'          => 'Literal',
                 'priority'      => 999,
                 'options'       => [
-                    'route' => '/assets/' . DEBRANOVA_HOST,
+                    'route' => '/assets/' . (defined("DEBRANOVA_HOST") ? DEBRANOVA_HOST : 'test'),
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [

@@ -8,41 +8,41 @@
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 return array(
-    'navigation' => array(
-        'community' => array(
+    'navigation' => [
+        'community' => [
             // And finally, here is where we define our page hierarchy
-            'calendar' => array(
+            'calendar' => [
                 'label' => _("txt-calendar"),
                 'route' => 'community/calendar',
-                'pages' => array(
-                    'calendars'       => array(
+                'pages' => [
+                    'calendars'       => [
                         'label' => _("txt-calendar"),
                         'route' => 'community/calendar/overview',
-                    ),
-                    'review-calendar' => array(
+                    ],
+                    'review-calendar' => [
                         'label' => _("txt-review-calendar"),
                         'route' => 'community/calendar/review-calendar',
-                    ),
-                ),
-            ),
-        ),
-        'admin'     => array(
+                    ],
+                ],
+            ],
+        ],
+        'admin'     => [
             // And finally, here is where we define our page hierarchy
-            'calendar' => array(
+            'calendar' => [
                 'label'    => _("txt-calendar-admin"),
                 'route'    => 'zfcadmin/calendar-manager',
                 'resource' => 'zfcadmin',
-                'pages'    => array(
-                    'calendar'          => array(
+                'pages'    => [
+                    'calendar'          => [
                         'label' => _("txt-calendar"),
                         'route' => 'zfcadmin/calendar-manager/overview',
-                    ),
-                    'new-calendar-item' => array(
+                    ],
+                    'new-calendar-item' => [
                         'label' => _("txt-add-calendar-item"),
                         'route' => 'zfcadmin/calendar-manager/new',
-                    ),
-                ),
-            ),
-        ),
-    ),
+                    ],
+                ],
+            ],
+        ],
+    ],
 );

@@ -11,23 +11,13 @@
 namespace Calendar\Service;
 
 use Zend\Form\Form;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FormService implements ServiceLocatorAwareInterface
+class FormService extends ServiceAbstract
 {
     /**
      * @var Form
      */
     protected $form;
-    /**
-     * @var \Calendar\Service\CalendarService
-     */
-    protected $calendarService;
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
 
     /**
      * @param null $className
@@ -39,10 +29,10 @@ class FormService implements ServiceLocatorAwareInterface
     public function getForm($className = null, $entity = null, $bind = true)
     {
         if (!$entity) {
-            $entity = $this->getCalendarService()->getEntity($className);
+            $entity = $this->getEntity($className);
         }
-        $formName = 'calendar_' . $entity->get('underscore_entity_name') . '_form';
-        $form     = $this->getServiceLocator()->get($formName);
+        $formName   = 'calendar_' . $entity->get('underscore_entity_name') . '_form';
+        $form       = $this->getServiceLocator()->get($formName);
         $filterName = 'calendar_' . $entity->get('underscore_entity_name') . '_form_filter';
         $filter     = $this->getServiceLocator()->get($filterName);
         $form->setInputFilter($filter);
@@ -66,47 +56,5 @@ class FormService implements ServiceLocatorAwareInterface
         $form->setData($data);
 
         return $form;
-    }
-
-    /**
-     * @param CalendarService $calendarService
-     */
-    public function setCalendarService($calendarService)
-    {
-        $this->calendarService = $calendarService;
-    }
-
-    /**
-     * Get calendarService.
-     *
-     * @return CalendarService.
-     */
-    public function getCalendarService()
-    {
-        if (null === $this->calendarService) {
-            $this->calendarService = $this->getServiceLocator()->get('calendar_calendar_service');
-        }
-
-        return $this->calendarService;
-    }
-
-    /**
-     * Set the service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get the service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
     }
 }

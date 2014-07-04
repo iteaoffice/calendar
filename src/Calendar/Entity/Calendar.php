@@ -16,6 +16,7 @@ use Zend\Form\Annotation;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Validator\Callback;
 
 /**
@@ -24,7 +25,7 @@ use Zend\Validator\Callback;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Calendar")
  */
-class Calendar extends EntityAbstract
+class Calendar extends EntityAbstract implements ResourceInterface
 {
     /**
      * Constant for final = -1 (draft)
@@ -298,6 +299,16 @@ class Calendar extends EntityAbstract
     }
 
     /**
+     * Returns the string identifier of the Resource
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return sprintf("%s:%s", __CLASS__, $this->id);
+    }
+
+    /**
      * Set input filter
      *
      * @param InputFilterInterface $inputFilter
@@ -502,7 +513,7 @@ class Calendar extends EntityAbstract
      */
     public function __toString()
     {
-        return (string)$this->calendar;
+        return (string) $this->calendar;
     }
 
     /**

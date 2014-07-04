@@ -16,18 +16,6 @@ return [
                 'calendar' => [],
             ],
         ],
-        /* rules can be specified here with the format:
-         * [roles (array] , resource, [privilege (array|string], assertion]]
-         * assertions will be loaded using the service manager and must implement
-         * Zend\Acl\Assertion\AssertionInterface.
-         * *if you use assertions, define them using the service manager!*
-         */
-        'rule_providers'     => [
-            'BjyAuthorize\Provider\Rule\Config' => [
-                'allow' => [],
-                'deny'  => [],
-            ],
-        ],
         /* Currently, only controller and route guards exist
          */
         'guards'             => [

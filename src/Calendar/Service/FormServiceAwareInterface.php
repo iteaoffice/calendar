@@ -21,7 +21,7 @@ interface FormServiceAwareInterface
     /**
      * Set formService.
      *
-     * @param FormService the value to set.
+     * @param FormService $formService
      *
      * @return \Calendar\Controller\CalendarAbstractController
      */

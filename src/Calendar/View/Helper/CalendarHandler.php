@@ -185,7 +185,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function getCalendarService()
     {
-        return $this->getServiceLocator()->get('calendar_calendar_service');
+        return $this->getServiceLocator()->get(CalendarService::class);
     }
 
     /**

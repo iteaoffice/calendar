@@ -7,9 +7,17 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c] 2004-2014 ITEA Office (http://itea3.org]
  */
-$config = [
+use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
+use Calendar\Controller\ControllerInitializer;
+use Calendar\Service\CalendarService;
+use Calendar\Service\FormService;
+use Calendar\Service\ServiceInitializer;
+
+$config      = [
     'controllers'     => [
-        'initializers' => [Calendar\Controller\ControllerInitializer::class],
+        'initializers' => [
+            ControllerInitializer::class
+        ],
         'invokables'   => [
             'calendar-index'     => 'Calendar\Controller\CalendarController',
             'calendar-community' => 'Calendar\Controller\CalendarCommunityController',
@@ -18,15 +26,17 @@ $config = [
         ],
     ],
     'service_manager' => [
-        'initializers' => [Calendar\Service\ServiceInitializer::class],
+        'initializers' => [
+            ServiceInitializer::class
+        ],
         'factories'    => [
             'calendar_navigation_service' => 'Calendar\Navigation\Factory\CalendarNavigationServiceFactory',
         ],
         'invokables'   => [
-            'calendar_acl_assertion_calendar' => 'Calendar\Acl\Assertion\Calendar',
-            'calendar_calendar_service'       => 'Calendar\Service\CalendarService',
-            'calendar_form_service'           => 'Calendar\Service\FormService',
-            'calendar_calendar_form_filter'   => 'Calendar\Form\FilterCreateObject',
+            CalendarAssertion::class        => CalendarAssertion::class,
+            CalendarService::class          => CalendarService::class,
+            FormService::class              => FormService::class,
+            'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
         ]
     ],
     'view_manager'    => [

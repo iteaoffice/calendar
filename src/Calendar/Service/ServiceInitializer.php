@@ -11,7 +11,6 @@
  */
 namespace Calendar\Service;
 
-use Application\Service\EntityManagerAwareInterface;
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -39,8 +38,7 @@ class ServiceInitializer implements InitializerInterface
             return;
         }
         $arrayCheck = [
-            EntityManagerAwareInterface::class   => 'doctrine.entitymanager.orm_default',
-            CalendarServiceAwareInterface::class => 'calendar_calendar_service',
+            CalendarServiceAwareInterface::class => CalendarService::class,
         ];
         /**
          * Go over each interface to see if we should add an interface
