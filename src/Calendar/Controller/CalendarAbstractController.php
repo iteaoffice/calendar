@@ -20,9 +20,14 @@ use General\Service\GeneralServiceAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
+use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
+use BjyAuthorize\Controller\Plugin\IsAllowed;
 
 /**
- *
+ * @method      ZfcUserAuthentication zfcUserAuthentication()
+ * @method      FlashMessenger flashMessenger()
+ * @method      isAllowed isAllowed($resource, $action)
  */
 abstract class CalendarAbstractController extends AbstractActionController implements
     FormServiceAwareInterface,

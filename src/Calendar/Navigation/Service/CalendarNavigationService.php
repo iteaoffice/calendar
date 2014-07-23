@@ -100,58 +100,68 @@ class CalendarNavigationService
         if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
-        if ($this->getRouteMatch()->getMatchedRouteName() === 'community/calendar/calendar') {
-            if (!is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-                $this->projectService->setProject(
-                    $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
-                );
-                $communityCalendar->addPage(
-                    array(
-                        'label' => $this->translate("txt-review-calendar"),
-                        'route' => 'community/calendar/review-calendar'
-                    )
-                );
-                $pages['calendar']['pages']['calendar']['pages']['project'] = array(
-                    'label'  => $this->projectService->parseFullname(),
-                    'route'  => 'community/project/project',
-                    'params' => array(
-                        'docRef' => $this->projectService->getProject()->getDocRef()
-                    )
-                );
-                $pages['calendar']['pages']['calendar']['pages']['project']['pages']['calendar'] = array(
-                    'label'  => sprintf(
-                        $this->translate("txt-calendar-item-%s-at-%s"),
-                        $this->getCalendarService()->getCalendar()->getCalendar(),
-                        $this->getCalendarService()->getCalendar()->getLocation()
-                    ),
-                    'route'  => 'community/calendar/calendar',
-                    'active' => true,
-                    'params' => array(
-                        'id' => $this->getCalendarService()->getCalendar()->getId()
-                    )
-                );
-            }
-            if (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-                $pages['calendar']['pages']['calendar'] = array(
-                    'label' => $this->translate("txt-calendar"),
-                    'route' => 'community/calendar/overview',
-                );
-                $pages['calendar']['pages']['calendar']['pages']['item'] = array(
-                    'label'  => sprintf(
-                        $this->translate("txt-calendar-item-%s-at-%s"),
-                        $this->getCalendarService()->getCalendar()->getCalendar(),
-                        $this->getCalendarService()->getCalendar()->getLocation()
-                    ),
-                    'route'  => 'community/calendar/calendar',
-                    'active' => true,
-                    'params' => array(
-                        'id' => $this->getCalendarService()->getCalendar()->getId()
-                    )
-                );
-            }
+
+        switch ($this->getRouteMatch()->getMatchedRouteName()) {
+            case 'community/calendar/calendar':
+                if (!is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
+                    $this->getProjectService()->setProject(
+                        $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
+                    );
+                    $communityCalendar->addPage(
+                        [
+                            'label'  => $this->translate("txt-review-calendar"),
+                            'route'  => 'community/calendar/review-calendar',
+                            'router' => $this->getRouter(),
+                            'pages'  => [
+                                'project' => [
+                                    'label'  => $this->getProjectService()->parseFullname(),
+                                    'route'  => 'community/project/project',
+                                    'router' => $this->getRouter(),
+                                    'params' => array(
+                                        'docRef' => $this->getProjectService()->getProject()->getDocRef()
+                                    ),
+                                    'pages'  => [
+                                        'calendar' => [
+                                            'label'  => sprintf(
+                                                $this->translate("txt-calendar-item-%s-at-%s"),
+                                                $this->getCalendarService()->getCalendar()->getCalendar(),
+                                                $this->getCalendarService()->getCalendar()->getLocation()
+                                            ),
+                                            'route'  => 'community/calendar/calendar',
+                                            'router' => $this->getRouter(),
+                                            'active' => true,
+                                            'params' => array(
+                                                'id' => $this->getCalendarService()->getCalendar()->getId()
+                                            )
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    );
+                }
+                if (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
+                    $pages['calendar']['pages']['calendar'] = array(
+                        'label' => $this->translate("txt-calendar"),
+                        'route' => 'community/calendar/overview',
+                    );
+                    $pages['calendar']['pages']['calendar']['pages']['item'] = array(
+                        'label'  => sprintf(
+                            $this->translate("txt-calendar-item-%s-at-%s"),
+                            $this->getCalendarService()->getCalendar()->getCalendar(),
+                            $this->getCalendarService()->getCalendar()->getLocation()
+                        ),
+                        'route'  => 'community/calendar/calendar',
+                        'active' => true,
+                        'params' => array(
+                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                        )
+                    );
+                }
+
+                break;
         }
 
-        return true;
     }
 
     /**

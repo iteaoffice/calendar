@@ -13,6 +13,7 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
+use Calendar\Service\CalendarService;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
@@ -30,11 +31,11 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function overviewAction()
     {
-        $which = $this->getEvent()->getRouteMatch()->getParam('which', 'upcoming');
+        $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
         $page  = $this->getEvent()->getRouteMatch()->getParam('page', 1);
         $year  = $this->getEvent()->getRouteMatch()->getParam('year', date("Y"));
         $birthDays     = $this->getContactService()->findContactsWithDateOfBirth();
-        $calendarItems = $this->getCalendarService()->findCalendarItems($which)->getResult();
+        $calendarItems = $this->getCalendarService()->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity())->getResult();
         $calender = [];
         foreach ($birthDays as $birthDay) {
             /**

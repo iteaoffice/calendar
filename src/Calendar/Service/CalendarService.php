@@ -11,6 +11,7 @@ namespace Calendar\Service;
 
 use Calendar\Entity;
 use Calendar\Entity\Calendar;
+use Calendar\Entity\Contact as CalendarContact;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
 
@@ -29,10 +30,10 @@ class CalendarService extends ServiceAbstract
     /**
      * Constant to determine which affiliations must be taken from the database
      */
-    const WHICH_UPCOMING    = 'upcoming';
-    const WHICH_UPDATED     = 'updated';
-    const WHICH_PAST        = 'past';
-    const WHICH_REVIEWS     = 'reviews';
+    const WHICH_UPCOMING = 'upcoming';
+    const WHICH_UPDATED = 'updated';
+    const WHICH_PAST = 'past';
+    const WHICH_REVIEWS = 'reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
     /**
      * @var Entity\Calendar
@@ -71,9 +72,9 @@ class CalendarService extends ServiceAbstract
     public function findCalendarByDocRef($docRef)
     {
         $calendar = $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))->findOneBy(
-            array(
+            [
                 'docRef' => $docRef
-            )
+            ]
         );
         if (is_null($calendar)) {
             return null;
@@ -83,22 +84,48 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param Contact $contact
+     * @param Calendar $calendar
+     * @param Contact  $contact
      *
      * @return bool
      */
-    public function calendarHasContact(Contact $contact)
+    public function calendarHasContact(Calendar $calendar, Contact $contact)
     {
         $calendarContact = $this->getEntityManager()
-                                ->getRepository($this->getFullEntityName('Contact'))
-                                ->findOneBy(
-                                    array(
-                                        'calendar' => $this->getCalendar(),
-                                        'contact'  => $contact
-                                    )
-                                );
+            ->getRepository($this->getFullEntityName('Contact'))
+            ->findOneBy(
+                [
+                    'calendar' => $calendar,
+                    'contact'  => $contact
+                ]
+            );
 
         return !is_null($calendarContact);
+    }
+
+    /**
+     * @param  string            $which
+     * @param  Contact           $contact
+     * @return CalendarContact[]
+     */
+    public function findCalendarContactByContact($which = self::WHICH_UPCOMING, Contact $contact = null)
+    {
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('Contact'))
+            ->findCalendarContactByContact($which, $contact);
+    }
+
+    /**
+     * @param Contact  $contact
+     * @param Calendar $calendar
+     *
+     * @return CalendarContact
+     */
+    public function findCalendarContactByContactAndCalendar(Contact $contact, Calendar $calendar)
+    {
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('Contact'))
+            ->findCalendarContactByContactAndCalendar($contact, $calendar);
     }
 
     /**
@@ -108,26 +135,25 @@ class CalendarService extends ServiceAbstract
      *
      * @return bool
      */
-    public function canViewCalendar(Contact $contact)
+    public function canViewCalendar(Contact $contact = null)
     {
         return $this->getEntityManager()
-                    ->getRepository($this->getFullEntityName('Calendar'))
-                    ->canViewCalendar($this->getCalendar(), $contact);
+            ->getRepository($this->getFullEntityName('Calendar'))
+            ->canViewCalendar($this->getCalendar(), $contact);
     }
 
     /**
      * @param string  $which
+     * @param Contact $contact
      * @param integer $year
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which = self::WHICH_UPCOMING, $year = null)
+    public function findCalendarItems($which = self::WHICH_UPCOMING, Contact $contact = null, $year = null)
     {
-        $contact = $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity();
-
         return $this->getEntityManager()
-                    ->getRepository($this->getFullEntityName('Calendar'))
-                    ->findCalendarItems($which, true, $contact, $year);
+            ->getRepository($this->getFullEntityName('Calendar'))
+            ->findCalendarItems($which, true, $contact, $year);
     }
 
     /**
@@ -152,18 +178,31 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
+     * @param CalendarContact $calendarContact
+     * @param $status
+     */
+    public function updateContactStatus(CalendarContact $calendarContact, $status)
+    {
+        $calendarContact->setStatus(
+            $this->getEntityManager()->getReference($this->getFullEntityName('ContactStatus'), $status)
+        );
+        $this->updateEntity($calendarContact);
+
+    }
+
+    /**
      * Return an array of all which-values
      *
      * @return string[]
      */
     public function getWhichValues()
     {
-        return array(
+        return [
             self::WHICH_UPCOMING,
             self::WHICH_UPDATED,
             self::WHICH_PAST,
             self::WHICH_REVIEWS
-        );
+        ];
     }
 
     /**

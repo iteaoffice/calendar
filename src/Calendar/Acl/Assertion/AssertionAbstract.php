@@ -12,10 +12,14 @@
  */
 namespace Calendar\Acl\Assertion;
 
+use Admin\Entity\Access;
+use Admin\Service\AdminService;
+use Admin\Service\AdminServiceAwareInterface;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Contact\Service\ContactService;
 use Contact\Service\ContactServiceAwareInterface;
+use Doctrine\ORM\PersistentCollection;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -35,6 +39,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 abstract class AssertionAbstract implements
     AssertionInterface,
     ServiceLocatorAwareInterface,
+    AdminServiceAwareInterface,
     ContactServiceAwareInterface,
     CalendarServiceAwareInterface
 {
@@ -46,6 +51,10 @@ abstract class AssertionAbstract implements
      * @var ContactService
      */
     protected $contactService;
+    /**
+     * @var AdminService
+     */
+    protected $adminService;
     /**
      * @var CalendarService
      */
@@ -151,22 +160,57 @@ abstract class AssertionAbstract implements
     /**
      * Returns true when a role or roles have access
      *
-     * @param $roles
+     * @param string|array|PersistentCollection $access
      *
      * @return boolean
      */
-    protected function rolesHaveAccess($roles)
+    public function rolesHaveAccess($access)
     {
-        if (!is_array($roles)) {
-            $roles = array($roles);
+        $accessRoles = $this->prepareAccessRoles($access);
+        if (sizeof($accessRoles) === 0) {
+            return true;
         }
-        foreach ($this->getAccessRoles() as $access) {
-            if (in_array(strtolower($access), $roles)) {
+        foreach ($accessRoles as $accessRole) {
+            if (strtolower($accessRole->getAccess()) === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
+            }
+            if ($this->hasContact()) {
+                /**
+                 * Do an access check on the article
+                 */
+                foreach ($this->getContactService()->getContact()->getRoles() as $contactAccess) {
+                    if (strtolower($accessRole->getAccess()) === $contactAccess) {
+                        return true;
+                    }
+                }
+                foreach ($accessRole->getSelection() as $selection) {
+                    if ($this->getContactService()->inSelection($selection)) {
+                        return true;
+                    }
+                }
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param $access
+     *
+     * @return Access[]
+     */
+    protected function prepareAccessRoles($access)
+    {
+        if (!$access instanceof PersistentCollection) {
+            /**
+             * We only have a string, so we need to lookup the role
+             */
+            $access = [
+                $this->getAdminService()->findAccessByName($access)
+            ];
+        }
+
+        return $access;
     }
 
     /**
@@ -179,5 +223,25 @@ abstract class AssertionAbstract implements
         }
 
         return $this->accessRoles;
+    }
+
+    /**
+     * @return AdminService
+     */
+    public function getAdminService()
+    {
+        return $this->adminService;
+    }
+
+    /**
+     * @param AdminService $adminService
+     *
+     * @return AssertionAbstract
+     */
+    public function setAdminService(AdminService $adminService)
+    {
+        $this->adminService = $adminService;
+
+        return $this;
     }
 }

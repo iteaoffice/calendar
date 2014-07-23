@@ -11,9 +11,9 @@
  */
 namespace Calendar\View\Helper;
 
-use Calendar\Entity;
+use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
+use Calendar\Entity\Calendar;
 use Calendar\Service\CalendarService;
-use Zend\View\Helper\AbstractHelper;
 
 /**
  * Create a link to an calendar
@@ -22,127 +22,188 @@ use Zend\View\Helper\AbstractHelper;
  * @package     View
  * @subpackage  Helper
  */
-class CalendarLink extends AbstractHelper
+class CalendarLink extends LinkAbstract
 {
     /**
-     * @param Entity\Calendar $calendar
-     * @param string          $action
-     * @param string          $show
-     * @param string          $which
-     * @param null            $alternativeShow
-     * @param null            $year
+     * @var Calendar
+     */
+    protected $calendar;
+    /**
+     * @var int
+     */
+    protected $year;
+    /**
+     * @var
+     */
+    protected $which;
+
+    /**
+     * @param Calendar $calendar
+     * @param string   $action
+     * @param string   $show
+     * @param string   $which
+     * @param null     $alternativeShow
+     * @param null     $year
      *
      * @return string
      * @throws \Exception
      */
     public function __invoke(
-        Entity\Calendar $calendar = null,
+        Calendar $calendar = null,
         $action = 'view',
         $show = 'name',
         $which = CalendarService::WHICH_UPCOMING,
         $alternativeShow = null,
         $year = null
     ) {
-        $translate = $this->view->plugin('translate');
-        $url       = $this->view->plugin('url');
-        $serverUrl = $this->view->plugin('serverUrl');
-        $params    = array(
-            'entity' => 'calendar'
+        $this->setCalendar($calendar);
+        $this->setAction($action);
+        $this->setShow($show);
+        $this->setWhich($which);
+        $this->setYear($year);
+        $this->setAlternativeShow($alternativeShow);
+        /**
+         * Set the non-standard options needed to give an other link value
+         */
+        $this->setShowOptions(
+            [
+                'alternativeShow' => $this->getAlternativeShow(),
+                'text-which-tab'  => ucfirst($this->getWhich()),
+                'name'            => $this->getCalendar()->getCalendar()
+            ]
         );
-        switch ($action) {
-            case 'new':
-                $router   = 'zfcadmin/calendar-manager/new';
-                $text     = sprintf($translate("txt-new-area"));
-                $calendar = new Entity\Calendar();
-                break;
+
+        /**
+         * Check the access to the object
+         */
+        if (!$this->hasAccess(
+            $this->getCalendar(),
+            CalendarAssertion::class,
+            $this->getAction()
+        )
+        ) {
+            return 'Access denied';
+        }
+
+        $this->addRouterParam('entity', 'calendar');
+        $this->addRouterParam('id', $this->getCalendar()->getId());
+        $this->addRouterParam('calendar', $this->getCalendar()->getId());
+        $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
+        $this->addRouterParam('which', $this->getWhich());
+        $this->addRouterParam('year', $this->getYear());
+
+        return $this->createLink();
+    }
+
+    /**
+     * Parse te action and fill the correct parameters
+     */
+    public function parseAction()
+    {
+
+        switch ($this->getAction()) {
             case 'edit':
-                $router = 'zfcadmin/calendar-manager/edit';
-                $text   = sprintf($translate("txt-edit-calendar-%s"), $calendar);
+                $this->setRouter('zfcadmin/calendar-manager/edit');
+                $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
                 break;
             case 'list':
                 /**
                  * Push the docRef in the params array
                  */
-                $router         = 'route-content_entity_node';
-                $params['year'] = $year;
-                switch ($which) {
+                $this->setRouter('route-content_entity_node');
+                switch ($this->getWhich()) {
                     case CalendarService::WHICH_UPCOMING:
-                        $params['docRef'] = 'upcoming-events';
-                        $text             = sprintf($translate("txt-upcoming-events"));
+                        $this->addRouterParam('docRef', 'upcoming-events');
+                        $this->setText($this->translate("txt-upcoming-events"));
                         break;
                     case CalendarService::WHICH_PAST:
-                        $params['docRef'] = 'past-events';
-                        $text             = sprintf($translate("txt-past-events"));
+                        $this->addRouterParam('docRef', 'past-events');
+                        $this->setText($this->translate("txt-past-events"));
                         break;
                 }
-                $calendar = new Entity\Calendar();
                 break;
             case 'overview':
-                $router   = 'community/calendar/overview';
-                $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
-                $calendar = new Entity\Calendar();
+                $this->setRouter('community/calendar/overview');
+                $this->setText($this->translate("txt-view-calendar"));
+                break;
+            case 'contact':
+                $this->setRouter('community/calendar/contact');
+                $this->setText($this->translate("txt-view-calendar-contact"));
                 break;
             case 'overview-admin':
-                $router   = 'zfcadmin/calendar-manager/overview';
-                $text     = sprintf($translate("txt-view-calendar-%s"), $calendar);
-                $calendar = new Entity\Calendar();
+                $this->setRouter('zfcadmin/calendar-manager/overview');
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view':
-                $router             = 'route-' . $calendar->get("underscore_full_entity_name");
-                $params['calendar'] = $calendar->getId();
-                $params['docRef']   = $calendar->getDocRef();
-                $text               = sprintf($translate("txt-view-calendar-item-%s"), $calendar->getCalendar());
+                $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
+                $params['calendar'] = $this->getCalendar()->getId();
+                $params['docRef'] = $this->getCalendar()->getDocRef();
+                $this->setText(
+                    sprintf($this->translate("txt-view-calendar-item-%s"), $this->getCalendar()->getCalendar())
+                );
                 break;
             case 'view-community':
-                $router = 'community/calendar/calendar';
-                $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
+                $this->setRouter('community/calendar/calendar');
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view-admin':
-                $router = 'zfcadmin/calendar-manager/calendar';
-                $text   = sprintf($translate("txt-view-calendar-%s"), $calendar);
+                $this->setRouter('zfcadmin/calendar-manager/calendar');
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             default:
-                throw new \Exception(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
+                throw new \Exception(sprintf("%s is an incorrect action for %s", $this->getAction(), __CLASS__));
         }
-        $params['id']    = $calendar->getId();
-        $params['which'] = $which;
-        $classes         = [];
-        $linkContent     = [];
-        switch ($show) {
-            case 'icon':
-                if ($action === 'edit') {
-                    $linkContent[] = '<i class="icon-pencil"></i>';
-                } elseif ($action === 'delete') {
-                    $linkContent[] = '<i class="icon-remove"></i>';
-                } else {
-                    $linkContent[] = '<i class="icon-info-sign"></i>';
-                }
-                break;
-            case 'button':
-                $linkContent[] = '<i class="icon-pencil icon-white"></i> ' . $text;
-                $classes[]     = "btn btn-primary";
-                break;
-            case 'name':
-                $linkContent[] = $calendar->getCalendar();
-                break;
-            case 'text-which-tab':
-                $linkContent[] = ucfirst($which);
-                break;
-            case 'alternativeShow':
-                $linkContent[] = $alternativeShow;
-                break;
-            default:
-                $linkContent[] = $calendar;
-                break;
-        }
-        $uri = '<a href="%s" title="%s" class="%s">%s</a>';
+    }
 
-        return sprintf(
-            $uri,
-            $serverUrl->__invoke() . $url($router, $params),
-            $text,
-            implode($classes),
-            implode($linkContent)
-        );
+    /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        if (is_null($this->calendar)) {
+            $this->calendar = new Calendar();
+        }
+
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWhich()
+    {
+        return $this->which;
+    }
+
+    /**
+     * @param mixed $which
+     */
+    public function setWhich($which)
+    {
+        $this->which = $which;
     }
 }

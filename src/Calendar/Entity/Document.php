@@ -16,6 +16,7 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * CalendarDocument
@@ -23,7 +24,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="calendar_document")
  * @ORM\Entity
  */
-class Document extends EntityAbstract
+class Document extends EntityAbstract implements ResourceInterface
 {
     /**
      * @ORM\Column(name="document_id", type="integer", nullable=false)
@@ -107,6 +108,16 @@ class Document extends EntityAbstract
     public function __set($property, $value)
     {
         $this->$property = $value;
+    }
+
+    /**
+     * Returns the string identifier of the Resource
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return sprintf("%s:%s", __CLASS__, $this->id);
     }
 
     /**

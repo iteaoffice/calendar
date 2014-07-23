@@ -8,12 +8,14 @@
  * @copyright   Copyright (c] 2004-2014 ITEA Office (http://itea3.org]
  */
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
+use Calendar\Acl\Assertion\Contact as ContactAssertion;
+use Calendar\Acl\Assertion\Document as DocumentAssertion;
 use Calendar\Controller\ControllerInitializer;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Calendar\Service\ServiceInitializer;
 
-$config      = [
+$config = [
     'controllers'     => [
         'initializers' => [
             ControllerInitializer::class
@@ -34,6 +36,8 @@ $config      = [
         ],
         'invokables'   => [
             CalendarAssertion::class        => CalendarAssertion::class,
+            ContactAssertion::class         => ContactAssertion::class,
+            DocumentAssertion::class        => DocumentAssertion::class,
             CalendarService::class          => CalendarService::class,
             FormService::class              => FormService::class,
             'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',

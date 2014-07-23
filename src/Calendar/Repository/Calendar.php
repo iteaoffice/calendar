@@ -78,8 +78,8 @@ class Calendar extends EntityRepository
                 $contact = new Contact();
                 $contact->setId(0);
                 $access = new Access();
-                $access->setAccess('public');
-                $contact->setAccess(array($access));
+                $access->setAccess(Access::ACCESS_PUBLIC);
+                $contact->setAccess([$access]);
             }
             $qb = $this->filterForAccess($qb, $contact);
         }
@@ -101,11 +101,20 @@ class Calendar extends EntityRepository
      *
      * @return bool
      */
-    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact)
+    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact = null)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('c');
         $qb->from("Calendar\Entity\Calendar", 'c');
+
+        if (is_null($contact)) {
+            $contact = new Contact();
+            $contact->setId(0);
+            $access = new Access();
+            $access->setAccess(Access::ACCESS_PUBLIC);
+            $contact->setAccess([$access]);
+        }
+
         $qb = $this->filterForAccess($qb, $contact);
         $qb->andWhere('c = ?100');
         $qb->setParameter(100, $calendar);

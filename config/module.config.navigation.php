@@ -15,13 +15,17 @@ return array(
                 'label' => _("txt-calendar"),
                 'route' => 'community/calendar',
                 'pages' => [
-                    'calendars'       => [
+                    'calendars'        => [
                         'label' => _("txt-calendar"),
                         'route' => 'community/calendar/overview',
                     ],
-                    'review-calendar' => [
+                    'review-calendar'  => [
                         'label' => _("txt-review-calendar"),
                         'route' => 'community/calendar/review-calendar',
+                    ],
+                    'contact' => [
+                        'label' => _("txt-calendar-contact"),
+                        'route' => 'community/calendar/contact',
                     ],
                 ],
             ],

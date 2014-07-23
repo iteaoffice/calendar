@@ -1,0 +1,32 @@
+<table class="table table-condensed table-listed table-striped table-hover">
+    <head>
+        <tr>
+            <th>{{ translate("txt-date") }}</th>
+            <th>{{ translate("txt-event-meeting") }}</th>
+            <th>{{ translate("txt-location") }}</th>
+            <th>{{ translate("txt-role") }}</th>
+            <th>{{ translate("txt-presence") }}</th>
+        </tr>
+    </head>
+    <tbody>
+    {% for calendarContact in elements %}
+        <tr>
+            <td>
+                {{ calendarContact.calendar.dateFrom|from_to_date(calendarContact.calendar.dateEnd) }}
+            </td>
+
+            <td>{{ calendarLink(calendarContact.calendar,'view-community', 'name') }}</td>
+            <td>{{ calendarContact.calendar.location }}</td>
+            <td>{{ calendarContact.role }}</td>
+            <td>
+                <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                   class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                   class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                   class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

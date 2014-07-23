@@ -9,13 +9,12 @@
  */
 namespace Calendar\Acl\Assertion;
 
-use Admin\Entity\Access;
-use Calendar\Entity\Calendar as CalendarEntity;
+use Calendar\Entity\Document as DocumentEntity;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
-class Calendar extends AssertionAbstract
+class Document extends AssertionAbstract
 {
     /**
      * Returns true if and only if the assertion conditions are met
@@ -33,52 +32,23 @@ class Calendar extends AssertionAbstract
      */
     public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
     {
-
-        $id = (int) $this->getRouteMatch()->getParam('id');
-
-        if (is_null($privilege)) {
-            $privilege = $this->getRouteMatch()->getParam('privilege');
-        }
-
-        if (!$resource instanceof CalendarEntity) {
+        if (!$resource instanceof DocumentEntity) {
             /**
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
+            $calendarId = (int) $this->getRouteMatch()->getParam('id');
+            $privilege = $this->getRouteMatch()->getParam('privilege');
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $this->getCalendarService()->setCalendarId($id);
+            $this->getCalendarService()->setCalendarId($calendarId);
         } else {
             $this->getCalendarService()->setCalendar($resource);
         }
-
         switch ($privilege) {
-            case 'edit':
-                if ($this->getContactService()->hasPermit('edit', $resource)) {
-                    return true;
-                }
-
-                return $this->rolesHaveAccess(array(Access::ACCESS_OFFICE));
-            case 'list':
-                return true;
-            case 'overview':
-            case 'contact':
-                return $this->hasContact();
-            case 'view-community':
-                /**
-                 * Access can be granted via the type or via the permit-editor.
-                 * We will first check the permit and have a fail over to the type
-                 */
-                if ($this->getContactService()->hasPermit('view', $resource)) {
-                    return true;
-                }
-
-                return $this->rolesHaveAccess($resource->getType()->getAccess());
-
             case 'view':
                 return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
-
         }
 
         return false;

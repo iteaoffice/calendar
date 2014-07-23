@@ -72,7 +72,28 @@ return [
                                 'options' => [
                                     'route'    => '/review-calendar.html',
                                     'defaults' => [
-                                        'action' => 'review-calendar',
+                                        'action'    => 'review-calendar',
+                                        'privilege' => 'review-calendar',
+                                    ],
+                                ],
+                            ],
+                            'contact'         => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/contact.html',
+                                    'defaults' => [
+                                        'action'    => 'contact',
+                                        'privilege' => 'contact',
+                                    ],
+                                ],
+                            ],
+                            'update-status'   => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/update-status.html',
+                                    'defaults' => [
+                                        'action'    => 'update-status',
+                                        'privilege' => 'update-status',
                                     ],
                                 ],
                             ],

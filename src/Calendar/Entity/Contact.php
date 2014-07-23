@@ -10,14 +10,15 @@
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\InputFilter\InputFilterInterface;
 
 /**
  * Contact
  *
  * @ORM\Table(name="calendar_contact")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
-class Contact
+class Contact extends EntityAbstract
 {
     /**
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
@@ -58,6 +59,62 @@ class Contact
      * @var \Contact\Entity\Contact
      */
     private $contact;
+
+    /**
+     * Magic Getter
+     *
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter
+     *
+     * @param $property
+     * @param $value
+     *
+     * @return void
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * Returns the string identifier of the Resource
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return sprintf("%s:%s", __CLASS__, $this->id);
+    }
+
+    /**
+     * Set input filter
+     *
+     * @param InputFilterInterface $inputFilter
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new \Exception("Setting an inputFilter is currently not supported");
+    }
+
+    /**
+     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
+     */
+    public function getInputFilter()
+    {
+        return [];
+    }
 
     /**
      * @return string

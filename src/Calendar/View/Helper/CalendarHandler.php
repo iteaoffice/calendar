@@ -219,7 +219,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         return $this->getRenderer()->render(
             'calendar/partial/entity/calendar',
-            array('calendar' => $calendar)
+            ['calendar' => $calendar]
         );
     }
 
@@ -239,13 +239,13 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     public function parseCalendar()
     {
         $calendarItems = $this->getCalendarService()
-                              ->findCalendarItems(CalendarService::WHICH_UPCOMING)
-                              ->setMaxResults((int) $this->getLimit())
-                              ->getResult();
+            ->findCalendarItems(CalendarService::WHICH_UPCOMING, $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity())
+            ->setMaxResults((int) $this->getLimit())
+            ->getResult();
 
         return $this->getRenderer()->render(
             'calendar/partial/list/calendar',
-            array('calendarItems' => $calendarItems)
+            ['calendarItems' => $calendarItems]
         );
     }
 
@@ -273,13 +273,13 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     public function parsePastCalendar()
     {
         $calendarItems = $this->getCalendarService()
-                              ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
-                              ->setMaxResults((int) $this->getLimit())
-                              ->getResult();
+            ->findCalendarItems(CalendarService::WHICH_PAST, $this->getYear())
+            ->setMaxResults((int) $this->getLimit())
+            ->getResult();
 
         return $this->getRenderer()->render(
             'calendar/partial/list/calendar-past',
-            array('calendarItems' => $calendarItems)
+            ['calendarItems' => $calendarItems]
         );
     }
 
@@ -307,13 +307,13 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     public function parseCalendarSmall()
     {
         $calendarItems = $this->getCalendarService()
-                              ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-                              ->setMaxResults((int) $this->getLimit())
-                              ->getResult();
+            ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
+            ->setMaxResults((int) $this->getLimit())
+            ->getResult();
 
         return $this->getRenderer()->render(
             'calendar/partial/list/calendar-small',
-            array('calendarItems' => $calendarItems)
+            ['calendarItems' => $calendarItems]
         );
     }
 
@@ -333,10 +333,10 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
 
         return $this->getRenderer()->render(
             'calendar/partial/year-selector',
-            array(
+            [
                 'years'        => $years,
                 'selectedYear' => $year
-            )
+            ]
         );
     }
 }

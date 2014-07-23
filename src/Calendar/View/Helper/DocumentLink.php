@@ -73,11 +73,11 @@ class DocumentLink extends AbstractHelper
         switch ($show) {
             case 'icon':
                 if ($action === 'edit') {
-                    $linkContent[] = '<span class="glyphicon glyphicon-edit"></span>';
+                    $linkContent[] = '<i class="fa fa-pencil-square-o"></i>';
                 } elseif ($action === 'download') {
-                    $linkContent[] = '<span class="glyphicon glyphicon-download"></span>';
+                    $linkContent[] = '<i class="fa fa-download"></i>';
                 } else {
-                    $linkContent[] = '<span class="glyphicon glyphicon-info-sign"></span>';
+                    $linkContent[] = '<i class="fa fa-link"></i>';
                 }
                 break;
             case 'button':

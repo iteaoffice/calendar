@@ -9,7 +9,10 @@
  */
 namespace Calendar\Service;
 
+use BjyAuthorize\Service\Authorize;
+use Calendar\Acl\Assertion\AssertionAbstract;
 use Calendar\Entity;
+use Calendar\Entity\EntityAbstract;
 use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -48,16 +51,12 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
      *
      * @param string $entity
      * @param        $id
-     * @param bool   $populate
      *
      * @return null|Entity\Calendar
      */
-    public function findEntityById($entity, $id, $populate = false)
+    public function findEntityById($entity, $id)
     {
-        $entity = $this->getEntityManager()->getRepository($this->getFullEntityName($entity))->find($id);
-        if ($entity) {
-            return $entity;
-        }
+        return $this->getEntityManager()->getRepository($this->getFullEntityName($entity))->find($id);
     }
 
     /**
@@ -67,14 +66,7 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
      */
     public function newEntity(Entity\EntityAbstract $entity)
     {
-        if (method_exists($entity, 'getLastUpdateBy')) {
-            $authService = $this->getServiceLocator()->get('zfcuser_auth_service');
-            if ($authService->hasIdentity()) {
-                $entity->setLastUpdateBy($authService->getIdentity()->getDisplayName());
-            } else {
-                $entity->setLastUpdateBy('guest');
-            }
-        }
+
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
@@ -88,14 +80,6 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
      */
     public function updateEntity(Entity\EntityAbstract $entity)
     {
-        if (method_exists($entity, 'getLastUpdateBy')) {
-            $authService = $this->getServiceLocator()->get('zfcuser_auth_service');
-            if ($authService->hasIdentity()) {
-                $entity->setLastUpdateBy($authService->getIdentity()->getDisplayName());
-            } else {
-                $entity->setLastUpdateBy('guest');
-            }
-        }
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
@@ -201,5 +185,35 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
         }
 
         return $this->authenticationService;
+    }
+
+    /**
+     * @return Authorize
+     */
+    public function getAuthorizeService()
+    {
+        return $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
+    }
+
+    /**
+     * @param EntityAbstract $entity
+     * @param                $assertion
+     */
+    public function addResource(EntityAbstract $entity, $assertion)
+    {
+        /**
+         * @var $assertion AssertionAbstract
+         */
+        $assertion = $this->getServiceLocator()->get($assertion);
+        if (!$this->getAuthorizeService()->getAcl()->hasResource($entity)
+        ) {
+            $this->getAuthorizeService()->getAcl()->addResource($entity);
+            $this->getAuthorizeService()->getAcl()->allow(
+                [],
+                $entity,
+                [],
+                $assertion
+            );
+        }
     }
 }
