@@ -46,7 +46,7 @@ return [
                                 'action'     => 'index',
                             ],
                         ],
-                        'may_terminate' => true,
+                        'may_terminate' => false,
                         'child_routes'  => [
                             'overview'         => [
                                 'type'    => 'Segment',
