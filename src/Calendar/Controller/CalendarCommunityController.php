@@ -10,13 +10,18 @@
 namespace Calendar\Controller;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
+use Calendar\Entity\Contact;
+use Calendar\Entity\ContactRole;
+use Calendar\Entity\ContactStatus;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
+use Calendar\Form\SelectAttendee;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
+use Project\Service\WorkpackageServiceAwareInterface;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\JsonModel;
@@ -25,7 +30,9 @@ use Zend\View\Model\ViewModel;
 /**
  *
  */
-class CalendarCommunityController extends CalendarAbstractController implements CalendarServiceAwareInterface
+class CalendarCommunityController extends CalendarAbstractController implements
+    CalendarServiceAwareInterface,
+    WorkpackageServiceAwareInterface
 {
     /**
      * @return ViewModel
@@ -156,8 +163,9 @@ class CalendarCommunityController extends CalendarAbstractController implements 
 
         return new ViewModel(
             [
-                'calendar' => $calendarService->getCalendar(),
-                'form'     => $form
+                'calendarService'    => $calendarService,
+                'workpackageService' => $this->getWorkpackageService(),
+                'form'               => $form
             ]
         );
     }
@@ -184,6 +192,111 @@ class CalendarCommunityController extends CalendarAbstractController implements 
         return new JsonModel(
             [
                 'result' => 'success',
+            ]
+        );
+    }
+
+    /**
+     * Special action which produces an HTML version of the review calendar
+     *
+     * @return ViewModel
+     */
+    public function selectAttendeesAction()
+    {
+        $calendarService = $this->getCalendarService()->setCalendarId(
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
+        if (is_null($calendarService->getCalendar()->getId())) {
+            return $this->notFoundAction();
+        }
+
+        $data = array_merge_recursive(
+            $this->getRequest()->getPost()->toArray()
+        );
+
+        $form = new SelectAttendee($calendarService, $this->getContactService());
+        $formValues = [];
+        $formValues['contact'] = [];
+        foreach ($calendarService->getCalendar()->getCalendarContact() as $calendarContact) {
+            $formValues['contact'][] = $calendarContact->getContact()->getId();
+        }
+        $form->setData($formValues);
+
+        if ($this->getRequest()->isPost() && $form->setData($data) && $form->isValid()) {
+            $formValues = $form->getData();
+
+            if (isset($formValues['cancel'])) {
+                return $this->redirect()->toRoute(
+                    'community/calendar/calendar',
+                    ['id' => $calendarService->getCalendar()->getId()],
+                    ['fragment' => 'attendees']
+                );
+            }
+
+            $calendar = $calendarService->getCalendar();
+            $calendarContacts = $calendar->getCalendarContact();
+
+            if (isset($formValues['contact'])) {
+                foreach ($formValues['contact'] as $contactId) {
+                    //Try to find the object.
+                    $calendarContact = $this->getCalendarService()->findCalendarContactByContactAndCalendar(
+                        $this->getContactService()->setContactId($contactId)->getContact(),
+                        $this->getCalendarService()->getCalendar()
+                    );
+
+                    $calendarContacts->removeElement($calendarContact);
+
+                    /**
+                     * Save a new one.
+                     */
+                    if (is_null($calendarContact)) {
+                        $calendarContact = new Contact();
+                        $calendarContact->setContact(
+                            $this->getContactService()->setContactId($contactId)->getContact()
+                        );
+                        $calendarContact->setRole(
+                            $this->getCalendarService()->findEntityById('ContactRole', ContactRole::ROLE_ATTENDEE)
+                        );
+                        $calendarContact->setStatus(
+                            $this->getCalendarService()->findEntityById(
+                                'ContactStatus',
+                                ContactStatus::STATUS_TENTATIVE
+                            )
+                        );
+                        $calendarContact->setCalendar($this->getCalendarService()->getCalendar());
+                        $this->getCalendarService()->newEntity($calendarContact);
+                    }
+                }
+            }
+
+            //Remove the difference in the leftovers in the $calendarContacts, but only when they are attendee
+            foreach ($calendarContacts as $calendarContact) {
+                if ($calendarContact->getRole()->getId() === ContactRole::ROLE_ATTENDEE) {
+                    $this->getCalendarService()->removeEntity($calendarContact);
+                }
+            }
+
+            $this->getCalendarService()->updateEntity($calendar);
+
+            $this->flashMessenger()->addInfoMessage(
+                sprintf(
+                    _("txt-calendar-attendees-for-%s-have-been-updated"),
+                    $calendarService->getCalendar()->getCalendar()
+                )
+            );
+
+            return $this->redirect()->toRoute(
+                'community/calendar/calendar',
+                ['id' => $calendarService->getCalendar()->getId()],
+                ['fragment' => 'attendees']
+            );
+
+        }
+
+        return new ViewModel(
+            [
+                'form'            => $form,
+                'calendarService' => $calendarService,
             ]
         );
     }

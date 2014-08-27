@@ -9,6 +9,7 @@
  */
 namespace Calendar\Controller;
 
+use BjyAuthorize\Controller\Plugin\IsAllowed;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
@@ -17,12 +18,12 @@ use Contact\Service\ContactService;
 use Contact\Service\ContactServiceAwareInterface;
 use General\Service\GeneralService;
 use General\Service\GeneralServiceAwareInterface;
+use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
-use BjyAuthorize\Controller\Plugin\IsAllowed;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
@@ -44,6 +45,10 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var ContactService
      */
     protected $contactService;
+    /**
+     * @var WorkpackageService
+     */
+    protected $workpackageService;
     /**
      * @var CalendarService;
      */
@@ -153,6 +158,26 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkpackageService
+     */
+    public function getWorkpackageService()
+    {
+        return $this->workpackageService;
+    }
+
+    /**
+     * @param WorkpackageService $workpackageService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setWorkpackageService(WorkpackageService $workpackageService)
+    {
+        $this->workpackageService = $workpackageService;
 
         return $this;
     }

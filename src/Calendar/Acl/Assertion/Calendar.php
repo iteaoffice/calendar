@@ -48,18 +48,19 @@ class Calendar extends AssertionAbstract
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $this->getCalendarService()->setCalendarId($id);
+            $resource = $this->getCalendarService()->setCalendarId($id)->getCalendar();
         } else {
             $this->getCalendarService()->setCalendar($resource);
         }
 
         switch ($privilege) {
             case 'edit':
+            case 'select-attendees':
                 if ($this->getContactService()->hasPermit('edit', $resource)) {
                     return true;
                 }
 
-                return $this->rolesHaveAccess(array(Access::ACCESS_OFFICE));
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'list':
                 return true;
             case 'overview':
