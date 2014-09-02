@@ -116,7 +116,7 @@ class Contact extends EntityRepository
     }
 
     /**
-     * @param  Entity\Calendar $calendar
+     * @param  Entity\Calendar  $calendar
      * @return Entity\Contact[]
      */
     public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar)

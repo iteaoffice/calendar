@@ -34,7 +34,7 @@ class Calendar extends AssertionAbstract
     public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
     {
 
-        $id = (int)$this->getRouteMatch()->getParam('id');
+        $id = (int) $this->getRouteMatch()->getParam('id');
 
         if (is_null($privilege)) {
             $privilege = $this->getRouteMatch()->getParam('privilege');
