@@ -104,8 +104,8 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param  string            $which
-     * @param  Contact           $contact
+     * @param  string  $which
+     * @param  Contact $contact
      * @return CalendarContact[]
      */
     public function findCalendarContactByContact($which = self::WHICH_UPCOMING, Contact $contact = null)

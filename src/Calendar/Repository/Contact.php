@@ -31,6 +31,7 @@ class Contact extends EntityRepository
         $qb->select('cc');
         $qb->from("Calendar\Entity\Contact", 'cc');
         $qb->join('cc.calendar', "c");
+        $qb->join('cc.contact', "contact");
 
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
@@ -69,6 +70,7 @@ class Contact extends EntityRepository
         }
 
         $qb->andWhere('cc.contact = ?10');
+        $qb->addOrderBy('contact.lastName', 'ASC');
         $qb->setParameter(10, $contact);
 
         return $qb->getQuery()->getResult();
@@ -114,7 +116,7 @@ class Contact extends EntityRepository
     }
 
     /**
-     * @param  Entity\Calendar  $calendar
+     * @param  Entity\Calendar $calendar
      * @return Entity\Contact[]
      */
     public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar)
