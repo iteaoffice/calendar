@@ -96,7 +96,8 @@ class CalendarNavigationService
      */
     public function updateCommunityNavigation()
     {
-        $communityCalendar = $this->getNavigation()->findOneBy('route', 'community/calendar');
+        $communityCalendar = $this->getNavigation()->findOneBy('route', 'community/calendar/overview');
+
         if ($this->getCalendarService()->isEmpty()) {
             return false;
         }
@@ -117,9 +118,9 @@ class CalendarNavigationService
                                     'label'  => $this->getProjectService()->parseFullname(),
                                     'route'  => 'community/project/project',
                                     'router' => $this->getRouter(),
-                                    'params' => array(
+                                    'params' => [
                                         'docRef' => $this->getProjectService()->getProject()->getDocRef()
-                                    ),
+                                    ],
                                     'pages'  => [
                                         'calendar' => [
                                             'label'  => sprintf(
@@ -130,9 +131,9 @@ class CalendarNavigationService
                                             'route'  => 'community/calendar/calendar',
                                             'router' => $this->getRouter(),
                                             'active' => true,
-                                            'params' => array(
+                                            'params' => [
                                                 'id' => $this->getCalendarService()->getCalendar()->getId()
-                                            )
+                                            ]
                                         ]
                                     ]
                                 ]
@@ -141,11 +142,11 @@ class CalendarNavigationService
                     );
                 }
                 if (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-                    $pages['calendar']['pages']['calendar'] = array(
+                    $pages['calendar']['pages']['calendar'] = [
                         'label' => $this->translate("txt-calendar"),
                         'route' => 'community/calendar/overview',
-                    );
-                    $pages['calendar']['pages']['calendar']['pages']['item'] = array(
+                    ];
+                    $pages['calendar']['pages']['calendar']['pages']['item'] = [
                         'label'  => sprintf(
                             $this->translate("txt-calendar-item-%s-at-%s"),
                             $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -153,15 +154,16 @@ class CalendarNavigationService
                         ),
                         'route'  => 'community/calendar/calendar',
                         'active' => true,
-                        'params' => array(
+                        'params' => [
                             'id' => $this->getCalendarService()->getCalendar()->getId()
-                        )
-                    );
+                        ]
+                    ];
                 }
 
                 break;
         }
 
+        return null;
     }
 
     /**
@@ -242,15 +244,15 @@ class CalendarNavigationService
                         $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
                     );
                     $calendarManager->addPage(
-                        array(
+                        [
                             'label'  => $this->projectService->parseFullname(),
                             'route'  => 'community/project/project',
-                            'params' => array(
+                            'params' => [
                                 'docRef' => $this->projectService->getProject()->getDocRef()
-                            ),
+                            ],
                             'router' => $this->getRouter(),
-                            'pages'  => array(
-                                'project_calendar' => array(
+                            'pages'  => [
+                                'project_calendar' => [
                                     'label'  => sprintf(
                                         $this->translate("txt-calendar-item-%s-at-%s"),
                                         $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -259,16 +261,16 @@ class CalendarNavigationService
                                     'route'  => 'zfcadmin/calendar-manager/calendar',
                                     'active' => true,
                                     'router' => $this->getRouter(),
-                                    'params' => array(
+                                    'params' => [
                                         'id' => $this->getCalendarService()->getCalendar()->getId()
-                                    )
-                                )
-                            )
-                        )
+                                    ]
+                                ]
+                            ]
+                        ]
                     );
                 } else {
                     $calendarManager->addPage(
-                        array(
+                        [
                             'label'  => sprintf(
                                 $this->translate("txt-calendar-item-%s-at-%s"),
                                 $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -277,10 +279,10 @@ class CalendarNavigationService
                             'route'  => 'zfcadmin/calendar-manager/calendar',
                             'router' => $this->getRouter(),
                             'active' => true,
-                            'params' => array(
+                            'params' => [
                                 'id' => $this->getCalendarService()->getCalendar()->getId()
-                            )
-                        )
+                            ]
+                        ]
                     );
                 }
                 break;
@@ -290,15 +292,15 @@ class CalendarNavigationService
                         $this->getCalendarService()->getCalendar()->getProjectCalendar()->getProject()
                     );
                     $calendarManager->addPage(
-                        array(
+                        [
                             'label'  => $this->projectService->parseFullname(),
                             'route'  => 'community/project/project',
                             'router' => $this->getRouter(),
-                            'params' => array(
+                            'params' => [
                                 'docRef' => $this->projectService->getProject()->getDocRef()
-                            ),
-                            'pages'  => array(
-                                'project_calendar' => array(
+                            ],
+                            'pages'  => [
+                                'project_calendar' => [
                                     'label'  => sprintf(
                                         $this->translate("txt-calendar-item-%s-at-%s"),
                                         $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -306,11 +308,11 @@ class CalendarNavigationService
                                     ),
                                     'route'  => 'zfcadmin/calendar-manager/calendar',
                                     'router' => $this->getRouter(),
-                                    'params' => array(
+                                    'params' => [
                                         'id' => $this->getCalendarService()->getCalendar()->getId()
-                                    ),
-                                    'pages'  => array(
-                                        'edit_project_calendar' => array(
+                                    ],
+                                    'pages'  => [
+                                        'edit_project_calendar' => [
                                             'label'  => sprintf(
                                                 $this->translate("txt-edit-calendar-item-%s-at-%s"),
                                                 $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -319,18 +321,18 @@ class CalendarNavigationService
                                             'route'  => 'zfcadmin/calendar-manager/edit',
                                             'active' => true,
                                             'router' => $this->getRouter(),
-                                            'params' => array(
+                                            'params' => [
                                                 'id' => $this->getCalendarService()->getCalendar()->getId()
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     );
                 } else {
                     $calendarManager->addPage(
-                        array(
+                        [
                             'label'  => sprintf(
                                 $this->translate("txt-calendar-item-%s-at-%s"),
                                 $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -338,12 +340,12 @@ class CalendarNavigationService
                             ),
                             'route'  => 'zfcadmin/calendar-manager/calendar',
                             'router' => $this->getRouter(),
-                            'params' => array(
+                            'params' => [
                                 'id' => $this->getCalendarService()->getCalendar()->getId()
-                            ),
-                            'pages'  => array(
+                            ],
+                            'pages'  => [
                                 'edit_calendar_item' =>
-                                    array(
+                                    [
                                         'label'  => sprintf(
                                             $this->translate("txt-edit-calendar-item-%s-at-%s"),
                                             $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -352,12 +354,12 @@ class CalendarNavigationService
                                         'route'  => 'zfcadmin/calendar-manager/edit',
                                         'active' => true,
                                         'router' => $this->getRouter(),
-                                        'params' => array(
+                                        'params' => [
                                             'id' => $this->getCalendarService()->getCalendar()->getId()
-                                        )
-                                    )
-                            )
-                        )
+                                        ]
+                                    ]
+                            ]
+                        ]
                     );
                 }
                 break;

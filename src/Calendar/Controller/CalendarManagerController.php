@@ -32,10 +32,13 @@ class CalendarManagerController extends CalendarAbstractController
     public function overviewAction()
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
-        $page  = $this->getEvent()->getRouteMatch()->getParam('page', 1);
-        $year  = $this->getEvent()->getRouteMatch()->getParam('year', date("Y"));
-        $birthDays     = $this->getContactService()->findContactsWithDateOfBirth();
-        $calendarItems = $this->getCalendarService()->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity())->getResult();
+        $page = $this->getEvent()->getRouteMatch()->getParam('page', 1);
+        $year = $this->getEvent()->getRouteMatch()->getParam('year', date("Y"));
+        $birthDays = $this->getContactService()->findContactsWithDateOfBirth();
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            $which,
+            $this->zfcUserAuthentication()->getIdentity()
+        )->getResult();
         $calender = [];
         foreach ($birthDays as $birthDay) {
             /**
@@ -47,21 +50,21 @@ class CalendarManagerController extends CalendarAbstractController
                 $birthDay->getDateOfBirth()->format("m"),
                 $birthDay->getDateOfBirth()->format("d")
             );
-            $calender[$index] = array(
+            $calender[$index] = [
                 'item' => sprintf(
                     _("Birthday of %s (%s)"),
                     $birthDay->getDisplayName(),
                     $birthDay->getDateOfBirth()->format("Y")
                 ),
                 'date' => \DateTime::createFromFormat("Ymdhis", $index)
-            );
+            ];
         }
         foreach ($calendarItems as $calendarItem) {
-            $calender[$calendarItem->getDateFrom()->format('Ymdhis') . $calendarItem->getId()] = array(
+            $calender[$calendarItem->getDateFrom()->format('Ymdhis') . $calendarItem->getId()] = [
                 'item'     => $calendarItem->getCalendar(),
                 'calendar' => $calendarItem,
                 'date'     => null
-            );
+            ];
         }
         ksort($calender);
         $paginator = new Paginator(new ArrayAdapter($calender));
@@ -71,11 +74,11 @@ class CalendarManagerController extends CalendarAbstractController
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel(
-            array(
+            [
                 'which'       => $which,
                 'paginator'   => $paginator,
                 'whichValues' => $whichValues
-            )
+            ]
         );
     }
 
@@ -105,10 +108,11 @@ class CalendarManagerController extends CalendarAbstractController
                     $calendar->getCalendar()
                 )
             );
-            $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', array('id' => $calendar->getId()));
+
+            return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
         }
 
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(['form' => $form]);
     }
 
     /**
@@ -130,7 +134,7 @@ class CalendarManagerController extends CalendarAbstractController
             if (isset($data['cancel'])) {
                 return $this->redirect()->toRoute(
                     'zfcadmin/calendar-manager/calendar',
-                    array('id' => $calendar->getId())
+                    ['id' => $calendar->getId()]
                 );
             }
             /**
@@ -149,10 +153,11 @@ class CalendarManagerController extends CalendarAbstractController
                     $calendar->getCalendar()
                 )
             );
-            $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', array('id' => $calendar->getId()));
+
+            return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
         }
 
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(['form' => $form]);
     }
 
     /**
@@ -171,7 +176,7 @@ class CalendarManagerController extends CalendarAbstractController
             $this->getRequest()->getFiles()->toArray()
         );
         $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $form          = new CreateCalendarDocument($entityManager);
+        $form = new CreateCalendarDocument($entityManager);
         $form->bind(new Document());
         //Add the missing form fields
         $data['calendar'] = $calendarService->getCalendar()->getId();
@@ -183,7 +188,7 @@ class CalendarManagerController extends CalendarAbstractController
             /**
              * Add the file
              */
-            $file              = $data['file'];
+            $file = $data['file'];
             $fileSizeValidator = new FilesSize(PHP_INT_MAX);
             $fileSizeValidator->isValid($file);
             $document->setSize($fileSizeValidator->size);
@@ -206,17 +211,17 @@ class CalendarManagerController extends CalendarAbstractController
 
             return $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/calendar',
-                array(
+                [
                     'id' => $calendarService->getCalendar()->getId()
-                )
+                ]
             );
         }
 
         return new ViewModel(
-            array(
+            [
                 'calendarService' => $calendarService,
                 'form'            => $form
-            )
+            ]
         );
     }
 }

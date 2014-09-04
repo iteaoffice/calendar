@@ -9,6 +9,8 @@
  */
 namespace Calendar\Service;
 
+use Admin\Service\AdminService;
+use Admin\Service\AdminServiceAwareInterface;
 use BjyAuthorize\Service\Authorize;
 use Calendar\Acl\Assertion\AssertionAbstract;
 use Calendar\Entity;
@@ -20,7 +22,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * ServiceAbstract
  */
-abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceInterface
+abstract class ServiceAbstract implements
+    ServiceLocatorAwareInterface,
+    ServiceInterface,
+    AdminServiceAwareInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -30,6 +35,10 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
      * @var AuthenticationService;
      */
     protected $authenticationService;
+    /**
+     * @var AdminService;
+     */
+    protected $adminService;
     /**
      * @var ServiceLocatorInterface
      */
@@ -82,6 +91,11 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
+
+        $this->getAdminService()->flushPermitsByEntityAndId(
+            $entity->get('underscore_full_entity_name'),
+            $entity->getId()
+        );
 
         return $entity;
     }
@@ -215,5 +229,25 @@ abstract class ServiceAbstract implements ServiceLocatorAwareInterface, ServiceI
                 $assertion
             );
         }
+    }
+
+    /**
+     * @return AdminService
+     */
+    public function getAdminService()
+    {
+        return $this->adminService;
+    }
+
+    /**
+     * @param AdminService $adminService
+     *
+     * @return ServiceAbstract
+     */
+    public function setAdminService(AdminService $adminService)
+    {
+        $this->adminService = $adminService;
+
+        return $this;
     }
 }

@@ -32,68 +32,62 @@ class CreateCalendarDocument extends Form
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('id', 'create-document');
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Text',
                 'name'       => 'document',
-                'options'    => array(
+                'options'    => [
                     'label'      => _("txt-document-name"),
                     'help-block' => _("txt-document-name-explanation")
-                ),
-                'attributes' => array(
+                ],
+                'attributes' => [
                     'required'    => true,
                     'class'       => 'form-control',
                     'placeholder' => _("txt-please-give-a-calendar-document-name")
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
-                'type' => 'Zend\Form\Element\Csrf',
-                'name' => 'csrf',
-            )
-        );
-        $this->add(
-            array(
+            [
                 'type'       => '\Zend\Form\Element\File',
                 'name'       => 'file',
-                'options'    => array(
+                'options'    => [
                     "label"      => "txt-file",
                     "help-block" => _("txt-file-requirements")
-                ),
-                'attributes' => array(
+                ],
+                'attributes' => [
                     'class' => 'form-control',
-                ),
-            )
+                ],
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-primary",
                     'value' => _("txt-update")
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'delete',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-danger",
                     'value' => _("txt-delete")
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'cancel',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-warning",
                     'value' => _("txt-cancel")
-                )
-            )
+                ]
+            ]
         );
     }
 }

@@ -40,16 +40,16 @@ class CalendarDocumentController extends CalendarAbstractController
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
         $response->getHeaders()
-                 ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-                 ->addHeaderLine(
-                     'Content-Disposition',
-                     'attachment; filename="' . $document->parseFilename() . '.' .
-                     $document->getContentType()->getExtension() . '"'
-                 )
-                 ->addHeaderLine("Pragma: public")
-                 ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
-                 ->addHeaderLine('Content-Length: ' . $document->getSize());
+            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="' . $document->parseFilename() . '.' .
+                $document->getContentType()->getExtension() . '"'
+            )
+            ->addHeaderLine("Pragma: public")
+            ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
+            ->addHeaderLine('Content-Length: ' . $document->getSize());
 
         return $this->response;
     }
@@ -64,7 +64,7 @@ class CalendarDocumentController extends CalendarAbstractController
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
 
-        return new ViewModel(array('document' => $document));
+        return new ViewModel(['document' => $document]);
     }
 
     /**
@@ -101,7 +101,7 @@ class CalendarDocumentController extends CalendarAbstractController
 
                 return $this->redirect()->toRoute(
                     'zfcadmin/calendar-manager/calendar',
-                    array('id' => $document->getCalendar()->getId())
+                    ['id' => $document->getCalendar()->getId()]
                 );
             }
             /**
@@ -131,17 +131,18 @@ class CalendarDocumentController extends CalendarAbstractController
                     sprintf(_("txt-calendar-document-%s-successfully-updated"), $document->parseFileName())
                 );
             }
-            $this->redirect()->toRoute(
+
+            return $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/document/document',
-                array('id' => $document->getId())
+                ['id' => $document->getId()]
             );
         }
 
         return new ViewModel(
-            array(
+            [
                 'document' => $document,
                 'form'     => $form
-            )
+            ]
         );
     }
 }

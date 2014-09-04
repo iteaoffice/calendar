@@ -129,6 +129,18 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
+     * @param Calendar $calendar
+     *
+     * @return CalendarContact[]
+     */
+    public function findCalendarContactsByCalendar(Calendar $calendar)
+    {
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('Contact'))
+            ->findCalendarContactsByCalendar($calendar);
+    }
+
+    /**
      * This function will return a boolean value to see if a contact can view the calendar
      *
      * @param Contact $contact
@@ -179,7 +191,7 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param CalendarContact $calendarContact
-     * @param $status
+     * @param                 $status
      */
     public function updateContactStatus(CalendarContact $calendarContact, $status)
     {
@@ -187,7 +199,18 @@ class CalendarService extends ServiceAbstract
             $this->getEntityManager()->getReference($this->getFullEntityName('ContactStatus'), $status)
         );
         $this->updateEntity($calendarContact);
+    }
 
+    /**
+     * @param Calendar $calendar
+     *
+     * @return CalendarContact[]
+     */
+    public function findGeneralCalendarContactByCalendar(Calendar $calendar)
+    {
+        return $this->getEntityManager()
+            ->getRepository($this->getFullEntityName('Contact'))
+            ->findGeneralCalendarContactByCalendar($calendar);
     }
 
     /**

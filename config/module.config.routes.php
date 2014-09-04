@@ -46,9 +46,9 @@ return [
                                 'action'     => 'index',
                             ],
                         ],
-                        'may_terminate' => true,
+                        'may_terminate' => false,
                         'child_routes'  => [
-                            'overview'        => [
+                            'overview'         => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/overview[/:which][/page-:page].html',
@@ -57,7 +57,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'calendar'        => [
+                            'calendar'         => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/view/[:id].html',
@@ -67,7 +67,17 @@ return [
                                     ],
                                 ],
                             ],
-                            'review-calendar' => [
+                            'select-attendees' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/select-attendees/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'select-attendees',
+                                        'privilege' => 'edit',
+                                    ],
+                                ],
+                            ],
+                            'review-calendar'  => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/review-calendar.html',
@@ -77,7 +87,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'contact'         => [
+                            'contact'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/contact.html',
@@ -87,7 +97,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'update-status'   => [
+                            'update-status'    => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/update-status.html',
@@ -97,7 +107,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'document'        => [
+                            'document'         => [
                                 'type'          => 'Segment',
                                 'options'       => [
                                     'route'    => '/document',

@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityRepository;
 class Contact extends EntityRepository
 {
     /**
-     * @param $which
+     * @param                   $which
      * @param  ContactEntity    $contact
      * @return Entity\Contact[]
      */
@@ -31,6 +31,7 @@ class Contact extends EntityRepository
         $qb->select('cc');
         $qb->from("Calendar\Entity\Contact", 'cc');
         $qb->join('cc.calendar', "c");
+        $qb->join('cc.contact', "contact");
 
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
@@ -69,6 +70,7 @@ class Contact extends EntityRepository
         }
 
         $qb->andWhere('cc.contact = ?10');
+        $qb->addOrderBy('contact.lastName', 'ASC');
         $qb->setParameter(10, $contact);
 
         return $qb->getQuery()->getResult();
@@ -92,5 +94,49 @@ class Contact extends EntityRepository
         $qb->setParameter(11, $calendar);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Entity\Calendar $calendar
+     *
+     * @return Entity\Contact[]
+     */
+    public function findCalendarContactsByCalendar(Entity\Calendar $calendar)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('cc');
+        $qb->from("Calendar\Entity\Contact", 'cc');
+        $qb->join("cc.contact", 'contact');
+
+        $qb->andWhere('cc.calendar = ?11');
+        $qb->setParameter(11, $calendar);
+        $qb->addOrderBy('contact.lastName', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param  Entity\Calendar  $calendar
+     * @return Entity\Contact[]
+     */
+    public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('cc');
+        $qb->from("Calendar\Entity\Contact", 'cc');
+        $qb->join('cc.contact', 'contact');
+        $qb->andWhere('cc.calendar = :calendar');
+
+        //Remove all the contacts which are already in the project as associate or otherwise affected
+        $findContactByProjectIdQueryBuilder = $this->_em->getRepository(
+            'Contact\Entity\Contact'
+        )->findContactByProjectIdQueryBuilder();
+        $qb->andWhere($qb->expr()->notIn('cc.contact', $findContactByProjectIdQueryBuilder->getDQL()));
+
+        $qb->setParameter(1, $calendar->getProjectCalendar()->getProject()->getId());
+        $qb->setParameter('calendar', $calendar);
+        $qb->addOrderBy('contact.lastName', 'ASC');
+
+        return $qb->getQuery()->getResult();
     }
 }

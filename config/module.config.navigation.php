@@ -7,24 +7,24 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-return array(
+return [
     'navigation' => [
         'community' => [
             // And finally, here is where we define our page hierarchy
             'calendar' => [
                 'label' => _("txt-calendar"),
-                'route' => 'community/calendar',
+                'route' => 'community/calendar/overview',
                 'pages' => [
-                    'calendars'        => [
-                        'label' => _("txt-calendar"),
+                    'calendars'       => [
+                        'label' => _("txt-community-calendar"),
                         'route' => 'community/calendar/overview',
                     ],
-                    'review-calendar'  => [
+                    'review-calendar' => [
                         'label' => _("txt-review-calendar"),
                         'route' => 'community/calendar/review-calendar',
                     ],
-                    'contact' => [
-                        'label' => _("txt-calendar-contact"),
+                    'contact'         => [
+                        'label' => _("txt-calendar-invitations"),
                         'route' => 'community/calendar/contact',
                     ],
                 ],
@@ -49,4 +49,4 @@ return array(
             ],
         ],
     ],
-);
+];

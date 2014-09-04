@@ -44,40 +44,34 @@ class CreateObject extends Form
         $this->add($objectFieldset);
         $this->setAttribute('method', 'post');
         $this->add(
-            array(
-                'type' => 'Zend\Form\Element\Csrf',
-                'name' => 'csrf'
-            )
-        );
-        $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'cancel',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-warning",
                     'value' => _("txt-cancel")
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'delete',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-danger",
                     'value' => _("txt-delete")
-                )
-            )
+                ]
+            ]
         );
         $this->add(
-            array(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
-                'attributes' => array(
+                'attributes' => [
                     'class' => "btn btn-primary",
                     'value' => _("txt-submit")
-                )
-            )
+                ]
+            ]
         );
     }
 }
