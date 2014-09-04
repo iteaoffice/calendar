@@ -54,7 +54,7 @@ class Bootstrap
             $validator = new SchemaValidator($entityManager);
             $errors = $validator->validateMapping();
             if (count($errors) > 0) {
-                foreach ($errors AS $entity => $errors) {
+                foreach ($errors as $entity => $errors) {
                     echo "Error in Entity: '" . $entity . "':\n";
                     echo implode("\n", $errors);
                     echo "\n";
