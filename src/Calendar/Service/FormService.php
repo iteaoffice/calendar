@@ -39,10 +39,9 @@ class FormService extends ServiceAbstract
         if ($bind) {
             $form->bind($entity);
         }
+
         return $form;
     }
-
-
 
     /**
      * @param string $className
