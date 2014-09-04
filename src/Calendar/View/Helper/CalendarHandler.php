@@ -2,11 +2,11 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Calendar
+ * @package    View
+ * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -48,50 +48,50 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         $this->extractContentParam($content);
         switch ($content->getHandler()->getHandler()) {
-            case 'calendar_item':
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
-                $this->serviceLocator->get('headtitle')->append((string) $this->getCalendarService()->getCalendar());
-                $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
-                $this->serviceLocator->get('headmeta')->setProperty(
-                    'og:title',
-                    $this->getCalendarService()->getCalendar()
-                );
-                $this->serviceLocator->get('headmeta')->setProperty(
-                    'og:description',
-                    $this->getCalendarService()->getCalendar()->getDescription()
-                );
-                /**
+        case 'calendar_item':
+            $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+            $this->serviceLocator->get('headtitle')->append((string) $this->getCalendarService()->getCalendar());
+            $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
+            $this->serviceLocator->get('headmeta')->setProperty(
+                'og:title',
+                $this->getCalendarService()->getCalendar()
+            );
+            $this->serviceLocator->get('headmeta')->setProperty(
+                'og:description',
+                $this->getCalendarService()->getCalendar()->getDescription()
+            );
+            /**
                  * @var $calendarLink CalendarLink
                  */
-                $calendarLink = $this->serviceLocator->get('calendarLink');
-                $this->serviceLocator->get('headmeta')->setProperty(
-                    'og:url',
-                    $calendarLink(
-                        $this->getCalendarService()->getCalendar(),
-                        'view',
-                        'social'
-                    )
-                );
+            $calendarLink = $this->serviceLocator->get('calendarLink');
+            $this->serviceLocator->get('headmeta')->setProperty(
+                'og:url',
+                $calendarLink(
+                    $this->getCalendarService()->getCalendar(),
+                    'view',
+                    'social'
+                )
+            );
 
-                return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
-            case 'calendar':
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+            return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
+        case 'calendar':
+            $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
 
-                return $this->parseCalendar($this->getLimit());
-            case 'calendar_past':
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
+            return $this->parseCalendar($this->getLimit());
+        case 'calendar_past':
+            $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
 
-                return $this->parsePastCalendar($this->getLimit());
-            case 'calendar_small':
-                return $this->parseCalendarSmall($this->getLimit());
-            case 'calendar_year_selector':
-                return $this->parseYearSelector($this->getYear());
-            default:
-                return sprintf(
-                    "No handler available for <code>%s</code> in class <code>%s</code>",
-                    $content->getHandler()->getHandler(),
-                    __CLASS__
-                );
+            return $this->parsePastCalendar($this->getLimit());
+        case 'calendar_small':
+            return $this->parseCalendarSmall($this->getLimit());
+        case 'calendar_year_selector':
+            return $this->parseYearSelector($this->getYear());
+        default:
+            return sprintf(
+                "No handler available for <code>%s</code> in class <code>%s</code>",
+                $content->getHandler()->getHandler(),
+                __CLASS__
+            );
         }
     }
 
@@ -106,30 +106,30 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
              * When the parameterId is 0 (so we want to get the article from the URL
              */
             switch ($param->getParameter()->getParam()) {
-                case 'docRef':
-                    if (!is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
-                    }
-                    break;
-                case 'limit':
-                    if ('0' === $param->getParameterId()) {
-                        $this->setLimit(null);
-                    } else {
-                        $this->setLimit($param->getParameterId());
-                    }
-                    break;
-                case 'year':
-                    if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setYear($year);
-                    } elseif ('0' === $param->getParameterId()) {
-                        $this->setYear(date('Y'));
-                    } else {
-                        $this->setYear($param->getParameterId());
-                    }
-                    break;
-                default:
-                    $this->setCalendarId($param->getParameterId());
-                    break;
+            case 'docRef':
+                if (!is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
+                }
+                break;
+            case 'limit':
+                if ('0' === $param->getParameterId()) {
+                    $this->setLimit(null);
+                } else {
+                    $this->setLimit($param->getParameterId());
+                }
+                break;
+            case 'year':
+                if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    $this->setYear($year);
+                } elseif ('0' === $param->getParameterId()) {
+                    $this->setYear(date('Y'));
+                } else {
+                    $this->setYear($param->getParameterId());
+                }
+                break;
+            default:
+                $this->setCalendarId($param->getParameterId());
+                break;
             }
         }
     }

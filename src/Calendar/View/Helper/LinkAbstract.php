@@ -3,11 +3,11 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Calendar
+ * @package    View
+ * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -120,64 +120,63 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function parseShow()
     {
         switch ($this->getShow()) {
-            case 'icon':
-            case 'button':
-                switch ($this->getAction()) {
-                    case 'new-community':
-                        $this->addLinkContent('<i class="fa fa-plus"></i>');
-                        break;
-                    case 'overview':
-                    case 'contact':
-                        $this->addLinkContent('<i class="fa fa-list-ul"></i>');
-                        break;
-                    case 'edit':
-                    case 'edit-community':
-                        $this->addLinkContent('<i class="fa fa-pencil-square-o"></i>');
-                        break;
-                    case 'download':
-                    case 'download-community':
-                    case 'download-binder':
-                        $this->addLinkContent('<i class="fa fa-download"></i>');
-                        break;
-                    default:
-                        $this->addLinkContent('<i class="fa fa-file-o"></i>');
-                        break;
-                }
-
-                if ($this->getShow() === 'button') {
-                    $this->addLinkContent(' ' . $this->getText());
-                    $this->addClasses("btn btn-primary");
-                }
+        case 'icon':
+        case 'button':
+            switch ($this->getAction()) {
+            case 'new-community':
+                $this->addLinkContent('<i class="fa fa-plus"></i>');
                 break;
-            case 'text':
-                $this->addLinkContent($this->getText());
+            case 'overview':
+            case 'contact':
+                $this->addLinkContent('<i class="fa fa-list-ul"></i>');
                 break;
-            case 'paginator':
-                if (is_null($this->getAlternativeShow())) {
-                    throw new \InvalidArgumentException(
-                        sprintf("this->alternativeShow cannot be null for a paginator link")
-                    );
-                }
-                $this->addLinkContent($this->getAlternativeShow());
+            case 'edit':
+            case 'edit-community':
+                $this->addLinkContent('<i class="fa fa-pencil-square-o"></i>');
                 break;
-            case 'social':
-                /**
+            case 'download':
+            case 'download-community':
+            case 'download-binder':
+                $this->addLinkContent('<i class="fa fa-download"></i>');
+                break;
+            default:
+                $this->addLinkContent('<i class="fa fa-file-o"></i>');
+                break;
+            }
+            if ($this->getShow() === 'button') {
+                $this->addLinkContent(' ' . $this->getText());
+                $this->addClasses("btn btn-primary");
+            }
+            break;
+        case 'text':
+            $this->addLinkContent($this->getText());
+            break;
+        case 'paginator':
+            if (is_null($this->getAlternativeShow())) {
+                throw new \InvalidArgumentException(
+                    sprintf("this->alternativeShow cannot be null for a paginator link")
+                );
+            }
+            $this->addLinkContent($this->getAlternativeShow());
+            break;
+        case 'social':
+            /**
                  * Social is treated in the createLink function, no content needs to be created
                  */
 
-                return null;
-            default:
-                if (!array_key_exists($this->getShow(), $this->showOptions)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
-                            $this->getShow(),
-                            implode(', ', array_keys($this->showOptions))
-                        )
-                    );
-                }
-                $this->addLinkContent($this->showOptions[$this->getShow()]);
-                break;
+            return null;
+        default:
+            if (!array_key_exists($this->getShow(), $this->showOptions)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
+                        $this->getShow(),
+                        implode(', ', array_keys($this->showOptions))
+                    )
+                );
+            }
+            $this->addLinkContent($this->showOptions[$this->getShow()]);
+            break;
         }
     }
 
@@ -370,7 +369,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
      * Add a parameter to the list of parameters for the router
      *
      * @param string $key
-     * @param        $value
+     * @param $value
      * @param bool   $allowNull
      */
     public function addRouterParam($key, $value, $allowNull = true)

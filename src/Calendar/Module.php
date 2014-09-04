@@ -2,12 +2,12 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    SoloDB
- * @package     Calendar
- * @subpackage  Module
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
- * @version     4.0
+ * @category   SoloDB
+ * @package    Calendar
+ * @subpackage Module
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @version    4.0
  */
 namespace Calendar;
 

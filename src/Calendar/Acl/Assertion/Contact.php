@@ -2,10 +2,10 @@
 /**
  * Debranova copyright message placeholder
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 Debranova
+ * @category  Calendar
+ * @package   Entity
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 Debranova
  */
 namespace Calendar\Acl\Assertion;
 
@@ -40,11 +40,11 @@ class Contact extends AssertionAbstract
 
         switch ($privilege) {
 
-            case 'update-status':
-                return $this->getCalendarService()->calendarHasContact(
-                    $this->getCalendarService()->getCalendar(),
-                    $this->getContactService()->getContact()
-                );
+        case 'update-status':
+            return $this->getCalendarService()->calendarHasContact(
+                $this->getCalendarService()->getCalendar(),
+                $this->getContactService()->getContact()
+            );
         }
 
         return false;

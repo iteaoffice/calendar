@@ -2,10 +2,10 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     Repository
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ * @package   Repository
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Repository;
 
@@ -34,39 +34,39 @@ class Contact extends EntityRepository
         $qb->join('cc.contact', "contact");
 
         switch ($which) {
-            case CalendarService::WHICH_UPCOMING:
-                $qb->andWhere('c.dateFrom >= ?1');
-                $qb->orderBy('c.dateFrom', 'ASC');
-                $qb->setParameter(1, new \DateTime());
-                break;
-            case CalendarService::WHICH_PAST:
-                $qb->andWhere('c.dateFrom <= ?1');
-                $qb->orderBy('c.dateEnd', 'DESC');
-                $qb->setParameter(1, new \DateTime());
-                break;
-            case CalendarService::WHICH_REVIEWS:
-                $qb->andWhere('c.dateEnd >= ?1');
-                $qb->orderBy('c.dateFrom', 'ASC');
-                $qb->setParameter(1, new \DateTime());
-                $projectCalendarSubSelect = $this->_em->createQueryBuilder();
-                $projectCalendarSubSelect->select('calendar.id');
-                $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
-                $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
-                $qb->andWhere($qb->expr()->in('c.id', $projectCalendarSubSelect->getDQL()));
-                break;
-            case CalendarService::WHICH_UPDATED:
-                $qb->orderBy('c.dateUpdated', 'DESC');
-                break;
-            case CalendarService::WHICH_ON_HOMEPAGE:
-                $qb->andWhere('c.dateEnd >= ?1');
-                $qb->setParameter(1, new \DateTime());
-                $qb->andWhere('c.onHomepage = ?2');
-                $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
-                $qb->andWhere('c.final = ?3');
-                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('c.sequence', 'ASC');
-                $qb->addOrderBy('c.dateFrom', 'ASC');
-                break;
+        case CalendarService::WHICH_UPCOMING:
+            $qb->andWhere('c.dateFrom >= ?1');
+            $qb->orderBy('c.dateFrom', 'ASC');
+            $qb->setParameter(1, new \DateTime());
+            break;
+        case CalendarService::WHICH_PAST:
+            $qb->andWhere('c.dateFrom <= ?1');
+            $qb->orderBy('c.dateEnd', 'DESC');
+            $qb->setParameter(1, new \DateTime());
+            break;
+        case CalendarService::WHICH_REVIEWS:
+            $qb->andWhere('c.dateEnd >= ?1');
+            $qb->orderBy('c.dateFrom', 'ASC');
+            $qb->setParameter(1, new \DateTime());
+            $projectCalendarSubSelect = $this->_em->createQueryBuilder();
+            $projectCalendarSubSelect->select('calendar.id');
+            $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
+            $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
+            $qb->andWhere($qb->expr()->in('c.id', $projectCalendarSubSelect->getDQL()));
+            break;
+        case CalendarService::WHICH_UPDATED:
+            $qb->orderBy('c.dateUpdated', 'DESC');
+            break;
+        case CalendarService::WHICH_ON_HOMEPAGE:
+            $qb->andWhere('c.dateEnd >= ?1');
+            $qb->setParameter(1, new \DateTime());
+            $qb->andWhere('c.onHomepage = ?2');
+            $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
+            $qb->andWhere('c.final = ?3');
+            $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+            $qb->orderBy('c.sequence', 'ASC');
+            $qb->addOrderBy('c.dateFrom', 'ASC');
+            break;
         }
 
         $qb->andWhere('cc.contact = ?10');

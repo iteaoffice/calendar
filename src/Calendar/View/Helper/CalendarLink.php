@@ -3,11 +3,11 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Calendar
+ * @package    View
+ * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -18,9 +18,9 @@ use Calendar\Service\CalendarService;
 /**
  * Create a link to an calendar
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
+ * @category   Calendar
+ * @package    View
+ * @subpackage Helper
  */
 class CalendarLink extends LinkAbstract
 {
@@ -102,60 +102,60 @@ class CalendarLink extends LinkAbstract
     {
 
         switch ($this->getAction()) {
-            case 'edit':
-                $this->setRouter('zfcadmin/calendar-manager/edit');
-                $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
-                break;
-            case 'list':
-                /**
+        case 'edit':
+            $this->setRouter('zfcadmin/calendar-manager/edit');
+            $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
+            break;
+        case 'list':
+            /**
                  * Push the docRef in the params array
                  */
-                $this->setRouter('route-content_entity_node');
-                switch ($this->getWhich()) {
-                    case CalendarService::WHICH_UPCOMING:
-                        $this->addRouterParam('docRef', 'upcoming-events');
-                        $this->setText($this->translate("txt-upcoming-events"));
-                        break;
-                    case CalendarService::WHICH_PAST:
-                        $this->addRouterParam('docRef', 'past-events');
-                        $this->setText($this->translate("txt-past-events"));
-                        break;
-                }
+            $this->setRouter('route-content_entity_node');
+            switch ($this->getWhich()) {
+            case CalendarService::WHICH_UPCOMING:
+                $this->addRouterParam('docRef', 'upcoming-events');
+                $this->setText($this->translate("txt-upcoming-events"));
                 break;
-            case 'overview':
-                $this->setRouter('community/calendar/overview');
-                $this->setText($this->translate("txt-view-calendar"));
+            case CalendarService::WHICH_PAST:
+                $this->addRouterParam('docRef', 'past-events');
+                $this->setText($this->translate("txt-past-events"));
                 break;
-            case 'contact':
-                $this->setRouter('community/calendar/contact');
-                $this->setText($this->translate("txt-view-calendar-contact"));
-                break;
-            case 'select-attendees':
-                $this->setRouter('community/calendar/select-attendees');
-                $this->setText($this->translate("txt-select-attendees-from-project"));
-                break;
-            case 'overview-admin':
-                $this->setRouter('zfcadmin/calendar-manager/overview');
-                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
-                break;
-            case 'view':
-                $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
-                $params['calendar'] = $this->getCalendar()->getId();
-                $params['docRef'] = $this->getCalendar()->getDocRef();
-                $this->setText(
-                    sprintf($this->translate("txt-view-calendar-item-%s"), $this->getCalendar()->getCalendar())
-                );
-                break;
-            case 'view-community':
-                $this->setRouter('community/calendar/calendar');
-                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
-                break;
-            case 'view-admin':
-                $this->setRouter('zfcadmin/calendar-manager/calendar');
-                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
-                break;
-            default:
-                throw new \Exception(sprintf("%s is an incorrect action for %s", $this->getAction(), __CLASS__));
+            }
+            break;
+        case 'overview':
+            $this->setRouter('community/calendar/overview');
+            $this->setText($this->translate("txt-view-calendar"));
+            break;
+        case 'contact':
+            $this->setRouter('community/calendar/contact');
+            $this->setText($this->translate("txt-view-calendar-contact"));
+            break;
+        case 'select-attendees':
+            $this->setRouter('community/calendar/select-attendees');
+            $this->setText($this->translate("txt-select-attendees-from-project"));
+            break;
+        case 'overview-admin':
+            $this->setRouter('zfcadmin/calendar-manager/overview');
+            $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
+            break;
+        case 'view':
+            $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
+            $params['calendar'] = $this->getCalendar()->getId();
+            $params['docRef'] = $this->getCalendar()->getDocRef();
+            $this->setText(
+                sprintf($this->translate("txt-view-calendar-item-%s"), $this->getCalendar()->getCalendar())
+            );
+            break;
+        case 'view-community':
+            $this->setRouter('community/calendar/calendar');
+            $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
+            break;
+        case 'view-admin':
+            $this->setRouter('zfcadmin/calendar-manager/calendar');
+            $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
+            break;
+        default:
+            throw new \Exception(sprintf("%s is an incorrect action for %s", $this->getAction(), __CLASS__));
         }
     }
 

@@ -2,10 +2,10 @@
 /**
  * Debranova copyright message placeholder
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 Debranova
+ * @category  Calendar
+ * @package   Entity
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 Debranova
  */
 namespace Calendar\Acl\Assertion;
 
@@ -54,32 +54,32 @@ class Calendar extends AssertionAbstract
         }
 
         switch ($privilege) {
-            case 'edit':
-            case 'select-attendees':
-                if ($this->getContactService()->hasPermit('edit', $resource)) {
-                    return true;
-                }
-
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
-            case 'list':
+        case 'edit':
+        case 'select-attendees':
+            if ($this->getContactService()->hasPermit('edit', $resource)) {
                 return true;
-            case 'review-calendar':
-            case 'overview':
-            case 'contact':
-                return $this->hasContact();
-            case 'view-community':
-                /**
+            }
+
+            return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+        case 'list':
+            return true;
+        case 'review-calendar':
+        case 'overview':
+        case 'contact':
+            return $this->hasContact();
+        case 'view-community':
+            /**
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */
-                if ($this->getContactService()->hasPermit('view', $resource)) {
-                    return true;
-                }
+            if ($this->getContactService()->hasPermit('view', $resource)) {
+                return true;
+            }
 
-                return $this->rolesHaveAccess($resource->getType()->getAccess());
+            return $this->rolesHaveAccess($resource->getType()->getAccess());
 
-            case 'view':
-                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
+        case 'view':
+            return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
 
         }
 
