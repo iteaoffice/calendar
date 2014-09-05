@@ -2,7 +2,7 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
-    {% for whichValue in whichValues %}
+    {% for whichValue in whichValues if whichValue != constant("Calendar\\Service\\CalendarService::WHICH_UPDATED") %}
         <li {% if (which == whichValue) %}class="active"{% endif %}>
             {{ calendarLink(null,'overview', 'text-which-tab', whichValue) }}
         </li>

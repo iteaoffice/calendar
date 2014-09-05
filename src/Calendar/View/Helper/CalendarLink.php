@@ -124,11 +124,11 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'overview':
                 $this->setRouter('community/calendar/overview');
-                $this->setText($this->translate("txt-view-calendar"));
+                $this->setText($this->translate("txt-view-full-calendar"));
                 break;
             case 'contact':
                 $this->setRouter('community/calendar/contact');
-                $this->setText($this->translate("txt-view-calendar-contact"));
+                $this->setText($this->translate("txt-view-review-invitations"));
                 break;
             case 'select-attendees':
                 $this->setRouter('community/calendar/select-attendees');

@@ -1,6 +1,6 @@
 <h1>{{ translate("txt-review-calendar") }}</h1>
 
-<table class="table table-listing table-condensed table-striped">
+<table class="table table-hover table-condensed table-striped">
     <thead>
     <tr>
         <th>{{ translate("txt-project") }}</th>
@@ -10,7 +10,7 @@
         <th>{{ translate("txt-date") }}</th>
         <th>{{ translate("txt-location") }}</th>
         <th>{{ translate("txt-project-leader") }}</th>
-        <th>{{ translate("txt-country-external-expert") }}</th>
+        {#<th>{{ translate("txt-country-external-expert") }}</th>#}
         <th>{{ translate("txt-mentor") }}</th>
         <th>{{ translate("txt-stg-reviewers") }}</th>
         <th>{{ translate("txt-stg-spare-reviewer") }}</th>
@@ -35,11 +35,11 @@
             <td>{{ calendar.location }}</td>
             {% set contactService = contactServiceProxy(projectService.project.contact) %}
             <td>{{ contactService.parseFullName }} ({{ contactService.parseOrganisation() }})</td>
-            <td>
-                {% for contact in calendar.calendarContact if contact.role.id == 5 %}
-                    {{ contact.contact.displayName }}
-                {% endfor %}
-            </td>
+            {#<td>#}
+                {#{% for contact in calendar.calendarContact if contact.role.id == 5 %}#}
+                    {#{{ contact.contact.displayName }}#}
+                {#{% endfor %}#}
+            {#</td>#}
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 9 %}
                     {{ contact.contact.displayName }}

@@ -33,7 +33,7 @@ class CalendarService extends ServiceAbstract
     const WHICH_UPCOMING = 'upcoming';
     const WHICH_UPDATED = 'updated';
     const WHICH_PAST = 'past';
-    const WHICH_REVIEWS = 'reviews';
+    const WHICH_REVIEWS = 'project-reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
     /**
      * @var Entity\Calendar

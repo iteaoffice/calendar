@@ -1,16 +1,16 @@
 <table class="table table-condensed table-striped table-hover">
-    <head>
-        <tr>
-            <th></th>
-            <th>{{ translate("txt-date") }}</th>
-            <th>{{ translate("txt-event-meeting") }}</th>
-            <th>{{ translate("txt-location") }}</th>
-            <th>{{ translate("txt-type") }}</th>
-            <th>{{ translate("txt-documents") }}</th>
-            <th>{{ translate("txt-role") }}</th>
-            <th>{{ translate("txt-presence") }}</th>
-        </tr>
-    </head>
+    <thead>
+    <tr>
+        <th></th>
+        <th>{{ translate("txt-date") }}</th>
+        <th>{{ translate("txt-event-meeting") }}</th>
+        <th>{{ translate("txt-location") }}</th>
+        <th>{{ translate("txt-type") }}</th>
+        <th>{{ translate("txt-documents") }}</th>
+        <th>{{ translate("txt-role") }}</th>
+        <th>{{ translate("txt-presence") }}</th>
+    </tr>
+    </thead>
     <tbody>
     {% for calendar in elements %}
         {% set calendarService = calendarServiceProxy(calendar) %}
@@ -37,11 +37,14 @@
             <td>{{ calendarContact.role }}</td>
             <td>
                 {% if calendarContact %}
-                    <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                    <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
                        class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
-                    <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                    <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
                        class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
-                    <i rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                    <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
                        class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
                 {% endif %}
             </td>
