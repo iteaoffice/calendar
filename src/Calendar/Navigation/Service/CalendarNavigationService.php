@@ -2,10 +2,10 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Application
- * @package     Navigation
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Application
+ * @package   Navigation
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Navigation\Service;
 
@@ -54,8 +54,8 @@ class CalendarNavigationService
      */
     public function update()
     {
-        if (!is_null($this->getRouteMatch()) &&
-            strtolower($this->getRouteMatch()->getParam('namespace')) === 'calendar'
+        if (!is_null($this->getRouteMatch())
+            && strtolower($this->getRouteMatch()->getParam('namespace')) === 'calendar'
         ) {
             if (strpos($this->getRouteMatch()->getMatchedRouteName(), 'community') !== false) {
                 $this->updateCommunityNavigation();
@@ -159,7 +159,6 @@ class CalendarNavigationService
                         ]
                     ];
                 }
-
                 break;
         }
 

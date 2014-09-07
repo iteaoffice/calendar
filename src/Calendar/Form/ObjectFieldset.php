@@ -2,10 +2,10 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Content
- * @package     Form
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Content
+ * @package   Form
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Form;
 
@@ -39,18 +39,18 @@ class ObjectFieldset extends Fieldset
              */
             if ($element instanceof EntitySelect || $element instanceof EntityMultiCheckbox) {
                 $element->setOptions(
-                    array(
+                    [
                         'object_manager' => $entityManager
-                    )
+                    ]
                 );
             }
             if ($element instanceof Radio) {
-                $attributes        = $element->getAttributes();
+                $attributes = $element->getAttributes();
                 $valueOptionsArray = 'get' . ucfirst($attributes['array']);
                 $element->setOptions(
-                    array(
+                    [
                         'value_options' => $object->$valueOptionsArray()
-                    )
+                    ]
                 );
             }
             //Add only when a type is provided

@@ -3,11 +3,11 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Calendar
+ * @package    View
+ * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -143,7 +143,6 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                         $this->addLinkContent('<i class="fa fa-file-o"></i>');
                         break;
                 }
-
                 if ($this->getShow() === 'button') {
                     $this->addLinkContent(' ' . $this->getText());
                     $this->addClasses("btn btn-primary");

@@ -2,10 +2,10 @@
 /**
  * Debranova copyright message placeholder
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 Debranova
+ * @category  Calendar
+ * @package   Entity
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 Debranova
  */
 namespace Calendar\Acl\Assertion;
 

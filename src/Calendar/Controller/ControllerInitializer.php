@@ -2,12 +2,12 @@
 /**
  * Japaveh Webdesign copyright message placeholder
  *
- * @category    Controller
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Controller
+ * @package   Service
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ * @link      http://solodb.net
  */
 namespace Calendar\Controller;
 
@@ -22,12 +22,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * Japaveh Webdesign copyright message placeholder
  *
- * @category    Controller
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Controller
+ * @package   Service
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ * @link      http://solodb.net
  */
 class ControllerInitializer implements InitializerInterface
 {

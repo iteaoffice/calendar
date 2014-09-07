@@ -2,12 +2,12 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    SoloDB
- * @package     Calendar
- * @subpackage  Module
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
- * @version     4.0
+ * @category   SoloDB
+ * @package    Calendar
+ * @subpackage Module
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @version    4.0
  */
 namespace Calendar;
 
@@ -26,16 +26,16 @@ class Module implements
 {
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
                 __DIR__ . '/../../autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/../../src/' . __NAMESPACE__,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -74,7 +74,7 @@ class Module implements
     public function onBootstrap(EventInterface $e)
     {
         $app = $e->getParam('application');
-        $em  = $app->getEventManager();
+        $em = $app->getEventManager();
         $em->attach(
             MvcEvent::EVENT_DISPATCH,
             function ($event) {

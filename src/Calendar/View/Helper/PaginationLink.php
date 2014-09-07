@@ -3,11 +3,11 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Content
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Content
+ * @package    View
+ * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -16,9 +16,9 @@ use Zend\View\Helper\AbstractHelper;
 /**
  * Create a link to an article
  *
- * @category    Content
- * @package     View
- * @subpackage  Helper
+ * @category   Content
+ * @package    View
+ * @subpackage Helper
  */
 class PaginationLink extends AbstractHelper
 {
@@ -33,11 +33,11 @@ class PaginationLink extends AbstractHelper
     {
         $router = 'community/calendar/overview';
         $translate = $this->view->plugin('translate');
-        $url       = $this->view->plugin('url');
-        $params = array(
+        $url = $this->view->plugin('url');
+        $params = [
             'entity' => $entity,
             'page'   => $page
-        );
+        ];
         $uri = '<a href="%s" title="%s">%s</a>';
 
         return sprintf(

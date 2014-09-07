@@ -2,10 +2,10 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     Version
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ * @package   Version
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Version;
 
@@ -50,10 +50,7 @@ final class Version
      *
      * @param string $version A version string (e.g. "0.7.1").
      *
-     * @return int -1 if the $version is older,
-     *             0 if they are the same,
-     *             and +1 if $version is newer.
-     *
+     * @return
      */
     public static function compareVersion($version)
     {
@@ -75,9 +72,9 @@ final class Version
      * the array to a single value, comparing the version numbers with
      * version_compare().
      *
-     * @see    http://developer.github.com/v3/git/refs/#get-all-references
-     * @link   https://api.github.com/repos/zendframework/zf2/git/refs/tags/release-
-     * @link   http://framework.zend.com/api/zf-version?v=2
+     * @see  http://developer.github.com/v3/git/refs/#get-all-references
+     * @link https://api.github.com/repos/zendframework/zf2/git/refs/tags/release-
+     * @link http://framework.zend.com/api/zf-version?v=2
      *
      * @param string      $service    Version service with which to retrieve the version
      * @param Http\Client $httpClient HTTP client with which to retrieve the version
@@ -136,11 +133,11 @@ final class Version
         $url .= '?client_id=2b1088587b9820f33583&amp;client_secret=1738809f67b3fbf4198f2bc36ef54c52d6a3bb6c';
         if ($httpClient === null) {
             $context = stream_context_create(
-                array(
-                    'http' => array(
+                [
+                    'http' => [
                         'user_agent' => sprintf('debranova-version/%s', self::VERSION),
-                    ),
-                )
+                    ],
+                ]
             );
 
             $apiResponse = file_get_contents($url, false, $context);

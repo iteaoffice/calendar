@@ -2,10 +2,10 @@
 /**
  * ITEA Office copyright message placeholder
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ * @package   Entity
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Entity;
 
@@ -15,7 +15,7 @@ use Zend\InputFilter\InputFilterAwareInterface;
 /**
  * Annotations class
  *
- * @author  Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @author Johan van der Heide <johan.van.der.heide@itea3.org>
  */
 abstract class EntityAbstract implements EntityInterface, InputFilterAwareInterface
 {
