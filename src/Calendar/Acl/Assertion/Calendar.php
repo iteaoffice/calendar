@@ -64,6 +64,7 @@ class Calendar extends AssertionAbstract
             case 'list':
                 return true;
             case 'review-calendar':
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'overview':
             case 'contact':
                 return $this->hasContact();
