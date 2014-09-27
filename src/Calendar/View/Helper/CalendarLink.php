@@ -82,7 +82,7 @@ class CalendarLink extends LinkAbstract
             $this->getAction()
         )
         ) {
-            return 'Access denied';
+            return '';
         }
 
         $this->addRouterParam('entity', 'calendar');
