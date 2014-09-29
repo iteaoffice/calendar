@@ -38,7 +38,7 @@ class Document extends AssertionAbstract
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $documentId = (int)$this->getRouteMatch()->getParam('id');
+            $documentId = (int) $this->getRouteMatch()->getParam('id');
             $privilege = $this->getRouteMatch()->getParam('privilege');
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first
@@ -53,10 +53,8 @@ class Document extends AssertionAbstract
             return true;
         }
 
-
         //Inject the calendar into the calendarService to have the access rights there
         $this->getCalendarService()->setCalendar($resource->getCalendar());
-
 
         switch ($privilege) {
             case 'document-community':

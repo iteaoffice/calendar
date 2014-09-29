@@ -67,6 +67,10 @@ class CalendarDocumentController extends CalendarAbstractController
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
 
+        if (is_null($document)) {
+            return $this->notFoundAction();
+        }
+
         return new ViewModel(['document' => $document]);
     }
 
@@ -106,8 +110,9 @@ class CalendarDocumentController extends CalendarAbstractController
                 $this->getCalendarService()->removeEntity($document);
 
                 return $this->redirect()->toRoute(
-                    'community/calendar/document/document',
-                    ['id' => $document->getCalendar()->getId()]
+                    'community/calendar/calendar',
+                    ['id' => $document->getCalendar()->getId()],
+                    ['fragment' => 'documents']
                 );
             }
             /**

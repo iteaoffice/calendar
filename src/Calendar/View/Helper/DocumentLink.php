@@ -72,7 +72,6 @@ class DocumentLink extends LinkAbstract
         return $this->createLink();
     }
 
-
     /**
      * Parse te action and fill the correct parameters
      */
@@ -121,7 +120,6 @@ class DocumentLink extends LinkAbstract
         }
     }
 
-
     /**
      * @return Entity\Document
      */
@@ -130,6 +128,7 @@ class DocumentLink extends LinkAbstract
         if (is_null($this->document)) {
             $this->document = new Entity\Document();
         }
+
         return $this->document;
     }
 
@@ -140,6 +139,4 @@ class DocumentLink extends LinkAbstract
     {
         $this->document = $document;
     }
-
-
 }

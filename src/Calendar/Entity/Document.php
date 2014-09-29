@@ -176,7 +176,7 @@ class Document extends EntityAbstract implements ResourceInterface
             $fileUpload->getValidatorChain()->attachByName(
                 'File\Size',
                 [
-                    'min' => '20kB',
+                    'min' => '10kB',
                     'max' => '8MB',
                 ]
             );
