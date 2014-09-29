@@ -140,25 +140,133 @@ class CalendarNavigationService
                             ]
                         ]
                     );
+                } elseif (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
+                    $communityCalendar->addPage(
+                        [
+                            'label'  => sprintf(
+                                $this->translate("txt-calendar-item-%s-at-%s"),
+                                $this->getCalendarService()->getCalendar()->getCalendar(),
+                                $this->getCalendarService()->getCalendar()->getLocation()
+                            ),
+                            'route'  => 'community/calendar/calendar',
+                            'router' => $this->getRouter(),
+                            'active' => true,
+                            'params' => [
+                                'id' => $this->getCalendarService()->getCalendar()->getId()
+                            ]
+                        ]
+                    );
                 }
-                if (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
-                    $pages['calendar']['pages']['calendar'] = [
-                        'label' => $this->translate("txt-calendar"),
-                        'route' => 'community/calendar/overview',
-                    ];
-                    $pages['calendar']['pages']['calendar']['pages']['item'] = [
+                break;
+            case 'community/calendar/document/document':
+
+                $document = $this->getCalendarService()->findEntityById(
+                    'Document',
+                    $this->getRouteMatch()->getParam('id')
+                );
+
+                $this->getCalendarService()->setCalendar($document->getCalendar());
+
+                $communityCalendar->addPage(
+                    [
                         'label'  => sprintf(
                             $this->translate("txt-calendar-item-%s-at-%s"),
                             $this->getCalendarService()->getCalendar()->getCalendar(),
                             $this->getCalendarService()->getCalendar()->getLocation()
                         ),
                         'route'  => 'community/calendar/calendar',
-                        'active' => true,
+                        'router' => $this->getRouter(),
+                        'active' => false,
                         'params' => [
                             'id' => $this->getCalendarService()->getCalendar()->getId()
+                        ],
+                        'pages'  => [
+                            'calendar' => [
+                                'label'  => sprintf(
+                                    $this->translate("txt-document-%s"),
+                                    $document->getDocument()
+                                ),
+                                'route'  => 'community/calendar/document/document',
+                                'router' => $this->getRouter(),
+                                'active' => true,
+                                'params' => [
+                                    'id' => $document->getId()
+                                ]
+                            ]
                         ]
-                    ];
-                }
+                    ]
+                );
+                break;
+            case 'community/calendar/document/edit':
+
+                $document = $this->getCalendarService()->findEntityById(
+                    'Document',
+                    $this->getRouteMatch()->getParam('id')
+                );
+
+                $this->getCalendarService()->setCalendar($document->getCalendar());
+
+                $communityCalendar->addPage(
+                    [
+                        'label'  => sprintf(
+                            $this->translate("txt-calendar-item-%s-at-%s"),
+                            $this->getCalendarService()->getCalendar()->getCalendar(),
+                            $this->getCalendarService()->getCalendar()->getLocation()
+                        ),
+                        'route'  => 'community/calendar/calendar',
+                        'router' => $this->getRouter(),
+                        'active' => false,
+                        'params' => [
+                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                        ],
+                        'pages'  => [
+                            'calendar' => [
+                                'label'  => sprintf(
+                                    $this->translate("txt-edit-document-%s"),
+                                    $document->getDocument()
+                                ),
+                                'route'  => 'community/calendar/document/edit',
+                                'router' => $this->getRouter(),
+                                'active' => true,
+                                'params' => [
+                                    'id' => $document->getId()
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+                break;
+            case 'community/calendar/select-attendees':
+                $communityCalendar->addPage(
+                    [
+                        'label'  => sprintf(
+                            $this->translate("txt-calendar-item-%s-at-%s"),
+                            $this->getCalendarService()->getCalendar()->getCalendar(),
+                            $this->getCalendarService()->getCalendar()->getLocation()
+                        ),
+                        'route'  => 'community/calendar/calendar',
+                        'router' => $this->getRouter(),
+                        'active' => false,
+                        'params' => [
+                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                        ],
+                        'pages'  => [
+                            'calendar' => [
+                                'label'  => sprintf(
+                                    $this->translate("txt-edit-attendees-of-calendar-item-%s"),
+                                    $this->getCalendarService()->getCalendar()->getCalendar()
+                                ),
+                                'route'  => 'community/calendar/select-attendees',
+                                'router' => $this->getRouter(),
+                                'active' => true,
+                                'params' => [
+                                    'id' => $this->getCalendarService()->getCalendar()->getId()
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+
                 break;
         }
 

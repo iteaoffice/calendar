@@ -9,6 +9,7 @@
  */
 namespace Calendar\Acl\Assertion;
 
+use Admin\Entity\Access;
 use Calendar\Entity\Document as DocumentEntity;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
@@ -37,18 +38,49 @@ class Document extends AssertionAbstract
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $calendarId = (int) $this->getRouteMatch()->getParam('id');
+            $documentId = (int)$this->getRouteMatch()->getParam('id');
             $privilege = $this->getRouteMatch()->getParam('privilege');
             /**
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $this->getCalendarService()->setCalendarId($calendarId);
-        } else {
-            $this->getCalendarService()->setCalendar($resource);
+            $resource = $this->getCalendarService()->findEntityById('Document', $documentId);
         }
+
+        /**
+         * No document was found, so return true because we do not now anything about the access
+         */
+        if (is_null($resource)) {
+            return true;
+        }
+
+
+        //Inject the calendar into the calendarService to have the access rights there
+        $this->getCalendarService()->setCalendar($resource->getCalendar());
+
+
         switch ($privilege) {
-            case 'view':
+            case 'document-community':
+            case 'download':
                 return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
+            case 'edit-community':
+                if ($this->getContactService()->hasPermit('edit', $resource->getCalendar())) {
+                    return true;
+                }
+
+                /**
+                 * The project leader also has rights to invite users
+                 */
+                if (!is_null($resource->getCalendar()->getProjectCalendar())) {
+                    if ($this->getContactService()->hasPermit(
+                        'edit',
+                        $resource->getCalendar()->getProjectCalendar()->getProject()
+                    )
+                    ) {
+                        return true;
+                    }
+                }
+
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
         }
 
         return false;

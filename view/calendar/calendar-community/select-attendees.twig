@@ -24,14 +24,16 @@
 </div>
 
 <h3>{{ translate("txt-project-reviewers") }}</h3>
-<table class="table table-hover table-bordered table-hover">
+<table class="table table-hover table-striped">
+    <thead>
     <tr>
         <th>{{ translate("txt-reviewer") }}</th>
         <th>{{ translate("txt-type") }}</th>
         <th>{{ translate("txt-organisation") }}</th>
         <th>{{ translate("txt-country") }}</th>
     </tr>
-
+    </thead>
+    <tbody>
     {% for calendarContact in calendarService.findGeneralCalendarContactByCalendar(calendarService.calendar) %}
         {% set contactService = contactServiceProxy(calendarContact.contact) %}
         <tr>
@@ -41,6 +43,7 @@
             <td>{{ contactService.parseCountry() }}</td>
         </tr>
     {% endfor %}
+    </tbody>
 </table>
 
 {{ ztbformelement(form.get('contact')) }}

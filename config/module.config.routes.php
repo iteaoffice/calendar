@@ -73,7 +73,7 @@ return [
                                     'route'    => '/select-attendees/[:id].html',
                                     'defaults' => [
                                         'action'    => 'select-attendees',
-                                        'privilege' => 'edit',
+                                        'privilege' => 'select-attendees',
                                     ],
                                 ],
                             ],
@@ -123,16 +123,28 @@ return [
                                         'options' => [
                                             'route'    => '/[:id].html',
                                             'defaults' => [
-                                                'action' => 'document',
+                                                'action'    => 'document',
+                                                'privilege' => 'document-community',
+                                            ],
+                                        ],
+                                    ],
+                                    'edit'     => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/edit/[:id].html',
+                                            'defaults' => [
+                                                'action'    => 'edit',
+                                                'privilege' => 'edit-community',
                                             ],
                                         ],
                                     ],
                                     'download' => [
                                         'type'    => 'Segment',
                                         'options' => [
-                                            'route'    => '/download/[:id]/[:filename].[:ext]',
+                                            'route'    => '/download/[:id]/[:filename]',
                                             'defaults' => [
-                                                'action' => 'download',
+                                                'action'    => 'download',
+                                                'privilege' => 'download',
                                             ],
                                         ],
                                     ],

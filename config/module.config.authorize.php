@@ -57,6 +57,11 @@ return [
                     'roles'     => [],
                     'assertion' => DocumentAssertion::class
                 ],
+                [
+                    'route'     => 'community/calendar/document/edit',
+                    'roles'     => [],
+                    'assertion' => DocumentAssertion::class
+                ],
                 ['route' => 'zfcadmin/calendar-manager/overview', 'roles' => [strtolower(Access::ACCESS_OFFICE)]],
                 ['route' => 'zfcadmin/calendar-manager/edit', 'roles' => [strtolower(Access::ACCESS_OFFICE)]],
                 ['route' => 'zfcadmin/calendar-manager/calendar', 'roles' => [strtolower(Access::ACCESS_OFFICE)]],

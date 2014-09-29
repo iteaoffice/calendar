@@ -62,7 +62,7 @@ class CalendarLink extends LinkAbstract
         $this->setWhich($which);
         $this->setYear($year);
         $this->setAlternativeShow($alternativeShow);
-        /**
+        /**LiLik
          * Set the non-standard options needed to give an other link value
          */
         $this->setShowOptions(
@@ -140,8 +140,8 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'view':
                 $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
-                $params['calendar'] = $this->getCalendar()->getId();
-                $params['docRef'] = $this->getCalendar()->getDocRef();
+                $this->addRouterParam('calendar', $this->getCalendar()->getId());
+                $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
                 $this->setText(
                     sprintf($this->translate("txt-view-calendar-item-%s"), $this->getCalendar()->getCalendar())
                 );

@@ -9,6 +9,7 @@
  */
 namespace Calendar\Controller;
 
+use Calendar\Entity\Document;
 use Calendar\Form\CreateCalendarDocument;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\ViewModel;
@@ -26,6 +27,9 @@ class CalendarDocumentController extends CalendarAbstractController
     public function downloadAction()
     {
         set_time_limit(0);
+        /**
+         * @var $document Document
+         */
         $document = $this->getCalendarService()->findEntityById(
             'Document',
             $this->getEvent()->getRouteMatch()->getParam('id')
@@ -44,8 +48,7 @@ class CalendarDocumentController extends CalendarAbstractController
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="' . $document->parseFilename() . '.' .
-                $document->getContentType()->getExtension() . '"'
+                'attachment; filename="' . $document->parseFilename() . '"'
             )
             ->addHeaderLine("Pragma: public")
             ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
@@ -89,6 +92,9 @@ class CalendarDocumentController extends CalendarAbstractController
         $form->getInputFilter()->get('file')->setRequired(false);
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
+            /**
+             * @var $document Document
+             */
             $document = $form->getData();
             /**
              * Remove the file if delete is pressed
@@ -97,10 +103,10 @@ class CalendarDocumentController extends CalendarAbstractController
                 $this->flashMessenger()->setNamespace('success')->addMessage(
                     sprintf(_("txt-calendar-document-%s-successfully-removed"), $document->parseFileName())
                 );
-                $this->getDocumentService()->removeEntity($document);
+                $this->getCalendarService()->removeEntity($document);
 
                 return $this->redirect()->toRoute(
-                    'zfcadmin/calendar-manager/calendar',
+                    'community/calendar/document/document',
                     ['id' => $document->getCalendar()->getId()]
                 );
             }
@@ -133,7 +139,7 @@ class CalendarDocumentController extends CalendarAbstractController
             }
 
             return $this->redirect()->toRoute(
-                'zfcadmin/calendar-manager/document/document',
+                'community/calendar/document/document',
                 ['id' => $document->getId()]
             );
         }

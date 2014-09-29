@@ -69,7 +69,7 @@
                 <tr>
                     <td>
                         {{ contentTypeIcon(document.contentType) }}
-                        {{ calendarDocumentLink(document,'document-community') }}
+                        {{ calendarDocumentLink(document,'document-community', 'name') }}
                         {{ calendarDocumentLink(document,'download','icon') }}
                     </td>
                     <td>{{ document.contentType.description }}</td>
@@ -83,7 +83,7 @@
         {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
     {% endif %}
 
-    {% if isAllowed(calendarService.calendar, 'edit') %}
+    {% if isAllowed(calendarService.calendar, 'add-document') %}
         <hr>
         <h4>{{ translate("txt-upload-new-document") }}</h4>
 
@@ -97,6 +97,7 @@
         <div class="form-group col-md-6">
             {{ formlabel(form.get('document')) }}
             {{ formelement(form.get('document')) }}
+            {{ formelementerrors(form.get('document')) }}
         </div>
         <div class="form-group col-md-6">
             {{ formlabel(form.get('file')) }}
