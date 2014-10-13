@@ -45,6 +45,11 @@ return [
                     'roles'     => [],
                     'assertion' => CalendarAssertion::class
                 ],
+                [
+                    'route'     => 'community/calendar/download-calendar-document-binder',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
                 ['route' => 'community/calendar/update-status', 'roles' => [], 'assertion' => ContactAssertion::class],
                 ['route' => 'community/calendar/contact', 'roles' => [], 'assertion' => CalendarAssertion::class],
                 [

@@ -61,7 +61,7 @@ abstract class ServiceAbstract implements
      * @param string $entity
      * @param        $id
      *
-     * @return null|Entity\Calendar
+     * @return null|Entity\Calendar|Entity\ContactStatus|Entity\ContactRole
      */
     public function findEntityById($entity, $id)
     {

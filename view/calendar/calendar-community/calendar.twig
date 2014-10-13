@@ -68,7 +68,7 @@
             {% for document in calendarService.calendar.document %}
                 <tr>
                     <td>
-                        {{ contentTypeIcon(document.contentType) }}
+                        {{ contentTypeIcon(document.contentType) }}&nbsp;
                         {{ calendarDocumentLink(document,'document-community', 'name') }}
                         {{ calendarDocumentLink(document,'download','icon') }}
                     </td>
@@ -79,6 +79,8 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {{ calendarLink(calendarService.calendar, 'download-calendar-document-binder', 'button') }}
     {% else %}
         {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
     {% endif %}
@@ -86,8 +88,6 @@
     {% if isAllowed(calendarService.calendar, 'add-document') %}
         <hr>
         <h4>{{ translate("txt-upload-new-document") }}</h4>
-
-        <p>{{ translate("txt-upload-new-document-explanation") }}</p>
 
         {% do form.prepare() %}
         {% do form.setAttribute('class','form-inline') %}
@@ -99,15 +99,19 @@
             {{ formelement(form.get('document')) }}
             {{ formelementerrors(form.get('document')) }}
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             {{ formlabel(form.get('file')) }}
             {{ formelement(form.get('file')) }}
             {{ formelementerrors(form.get('file')) }}
         </div>
+        <div class="form-group col-md-2">
+            <label for="file">&nbsp;</label>
+            {{ ztbformelement(form.get('submit')) }}
+        </div>
 
         <br>
 
-        {{ formelement(form.get('submit')) }}
+
 
         {{ form().closeTag()|raw }}
     {% endif %}
@@ -118,6 +122,7 @@
 
         {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
         {% set version = projectService.getLatestProjectVersion() %}
+        {% set versionService = versionServiceProxy(version) %}
 
         <h3>{{ translate("txt-version-documents") }}</h3>
 
@@ -152,6 +157,8 @@
                 {% endfor %}
                 </tbody>
             </table>
+
+            {{ versionLink(versionService,'download-version-document-binder','button') }}
         {% else %}
             {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
         {% endif %}
@@ -173,17 +180,15 @@
                     <th>{{ translate("txt-contact") }}</th>
                     <th>{{ translate("txt-date") }}</th>
                     <th>{{ translate("txt-amount-of-documents") }}</th>
-                    <th>{{ translate("txt-download") }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for report in projectService.project.report %}
                     <tr>
-                        <td>{{ reportLink(report,'report-community', 'name') }}</td>
+                        <td>{{ reportLink(report,'report-community', 'name') }} {{ reportLink(report,'download', 'icon') }}</td>
                         <td>{{ report.contact.displayName }}</td>
                         <td>{{ report.dateCreated|string_date }}</td>
                         <td>{{ report.item.count() }}</td>
-                        <td>{{ reportLink(report,'download', 'icon') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -258,8 +263,9 @@
 </div>
 <div class="tab-pane" id="attendees">
 
+    {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendarService.calendar) %}
 
-    {% if calendarService.findCalendarContactsByCalendar(calendarService.calendar)|length > 0 %}
+    {% if calendarContacts|length > 0 %}
         <table class="table table-hover table-striped">
             <thead>
             <tr>
@@ -270,7 +276,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for calendarContact in calendarService.findCalendarContactsByCalendar(calendarService.calendar) %}
+            {% for calendarContact in calendarContacts %}
                 {% set contactService = contactServiceProxy(calendarContact.contact) %}
                 <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
                     <td>

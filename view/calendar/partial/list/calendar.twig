@@ -5,9 +5,12 @@
 {% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
     <table class="table table-hover table-striped">
         {% set calendarService = calendarServiceProxy(calendar) %}
+        <thead>
         <tr>
-            <th colspan="2"><strong>{{ calendarLink(calendar,'view','name') }}</strong></th>
+            <th colspan="2">{{ calendarLink(calendar,'view','name') }}</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
             <td class="col-md-4">{{ translate("txt-date") }}</td>
             <td class="col-md-8">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
@@ -35,6 +38,7 @@
                 <td colspan="2"><img src="{{ calendar.imageUrl }}"></td>
             </tr>
         {% endif %}
+        </tbody>
     </table>
     <hr>
     <br>

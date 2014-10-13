@@ -9,6 +9,7 @@
  */
 namespace Calendar\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\Form\Annotation;
@@ -177,7 +178,7 @@ class Document extends EntityAbstract implements ResourceInterface
                 'File\Size',
                 [
                     'min' => '10kB',
-                    'max' => '8MB',
+                    'max' => '16MB',
                 ]
             );
             $inputFilter->add($fileUpload);
@@ -202,7 +203,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string) $this->getDocument();
+        return (string)$this->getDocument();
     }
 
     /**
@@ -318,7 +319,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param mixed $object
+     * @param ArrayCollection $object
      */
     public function setObject($object)
     {
@@ -326,7 +327,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getObject()
     {
