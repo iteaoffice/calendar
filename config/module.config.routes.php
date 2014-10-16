@@ -51,8 +51,8 @@ return [
                             'overview'                          => [
                                 'type'    => 'Segment',
                                 'options' => [
-                                    'route'    => '/overview[/:which][/page-:page].html',
-                                    'defaults' => [
+                                    'route'       => '/overview[/which-:which][/page-:page].html',
+                                    'defaults'    => [
                                         'action' => 'overview',
                                     ],
                                 ],

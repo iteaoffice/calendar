@@ -40,6 +40,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function overviewAction()
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
+
         $page = $this->getEvent()->getRouteMatch()->getParam('page', 1);
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             $which,
