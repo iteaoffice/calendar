@@ -64,8 +64,8 @@ class CreateCalendarDocument extends Form
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-update")
+                    'class' => "btn btn-primary form-control",
+                    'value' => _("txt-upload")
                 ]
             ]
         );

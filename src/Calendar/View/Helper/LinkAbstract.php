@@ -136,7 +136,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                         break;
                     case 'download':
                     case 'download-community':
-                    case 'download-binder':
+                    case 'download-calendar-document-binder':
                         $this->addLinkContent('<i class="fa fa-download"></i>');
                         break;
                     default:
