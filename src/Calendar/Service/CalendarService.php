@@ -14,11 +14,13 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
+use Calendar\Service\ModuleOptionAwareInterface;
 
 /**
  *
  */
 class CalendarService extends ServiceAbstract
+  implements  ModuleOptionAwareInterface
 {
     /**
      * Constant to determine which affiliations must be taken from the database
@@ -74,6 +76,26 @@ class CalendarService extends ServiceAbstract
         }
 
         return $calendar;
+    }
+
+    /**
+     * @return CalendarOptionsInterface
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param ModuleOptions $options
+     *
+     * @return ServiceAbstract
+     */
+    public function setOptions(\Calendar\Options\ModuleOptions  $options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     /**

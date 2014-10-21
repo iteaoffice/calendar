@@ -32,6 +32,7 @@ $config = [
             ServiceInitializer::class
         ],
         'factories'    => [
+            'calendar_module_options'     => 'Calendar\Factory\OptionServiceFactory',
             'calendar_navigation_service' => 'Calendar\Navigation\Factory\CalendarNavigationServiceFactory',
         ],
         'invokables'   => [
@@ -49,6 +50,7 @@ $configFiles = [
     __DIR__ . '/module.config.routes.php',
     __DIR__ . '/module.config.navigation.php',
     __DIR__ . '/module.config.authorize.php',
+    __DIR__ . '/module.option.calendar.php',
 ];
 foreach ($configFiles as $configFile) {
     $config = Zend\Stdlib\ArrayUtils::merge($config, include $configFile);

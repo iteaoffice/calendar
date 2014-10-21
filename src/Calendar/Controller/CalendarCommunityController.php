@@ -53,6 +53,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
         return new ViewModel(
             [
+                'enableCalendarContact' => $this->getCalendarService()->getOptions()->getCommunityCalendarContactEnabled(),
                 'which'       => $which,
                 'paginator'   => $paginator,
                 'whichValues' => $whichValues
