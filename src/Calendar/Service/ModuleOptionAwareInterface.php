@@ -13,7 +13,7 @@
  */
 namespace Calendar\Service;
 
-use Calendar\Options\ModuleOptions;
+use Calendar\Options\ModuleOptions as ModuleOptions;
 
 /**
  *

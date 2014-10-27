@@ -40,7 +40,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function overviewAction()
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
-
         $page = $this->getEvent()->getRouteMatch()->getParam('page', 1);
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             $which,
@@ -172,60 +171,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Download a result
-     *
-     * @return int
-     */
-    public function downloadCalendarDocumentBinderAction()
-    {
-        set_time_limit(0);
-
-        $calendarService = $this->getCalendarService()->setCalendarId(
-            $this->getEvent()->getRouteMatch()->getParam('id')
-        );
-        if (is_null($calendarService->getCalendar()->getId())) {
-            return $this->notFoundAction();
-        }
-
-        $fileName = sprintf("calendar-document-binder-for-%s.zip", $calendarService->getCalendar()->getCalendar());
-
-        /**
-         * throw the filename away
-         */
-        if (file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
-            unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
-        }
-
-        $zip = new \ZipArchive();
-        $res = $zip->open(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName, \ZipArchive::CREATE);
-        if ($res === true) {
-                foreach ($calendarService->getCalendar()->getDocument() as $calendarDocument) {
-                    $zip->addFromString(
-                        $calendarDocument->getDocument() . '.' .
-                        $calendarDocument->getContentType()->getExtension(),
-                        stream_get_contents($calendarDocument->getObject()->first()->getObject())
-                    );
-                }
-            $zip->close();
-        }
-
-        $response = $this->getResponse();
-        $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-            ->addHeaderLine(
-                'Content-Disposition',
-                'attachment; filename="' . $fileName
-            )
-            ->addHeaderLine("Pragma: public")
-            ->addHeaderLine('Content-Type: application/octet-stream')
-            ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
-        $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
-
-        return $response;
-    }
-
-    /**
      * @return \Zend\View\Model\JsonModel
      */
     public function updateStatusAction()
@@ -310,10 +255,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                             $this->getContactService()->setContactId($contactId)->getContact()
                         );
                         $calendarContact->setRole(
-                            $this->getCalendarService()->findEntityById(
-                                'ContactRole',
-                                ContactRole::ROLE_ATTENDEE
-                            )
+                            $this->getCalendarService()->findEntityById('ContactRole', ContactRole::ROLE_ATTENDEE)
                         );
                         $calendarContact->setStatus(
                             $this->getCalendarService()->findEntityById(

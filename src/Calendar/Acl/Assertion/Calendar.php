@@ -82,7 +82,6 @@ class Calendar extends AssertionAbstract
             case 'contact':
                 return $this->hasContact();
             case 'view-community':
-            case 'download-calendar-document-binder':
                 /**
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type

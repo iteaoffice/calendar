@@ -126,15 +126,6 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('community/calendar/overview');
                 $this->setText($this->translate("txt-view-full-calendar"));
                 break;
-            case 'download-calendar-document-binder':
-                $this->setRouter('community/calendar/download-calendar-document-binder');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-download-calendar-document-binder"),
-                        $this->getCalendar()
-                    )
-                );
-                break;
             case 'contact':
                 $this->setRouter('community/calendar/contact');
                 $this->setText($this->translate("txt-view-review-invitations"));

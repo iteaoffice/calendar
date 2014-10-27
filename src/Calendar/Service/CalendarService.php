@@ -15,7 +15,6 @@ use Calendar\Entity\Contact as CalendarContact;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
 use Calendar\Service\ModuleOptionAwareInterface;
-use Calendar\Options\ModuleOptions;
 
 /**
  *
@@ -39,10 +38,7 @@ class CalendarService extends ServiceAbstract
      * @var CalendarService
      */
     protected $calendarService;
-    /**
-     * @var Options
-     */
-    protected $options;
+
     /**
      * @param int $id
      *
@@ -83,7 +79,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @return ProjectOptionsInterface
+     * @return CalendarOptionsInterface
      */
     public function getOptions()
     {
