@@ -19,7 +19,6 @@ use Project\Entity\Project;
  *
  */
 class CalendarService extends ServiceAbstract
-  implements  ModuleOptionAwareInterface
 {
     /**
      * Constant to determine which affiliations must be taken from the database
@@ -75,26 +74,6 @@ class CalendarService extends ServiceAbstract
         }
 
         return $calendar;
-    }
-
-    /**
-     * @return CalendarOptionsInterface
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param ModuleOptions $options
-     *
-     * @return ServiceAbstract
-     */
-    public function setOptions(\Calendar\Options\ModuleOptions  $options)
-    {
-        $this->options = $options;
-
-        return $this;
     }
 
     /**

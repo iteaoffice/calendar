@@ -39,7 +39,6 @@ class ServiceInitializer implements InitializerInterface
         }
         $arrayCheck = [
             CalendarServiceAwareInterface::class => CalendarService::class,
-            ModuleOptionAwareInterface::class       => 'calendar_module_options',
         ];
         /**
          * Go over each interface to see if we should add an interface

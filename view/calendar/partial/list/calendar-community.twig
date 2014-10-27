@@ -7,10 +7,8 @@
         <th>{{ translate("txt-location") }}</th>
         <th>{{ translate("txt-type") }}</th>
         <th>{{ translate("txt-documents") }}</th>
-        {%  if communityCalendarContactEnabled %}
         <th>{{ translate("txt-role") }}</th>
         <th>{{ translate("txt-presence") }}</th>
-        {%  endif %}
     </tr>
     </thead>
     <tbody>
@@ -36,7 +34,6 @@
             <td>{{ calendar.location }}</td>
             <td>{{ calendar.type }}</td>
             <td>{{ calendar.document|length }}</td>
-            {%  if communityCalendarContactEnabled %}
             <td>{{ calendarContact.role }}</td>
             <td>
                 {% if calendarContact %}
@@ -51,7 +48,7 @@
                        class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
                 {% endif %}
             </td>
-            {%  endif  %}
+
         </tr>
     {% endfor %}
     </tbody>

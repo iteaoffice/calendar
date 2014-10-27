@@ -54,7 +54,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
         return new ViewModel(
             [
-                'enableCalendarContact' => $this->getCalendarService()->getOptions()->getCommunityCalendarContactEnabled(),
                 'which'       => $which,
                 'paginator'   => $paginator,
                 'whichValues' => $whichValues
@@ -299,6 +298,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                         $this->getContactService()->setContactId($contactId)->getContact(),
                         $this->getCalendarService()->getCalendar()
                     );
+
                     $calendarContacts->removeElement($calendarContact);
 
                     /**
@@ -348,6 +348,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 ['id' => $calendarService->getCalendar()->getId()],
                 ['fragment' => 'attendees']
             );
+
         }
 
         return new ViewModel(

@@ -43,10 +43,6 @@ abstract class ServiceAbstract implements
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
-    /**
-     * @var Options
-     */
-    protected $options;
 
     /**
      * @param      $entity

@@ -11,7 +11,6 @@
  */
 namespace Calendar\Controller;
 
-use Calendar\Service\ModuleOptionAwareInterface;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
@@ -46,7 +45,6 @@ class ControllerInitializer implements InitializerInterface
         $arrayCheck = [
             FormServiceAwareInterface::class     => FormService::class,
             CalendarServiceAwareInterface::class => CalendarService::class,
-            ModuleOptionAwareInterface::class       => 'calendar_module_options',
         ];
         /**
          * @var $sm ServiceLocatorInterface
