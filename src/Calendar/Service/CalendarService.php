@@ -78,25 +78,25 @@ class CalendarService extends ServiceAbstract
         return $calendar;
     }
 
+
     /**
-     * @return CalendarOptionsInterface
-     */
-    public function getOptions()
+        * @return CalendarOptionsInterface
+         */
+     public function getOptions()
     {
         return $this->options;
     }
 
-    /**
-     * @param ModuleOptions $options
-     *
-     * @return ServiceAbstract
-     */
-    public function setOptions(\Calendar\Options\ModuleOptions  $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
+     /**
+      * @param ModuleOptions $options
+      *
+      * @return ServiceAbstract
+      */
+     public function setOptions(\Calendar\Options\ModuleOptions  $options)
+     {
+            $this->options = $options;
+            return $this;
+        }
 
     /**
      * @param Calendar $calendar
