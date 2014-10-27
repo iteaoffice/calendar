@@ -14,7 +14,6 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
-use Calendar\Service\ModuleOptionAwareInterface;
 
 /**
  *

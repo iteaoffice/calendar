@@ -53,12 +53,14 @@ abstract class EntityAbstract implements EntityInterface, InputFilterAwareInterf
                 $dash = function ($m) {
                     return '-' . strtolower($m[1]);
                 };
+
                 return preg_replace_callback('/([A-Z])/', $dash, lcfirst($this->get('entity_name')));
 
             case 'underscore_entity_name':
                 $underscore = function ($m) {
                     return '_' . strtolower($m[1]);
                 };
+
                 return preg_replace_callback('/([A-Z])/', $underscore, lcfirst($this->get('entity_name')));
 
             case 'underscore_full_entity_name':

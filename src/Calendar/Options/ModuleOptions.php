@@ -29,8 +29,10 @@ class ModuleOptions extends AbstractOptions implements
      * @param $communityCalendarContactEnabled
      * @return boolean
      */
-    public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled){
+    public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled)
+    {
         $this->communityCalendarContactEnabled = $communityCalendarContactEnabled;
+
         return $this;
     }
 
@@ -38,7 +40,8 @@ class ModuleOptions extends AbstractOptions implements
      * Enable the calendar contacts
      * @return boolean
      */
-    public function getCommunityCalendarContactEnabled(){
+    public function getCommunityCalendarContactEnabled()
+    {
        return  $this->communityCalendarContactEnabled;
     }
 

@@ -203,7 +203,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string)$this->getDocument();
+        return (string) $this->getDocument();
     }
 
     /**
