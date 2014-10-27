@@ -16,8 +16,4 @@ return array(
     'Calendar\Service\ServiceInterface'             => __DIR__ . '/src/Calendar/Service/ServiceInterface.php',
     'Calendar\Version\Version'                      => __DIR__ . '/src/Calendar/Version/Version.php',
     'Calendar\View\Helper\CalendarLink'             => __DIR__ . '/src/Calendar/View/Helper/CalendarLink.php',
-    'Calendar\Service\ModuleOptionAwareInterface'   => __DIR__ . '/src/Calendar/Service/ModuleOptionAwareInterface.php',
-    'ModuleOptionAwareInterface'                    => __DIR__ . '/src/Calendar/Controller/ControllerInitializer.php',
-    'Calendar\Options\CalendarOptionsInterface'     => __DIR__ . '/src/Calendar/Options/CalendarOptionsInterface.php',
-    'Calendar\Options\ModuleOptions'                => __DIR__ . '/src/Calendar/Options/ModuleOptions.php',
 );
