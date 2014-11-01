@@ -11,11 +11,11 @@
  */
 namespace Calendar\Controller;
 
-use Calendar\Service\ModuleOptionAwareInterface;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
 use Calendar\Service\FormServiceAwareInterface;
+use Calendar\Service\ModuleOptionAwareInterface;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -46,7 +46,7 @@ class ControllerInitializer implements InitializerInterface
         $arrayCheck = [
             FormServiceAwareInterface::class     => FormService::class,
             CalendarServiceAwareInterface::class => CalendarService::class,
-            ModuleOptionAwareInterface::class       => 'calendar_module_options',
+            ModuleOptionAwareInterface::class    => 'calendar_module_options',
         ];
         /**
          * @var $sm ServiceLocatorInterface
