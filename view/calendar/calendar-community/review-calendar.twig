@@ -6,7 +6,6 @@
         <th>{{ translate("txt-project") }}</th>
         <th>{{ translate("txt-call") }}</th>
         <th>{{ translate("txt-name") }}</th>
-        <th>{{ translate("txt-review-number") }}</th>
         <th>{{ translate("txt-date") }}</th>
         <th>{{ translate("txt-location") }}</th>
         <th>{{ translate("txt-project-leader") }}</th>
@@ -25,20 +24,14 @@
             <td>{{ projectLink(projectService,'view-community', 'name') }}</td>
             <td>{{ calendar.projectCalendar.project.call }}</td>
             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
-            <td>
-                {{ constant("Calendar\\Entity\\Calendar::FINAL_FINAL") }}
-                {% if calendar.final is constant("Calendar\\Entity\\Calendar::FINAL_FINAL") %}
-                    ({{ translate("txt-final") }})
-                {% endif %}
-            </td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
             <td>{{ calendar.location }}</td>
             {% set contactService = contactServiceProxy(projectService.project.contact) %}
             <td>{{ contactService.parseFullName }} ({{ contactService.parseOrganisation() }})</td>
             {#<td>#}
-                {#{% for contact in calendar.calendarContact if contact.role.id == 5 %}#}
-                    {#{{ contact.contact.displayName }}#}
-                {#{% endfor %}#}
+            {#{% for contact in calendar.calendarContact if contact.role.id == 5 %}#}
+            {#{{ contact.contact.displayName }}#}
+            {#{% endfor %}#}
             {#</td>#}
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 9 %}

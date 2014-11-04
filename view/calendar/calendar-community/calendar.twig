@@ -211,10 +211,10 @@
                 <thead>
                 <tr>
                     <th>{{ translate("txt-report") }}</th>
+                    <th>{{ translate("txt-date") }}</th>
                     <th>{{ translate("txt-contact") }}</th>
                     <th>{{ translate("txt-content-type") }}</th>
                     <th>{{ translate("txt-size") }}</th>
-                    <th>{{ translate("txt-date") }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -224,10 +224,10 @@
                             {{ contentTypeIcon(result.contentType) }}
                             {{ resultLink(result,'download', 'public-name') }}
                         </td>
+                        <td>{{ result.dateCreated|string_date }}</td>
                         <td>{{ result.contact.displayName }}</td>
                         <td>{{ result.contentType.description }}</td>
                         <td>{{ result.size|parse_size }}</td>
-                        <td>{{ result.dateCreated|string_date }}</td>
                         <td></td>
                     </tr>
                 {% endfor %}
