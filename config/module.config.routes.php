@@ -51,7 +51,7 @@ return [
                             'overview'         => [
                                 'type'    => 'Segment',
                                 'options' => [
-                                    'route'    => '/overview[/:which][/page-:page].html',
+                                    'route'    => '/overview[/which-:which][/page-:page].html',
                                     'defaults' => [
                                         'action' => 'overview',
                                     ],
@@ -74,6 +74,26 @@ return [
                                     'defaults' => [
                                         'action'    => 'select-attendees',
                                         'privilege' => 'select-attendees',
+                                    ],
+                                ],
+                            ],
+                            'send-message'     => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/send-message/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'send-message',
+                                        'privilege' => 'send-message',
+                                    ],
+                                ],
+                            ],
+                            'presence-list'    => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/presence-list/[:id].pdf',
+                                    'defaults' => [
+                                        'action'    => 'presence-list',
+                                        'privilege' => 'presence-list',
                                     ],
                                 ],
                             ],

@@ -92,7 +92,7 @@ class CalendarNavigationService
     /**
      * Update the navigation for the community pages
      *
-     * @return bool
+     * @return bool|void
      */
     public function updateCommunityNavigation()
     {
@@ -257,6 +257,37 @@ class CalendarNavigationService
                                     $this->getCalendarService()->getCalendar()->getCalendar()
                                 ),
                                 'route'  => 'community/calendar/select-attendees',
+                                'router' => $this->getRouter(),
+                                'active' => true,
+                                'params' => [
+                                    'id' => $this->getCalendarService()->getCalendar()->getId()
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+                break;
+            case 'community/calendar/send-message':
+                $communityCalendar->addPage(
+                    [
+                        'label'  => sprintf(
+                            $this->translate("txt-calendar-item-%s-at-%s"),
+                            $this->getCalendarService()->getCalendar()->getCalendar(),
+                            $this->getCalendarService()->getCalendar()->getLocation()
+                        ),
+                        'route'  => 'community/calendar/calendar',
+                        'router' => $this->getRouter(),
+                        'active' => false,
+                        'params' => [
+                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                        ],
+                        'pages'  => [
+                            'calendar' => [
+                                'label'  => sprintf(
+                                    $this->translate("txt-send-message-to-attendees-of-calendar-item-%s"),
+                                    $this->getCalendarService()->getCalendar()->getCalendar()
+                                ),
+                                'route'  => 'community/calendar/send-message',
                                 'router' => $this->getRouter(),
                                 'active' => true,
                                 'params' => [

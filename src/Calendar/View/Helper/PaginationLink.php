@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ITEA Office copyright message placeholder
  *
@@ -7,43 +6,55 @@
  * @package    View
  * @subpackage Helper
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright  2004-2014 ITEA Office
+ * @license    http://debranova.org/license.txt proprietary
+ * @link       http://debranova.org
  */
 namespace Calendar\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use Zend\View\Helper\Url;
 
 /**
- * Create a link to an article
+ * Create a link to an document
  *
- * @category   Content
+ * @category   Affiliation
  * @package    View
  * @subpackage Helper
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  2004-2014 ITEA Office
+ * @license    http://debranova.org/license.txt proprietary
+ * @link       http://debranova.org
  */
-class PaginationLink extends AbstractHelper
+class PaginationLink extends LinkAbstract
 {
     /**
-     * @param $entity
      * @param $page
      * @param $show
      *
      * @return string
      */
-    public function __invoke($entity, $page, $show)
+    public function __invoke($page, $show)
     {
-        $router = 'community/calendar/overview';
-        $translate = $this->view->plugin('translate');
-        $url = $this->view->plugin('url');
-        $params = [
-            'entity' => $entity,
-            'page'   => $page
-        ];
+        $router = $this->getRouteMatch()->getMatchedRouteName();
+
+        $params = array_merge(
+            $this->getRouteMatch()->getParams(),
+            [
+                'page' => $page
+            ]
+        );
+
+        /**
+         * @var $url Url
+         */
+        $url = $this->serviceLocator->get('url');
+
         $uri = '<a href="%s" title="%s">%s</a>';
 
         return sprintf(
             $uri,
             $url($router, $params),
-            sprintf($translate("txt-go-to-page-%s"), $show),
+            sprintf($this->translate("txt-go-to-page-%s"), $show),
             $show
         );
     }

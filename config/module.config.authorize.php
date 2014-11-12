@@ -45,6 +45,16 @@ return [
                     'roles'     => [],
                     'assertion' => CalendarAssertion::class
                 ],
+                [
+                    'route'     => 'community/calendar/send-message',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
+                [
+                    'route'     => 'community/calendar/presence-list',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
                 ['route' => 'community/calendar/update-status', 'roles' => [], 'assertion' => ContactAssertion::class],
                 ['route' => 'community/calendar/contact', 'roles' => [], 'assertion' => CalendarAssertion::class],
                 [

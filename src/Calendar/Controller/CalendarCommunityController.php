@@ -17,22 +17,26 @@ use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Form\SelectAttendee;
+use Calendar\Form\SendMessage;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
+use General\Service\EmailServiceAwareInterface;
 use Project\Service\WorkpackageServiceAwareInterface;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
+use Calendar\Controller\Plugin\RenderCalendarContactList;
 
 /**
- *
+ * @method RenderCalendarContactList renderCalendarContactList()
  */
 class CalendarCommunityController extends CalendarAbstractController implements
     CalendarServiceAwareInterface,
-    WorkpackageServiceAwareInterface
+    WorkpackageServiceAwareInterface,
+    EmailServiceAwareInterface
 {
     /**
      * @return ViewModel
@@ -53,10 +57,11 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
         return new ViewModel(
             [
-                'enableCalendarContact' => $this->getCalendarService()->getOptions()->getCommunityCalendarContactEnabled(),
-                'which'       => $which,
-                'paginator'   => $paginator,
-                'whichValues' => $whichValues
+                'enableCalendarContact' => $this->getCalendarService()->getOptions(
+                )->getCommunityCalendarContactEnabled(),
+                'which'                 => $which,
+                'paginator'             => $paginator,
+                'whichValues'           => $whichValues
             ]
         );
     }
@@ -107,7 +112,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
         $calendarService = $this->getCalendarService()->setCalendarId(
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
-        if (is_null($calendarService->getCalendar()->getId())) {
+        if ($calendarService->isEmpty()) {
             return $this->notFoundAction();
         }
 
@@ -207,7 +212,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
         $calendarService = $this->getCalendarService()->setCalendarId(
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
-        if (is_null($calendarService->getCalendar()->getId())) {
+        if ($calendarService->isEmpty()) {
             return $this->notFoundAction();
         }
 
@@ -282,6 +287,115 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $this->flashMessenger()->addInfoMessage(
                 sprintf(
                     _("txt-calendar-attendees-for-%s-have-been-updated"),
+                    $calendarService->getCalendar()->getCalendar()
+                )
+            );
+
+            return $this->redirect()->toRoute(
+                'community/calendar/calendar',
+                ['id' => $calendarService->getCalendar()->getId()],
+                ['fragment' => 'attendees']
+            );
+
+        }
+
+        return new ViewModel(
+            [
+                'form'            => $form,
+                'calendarService' => $calendarService,
+            ]
+        );
+    }
+
+    /**
+     * @return \Zend\Stdlib\ResponseInterface
+     */
+    public function presenceListAction()
+    {
+        $calendarService = $this->getCalendarService()->setCalendarId(
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
+        if ($calendarService->isEmpty()) {
+            return $this->notFoundAction();
+        }
+
+        $presenceList = $this->renderCalendarContactList()->render($calendarService);
+
+        $response = $this->getResponse();
+        $response->getHeaders()
+            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+            ->addHeaderLine("Pragma: public")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="presence-list-' . $calendarService->getCalendar()->getCalendar() . '.pdf"'
+            )
+            ->addHeaderLine('Content-Type: application/pdf')
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
+        $response->setContent($presenceList->getPDFData());
+
+        return $response;
+    }
+
+    /**
+     * Special action which produces an HTML version of the review calendar
+     *
+     * @return ViewModel
+     */
+    public function sendMessageAction()
+    {
+        $calendarService = $this->getCalendarService()->setCalendarId(
+            $this->getEvent()->getRouteMatch()->getParam('id')
+        );
+        if (is_null($calendarService->getCalendar()->getId())) {
+            return $this->notFoundAction();
+        }
+
+        $data = array_merge_recursive(
+            $this->getRequest()->getPost()->toArray()
+        );
+
+        $form = new SendMessage($calendarService, $this->getContactService());
+        $form->setData($data);
+
+        if ($this->getRequest()->isPost() && $form->isValid()) {
+            $formValues = $form->getData();
+
+            if (isset($formValues['cancel'])) {
+                return $this->redirect()->toRoute(
+                    'community/calendar/calendar',
+                    ['id' => $calendarService->getCalendar()->getId()],
+                    ['fragment' => 'attendees']
+                );
+            }
+            /**
+             * Send the email tot he office
+             */
+            $email = $this->getEmailService()->create();
+            $email->setFromContact($this->zfcUserAuthentication()->getIdentity());
+            /**
+             * Inject the contacts in the email
+             */
+            foreach ($calendarService->getCalendar()->getCalendarContact() as $calendarContact) {
+                $email->addTo($calendarContact->getContact());
+            }
+
+            $email->setSubject(
+                sprintf(
+                    '[[site]-%s] Message received from %s',
+                    $calendarService->getCalendar()->getCalendar(),
+                    $this->zfcUserAuthentication()->getIdentity()->getDisplayName()
+                )
+            );
+
+            $email->setHtmlLayoutName('signature_twig');
+            $email->setMessage($form->getData()['message']);
+
+            $this->getEmailService()->send();
+
+            $this->flashMessenger()->addSuccessMessage(
+                sprintf(
+                    _("txt-message-to-attendees-for-%s-has-been-sent"),
                     $calendarService->getCalendar()->getCalendar()
                 )
             );

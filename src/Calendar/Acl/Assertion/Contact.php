@@ -9,6 +9,8 @@
  */
 namespace Calendar\Acl\Assertion;
 
+use Admin\Entity\Access;
+use Calendar\Entity\Contact as ContactEntity;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
@@ -33,18 +35,29 @@ class Contact extends AssertionAbstract
     {
 
         $id = (int) $this->getServiceLocator()->get("Application")->getMvcEvent()->getRequest()->getPost('id');
-        $privilege = $this->getRouteMatch()->getParam('privilege');
 
-        $resource = $this->getCalendarService()->findEntityById('Contact', $id);
+        if (is_null($privilege)) {
+            $privilege = $this->getRouteMatch()->getParam('privilege');
+        }
+
+        if (!$resource instanceof ContactEntity) {
+            $resource = $this->getCalendarService()->findEntityById('Contact', $id);
+        }
+
         $this->getCalendarService()->setCalendar($resource->getCalendar());
 
         switch ($privilege) {
 
             case 'update-status':
-                return $this->getCalendarService()->calendarHasContact(
+                if ($this->getCalendarService()->calendarHasContact(
                     $this->getCalendarService()->getCalendar(),
                     $this->getContactService()->getContact()
-                );
+                )
+                ) {
+                    return true;
+                }
+
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
         }
 
         return false;

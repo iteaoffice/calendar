@@ -17,7 +17,7 @@
         <th>{{ translate("txt-chairman") }}</th>
     </tr>
     </thead>
-    <thead>
+    <tbody>
     {% for calendar in calendarItems %}
         <tr>
             {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
@@ -60,7 +60,5 @@
             </td>
         </tr>
     {% endfor %}
-    </thead>
-
-
+    </tbody>
 </table>

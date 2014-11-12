@@ -134,6 +134,14 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('community/calendar/select-attendees');
                 $this->setText($this->translate("txt-select-attendees-from-project"));
                 break;
+            case 'send-message':
+                $this->setRouter('community/calendar/send-message');
+                $this->setText($this->translate("txt-send-message-to-attendees"));
+                break;
+            case 'presence-list':
+                $this->setRouter('community/calendar/presence-list');
+                $this->setText($this->translate("txt-download-presence-list"));
+                break;
             case 'overview-admin':
                 $this->setRouter('zfcadmin/calendar-manager/overview');
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));

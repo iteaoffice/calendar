@@ -16,9 +16,9 @@ namespace Calendar\Options;
 interface CalendarOptionsInterface
 {
     /**
-     * Sets wether the review invitations should be enabled on the homepage of the community
+     * Sets whether the review invitations should be enabled on the homepage of the community
      * @param $communityCalendarContactEnabled
-     * @return boolean
+     * @return CalendarOptionsInterface
      */
     public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled);
 
@@ -27,4 +27,16 @@ interface CalendarOptionsInterface
      * @return boolean
      */
     public function getCommunityCalendarContactEnabled();
+
+    /**
+     * @param $calendarContactTemplate
+     *
+     * @return CalendarOptionsInterface
+     */
+    public function setCalendarContactTemplate($calendarContactTemplate);
+
+    /**
+     * @return boolean
+     */
+    public function getCalendarContactTemplate();
 }

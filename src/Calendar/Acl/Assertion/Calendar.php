@@ -58,6 +58,7 @@ class Calendar extends AssertionAbstract
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'select-attendees':
             case 'add-document':
+            case 'presence-list':
                 if ($this->getContactService()->hasPermit('edit', $resource)) {
                     return true;
                 }
@@ -82,6 +83,7 @@ class Calendar extends AssertionAbstract
             case 'contact':
                 return $this->hasContact();
             case 'view-community':
+            case 'send-message':
                 /**
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type

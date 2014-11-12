@@ -24,6 +24,7 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
+use General\Service\EmailService;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
@@ -61,6 +62,10 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
+    /**
+     * @var EmailService
+     */
+    protected $emailService;
 
     /**
      * @return \Calendar\Service\FormService
@@ -178,6 +183,26 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setWorkpackageService(WorkpackageService $workpackageService)
     {
         $this->workpackageService = $workpackageService;
+
+        return $this;
+    }
+
+    /**
+     * @return EmailService
+     */
+    public function getEmailService()
+    {
+        return $this->emailService;
+    }
+
+    /**
+     * @param EmailService $emailService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setEmailService(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
 
         return $this;
     }
