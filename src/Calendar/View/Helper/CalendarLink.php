@@ -130,6 +130,14 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('community/calendar/contact');
                 $this->setText($this->translate("txt-view-review-invitations"));
                 break;
+            case 'review-calendar':
+                $this->setRouter('community/calendar/review-calendar');
+                $this->setText($this->translate("txt-view-review-calendar"));
+                break;
+            case 'download-review-calendar':
+                $this->setRouter('community/calendar/download-review-calendar');
+                $this->setText($this->translate("txt-view-download-review-calendar"));
+                break;
             case 'select-attendees':
                 $this->setRouter('community/calendar/select-attendees');
                 $this->setText($this->translate("txt-select-attendees-from-project"));

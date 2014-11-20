@@ -10,6 +10,8 @@
 namespace Calendar\Controller;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
+use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Calendar\Entity\Contact;
 use Calendar\Entity\ContactRole;
 use Calendar\Entity\ContactStatus;
@@ -28,10 +30,10 @@ use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
-use Calendar\Controller\Plugin\RenderCalendarContactList;
 
 /**
  * @method RenderCalendarContactList renderCalendarContactList()
+ * @method RenderReviewCalendar renderReviewCalendar()
  */
 class CalendarCommunityController extends CalendarAbstractController implements
     CalendarServiceAwareInterface,
@@ -102,6 +104,36 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 'calendarItems' => $calendarItems,
             ]
         );
+    }
+
+    /**
+     * Special action which produces an HTML version of the review calendar
+     *
+     * @return ViewModel
+     */
+    public function downloadReviewCalendarAction()
+    {
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            CalendarService::WHICH_REVIEWS,
+            $this->zfcUserAuthentication()->getIdentity()
+        )->getResult();
+
+        $reviewCalendar = $this->renderCalendarContactList()->render($calendarItems);
+
+        $response = $this->getResponse();
+        $response->getHeaders()
+            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+            ->addHeaderLine("Pragma: public")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="review-calendar.pdf"'
+            )
+            ->addHeaderLine('Content-Type: application/pdf')
+            ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
+        $response->setContent($reviewCalendar->getPDFData());
+
+        return $response;
     }
 
     /**

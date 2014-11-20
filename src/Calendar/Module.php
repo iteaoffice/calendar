@@ -12,6 +12,7 @@
 namespace Calendar;
 
 use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
 use Zend\Mvc\MvcEvent;
@@ -79,6 +80,12 @@ class Module implements
 
                     return $renderCalendarContactList;
                 },
+                'renderReviewCalendar'      => function ($sm) {
+                    $renderReviewCalendar = new RenderReviewCalendar();
+                    $renderReviewCalendar->setServiceLocator($sm->getServiceLocator());
+
+                    return $renderReviewCalendar;
+                }
             ]
         ];
     }

@@ -1,9 +1,9 @@
 <h1>{{ translate("txt-review-calendar") }}</h1>
 
-<table class="table table-hover table-condensed table-striped">
+<table border="1" cellpadding="2">
     <thead>
     <tr>
-        <th>{{ translate("txt-project") }}</th>
+        <th width="40">{{ translate("txt-project") }}</th>
         <th>{{ translate("txt-name") }}</th>
         <th>{{ translate("txt-call") }}</th>
         <th>{{ translate("txt-date") }}</th>
@@ -21,7 +21,7 @@
     {% for calendar in calendarItems %}
         <tr>
             {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            <td>{{ projectLink(projectService,'view-community', 'number') }}</td>
+            <td  width="40">{{ projectLink(projectService,'view-community', 'number') }}</td>
             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
             <td>{{ calendar.projectCalendar.project.call }}</td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
@@ -62,5 +62,3 @@
     {% endfor %}
     </tbody>
 </table>
-
-{{ calendarLink(null,'download-review-calendar','button') }}

@@ -39,4 +39,16 @@ interface CalendarOptionsInterface
      * @return boolean
      */
     public function getCalendarContactTemplate();
+
+    /**
+     * @param $reviewCalendarTemplate
+     *
+     * @return CalendarOptionsInterface
+     */
+    public function setReviewCalendarTemplate($reviewCalendarTemplate);
+
+    /**
+     * @return boolean
+     */
+    public function getReviewCalendarTemplate();
 }

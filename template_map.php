@@ -12,6 +12,7 @@ return array(
     'calendar/calendar-community/contact'          => __DIR__ . '//view/calendar/calendar-community/contact.twig',
     'calendar/calendar-community/calendar'         => __DIR__ . '//view/calendar/calendar-community/calendar.twig',
     'calendar/calendar-community/overview'         => __DIR__ . '//view/calendar/calendar-community/overview.twig',
+    'calendar/pdf/review-calendar'                 => __DIR__ . '//view/calendar/pdf/review-calendar.twig',
     'calendar/pdf/calendar-contact'                => __DIR__ . '//view/calendar/pdf/calendar-contact.twig',
     'calendar/calendar-document/document'          => __DIR__ . '//view/calendar/calendar-document/document.twig',
     'calendar/calendar-document/edit'              => __DIR__ . '//view/calendar/calendar-document/edit.twig',

@@ -23,11 +23,17 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $communityCalendarContactEnabled = true;
     /**
-     * Location of the PDF having the NDA template
+     * Location of the PDF having the calendar contact template
      *
      * @var string
      */
     protected $calendarContactTemplate = '';
+    /*
+     * Location of the PDF having the NDA template
+     *
+     * @var string
+     */
+    protected $reviewCalendarTemplate = '';
 
     /**
      * Sets whether the review invitations should be enabled on the homepage of the community
@@ -69,6 +75,26 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     public function setCalendarContactTemplate($calendarContactTemplate)
     {
         $this->calendarContactTemplate = $calendarContactTemplate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReviewCalendarTemplate()
+    {
+        return $this->reviewCalendarTemplate;
+    }
+
+    /**
+     * @param $reviewCalendarTemplate
+     *
+     * @return ModuleOptions
+     */
+    public function setReviewCalendarTemplate($reviewCalendarTemplate)
+    {
+        $this->reviewCalendarTemplate = $reviewCalendarTemplate;
 
         return $this;
     }

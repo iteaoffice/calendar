@@ -48,7 +48,7 @@ return [
                         ],
                         'may_terminate' => false,
                         'child_routes'  => [
-                            'overview'         => [
+                            'overview'                 => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/overview[/which-:which][/page-:page].html',
@@ -57,7 +57,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'calendar'         => [
+                            'calendar'                 => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/view/[:id].html',
@@ -67,7 +67,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'select-attendees' => [
+                            'select-attendees'         => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/select-attendees/[:id].html',
@@ -77,7 +77,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'send-message'     => [
+                            'send-message'             => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/send-message/[:id].html',
@@ -87,7 +87,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'presence-list'    => [
+                            'presence-list'            => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/presence-list/[:id].pdf',
@@ -97,7 +97,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'review-calendar'  => [
+                            'review-calendar'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/review-calendar.html',
@@ -107,7 +107,17 @@ return [
                                     ],
                                 ],
                             ],
-                            'contact'          => [
+                            'download-review-calendar' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/download/review-calendar.pdf',
+                                    'defaults' => [
+                                        'action'    => 'download-review-calendar',
+                                        'privilege' => 'review-calendar',
+                                    ],
+                                ],
+                            ],
+                            'contact'                  => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/contact.html',
@@ -117,7 +127,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'update-status'    => [
+                            'update-status'            => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/update-status.html',
@@ -127,7 +137,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'document'         => [
+                            'document'                 => [
                                 'type'          => 'Segment',
                                 'options'       => [
                                     'route'    => '/document',
