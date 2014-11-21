@@ -45,6 +45,7 @@ class CalendarPdf extends \FPDI
             $this->setSourceFile($this->template);
             $this->_tplIdx = $this->importPage(1);
         }
+        $this->SetTopMargin(35);
         $this->useTemplate($this->_tplIdx, 0, 0);
         $this->SetFont('freesans', 'N', 15);
         $this->SetTextColor(0);

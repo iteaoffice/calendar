@@ -43,6 +43,7 @@ class RenderReviewCalendar extends AbstractPlugin
     {
         $pdf = new CalendarPdf();
 
+
         $pdf->setTemplate($this->getModuleOptions()->getReviewCalendarTemplate());
         $pdf->setPageOrientation('L');
         $pdf->addPage();
@@ -60,7 +61,7 @@ class RenderReviewCalendar extends AbstractPlugin
             ]
         );
 
-        $pdf->writeHTMLCell(0, 0, 14, 40, $contactListContent, 0, 0, 0, false);
+        $pdf->writeHTMLCell(0, 0, 12, 35, $contactListContent, 0, 0, 0, false);
 
         return $pdf;
     }
