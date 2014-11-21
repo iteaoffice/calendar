@@ -36,13 +36,12 @@ class RenderReviewCalendar extends AbstractPlugin
     protected $serviceLocator;
 
     /**
-     * @param  array $calendarItems
+     * @param  array       $calendarItems
      * @return CalendarPdf
      */
     public function render(array $calendarItems)
     {
         $pdf = new CalendarPdf();
-
 
         $pdf->setTemplate($this->getModuleOptions()->getReviewCalendarTemplate());
         $pdf->setPageOrientation('L');
