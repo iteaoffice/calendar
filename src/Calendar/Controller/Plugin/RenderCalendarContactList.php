@@ -13,6 +13,7 @@
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;
+use Calendar\Service\CalendarService;
 use General\Service\GeneralService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,33 +34,71 @@ class RenderCalendarContactList extends AbstractPlugin
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
-
     /**
-     * @param  array       $calendarItems
+     * @param CalendarService $calendarService
+     *
      * @return CalendarPdf
      */
-    public function render(array $calendarItems)
+
+    public function render(CalendarService $calendarService)
     {
         $pdf = new CalendarPdf();
-
-        $pdf->setTemplate($this->getModuleOptions()->getReviewCalendarTemplate());
-        $pdf->setPageOrientation('L');
+        $pdf->setTemplate($this->getModuleOptions()->getCalendarContactTemplate());
         $pdf->addPage();
-
-        $pdf->SetFontSize(8);
+        $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
+
+        $pdf->SetXY(14, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getCalendar());
+        /*
+         * Write the current date
+         */
+        $pdf->SetXY(77, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getDateFrom()->format("Y-m-d"));
+        /**
+         * Write the Reference
+         */
+        $pdf->SetXY(118, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getLocation());
 
         /**
          * Use the NDA object to render the filename
          */
         $contactListContent = $twig->render(
-            'calendar/pdf/review-calendar',
+            'calendar/pdf/calendar-contact',
             [
-                'calendarItems' => $calendarItems,
+                'calendarService' => $calendarService,
             ]
         );
 
-        $pdf->writeHTMLCell(0, 0, 14, 14, $contactListContent);
+        $pdf->writeHTMLCell(0, 0, 14, 70, $contactListContent);
+        $pdf->addPage();
+
+        $pdf->SetXY(14, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getCalendar());
+        /*
+         * Write the current date
+         */
+        $pdf->SetXY(77, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getDateFrom()->format("Y-m-d"));
+        /**
+         * Write the Reference
+         */
+        $pdf->SetXY(118, 55);
+        $pdf->Write(0, $calendarService->getCalendar()->getLocation());
+
+        /**
+         * Use the NDA object to render the filename
+         */
+        $contactListContent = $twig->render(
+            'calendar/pdf/calendar-contact',
+            [
+                'calendarService' => $calendarService,
+                'empty'           => true
+            ]
+        );
+
+        $pdf->writeHTMLCell(0, 0, 14, 70, $contactListContent);
 
         return $pdf;
     }

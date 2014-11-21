@@ -118,7 +118,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $this->zfcUserAuthentication()->getIdentity()
         )->getResult();
 
-        $reviewCalendar = $this->renderCalendarContactList()->render($calendarItems);
+        $reviewCalendar = $this->renderReviewCalendar()->render($calendarItems);
 
         $response = $this->getResponse();
         $response->getHeaders()
