@@ -170,24 +170,16 @@ abstract class AssertionAbstract implements
         if (sizeof($accessRoles) === 0) {
             return true;
         }
+
         foreach ($accessRoles as $accessRole) {
             if (strtolower($accessRole->getAccess()) === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
             }
             if ($this->hasContact()) {
-                /**
-                 * Do an access check on the article
-                 */
-                foreach ($this->getContactService()->getContact()->getRoles() as $contactAccess) {
-                    if (strtolower($accessRole->getAccess()) === $contactAccess) {
-                        return true;
-                    }
-                }
-                foreach ($accessRole->getSelection() as $selection) {
-                    if ($this->getContactService()->inSelection($selection)) {
-                        return true;
-                    }
-                }
+                return in_array(
+                    strtolower($accessRole->getAccess()),
+                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContactService()->getContact())
+                );
             }
         }
 
@@ -219,7 +211,7 @@ abstract class AssertionAbstract implements
     public function getAccessRoles()
     {
         if (empty($this->accessRoles) && !$this->getContactService()->isEmpty()) {
-            $this->accessRoles = $this->getContactService()->getContact()->getRoles();
+            $this->accessRoles = $this->getAdminService()->findAccessRolesByContactAsArray($this->getContactService()->getContact());
         }
 
         return $this->accessRoles;

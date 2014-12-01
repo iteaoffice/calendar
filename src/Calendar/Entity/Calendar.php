@@ -410,32 +410,16 @@ class Calendar extends EntityAbstract implements ResourceInterface
             $inputFilter->add(
                 $factory->createInput(
                     [
-                        'name'       => 'final',
-                        'required'   => true,
-                        'validators' => [
-                            [
-                                'name'    => 'InArray',
-                                'options' => [
-                                    'haystack' => array_keys($this->getFinalTemplates())
-                                ]
-                            ]
-                        ]
+                        'name'     => 'final',
+                        'required' => true,
                     ]
                 )
             );
             $inputFilter->add(
                 $factory->createInput(
                     [
-                        'name'       => 'onHomepage',
-                        'required'   => true,
-                        'validators' => [
-                            [
-                                'name'    => 'InArray',
-                                'options' => [
-                                    'haystack' => array_keys($this->getOnHomepageTemplates())
-                                ]
-                            ]
-                        ]
+                        'name'     => 'onHomepage',
+                        'required' => true,
                     ]
                 )
             );
@@ -513,7 +497,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string) $this->calendar;
+        return (string)$this->calendar;
     }
 
     /**
