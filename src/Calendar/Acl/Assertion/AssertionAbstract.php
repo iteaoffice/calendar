@@ -176,10 +176,13 @@ abstract class AssertionAbstract implements
                 return true;
             }
             if ($this->hasContact()) {
-                return in_array(
+                if (in_array(
                     strtolower($accessRole->getAccess()),
                     $this->getAdminService()->findAccessRolesByContactAsArray($this->getContactService()->getContact())
-                );
+                )
+                ) {
+                    return true;
+                }
             }
         }
 
