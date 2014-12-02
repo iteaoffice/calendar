@@ -10,7 +10,7 @@ $options = [
      * Indicate here if a project has versions
      */
     'community_calendar_contact_enabled' => true,
-    'calendar_contact_template'          => __DIR__ . '/../../../../styles/itea/template/pdf/nda-template.pdf',
+    'calendar_contact_template'          => __DIR__ . '/../../../../styles/itea/template/pdf/itea-template.pdf',
     'review_calendar_template'           => __DIR__ . '/../../../../styles/itea/template/pdf/review-calendar-template.pdf',
 ];
 /**

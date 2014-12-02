@@ -1,47 +1,51 @@
+<h1 style="color: #00a651; font-size: 18px">{{ translate("txt-list-of-participants") }}
+    <br>{{ calendarService.calendar }}</h1>
+<h2 style="color: #808285; font-size: 14px">{{ calendarService.calendar.dateFrom|date('M. NS, Y ') }}
+    - {{ calendarService.calendar.location }}</h2>
 {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendarService.calendar) %}
-
+<p>&nbsp;<p>
     {% if calendarContacts|length > 0 %}
-        <table border="1" cellpadding="5">
-            <thead>
-            <tr>
-                <th bgcolor="#00a651" height="40" valign="middle">{{ translate("txt-name") }}</th>
-                <th bgcolor="#00a651" valign="middle">{{ translate("txt-organisation") }}</th>
-                <th bgcolor="#00a651" valign="middle">{{ translate("txt-role") }}</th>
-                <th bgcolor="#00a651" valign="middle">{{ translate("txt-signature") }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if empty %}
-                {% for i in 1..12 %}
-                    <tr>
-                        <td height="40" valign="middle"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                {% set extraLimit = 12 - calendarContacts|length %}
-                {% for calendarContact in calendarContacts %}
-                    <tr>
-                        {% set contactService = contactServiceProxy(calendarContact.contact) %}
-                        <td height="40" valign="middle">{{ calendarContact.contact.displayName }}</td>
-                        <td valign="middle">{{ contactService.parseOrganisation() }}</td>
-                        <td valign="middle">{{ calendarContact.role }}</td>
-                        <td valign="middle"></td>
-                    </tr>
-                {% endfor %}
-                {% for i in 1..extraLimit %}
-                    <tr>
-                        <td height="40" valign="center"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-            {% endif %}
-            </tbody>
-        </table>
-    {% else %}
-        No attendees found
+    <table border="1" cellpadding="5">
+        <thead>
+        <tr>
+            <th height="20" valign="middle"><strong>{{ translate("txt-name") }}</strong></th>
+            <th valign="middle"><strong>{{ translate("txt-organisation") }}</strong></th>
+            <th valign="middle"><strong>{{ translate("txt-role") }}</strong></th>
+            <th valign="middle"><strong>{{ translate("txt-signature") }}</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if empty %}
+            {% for i in 1..12 %}
+                <tr>
+                    <td height="40" valign="middle"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% set extraLimit = 12 - calendarContacts|length %}
+            {% for calendarContact in calendarContacts %}
+                <tr>
+                    {% set contactService = contactServiceProxy(calendarContact.contact) %}
+                    <td height="40" valign="middle">{{ calendarContact.contact.displayName }}</td>
+                    <td valign="middle">{{ contactService.parseOrganisation() }}</td>
+                    <td valign="middle">{{ calendarContact.role }}</td>
+                    <td valign="middle"></td>
+                </tr>
+            {% endfor %}
+            {% for i in 1..extraLimit %}
+                <tr>
+                    <td height="40" valign="center"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% else %}
+    No attendees found
     {% endif %}

@@ -34,6 +34,7 @@ class RenderCalendarContactList extends AbstractPlugin
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
+
     /**
      * @param CalendarService $calendarService
      *
@@ -48,19 +49,6 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        $pdf->SetXY(14, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getCalendar());
-        /*
-         * Write the current date
-         */
-        $pdf->SetXY(77, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getDateFrom()->format("Y-m-d"));
-        /**
-         * Write the Reference
-         */
-        $pdf->SetXY(118, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getLocation());
-
         /**
          * Use the NDA object to render the filename
          */
@@ -71,21 +59,8 @@ class RenderCalendarContactList extends AbstractPlugin
             ]
         );
 
-        $pdf->writeHTMLCell(0, 0, 14, 70, $contactListContent);
+        $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
         $pdf->addPage();
-
-        $pdf->SetXY(14, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getCalendar());
-        /*
-         * Write the current date
-         */
-        $pdf->SetXY(77, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getDateFrom()->format("Y-m-d"));
-        /**
-         * Write the Reference
-         */
-        $pdf->SetXY(118, 55);
-        $pdf->Write(0, $calendarService->getCalendar()->getLocation());
 
         /**
          * Use the NDA object to render the filename
@@ -98,7 +73,7 @@ class RenderCalendarContactList extends AbstractPlugin
             ]
         );
 
-        $pdf->writeHTMLCell(0, 0, 14, 70, $contactListContent);
+        $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
 
         return $pdf;
     }
