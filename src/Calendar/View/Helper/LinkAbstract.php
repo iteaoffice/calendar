@@ -126,6 +126,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                     case 'new-community':
                         $this->addLinkContent('<i class="fa fa-plus"></i>');
                         break;
+                    case 'review-calendar':
                     case 'overview':
                     case 'contact':
                         $this->addLinkContent('<i class="fa fa-list-ul"></i>');
@@ -137,7 +138,17 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                     case 'download':
                     case 'download-community':
                     case 'download-binder':
+                    case 'download-review-calendar':
                         $this->addLinkContent('<i class="fa fa-download"></i>');
+                        break;
+                    case 'presence-list':
+                        $this->addLinkContent('<i class="fa fa-file-pdf-o"></i>');
+                        break;
+                    case 'send-message':
+                        $this->addLinkContent('<i class="fa fa-envelope"></i>');
+                        break;
+                    case 'select-attendees':
+                        $this->addLinkContent('<i class="fa fa-users"></i>');
                         break;
                     default:
                         $this->addLinkContent('<i class="fa fa-file-o"></i>');

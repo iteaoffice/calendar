@@ -22,11 +22,25 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * @var boolean
      */
     protected $communityCalendarContactEnabled = true;
+    /**
+     * Location of the PDF having the calendar contact template
+     *
+     * @var string
+     */
+    protected $calendarContactTemplate = '';
+    /*
+     * Location of the PDF having the NDA template
+     *
+     * @var string
+     */
+    protected $reviewCalendarTemplate = '';
 
     /**
-     * Sets wether the review invitations should be enabled on the homepage of the community
+     * Sets whether the review invitations should be enabled on the homepage of the community
+     *
      * @param $communityCalendarContactEnabled
-     * @return boolean
+     *
+     * @return ModuleOptions
      */
     public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled)
     {
@@ -37,10 +51,51 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * Enable the calendar contacts
+     *
      * @return boolean
      */
     public function getCommunityCalendarContactEnabled()
     {
         return $this->communityCalendarContactEnabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCalendarContactTemplate()
+    {
+        return $this->calendarContactTemplate;
+    }
+
+    /**
+     * @param $calendarContactTemplate
+     *
+     * @return ModuleOptions
+     */
+    public function setCalendarContactTemplate($calendarContactTemplate)
+    {
+        $this->calendarContactTemplate = $calendarContactTemplate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReviewCalendarTemplate()
+    {
+        return $this->reviewCalendarTemplate;
+    }
+
+    /**
+     * @param $reviewCalendarTemplate
+     *
+     * @return ModuleOptions
+     */
+    public function setReviewCalendarTemplate($reviewCalendarTemplate)
+    {
+        $this->reviewCalendarTemplate = $reviewCalendarTemplate;
+
+        return $this;
     }
 }

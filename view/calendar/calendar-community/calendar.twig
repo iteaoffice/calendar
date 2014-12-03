@@ -211,10 +211,10 @@
                 <thead>
                 <tr>
                     <th>{{ translate("txt-report") }}</th>
+                    <th>{{ translate("txt-date") }}</th>
                     <th>{{ translate("txt-contact") }}</th>
                     <th>{{ translate("txt-content-type") }}</th>
                     <th>{{ translate("txt-size") }}</th>
-                    <th>{{ translate("txt-date") }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -222,13 +222,12 @@
                     <tr>
                         <td>
                             {{ contentTypeIcon(result.contentType) }}
-                            {{ result }}
-                            {{ resultLink(result,'download', 'icon') }}
+                            {{ resultLink(result,'download', 'public-name') }}
                         </td>
+                        <td>{{ result.dateCreated|string_date }}</td>
                         <td>{{ result.contact.displayName }}</td>
                         <td>{{ result.contentType.description }}</td>
                         <td>{{ result.size|parse_size }}</td>
-                        <td>{{ result.dateCreated|string_date }}</td>
                         <td></td>
                     </tr>
                 {% endfor %}
@@ -286,7 +285,21 @@
                         {{ calendarContact.contact.displayName }}</td>
                     <td>{{ contactService.parseOrganisation() }}</td>
                     <td>{{ calendarContact.role }}</td>
-                    <td>{{ calendarContact.status }}</td>
+                    <td>
+                        {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                        {% if isAllowed(calendarContact,'update-status') %}
+                        <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                           class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                        <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                           class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                        <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                           class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                        {% else %}
+                        {{ calendarContact.status }}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -296,5 +309,9 @@
     {% endif %}
 
     {{ calendarLink(calendarService.calendar,'select-attendees', 'button') }}
+    {% if calendarContacts|length > 0 %}
+        {{ calendarLink(calendarService.calendar,'send-message', 'button') }}
+        {{ calendarLink(calendarService.calendar,'presence-list', 'button') }}
+    {% endif %}
 </div>
 </div>

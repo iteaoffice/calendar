@@ -1,0 +1,50 @@
+<h1>{{ translate("txt-send-message-to-attendees-of-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+
+{% do form.prepare() %}
+
+{{ form().openTag(form)|raw }}
+
+{% if calendarService.calendar.projectCalendar %}
+    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ translate("txt-project-name") }}</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static">{{ projectLink(projectService,'view-community', 'name') }}</p>
+        </div>
+    </div>
+{% endif %}
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">{{ translate("txt-name") }}</label>
+
+    <div class="col-sm-9">
+        <p class="form-control-static">{{ calendarService.calendar }}</p>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">{{ translate("txt-recipients") }}</label>
+
+    <div class="col-sm-9">
+        <p class="form-control-static">
+            {% for calendarContact in calendarService.calendar.calendarContact %}
+                {{ calendarContact.contact.displayName }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    </div>
+</div>
+
+{{ ztbformelement(form.get('message')) }}
+
+<hr>
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ ztbformelement(form.get('submit')) }}
+        {{ ztbformelement(form.get('cancel')) }}
+    </div>
+</div>
+
+{{ form().closeTag()|raw }}

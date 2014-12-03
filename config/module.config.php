@@ -32,7 +32,7 @@ $config = [
             ServiceInitializer::class
         ],
         'factories'    => [
-            'calendar_module_options'                 => 'Calendar\Factory\OptionServiceFactory',
+            'calendar_module_options'     => 'Calendar\Factory\OptionServiceFactory',
             'calendar_navigation_service' => 'Calendar\Navigation\Factory\CalendarNavigationServiceFactory',
         ],
         'invokables'   => [
@@ -45,7 +45,32 @@ $config = [
         ]
     ],
     'view_manager'    => [
-        'template_map' => include __DIR__ . '/../template_map.php', ], 'view_helpers' => [ 'invokables' => [ 'calendarDocumentLink' => 'Calendar\View\Helper\DocumentLink', 'calendarPaginationLink' => 'Calendar\View\Helper\PaginationLink' ] ], 'doctrine' => [ 'driver' => [ 'calendar_annotation_driver' => [ 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver', 'paths' => [ __DIR__ . '/../src/Calendar/Entity/' ] ], 'orm_default' => [ 'drivers' => [ 'Calendar\Entity' => 'calendar_annotation_driver', ] ] ], 'eventmanager' => [ 'orm_default' => [ 'subscribers' => [ 'Gedmo\Timestampable\TimestampableListener', 'Gedmo\Sluggable\SluggableListener', ] ], ], ] ];
+        'template_map' => include __DIR__ . '/../template_map.php',
+    ],
+    'view_helpers'    => [
+        'invokables' => [
+            'calendarDocumentLink' => 'Calendar\View\Helper\DocumentLink',
+            'paginationLink'       => 'Calendar\View\Helper\PaginationLink'
+        ]
+    ],
+    'doctrine'        => [
+        'driver'       => [
+            'calendar_annotation_driver' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'paths' => [__DIR__ . '/../src/Calendar/Entity/']
+            ],
+            'orm_default'                => ['drivers' => ['Calendar\Entity' => 'calendar_annotation_driver',]]
+        ],
+        'eventmanager' => [
+            'orm_default' => [
+                'subscribers' => [
+                    'Gedmo\Timestampable\TimestampableListener',
+                    'Gedmo\Sluggable\SluggableListener',
+                ]
+            ],
+        ],
+    ]
+];
 $configFiles = [
     __DIR__ . '/module.config.routes.php',
     __DIR__ . '/module.config.navigation.php',

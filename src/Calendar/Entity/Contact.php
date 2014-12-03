@@ -11,6 +11,7 @@ namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Contact
@@ -18,7 +19,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
-class Contact extends EntityAbstract
+class Contact extends EntityAbstract implements ResourceInterface
 {
     /**
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)

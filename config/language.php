@@ -1,4 +1,5 @@
 <?php
+_("txt-final");
 _("txt-calendar-sequence-explanation");
 _("txt-date-from");
 _("txt-date-from-explanation");

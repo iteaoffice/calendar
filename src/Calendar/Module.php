@@ -11,6 +11,8 @@
  */
 namespace Calendar;
 
+use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
 use Zend\Mvc\MvcEvent;
@@ -62,6 +64,30 @@ class Module implements
     public function getViewHelperConfig()
     {
         return include __DIR__ . '/../../config/viewhelpers.config.php';
+    }
+
+    /**
+     * Move this to here to have config cache working
+     * @return array
+     */
+    public function getControllerPluginConfig()
+    {
+        return [
+            'factories' => [
+                'renderCalendarContactList' => function ($sm) {
+                    $renderCalendarContactList = new RenderCalendarContactList();
+                    $renderCalendarContactList->setServiceLocator($sm->getServiceLocator());
+
+                    return $renderCalendarContactList;
+                },
+                'renderReviewCalendar'      => function ($sm) {
+                    $renderReviewCalendar = new RenderReviewCalendar();
+                    $renderReviewCalendar->setServiceLocator($sm->getServiceLocator());
+
+                    return $renderReviewCalendar;
+                }
+            ]
+        ];
     }
 
     /**

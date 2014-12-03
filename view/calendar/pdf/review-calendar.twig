@@ -1,0 +1,39 @@
+<table border="1" cellpadding="2" width="860">
+    <thead>
+    <tr style="background-color:#efefef">
+        <th width="30">{{ translate("txt-nr") }}</th>
+        <th>{{ translate("txt-name") }}</th>
+        <th width="25">{{ translate("txt-call") }}</th>
+        <th>{{ translate("txt-date") }}</th>
+        <th>{{ translate("txt-location") }}</th>
+        <th>{{ translate("txt-project-leader") }}</th>
+        <th>{{ translate("txt-country-external-expert") }}</th>
+        <th>{{ translate("txt-mentor") }}</th>
+        <th>{{ translate("txt-stg-reviewers") }}</th>
+        <th>{{ translate("txt-stg-spare-reviewer") }}</th>
+        <th>{{ translate("txt-secretary") }}</th>
+        <th>{{ translate("txt-chairman") }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for calendar in calendarItems %}
+        <tr>
+            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+            <td width="30">{{ projectLink(projectService,'view-community', 'number') }}</td>
+            <td {% if 'final' in calendar.calendar %}style="background-color: #FF9900"{% endif %}>{{ calendarLink(calendar,'view-community', 'name') }}</td>
+            <td width="25">{{ calendar.projectCalendar.project.call.shortName }}</td>
+            <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+            <td>{{ calendar.location }}</td>
+            {% set contactService = contactServiceProxy(projectService.project.contact) %}
+            <td>{{ contactService.parseFullName }} ({{ contactService.parseOrganisation() }})</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 6 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 9 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 7 %}{{ contact.contact.shortName }}
+                    <br>{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 8 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 4 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 2 %}{{ contact.contact.shortName }}{% endfor %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -49,6 +49,13 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         $this->extractContentParam($content);
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
+
+                if ($this->getCalendarService()->isEmpty()) {
+                    $this->getServiceLocator()->get("response")->setStatusCode(404);
+
+                    return ("The selected calendar item cannot be found");
+                }
+
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
                 $this->serviceLocator->get('headtitle')->append((string) $this->getCalendarService()->getCalendar());
                 $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));

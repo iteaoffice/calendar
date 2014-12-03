@@ -41,7 +41,22 @@ return [
                     'assertion' => CalendarAssertion::class
                 ],
                 [
+                    'route'     => 'community/calendar/download-review-calendar',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
+                [
                     'route'     => 'community/calendar/select-attendees',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
+                [
+                    'route'     => 'community/calendar/send-message',
+                    'roles'     => [],
+                    'assertion' => CalendarAssertion::class
+                ],
+                [
+                    'route'     => 'community/calendar/presence-list',
                     'roles'     => [],
                     'assertion' => CalendarAssertion::class
                 ],

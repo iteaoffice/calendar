@@ -10,6 +10,7 @@
 namespace Calendar\Entity;
 
 use Project\Entity\EntityInterface;
+use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 
 /**
@@ -19,6 +20,9 @@ use Zend\InputFilter\InputFilterAwareInterface;
  */
 abstract class EntityAbstract implements EntityInterface, InputFilterAwareInterface
 {
+    /**
+     * @var InputFilter
+     */
     protected $inputFilter;
 
     /**

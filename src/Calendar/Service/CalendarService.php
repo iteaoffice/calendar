@@ -12,6 +12,7 @@ namespace Calendar\Service;
 use Calendar\Entity;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
+use Calendar\Options\ModuleOptions;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
 
@@ -77,7 +78,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @return CalendarOptionsInterface
+     * @return ModuleOptions
      */
     public function getOptions()
     {
@@ -193,10 +194,15 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+            if ($calendarItem->getCalendar()->getDateEnd() > new \DateTime()) {
+                $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+            }
+
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            $calendar[$calendarItem->getId()] = $calendarItem;
+            if ($calendarItem->getDateEnd() > new \DateTime()) {
+                $calendar[$calendarItem->getId()] = $calendarItem;
+            }
         }
 
         return $calendar;

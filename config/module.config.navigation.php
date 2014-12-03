@@ -20,10 +20,10 @@ return [
                         'label' => _("txt-community-calendar"),
                         'route' => 'community/calendar/overview',
                     ],
-                    //                    'review-calendar' => [
-                    //                        'label' => _("txt-review-calendar"),
-                    //                        'route' => 'community/calendar/review-calendar',
-                    //                    ],
+                    'review-calendar' => [
+                        'label' => _("txt-review-calendar"),
+                        'route' => 'community/calendar/review-calendar',
+                    ],
                     'contact'   => [
                         'label' => _("txt-review-invitations"),
                         'route' => 'community/calendar/contact',
