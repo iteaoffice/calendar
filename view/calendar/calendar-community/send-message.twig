@@ -1,3 +1,6 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-send-message-to-attendees-of-calendar")) %}
+
 <h1>{{ translate("txt-send-message-to-attendees-of-calendar-item-%s")|format(calendarService.calendar) }}</h1>
 
 {% do form.prepare() %}

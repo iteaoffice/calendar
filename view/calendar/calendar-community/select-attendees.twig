@@ -1,3 +1,5 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-edit-attendees-of-calendar-item")) %}
 <h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendarService.calendar) }}</h1>
 
 {% do form.prepare() %}

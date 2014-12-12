@@ -421,7 +421,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             );
 
             $email->setHtmlLayoutName('signature_twig');
-            $email->setMessage($form->getData()['message']);
+            $email->setMessage(nl2br($form->getData()['message']));
 
             $this->getEmailService()->send();
 

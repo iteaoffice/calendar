@@ -116,7 +116,7 @@ class CalendarNavigationService
                             'pages'  => [
                                 'project' => [
                                     'label'  => $this->getProjectService()->parseFullname(),
-                                    'route'  => 'community/project/project',
+                                    'route'  => 'community/project/project/basics',
                                     'router' => $this->getRouter(),
                                     'params' => [
                                         'docRef' => $this->getProjectService()->getProject()->getDocRef()
@@ -384,7 +384,7 @@ class CalendarNavigationService
                     $calendarManager->addPage(
                         [
                             'label'  => $this->projectService->parseFullname(),
-                            'route'  => 'community/project/project',
+                            'route'  => 'community/project/project/basics',
                             'params' => [
                                 'docRef' => $this->projectService->getProject()->getDocRef()
                             ],
@@ -432,7 +432,7 @@ class CalendarNavigationService
                     $calendarManager->addPage(
                         [
                             'label'  => $this->projectService->parseFullname(),
-                            'route'  => 'community/project/project',
+                            'route'  => 'community/project/project/basics',
                             'router' => $this->getRouter(),
                             'params' => [
                                 'docRef' => $this->projectService->getProject()->getDocRef()

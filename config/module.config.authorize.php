@@ -29,52 +29,63 @@ return [
              */
             'BjyAuthorize\Guard\Route' => [
                 ['route' => 'assets/calendar-type-color-css', 'roles' => []],
-                ['route' => 'community/calendar/overview', 'roles' => []],
+                [
+                    'route' => 'community/calendar/overview',
+                    'roles' => [strtolower(Access::ACCESS_USER)]
+                ],
                 [
                     'route'     => 'community/calendar/calendar',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/review-calendar',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/download-review-calendar',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/select-attendees',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/send-message',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/presence-list',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
                 ],
-                ['route' => 'community/calendar/update-status', 'roles' => [], 'assertion' => ContactAssertion::class],
-                ['route' => 'community/calendar/contact', 'roles' => [], 'assertion' => CalendarAssertion::class],
+                [
+                    'route'     => 'community/calendar/update-status',
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'assertion' => ContactAssertion::class
+                ],
+                [
+                    'route'     => 'community/calendar/contact',
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'assertion' => CalendarAssertion::class
+                ],
                 [
                     'route'     => 'community/calendar/document/document',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => DocumentAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/document/download',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => DocumentAssertion::class
                 ],
                 [
                     'route'     => 'community/calendar/document/edit',
-                    'roles'     => [],
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => DocumentAssertion::class
                 ],
                 ['route' => 'zfcadmin/calendar-manager/overview', 'roles' => [strtolower(Access::ACCESS_OFFICE)]],
