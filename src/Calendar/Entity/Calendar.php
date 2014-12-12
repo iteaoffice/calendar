@@ -208,6 +208,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     private $calendarContact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
+     * @ORM\OrderBy({"document"="ASC"})
      * @Annotation\Exclude()
      * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
      */
