@@ -49,31 +49,35 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        /**
-         * Use the NDA object to render the filename
-         */
-        $contactListContent = $twig->render(
-            'calendar/pdf/calendar-contact',
-            [
-                'calendarService' => $calendarService,
-            ]
-        );
+        $calendarContacts = $calendarService->findCalendarContactsByCalendar($calendarService->getCalendar());
 
-        $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
-        $pdf->addPage();
+        //Create chunks of arrays per 13, as that amount fits on the screen
+        $paginatedContacts = array_chunk($calendarContacts, 13);
+        $minAmountOfPages = max(sizeof($paginatedContacts), 2);
 
-        /**
-         * Use the NDA object to render the filename
-         */
-        $contactListContent = $twig->render(
-            'calendar/pdf/calendar-contact',
-            [
-                'calendarService' => $calendarService,
-                'empty'           => true
-            ]
-        );
+        for ($i = 0; $i < $minAmountOfPages; $i++) {
+            /**
+             * Use the NDA object to render the filename
+             */
+            $contactListContent = $twig->render(
+                'calendar/pdf/calendar-contact',
+                [
+                    'calendarService'  => $calendarService,
+                    'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
+                ]
+            );
 
-        $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
+            $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
+
+            /**
+             * Don't add a new page on the last iteration
+             */
+            if ($i < $minAmountOfPages - 1) {
+                $pdf->addPage();
+            }
+
+        }
+
 
         return $pdf;
     }

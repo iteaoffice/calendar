@@ -25,6 +25,7 @@ use Calendar\Service\CalendarServiceAwareInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use General\Service\EmailServiceAwareInterface;
+use Project\Service\ProjectServiceAwareInterface;
 use Project\Service\WorkpackageServiceAwareInterface;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
@@ -37,6 +38,7 @@ use Zend\View\Model\ViewModel;
  */
 class CalendarCommunityController extends CalendarAbstractController implements
     CalendarServiceAwareInterface,
+    ProjectServiceAwareInterface,
     WorkpackageServiceAwareInterface,
     EmailServiceAwareInterface
 {
@@ -199,11 +201,21 @@ class CalendarCommunityController extends CalendarAbstractController implements
          */
         $this->getCalendarService()->addResource($calendarService->getCalendar(), CalendarAssertion::class);
 
+        if ($calendarService->getCalendar()->getProjectCalendar()) {
+            $results = $this->getProjectService()->findResultsByProjectAndContact(
+                $calendarService->getCalendar()->getProjectCalendar()->getProject(),
+                $this->zfcUserAuthentication()->getIdentity()
+            );
+        } else {
+            $results = null;
+        }
+
         return new ViewModel(
             [
                 'calendarService'    => $calendarService,
                 'workpackageService' => $this->getWorkpackageService(),
-                'form'               => $form
+                'form'               => $form,
+                'results'            => $results
             ]
         );
     }

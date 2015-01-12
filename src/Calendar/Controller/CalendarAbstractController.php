@@ -16,15 +16,16 @@ use Calendar\Service\FormService;
 use Calendar\Service\FormServiceAwareInterface;
 use Contact\Service\ContactService;
 use Contact\Service\ContactServiceAwareInterface;
+use General\Service\EmailService;
 use General\Service\GeneralService;
 use General\Service\GeneralServiceAwareInterface;
+use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
-use General\Service\EmailService;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
@@ -46,6 +47,10 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var ContactService
      */
     protected $contactService;
+    /**
+     * @var ProjectService
+     */
+    protected $projectService;
     /**
      * @var WorkpackageService
      */
@@ -183,6 +188,26 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setWorkpackageService(WorkpackageService $workpackageService)
     {
         $this->workpackageService = $workpackageService;
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectService
+     */
+    public function getProjectService()
+    {
+        return $this->projectService;
+    }
+
+    /**
+     * @param ProjectService $projectService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setProjectService(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
 
         return $this;
     }

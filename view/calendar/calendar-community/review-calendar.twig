@@ -19,6 +19,22 @@
         <th>{{ translate("txt-chairman") }}</th>
     </tr>
     </thead>
+    <tfoot>
+    <tr>
+        <th>{{ translate("txt-project") }}</th>
+        <th>{{ translate("txt-name") }}</th>
+        <th>{{ translate("txt-call") }}</th>
+        <th>{{ translate("txt-date") }}</th>
+        <th>{{ translate("txt-location") }}</th>
+        <th>{{ translate("txt-project-leader") }}</th>
+        <th>{{ translate("txt-country-external-expert") }}</th>
+        <th>{{ translate("txt-mentor") }}</th>
+        <th>{{ translate("txt-stg-reviewers") }}</th>
+        <th>{{ translate("txt-stg-spare-reviewer") }}</th>
+        <th>{{ translate("txt-secretary") }}</th>
+        <th>{{ translate("txt-chairman") }}</th>
+    </tr>
+    </tfoot>
     <tbody>
     {% for calendar in calendarItems %}
         <tr {% if 'final' in calendar.calendar %}class="success"{% endif %}>

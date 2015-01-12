@@ -39,10 +39,10 @@
             {% if calendarService.calendar.projectCalendar %}
                 <li><a href="#version-documents"
                        data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
-                <li><a href="#report-documents"
-                       data-toggle="pill">{{ translate("txt-report-documents") }}</a></li>
-                <li><a href="#project-results"
-                       data-toggle="pill">{{ translate("txt-project-results") }}</a></li>
+                <li><a href="#reporting"
+                       data-toggle="pill">{{ translate("txt-reporting") }}</a></li>
+                <li><a href="#public-project-results"
+                       data-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
                 <li><a href="#workpackage-deliverables"
                        data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
             {% endif %}
@@ -167,9 +167,9 @@
 
                 </div>
 
-                <div class="tab-pane" id="report-documents">
+                <div class="tab-pane" id="reporting">
 
-                    <h3>{{ translate("txt-report-documents") }}</h3>
+                    <h3>{{ translate("txt-progress-reports") }}</h3>
 
                     {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
 
@@ -200,45 +200,76 @@
                         {{ ztbalert().info(translate("txt-no-report-documents-attached"))|raw }}
                     {% endif %}
 
+                    <h3>{{ translate("txt-review-documents") }}</h3>
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{{ translate("txt-report") }}</th>
+                            <th>{{ translate("txt-date") }}</th>
+                            <th>{{ translate("txt-contact") }}</th>
+                            <th>{{ translate("txt-content-type") }}</th>
+                            <th>{{ translate("txt-size") }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_REVIEW") %}
+                            <tr>
+                                <td>
+                                    {{ contentTypeIcon(result.contentType) }}
+                                    {{ resultLink(result,'download', 'public-name') }}
+                                </td>
+                                <td>{{ result.dateCreated|string_date }}</td>
+                                <td>{{ result.contact.displayName }}</td>
+                                <td>{{ result.contentType.description }}</td>
+                                <td>{{ result.size|parse_size }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
                 </div>
 
-                <div class="tab-pane" id="project-results">
+                <div class="tab-pane" id="public-project-results">
 
-                    <h3>{{ translate("txt-project-results") }}</h3>
+                    <h3>{{ translate("txt-public-project-results") }}</h3>
 
                     {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
 
-                    {% if projectService.project.result.count() > 0 %}
-                        <table class="table table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th>{{ translate("txt-report") }}</th>
-                                <th>{{ translate("txt-date") }}</th>
-                                <th>{{ translate("txt-contact") }}</th>
-                                <th>{{ translate("txt-content-type") }}</th>
-                                <th>{{ translate("txt-size") }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for result in projectService.project.result %}
-                                <tr>
-                                    <td>
-                                        {{ contentTypeIcon(result.contentType) }}
-                                        {{ resultLink(result,'download', 'public-name') }}
-                                    </td>
-                                    <td>{{ result.dateCreated|string_date }}</td>
-                                    <td>{{ result.contact.displayName }}</td>
-                                    <td>{{ result.contentType.description }}</td>
-                                    <td>{{ result.size|parse_size }}</td>
-                                    <td></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        {{ ztbalert().info(translate("txt-no-results-attached"))|raw }}
-                    {% endif %}
 
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{{ translate("txt-report") }}</th>
+                            <th>{{ translate("txt-date") }}</th>
+                            <th>{{ translate("txt-contact") }}</th>
+                            <th>{{ translate("txt-content-type") }}</th>
+                            <th>{{ translate("txt-size") }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                            <tr>
+                                <td>
+                                    {{ contentTypeIcon(result.contentType) }}
+                                    {{ resultLink(result,'download', 'public-name') }}
+                                </td>
+                                <td>{{ result.dateCreated|string_date }}</td>
+                                <td>{{ result.contact.displayName }}</td>
+                                <td>{{ result.contentType.description }}</td>
+                                <td>{{ result.size|parse_size }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <h3>{{ translate("txt-public-deliverables") }}</h3>
+
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+
+                    {% include 'project/partial/list/workpackage-document' with {'documents':projectService.findPublicWorkpackageDocuments()} %}
 
                 </div>
 

@@ -37,12 +37,12 @@ class Calendar extends EntityRepository
         $qb->from("Calendar\Entity\Calendar", 'c');
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
-                $qb->andWhere('c.dateFrom >= ?1');
+                $qb->andWhere('c.dateEnd >= ?1');
                 $qb->orderBy('c.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
                 break;
             case CalendarService::WHICH_PAST:
-                $qb->andWhere('c.dateFrom <= ?1');
+                $qb->andWhere('c.dateEnd < ?1');
                 $qb->orderBy('c.dateEnd', 'DESC');
                 $qb->setParameter(1, new \DateTime());
                 break;
