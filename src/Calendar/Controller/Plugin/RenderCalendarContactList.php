@@ -78,7 +78,6 @@ class RenderCalendarContactList extends AbstractPlugin
 
         }
 
-
         return $pdf;
     }
 

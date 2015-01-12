@@ -401,9 +401,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
                                         $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
                                         return $dateEnd > $dateFrom;
-                                    },
-                                ],
-                            ],
+                                    }
+                                ]
+                            ]
                         ]
                     ]
                 )
@@ -498,7 +498,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string)$this->calendar;
+        return (string) $this->calendar;
     }
 
     /**
