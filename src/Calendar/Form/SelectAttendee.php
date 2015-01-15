@@ -40,7 +40,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
                 'name'    => 'contact',
                 'options' => [
                     'value_options' => $contacts,
-                    'label'         => _("txt-contact-name")
+                    'label'         => _("txt-contact-name"),
                 ],
             ]
         );
@@ -51,8 +51,8 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
-                    'value' => _("txt-update")
-                ]
+                    'value' => _("txt-update"),
+                ],
             ]
         );
         $this->add(
@@ -61,8 +61,8 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => "btn btn-warning",
-                    'value' => _("txt-cancel")
-                ]
+                    'value' => _("txt-cancel"),
+                ],
             ]
         );
     }

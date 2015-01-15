@@ -65,7 +65,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 )->getCommunityCalendarContactEnabled(),
                 'which'                 => $which,
                 'paginator'             => $paginator,
-                'whichValues'           => $whichValues
+                'whichValues'           => $whichValues,
             ]
         );
     }
@@ -124,7 +124,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
         $response = $this->getResponse();
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine("Pragma: public")
             ->addHeaderLine(
@@ -215,7 +215,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 'calendarService'    => $calendarService,
                 'workpackageService' => $this->getWorkpackageService(),
                 'form'               => $form,
-                'results'            => $results
+                'results'            => $results,
             ]
         );
     }
@@ -340,7 +340,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 ['id' => $calendarService->getCalendar()->getId()],
                 ['fragment' => 'attendees']
             );
-
         }
 
         return new ViewModel(
@@ -367,12 +366,12 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
         $response = $this->getResponse();
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine("Pragma: public")
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="presence-list-' . $calendarService->getCalendar()->getCalendar() . '.pdf"'
+                'attachment; filename="presence-list-'.$calendarService->getCalendar()->getCalendar().'.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
             ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
@@ -449,7 +448,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 ['id' => $calendarService->getCalendar()->getId()],
                 ['fragment' => 'attendees']
             );
-
         }
 
         return new ViewModel(

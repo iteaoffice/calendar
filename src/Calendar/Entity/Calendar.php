@@ -55,7 +55,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     protected $finalTemplates = [
         self::FINAL_DRAFT     => 'txt-draft',
         self::FINAL_TENTATIVE => 'txt-tentative',
-        self::FINAL_FINAL     => 'txt-final'
+        self::FINAL_FINAL     => 'txt-final',
     ];
     /**
      * Textual versions of the on homepage
@@ -64,7 +64,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     protected $onHomepageTemplates = [
         self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
-        self::ON_HOMEPAGE     => 'txt-on-homepage'
+        self::ON_HOMEPAGE     => 'txt-on-homepage',
     ];
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
@@ -328,9 +328,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
+            $this->inputFilter = new InputFilter();
             $factory = new InputFactory();
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'calendar',
@@ -342,7 +342,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'location',
@@ -354,7 +354,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'       => 'dateFrom',
@@ -368,47 +368,14 @@ class Calendar extends EntityAbstract implements ResourceInterface
                                 'name'    => 'DateTime',
                                 'options' => [
                                     'pattern' => 'yyyy-mm-dd HH:mm',
-                                ]
-                            ]
-                        ]
-                    ]
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'dateEnd',
-                        'required'   => true,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            [
-                                'name'    => 'DateTime',
-                                'options' => [
-                                    'pattern' => 'yyyy-mm-dd HH:mm',
-                                ]
+                                ],
                             ],
-                            [
-                                'name'    => 'Callback',
-                                'options' => [
-                                    'messages' => [
-                                        Callback::INVALID_VALUE => 'The end date should be greater than start date',
-                                    ],
-                                    'callback' => function ($value, $context = []) {
-                                        $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                                        $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
-
-                                        return $dateEnd > $dateFrom;
-                                    }
-                                ]
-                            ]
-                        ]
+                        ],
                     ]
                 )
             );
-            $inputFilter->add(
+
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'final',
@@ -416,7 +383,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'onHomepage',
@@ -424,7 +391,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'       => 'sequence',
@@ -434,12 +401,12 @@ class Calendar extends EntityAbstract implements ResourceInterface
                             ['name' => 'StringTrim'],
                         ],
                         'validators' => [
-                            ['name' => 'Int']
-                        ]
+                            ['name' => 'Int'],
+                        ],
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'url',
@@ -463,7 +430,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
                     [
                         'name'     => 'call',
@@ -471,7 +438,40 @@ class Calendar extends EntityAbstract implements ResourceInterface
                     ]
                 )
             );
-            $this->inputFilter = $inputFilter;
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'       => 'dateEnd',
+                        'required'   => true,
+                        'filters'    => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                        'validators' => [
+                            [
+                                'name'    => 'DateTime',
+                                'options' => [
+                                    'pattern' => 'yyyy-mm-dd HH:mm',
+                                ],
+                            ],
+                            [
+                                'name'    => 'Callback',
+                                'options' => [
+                                    'messages' => [
+                                        Callback::INVALID_VALUE => 'The end date should be greater than start date',
+                                    ],
+                                    'callback' => function ($value, $context = []) {
+                                        $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
+                                        $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
+
+                                        return $dateEnd > $dateFrom;
+                                    },
+                                ]
+                            ],
+                        ],
+                    ]
+                )
+            );
         }
 
         return $this->inputFilter;

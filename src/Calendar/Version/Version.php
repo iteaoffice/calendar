@@ -90,9 +90,9 @@ final class Version
         if (null === $httpClient && !ini_get('allow_url_fopen')) {
             trigger_error(
                 sprintf(
-                    'allow_url_fopen is not set, and no Zend\Http\Client ' .
-                    'was passed. You must either set allow_url_fopen in ' .
-                    'your PHP configuration or pass a configured ' .
+                    'allow_url_fopen is not set, and no Zend\Http\Client '.
+                    'was passed. You must either set allow_url_fopen in '.
+                    'your PHP configuration or pass a configured '.
                     'Zend\Http\Client as the second argument to %s.',
                     __METHOD__
                 ),

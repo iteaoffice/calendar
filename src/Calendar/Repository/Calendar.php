@@ -143,7 +143,7 @@ class Calendar extends EntityRepository
         $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
         $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
-        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
+        $subSelectCalendarContact->andWhere('contact2.id = '.$contact);
         $qb->andWhere(
             $qb->expr()->orX(
                 $qb->expr()->in('c.type', $subSelect->getDQL()),

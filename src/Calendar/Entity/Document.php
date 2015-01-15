@@ -194,7 +194,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     public function parseFileName()
     {
-        return $this->getDocument() . '.' . $this->getContentType()->getExtension();
+        return $this->getDocument().'.'.$this->getContentType()->getExtension();
     }
 
     /**

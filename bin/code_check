@@ -2,5 +2,7 @@
 SRC_DIR="`pwd`"
 cd "`dirname "$0"`"
 
-php ./../../../../php-cs-fixer.phar fix -v ./..
+./../../../bin/parallel-lint ./../src
+./../../../bin/twig-lint lint ./../view/
+./../../../bin/php-cs-fixer fix -v ./../src
 ./../../../bin/phpcs -n --standard=PSR2 ./../src/

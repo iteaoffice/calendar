@@ -91,8 +91,8 @@ class Type
      */
     public function getCacheCssFileName()
     {
-        return __DIR__ . '/../../../../../../public' . DIRECTORY_SEPARATOR . 'assets' .
-        DIRECTORY_SEPARATOR . DEBRANOVA_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+        return __DIR__.'/../../../../../../public'.DIRECTORY_SEPARATOR.'assets'.
+        DIRECTORY_SEPARATOR.DEBRANOVA_HOST.DIRECTORY_SEPARATOR.'css/calendar-type-color.css';
     }
 
     /**
@@ -100,7 +100,7 @@ class Type
      */
     public function parseCssName()
     {
-        return 'calendar-type-' . $this->getId();
+        return 'calendar-type-'.$this->getId();
     }
 
     /**

@@ -37,13 +37,13 @@ class CreateCalendarDocument extends Form
                 'name'       => 'document',
                 'options'    => [
                     'label'      => _("txt-document-name"),
-                    'help-block' => _("txt-document-name-explanation")
+                    'help-block' => _("txt-document-name-explanation"),
                 ],
                 'attributes' => [
                     'required'    => true,
                     'class'       => 'form-control',
-                    'placeholder' => _("txt-please-give-a-calendar-document-name")
-                ]
+                    'placeholder' => _("txt-please-give-a-calendar-document-name"),
+                ],
             ]
         );
         $this->add(
@@ -52,7 +52,7 @@ class CreateCalendarDocument extends Form
                 'name'       => 'file',
                 'options'    => [
                     "label"      => "txt-file",
-                    "help-block" => _("txt-file-requirements")
+                    "help-block" => _("txt-file-requirements"),
                 ],
                 'attributes' => [
                     'class' => 'form-control',
@@ -65,8 +65,8 @@ class CreateCalendarDocument extends Form
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
-                    'value' => _("txt-update")
-                ]
+                    'value' => _("txt-update"),
+                ],
             ]
         );
         $this->add(
@@ -75,8 +75,8 @@ class CreateCalendarDocument extends Form
                 'name'       => 'delete',
                 'attributes' => [
                     'class' => "btn btn-danger",
-                    'value' => _("txt-delete")
-                ]
+                    'value' => _("txt-delete"),
+                ],
             ]
         );
         $this->add(
@@ -85,8 +85,8 @@ class CreateCalendarDocument extends Form
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => "btn btn-warning",
-                    'value' => _("txt-cancel")
-                ]
+                    'value' => _("txt-cancel"),
+                ],
             ]
         );
     }

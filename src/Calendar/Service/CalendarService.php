@@ -67,11 +67,11 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     {
         $calendar = $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))->findOneBy(
             [
-                'docRef' => $docRef
+                'docRef' => $docRef,
             ]
         );
         if (is_null($calendar)) {
-            return null;
+            return;
         }
 
         return $calendar;
@@ -110,7 +110,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
             ->findOneBy(
                 [
                     'calendar' => $calendar,
-                    'contact'  => $contact
+                    'contact'  => $contact,
                 ]
             );
 
@@ -197,7 +197,6 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
             if ($calendarItem->getCalendar()->getDateEnd() > new \DateTime()) {
                 $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
             }
-
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
             if ($calendarItem->getDateEnd() > new \DateTime()) {

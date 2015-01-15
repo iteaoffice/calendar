@@ -51,7 +51,7 @@ class DocumentLink extends LinkAbstract
         $this->setShowOptions(
             [
 
-                'name' => $this->getDocument()->getDocument()
+                'name' => $this->getDocument()->getDocument(),
             ]
         );
 
@@ -77,7 +77,6 @@ class DocumentLink extends LinkAbstract
      */
     public function parseAction()
     {
-
         switch ($this->getAction()) {
             case 'document-community':
                 $this->setRouter('community/calendar/document/document');

@@ -75,7 +75,6 @@ class RenderCalendarContactList extends AbstractPlugin
             if ($i < $minAmountOfPages - 1) {
                 $pdf->addPage();
             }
-
         }
 
         return $pdf;

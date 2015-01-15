@@ -44,15 +44,15 @@ class CalendarDocumentController extends CalendarAbstractController
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="' . $document->parseFilename() . '"'
+                'attachment; filename="'.$document->parseFilename().'"'
             )
             ->addHeaderLine("Pragma: public")
-            ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
-            ->addHeaderLine('Content-Length: ' . $document->getSize());
+            ->addHeaderLine('Content-Type: '.$document->getContentType()->getContentType())
+            ->addHeaderLine('Content-Length: '.$document->getSize());
 
         return $this->response;
     }
@@ -152,7 +152,7 @@ class CalendarDocumentController extends CalendarAbstractController
         return new ViewModel(
             [
                 'document' => $document,
-                'form'     => $form
+                'form'     => $form,
             ]
         );
     }

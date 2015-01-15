@@ -69,7 +69,7 @@ class CalendarLink extends LinkAbstract
             [
                 'alternativeShow' => $this->getAlternativeShow(),
                 'text-which-tab'  => ucfirst($this->getWhich()),
-                'name'            => $this->getCalendar()->getCalendar()
+                'name'            => $this->getCalendar()->getCalendar(),
             ]
         );
 
@@ -100,7 +100,6 @@ class CalendarLink extends LinkAbstract
      */
     public function parseAction()
     {
-
         switch ($this->getAction()) {
             case 'edit':
                 $this->setRouter('zfcadmin/calendar-manager/edit');
@@ -155,7 +154,7 @@ class CalendarLink extends LinkAbstract
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view':
-                $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
+                $this->setRouter('route-'.$this->getCalendar()->get("underscore_full_entity_name"));
                 $this->addRouterParam('calendar', $this->getCalendar()->getId());
                 $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
                 $this->setText(

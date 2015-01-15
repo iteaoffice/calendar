@@ -40,16 +40,16 @@ class ObjectFieldset extends Fieldset
             if ($element instanceof EntitySelect || $element instanceof EntityMultiCheckbox) {
                 $element->setOptions(
                     [
-                        'object_manager' => $entityManager
+                        'object_manager' => $entityManager,
                     ]
                 );
             }
             if ($element instanceof Radio) {
                 $attributes = $element->getAttributes();
-                $valueOptionsArray = 'get' . ucfirst($attributes['array']);
+                $valueOptionsArray = 'get'.ucfirst($attributes['array']);
                 $element->setOptions(
                     [
-                        'value_options' => $object->$valueOptionsArray()
+                        'value_options' => $object->$valueOptionsArray(),
                     ]
                 );
             }

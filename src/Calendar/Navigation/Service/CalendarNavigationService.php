@@ -119,7 +119,7 @@ class CalendarNavigationService
                                     'route'  => 'community/project/project/basics',
                                     'router' => $this->getRouter(),
                                     'params' => [
-                                        'docRef' => $this->getProjectService()->getProject()->getDocRef()
+                                        'docRef' => $this->getProjectService()->getProject()->getDocRef(),
                                     ],
                                     'pages'  => [
                                         'calendar' => [
@@ -132,12 +132,12 @@ class CalendarNavigationService
                                             'router' => $this->getRouter(),
                                             'active' => true,
                                             'params' => [
-                                                'id' => $this->getCalendarService()->getCalendar()->getId()
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                                'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ]
                     );
                 } elseif (is_null($this->getCalendarService()->getCalendar()->getProjectCalendar())) {
@@ -152,8 +152,8 @@ class CalendarNavigationService
                             'router' => $this->getRouter(),
                             'active' => true,
                             'params' => [
-                                'id' => $this->getCalendarService()->getCalendar()->getId()
-                            ]
+                                'id' => $this->getCalendarService()->getCalendar()->getId(),
+                            ],
                         ]
                     );
                 }
@@ -178,7 +178,7 @@ class CalendarNavigationService
                         'router' => $this->getRouter(),
                         'active' => false,
                         'params' => [
-                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                            'id' => $this->getCalendarService()->getCalendar()->getId(),
                         ],
                         'pages'  => [
                             'calendar' => [
@@ -190,10 +190,10 @@ class CalendarNavigationService
                                 'router' => $this->getRouter(),
                                 'active' => true,
                                 'params' => [
-                                    'id' => $document->getId()
-                                ]
-                            ]
-                        ]
+                                    'id' => $document->getId(),
+                                ],
+                            ],
+                        ],
                     ]
                 );
                 break;
@@ -217,7 +217,7 @@ class CalendarNavigationService
                         'router' => $this->getRouter(),
                         'active' => false,
                         'params' => [
-                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                            'id' => $this->getCalendarService()->getCalendar()->getId(),
                         ],
                         'pages'  => [
                             'calendar' => [
@@ -229,10 +229,10 @@ class CalendarNavigationService
                                 'router' => $this->getRouter(),
                                 'active' => true,
                                 'params' => [
-                                    'id' => $document->getId()
-                                ]
-                            ]
-                        ]
+                                    'id' => $document->getId(),
+                                ],
+                            ],
+                        ],
                     ]
                 );
                 break;
@@ -248,7 +248,7 @@ class CalendarNavigationService
                         'router' => $this->getRouter(),
                         'active' => false,
                         'params' => [
-                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                            'id' => $this->getCalendarService()->getCalendar()->getId(),
                         ],
                         'pages'  => [
                             'calendar' => [
@@ -260,10 +260,10 @@ class CalendarNavigationService
                                 'router' => $this->getRouter(),
                                 'active' => true,
                                 'params' => [
-                                    'id' => $this->getCalendarService()->getCalendar()->getId()
-                                ]
-                            ]
-                        ]
+                                    'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                ],
+                            ],
+                        ],
                     ]
                 );
                 break;
@@ -279,7 +279,7 @@ class CalendarNavigationService
                         'router' => $this->getRouter(),
                         'active' => false,
                         'params' => [
-                            'id' => $this->getCalendarService()->getCalendar()->getId()
+                            'id' => $this->getCalendarService()->getCalendar()->getId(),
                         ],
                         'pages'  => [
                             'calendar' => [
@@ -291,17 +291,17 @@ class CalendarNavigationService
                                 'router' => $this->getRouter(),
                                 'active' => true,
                                 'params' => [
-                                    'id' => $this->getCalendarService()->getCalendar()->getId()
-                                ]
-                            ]
-                        ]
+                                    'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                ],
+                            ],
+                        ],
                     ]
                 );
 
                 break;
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -386,7 +386,7 @@ class CalendarNavigationService
                             'label'  => $this->projectService->parseFullname(),
                             'route'  => 'community/project/project/basics',
                             'params' => [
-                                'docRef' => $this->projectService->getProject()->getDocRef()
+                                'docRef' => $this->projectService->getProject()->getDocRef(),
                             ],
                             'router' => $this->getRouter(),
                             'pages'  => [
@@ -400,10 +400,10 @@ class CalendarNavigationService
                                     'active' => true,
                                     'router' => $this->getRouter(),
                                     'params' => [
-                                        'id' => $this->getCalendarService()->getCalendar()->getId()
-                                    ]
-                                ]
-                            ]
+                                        'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                    ],
+                                ],
+                            ],
                         ]
                     );
                 } else {
@@ -418,8 +418,8 @@ class CalendarNavigationService
                             'router' => $this->getRouter(),
                             'active' => true,
                             'params' => [
-                                'id' => $this->getCalendarService()->getCalendar()->getId()
-                            ]
+                                'id' => $this->getCalendarService()->getCalendar()->getId(),
+                            ],
                         ]
                     );
                 }
@@ -435,7 +435,7 @@ class CalendarNavigationService
                             'route'  => 'community/project/project/basics',
                             'router' => $this->getRouter(),
                             'params' => [
-                                'docRef' => $this->projectService->getProject()->getDocRef()
+                                'docRef' => $this->projectService->getProject()->getDocRef(),
                             ],
                             'pages'  => [
                                 'project_calendar' => [
@@ -447,7 +447,7 @@ class CalendarNavigationService
                                     'route'  => 'zfcadmin/calendar-manager/calendar',
                                     'router' => $this->getRouter(),
                                     'params' => [
-                                        'id' => $this->getCalendarService()->getCalendar()->getId()
+                                        'id' => $this->getCalendarService()->getCalendar()->getId(),
                                     ],
                                     'pages'  => [
                                         'edit_project_calendar' => [
@@ -460,12 +460,12 @@ class CalendarNavigationService
                                             'active' => true,
                                             'router' => $this->getRouter(),
                                             'params' => [
-                                                'id' => $this->getCalendarService()->getCalendar()->getId()
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                                                'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ]
                     );
                 } else {
@@ -479,11 +479,10 @@ class CalendarNavigationService
                             'route'  => 'zfcadmin/calendar-manager/calendar',
                             'router' => $this->getRouter(),
                             'params' => [
-                                'id' => $this->getCalendarService()->getCalendar()->getId()
+                                'id' => $this->getCalendarService()->getCalendar()->getId(),
                             ],
                             'pages'  => [
-                                'edit_calendar_item' =>
-                                    [
+                                'edit_calendar_item' => [
                                         'label'  => sprintf(
                                             $this->translate("txt-edit-calendar-item-%s-at-%s"),
                                             $this->getCalendarService()->getCalendar()->getCalendar(),
@@ -493,10 +492,10 @@ class CalendarNavigationService
                                         'active' => true,
                                         'router' => $this->getRouter(),
                                         'params' => [
-                                            'id' => $this->getCalendarService()->getCalendar()->getId()
-                                        ]
-                                    ]
-                            ]
+                                            'id' => $this->getCalendarService()->getCalendar()->getId(),
+                                        ],
+                                    ],
+                            ],
                         ]
                     );
                 }

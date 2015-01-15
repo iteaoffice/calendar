@@ -56,14 +56,14 @@ class CalendarManagerController extends CalendarAbstractController
                     $birthDay->getDisplayName(),
                     $birthDay->getDateOfBirth()->format("Y")
                 ),
-                'date' => \DateTime::createFromFormat("Ymdhis", $index)
+                'date' => \DateTime::createFromFormat("Ymdhis", $index),
             ];
         }
         foreach ($calendarItems as $calendarItem) {
-            $calender[$calendarItem->getDateFrom()->format('Ymdhis') . $calendarItem->getId()] = [
+            $calender[$calendarItem->getDateFrom()->format('Ymdhis').$calendarItem->getId()] = [
                 'item'     => $calendarItem->getCalendar(),
                 'calendar' => $calendarItem,
-                'date'     => null
+                'date'     => null,
             ];
         }
         ksort($calender);
@@ -77,7 +77,7 @@ class CalendarManagerController extends CalendarAbstractController
             [
                 'which'       => $which,
                 'paginator'   => $paginator,
-                'whichValues' => $whichValues
+                'whichValues' => $whichValues,
             ]
         );
     }
@@ -220,7 +220,7 @@ class CalendarManagerController extends CalendarAbstractController
         return new ViewModel(
             [
                 'calendarService' => $calendarService,
-                'form'            => $form
+                'form'            => $form,
             ]
         );
     }
