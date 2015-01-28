@@ -187,7 +187,6 @@ class CalendarCommunityController extends CalendarAbstractController implements
             /**
              * Document uploaded
              */
-
             return $this->redirect()->toRoute(
                 'community/calendar/calendar',
                 [
@@ -415,6 +414,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
              * Send the email tot he office
              */
             $email = $this->getEmailService()->create();
+            $email->setPersonal(false);
             $email->setFromContact($this->zfcUserAuthentication()->getIdentity());
             /**
              * Inject the contacts in the email

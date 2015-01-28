@@ -40,7 +40,6 @@ class RenderCalendarContactList extends AbstractPlugin
      *
      * @return CalendarPdf
      */
-
     public function render(CalendarService $calendarService)
     {
         $pdf = new CalendarPdf();

@@ -174,7 +174,6 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                 /**
                  * Social is treated in the createLink function, no content needs to be created
                  */
-
                 return;
             default:
                 if (!array_key_exists($this->getShow(), $this->showOptions)) {

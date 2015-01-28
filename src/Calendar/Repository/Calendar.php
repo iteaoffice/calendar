@@ -40,6 +40,8 @@ class Calendar extends EntityRepository
                 $qb->andWhere('c.dateEnd >= ?1');
                 $qb->orderBy('c.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
+                $qb->andWhere('c.final = ?3');
+                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
                 break;
             case CalendarService::WHICH_PAST:
                 $qb->andWhere('c.dateEnd < ?1');
@@ -50,6 +52,8 @@ class Calendar extends EntityRepository
                 $qb->andWhere('c.dateEnd >= ?1');
                 $qb->orderBy('c.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
+                $qb->andWhere('c.final = ?3');
+                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
                 $projectCalendarSubSelect = $this->_em->createQueryBuilder();
                 $projectCalendarSubSelect->select('calendar.id');
                 $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
@@ -58,6 +62,8 @@ class Calendar extends EntityRepository
                 break;
             case CalendarService::WHICH_UPDATED:
                 $qb->orderBy('c.dateUpdated', 'DESC');
+                $qb->andWhere('c.final = ?3');
+                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
                 break;
             case CalendarService::WHICH_ON_HOMEPAGE:
                 $qb->andWhere('c.dateEnd >= ?1');
