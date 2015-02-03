@@ -78,7 +78,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         return [
             'contact' => [
                 'required' => true,
-            ]
+            ],
         ];
     }
 }

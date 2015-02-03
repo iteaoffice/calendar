@@ -194,9 +194,9 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if ($calendarItem->getCalendar()->getDateEnd() > new \DateTime()) {
-                $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
-            }
+            //            if ($calendarItem->getCalendar()->getDateEnd() > new \DateTime()) {
+            $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+            //            }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
             if ($calendarItem->getDateEnd() > new \DateTime()) {
@@ -205,6 +205,20 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         }
 
         return $calendar;
+    }
+
+    /**
+     * return the review-meeting corresponding to a calendar item
+     *
+     * @param Project $project
+     *
+     * @return Calendar|null
+     */
+    public function findLatestProjectCalendar(Project $project)
+    {
+        return $this->getEntityManager()->getRepository(
+            $this->getFullEntityName('calendar')
+        )->findLatestProjectCalendar($project);
     }
 
     /**
@@ -242,7 +256,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
             self::WHICH_UPCOMING,
             self::WHICH_UPDATED,
             self::WHICH_PAST,
-            self::WHICH_REVIEWS
+            self::WHICH_REVIEWS,
         ];
     }
 

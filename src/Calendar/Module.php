@@ -86,7 +86,7 @@ class Module implements
 
                     return $renderReviewCalendar;
                 },
-            ]
+            ],
         ];
     }
 

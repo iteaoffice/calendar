@@ -15,6 +15,7 @@ use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Project\Entity\Project;
 
 /**
  * @category    Calendar
@@ -97,6 +98,32 @@ class Calendar extends EntityRepository
         }
 
         return $qb->getQuery();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return Calendar|null
+     */
+    public function findLatestProjectCalendar(Project $project)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('c');
+        $qb->from("Calendar\Entity\Calendar", 'c');
+
+        $qb->join('c.projectCalendar', 'pc');
+        $qb->andWhere('pc.project = :project');
+
+        $qb->andWhere('c.dateEnd < ?1');
+        $qb->orderBy('c.dateFrom', 'DESC');
+        $qb->setParameter(1, new \DateTime());
+        $qb->andWhere('c.final = ?3');
+        $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+        $qb->setParameter('project', $project);
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
