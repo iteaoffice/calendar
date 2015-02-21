@@ -40,7 +40,7 @@ class PaginationLink extends LinkAbstract
         $params = array_merge(
             $this->getRouteMatch()->getParams(),
             [
-                'page' => $page
+                'page' => $page,
             ]
         );
 

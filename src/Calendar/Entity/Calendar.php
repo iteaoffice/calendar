@@ -466,7 +466,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
 
                                         return $dateEnd > $dateFrom;
                                     },
-                                ]
+                                ],
                             ],
                         ],
                     ]

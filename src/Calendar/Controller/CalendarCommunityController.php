@@ -190,7 +190,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             return $this->redirect()->toRoute(
                 'community/calendar/calendar',
                 [
-                    'id' => $calendarService->getCalendar()->getId()
+                    'id' => $calendarService->getCalendar()->getId(),
                 ]
             );
         }

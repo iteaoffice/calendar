@@ -28,7 +28,7 @@ class CalendarController extends CalendarAbstractController
         $css = $renderer->render(
             'calendar/calendar/calendar-type-color-css',
             [
-                'calendarTypes' => $calendarTypes
+                'calendarTypes' => $calendarTypes,
             ]
         );
         //Save a copy of the file in the caching-folder

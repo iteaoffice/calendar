@@ -211,7 +211,7 @@ class CalendarManagerController extends CalendarAbstractController
             return $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/calendar',
                 [
-                    'id' => $calendarService->getCalendar()->getId()
+                    'id' => $calendarService->getCalendar()->getId(),
                 ]
             );
         }

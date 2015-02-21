@@ -349,7 +349,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             'calendar/partial/year-selector',
             [
                 'years'        => $years,
-                'selectedYear' => $year
+                'selectedYear' => $year,
             ]
         );
     }
