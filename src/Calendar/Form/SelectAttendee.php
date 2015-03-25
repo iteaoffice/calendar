@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Form
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Form;
 
 use Calendar\Service\CalendarService;
@@ -28,6 +29,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         parent::__construct();
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
+        $this->setAttribute('action', '');
 
         $contacts = [];
         foreach ($contactService->findPossibleContactByCalendar($calendarService->getCalendar()) as $contact) {

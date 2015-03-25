@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Repository
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Repository;
 
 use Calendar\Entity;
@@ -16,13 +17,13 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * @category    Calendar
- * @package     Repository
  */
 class Contact extends EntityRepository
 {
     /**
-     * @param                   $which
-     * @param  ContactEntity    $contact
+     * @param               $which
+     * @param ContactEntity $contact
+     *
      * @return Entity\Contact[]
      */
     public function findCalendarContactByContact($which, ContactEntity $contact = null)
@@ -77,8 +78,9 @@ class Contact extends EntityRepository
     }
 
     /**
-     * @param  ContactEntity   $contact
-     * @param  Entity\Calendar $calendar
+     * @param ContactEntity   $contact
+     * @param Entity\Calendar $calendar
+     *
      * @return Entity\Contact
      */
     public function findCalendarContactByContactAndCalendar(ContactEntity $contact, Entity\Calendar $calendar)
@@ -116,7 +118,8 @@ class Contact extends EntityRepository
     }
 
     /**
-     * @param  Entity\Calendar  $calendar
+     * @param Entity\Calendar $calendar
+     *
      * @return Entity\Contact[]
      */
     public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar)

@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Controller
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Controller;
 
 use Calendar\Entity\Document;
@@ -20,15 +21,15 @@ use Zend\View\Model\ViewModel;
 class CalendarDocumentController extends CalendarAbstractController
 {
     /**
-     * Download a document
+     * Download a document.
      *
      * @return int
      */
     public function downloadAction()
     {
         set_time_limit(0);
-        /**
-         * @var $document Document
+        /*
+         * @var Document
          */
         $document = $this->getCalendarService()->findEntityById(
             'Document',
@@ -37,7 +38,7 @@ class CalendarDocumentController extends CalendarAbstractController
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
-        /**
+        /*
          * Due to the BLOB issue, we treat this as an array and we need to capture the first element
          */
         $object = $document->getObject()->first()->getObject();
@@ -96,11 +97,11 @@ class CalendarDocumentController extends CalendarAbstractController
         $form->getInputFilter()->get('file')->setRequired(false);
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
-            /**
-             * @var $document Document
+            /*
+             * @var Document
              */
             $document = $form->getData();
-            /**
+            /*
              * Remove the file if delete is pressed
              */
             if (isset($data['delete'])) {
@@ -115,13 +116,13 @@ class CalendarDocumentController extends CalendarAbstractController
                     ['fragment' => 'documents']
                 );
             }
-            /**
+            /*
              * Handle when
              */
             if (!isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
                 if (!empty($file['name']) && $file['error'] === 0) {
-                    /**
+                    /*
                      * Update the document
                      */
                     $fileSizeValidator = new FilesSize(PHP_INT_MAX);
@@ -130,7 +131,7 @@ class CalendarDocumentController extends CalendarAbstractController
                     $document->setContentType(
                         $this->getGeneralService()->findContentTypeByContentTypeName($file['type'])
                     );
-                    /**
+                    /*
                      * Update the object
                      */
                     $documentObject = $document->getObject()->first();

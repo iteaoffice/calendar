@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Form
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Form;
 
 use Calendar\Entity\Document;
@@ -20,7 +21,7 @@ use Zend\Form\Form;
 class CreateCalendarDocument extends Form
 {
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -29,6 +30,7 @@ class CreateCalendarDocument extends Form
         $doctrineHydrator = new DoctrineHydrator($entityManager);
         $this->setHydrator($doctrineHydrator)->setObject($document);
         $this->setAttribute('method', 'post');
+        $this->setAttribute('action', '');
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('id', 'create-document');
         $this->add(

@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Application
- * @package   Navigation
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Navigation\Service;
 
 use Calendar\Service\CalendarService;
@@ -17,10 +18,7 @@ use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Navigation\Navigation;
 
 /**
- * Factory for the Community admin navigation
- *
- * @package    Application
- * @subpackage Navigation\Service
+ * Factory for the Community admin navigation.
  */
 class CalendarNavigationService
 {
@@ -50,7 +48,7 @@ class CalendarNavigationService
     protected $router;
 
     /**
-     * Add the dedicated pages to the navigation
+     * Add the dedicated pages to the navigation.
      */
     public function update()
     {
@@ -90,7 +88,7 @@ class CalendarNavigationService
     }
 
     /**
-     * Update the navigation for the community pages
+     * Update the navigation for the community pages.
      *
      * @return bool|void
      */

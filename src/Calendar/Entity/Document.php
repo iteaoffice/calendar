@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
  * @category  Calendar
- * @package   Entity
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
- * CalendarDocument
+ * CalendarDocument.
  *
  * @ORM\Table(name="calendar_document")
  * @ORM\Entity
@@ -30,28 +31,33 @@ class Document extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="document_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
     /**
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
+     *
      * @var \DateTime
      */
     private $dateCreated;
     /**
      * @ORM\Column(name="document", type="string", length=60, nullable=false)
+     *
      * @var string
      */
     private $document;
     /**
      * @ORM\Column(name="size", type="integer", nullable=true)
+     *
      * @var integer
      */
     private $size;
     /**
      * @ORM\Column(name="date_updated", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="update")
+     *
      * @var \DateTime
      */
     private $dateUpdated;
@@ -60,6 +66,7 @@ class Document extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
@@ -68,12 +75,14 @@ class Document extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      * })
+     *
      * @var \Contact\Entity\Contact
      */
     private $contact;
     /**
      * @ORM\ManyToOne(targetEntity="General\Entity\ContentType", cascade={"persist"}, inversedBy="calendarDocument")
      * @ORM\JoinColumn(name="contenttype_id", referencedColumnName="contenttype_id", nullable=false)
+     *
      * @var \General\Entity\ContentType
      */
     private $contentType;
@@ -81,12 +90,13 @@ class Document extends EntityAbstract implements ResourceInterface
      * @ORM\OneToMany(targetEntity="Calendar\Entity\DocumentObject", cascade={"persist","remove"}, mappedBy="document",
      * fetch="EXTRA_LAZY")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\DocumentObject
      */
     private $object;
 
     /**
-     * Magic Getter
+     * Magic Getter.
      *
      * @param $property
      *
@@ -98,12 +108,10 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Magic Setter
+     * Magic Setter.
      *
      * @param $property
      * @param $value
-     *
-     * @return void
      */
     public function __set($property, $value)
     {
@@ -111,7 +119,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource
+     * Returns the string identifier of the Resource.
      *
      * @return string
      */
@@ -121,11 +129,10 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Set input filter
+     * Set input filter.
      *
      * @param InputFilterInterface $inputFilter
      *
-     * @return void
      * @throws \Exception
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -188,7 +195,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Parse a filename
+     * Parse a filename.
      *
      * @return string
      */

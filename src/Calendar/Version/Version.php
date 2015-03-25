@@ -1,32 +1,33 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Version
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Version;
 
 use Zend\Http;
 use Zend\Json\Json;
 
 /**
- * Class to store and retrieve the version of Calendar module
+ * Class to store and retrieve the version of Calendar module.
  */
 final class Version
 {
     /**
-     * Zend Framework version identification - see compareVersion()
+     * Zend Framework version identification - see compareVersion().
      */
     const VERSION = '1.2-dev';
     /**
-     * Github Service Identifier for version information is retrieved from
+     * Github Service Identifier for version information is retrieved from.
      */
     const VERSION_SERVICE_GITHUB = 'GITHUB';
     /**
-     * The latest stable version Zend Framework available
+     * The latest stable version Zend Framework available.
      *
      * @var string
      */
@@ -46,7 +47,7 @@ final class Version
 
     /**
      * Compare the specified Zend Framework version string $version
-     * with the current Zend\Version\Version::VERSION of Calendar module
+     * with the current Zend\Version\Version::VERSION of Calendar module.
      *
      * @param string $version A version string (e.g. "0.7.1").
      *
@@ -121,7 +122,7 @@ final class Version
     }
 
     /**
-     * Get the latest version from Github
+     * Get the latest version from Github.
      *
      * @param Http\Client $httpClient Configured HTTP client
      *
@@ -170,7 +171,7 @@ final class Version
     }
 
     /**
-     * Get the API response to a call from a configured HTTP client
+     * Get the API response to a call from a configured HTTP client.
      *
      * @param Http\Client $httpClient Configured HTTP client
      *

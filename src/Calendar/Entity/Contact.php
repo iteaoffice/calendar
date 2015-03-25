@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
  * @category  Calendar
- * @package   Entity
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
- * Contact
+ * Contact.
  *
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
@@ -25,6 +26,7 @@ class Contact extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
@@ -33,6 +35,7 @@ class Contact extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\ContactRole
      */
     private $role;
@@ -41,6 +44,7 @@ class Contact extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      * })
+     *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
@@ -49,6 +53,7 @@ class Contact extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\ContactStatus
      */
     private $status;
@@ -57,12 +62,13 @@ class Contact extends EntityAbstract implements ResourceInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      * })
+     *
      * @var \Contact\Entity\Contact
      */
     private $contact;
 
     /**
-     * Magic Getter
+     * Magic Getter.
      *
      * @param $property
      *
@@ -74,12 +80,10 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Magic Setter
+     * Magic Setter.
      *
      * @param $property
      * @param $value
-     *
-     * @return void
      */
     public function __set($property, $value)
     {
@@ -87,7 +91,7 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource
+     * Returns the string identifier of the Resource.
      *
      * @return string
      */
@@ -97,11 +101,10 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Set input filter
+     * Set input filter.
      *
      * @param InputFilterInterface $inputFilter
      *
-     * @return void
      * @throws \Exception
      */
     public function setInputFilter(InputFilterInterface $inputFilter)

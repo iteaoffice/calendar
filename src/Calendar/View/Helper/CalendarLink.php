@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category    Calendar
- * @package     View
- * @subpackage  Helper
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
@@ -16,11 +16,9 @@ use Calendar\Entity\Calendar;
 use Calendar\Service\CalendarService;
 
 /**
- * Create a link to an calendar
+ * Create a link to an calendar.
  *
  * @category    Calendar
- * @package     View
- * @subpackage  Helper
  */
 class CalendarLink extends LinkAbstract
 {
@@ -46,6 +44,7 @@ class CalendarLink extends LinkAbstract
      * @param null     $year
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function __invoke(
@@ -73,7 +72,7 @@ class CalendarLink extends LinkAbstract
             ]
         );
 
-        /**
+        /*
          * Check the access to the object
          */
         if (!$this->hasAccess(
@@ -96,7 +95,7 @@ class CalendarLink extends LinkAbstract
     }
 
     /**
-     * Parse te action and fill the correct parameters
+     * Parse te action and fill the correct parameters.
      */
     public function parseAction()
     {
@@ -106,7 +105,7 @@ class CalendarLink extends LinkAbstract
                 $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
                 break;
             case 'list':
-                /**
+                /*
                  * Push the docRef in the params array
                  */
                 $this->setRouter('route-content_entity_node');

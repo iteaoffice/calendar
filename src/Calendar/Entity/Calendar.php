@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
  * @category  Calendar
- * @package   Entity
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -20,7 +21,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Validator\Callback;
 
 /**
- * Calendar
+ * Calendar.
  *
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Calendar")
@@ -28,49 +29,52 @@ use Zend\Validator\Callback;
 class Calendar extends EntityAbstract implements ResourceInterface
 {
     /**
-     * Constant for final = -1 (draft)
+     * Constant for final = -1 (draft).
      */
     const FINAL_DRAFT = -1;
     /**
-     * Constant for final = 1 (final)
+     * Constant for final = 1 (final).
      */
     const FINAL_FINAL = 1;
     /**
-     * Constant for final = 0 (tentative)
+     * Constant for final = 0 (tentative).
      */
     const FINAL_TENTATIVE = 0;
     /**
-     * Constant for not on homepage = 0 (not on homepage)
+     * Constant for not on homepage = 0 (not on homepage).
      */
     const NOT_ON_HOMEPAGE = 0;
     /**
-     * Constant for on homepage = 1 (on homepage)
+     * Constant for on homepage = 1 (on homepage).
      */
     const ON_HOMEPAGE = 1;
     /**
-     * Textual versions of the final
+     * Textual versions of the final.
      *
      * @var array
      */
-    protected $finalTemplates = [
-        self::FINAL_DRAFT     => 'txt-draft',
-        self::FINAL_TENTATIVE => 'txt-tentative',
-        self::FINAL_FINAL     => 'txt-final',
-    ];
+    protected $finalTemplates
+        = [
+            self::FINAL_DRAFT     => 'txt-draft',
+            self::FINAL_TENTATIVE => 'txt-tentative',
+            self::FINAL_FINAL     => 'txt-final',
+        ];
     /**
-     * Textual versions of the on homepage
+     * Textual versions of the on homepage.
      *
      * @var array
      */
-    protected $onHomepageTemplates = [
-        self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
-        self::ON_HOMEPAGE     => 'txt-on-homepage',
-    ];
+    protected $onHomepageTemplates
+        = [
+            self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
+            self::ON_HOMEPAGE     => 'txt-on-homepage',
+        ];
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()
+     *
      * @var integer
      */
     private $id;
@@ -79,6 +83,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar","help-block": "txt-calendar-explanation"})
      * @Annotation\Required(true)
+     *
      * @var string
      */
     private $calendar;
@@ -86,6 +91,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="location", type="string", length=255, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-location","help-block": "txt-location-explanation"})
+     *
      * @var string
      */
     private $location;
@@ -93,6 +99,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="docref", type="string", length=255, nullable=false, unique=true)
      * @Gedmo\Slug(fields={"calendar","location"})
      * @Annotation\Exclude()
+     *
      * @var string
      */
     private $docRef;
@@ -102,6 +109,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
      * @Annotation\Required(true)
+     *
      * @var \DateTime
      */
     private $dateFrom;
@@ -110,6 +118,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-date-end","help-block": "txt-date-end-explanation", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
+     *
      * @var \DateTime
      */
     private $dateEnd;
@@ -117,6 +126,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
      * @Annotation\Exclude()
+     *
      * @var \DateTime
      */
     private $dateCreated;
@@ -124,6 +134,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="date_updated", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      * @Annotation\Exclude()
+     *
      * @var \DateTime
      */
     private $dateUpdated;
@@ -134,6 +145,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Attributes({"label":"txt-final"})
      * @Annotation\Options({"help-block":"txt-final-explanation"})
      * @Annotation\Required(true)
+     *
      * @var integer
      */
     private $final;
@@ -144,6 +156,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Attributes({"label":"txt-on-homepage"})
      * @Annotation\Options({"help-block":"txt-on-homepage-explanation"})
      * @Annotation\Required(true)
+     *
      * @var integer
      */
     private $onHomepage;
@@ -151,6 +164,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="sequence", type="smallint", length=4, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-sequence","help-block": "txt-calendar-sequence-explanation"})
+     *
      * @var int
      */
     private $sequence;
@@ -158,6 +172,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Textarea")
      * @Annotation\Options({"label":"txt-description","help-block": "txt-calendar-description-explanation"})
+     *
      * @var string
      */
     private $description;
@@ -165,11 +180,13 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="url", type="string", length=60, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Url")
      * @Annotation\Options({"label":"txt-url","help-block": "txt-calendar-url-explanation"})
+     *
      * @var string
      */
     private $url;
     /**
      * @ORM\Column(name="date_plan", type="datetime", nullable=true)
+     *
      * @var \DateTime
      */
     private $datePlan;
@@ -177,6 +194,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="image_url", type="string", length=125, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-image-url","help-block": "txt-image-url-explanation"})
+     *
      * @var string
      */
     private $imageUrl;
@@ -188,6 +206,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-type-explanation"})
      * @Annotation\Attributes({"label":"txt-calendar-type", "required":"true","help-block":"txt-type-explanation"})
+     *
      * @var \Calendar\Entity\Type
      */
     private $type;
@@ -197,12 +216,14 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      * })
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Contact
      */
     private $contact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="calendar")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
     private $calendarContact;
@@ -210,18 +231,21 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
      * @ORM\OrderBy({"document"="ASC"})
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
      */
     private $document;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Schedule", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Schedule[]|Collections\ArrayCollection
      */
     private $schedule;
     /**
      * @ORM\OneToOne(targetEntity="Project\Entity\Calendar\Calendar", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
+     *
      * @var \Project\Entity\Calendar\Calendar
      */
     private $projectCalendar;
@@ -235,12 +259,13 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
      * @Annotation\Attributes({"label":"txt-program-call"})
+     *
      * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
      */
     private $call;
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {
@@ -251,7 +276,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Magic Getter
+     * Magic Getter.
      *
      * @param $property
      *
@@ -263,12 +288,10 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Magic Setter
+     * Magic Setter.
      *
      * @param $property
      * @param $value
-     *
-     * @return void
      */
     public function __set($property, $value)
     {
@@ -276,7 +299,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * New function needed to make the hydrator happy
+     * New function needed to make the hydrator happy.
      *
      * @param Collections\Collection $collection
      */
@@ -288,7 +311,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * New function needed to make the hydrator happy
+     * New function needed to make the hydrator happy.
      *
      * @param Collections\Collection $collection
      */
@@ -300,7 +323,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource
+     * Returns the string identifier of the Resource.
      *
      * @return string
      */
@@ -310,11 +333,10 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Set input filter
+     * Set input filter.
      *
      * @param InputFilterInterface $inputFilter
      *
-     * @return void
      * @throws \Exception
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -330,148 +352,108 @@ class Calendar extends EntityAbstract implements ResourceInterface
         if (!$this->inputFilter) {
             $this->inputFilter = new InputFilter();
             $factory = new InputFactory();
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'calendar',
-                        'required' => true,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'location',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'dateFrom',
-                        'required'   => true,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            [
-                                'name'    => 'DateTime',
-                                'options' => [
-                                    'pattern' => 'yyyy-mm-dd HH:mm',
-                                ],
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'calendar',
+                    'required' => true,
+                    'filters'  => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'location',
+                    'required' => false,
+                    'filters'  => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'       => 'dateFrom',
+                    'required'   => true,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'DateTime',
+                            'options' => [
+                                'pattern' => 'yyyy-mm-dd HH:mm',
                             ],
                         ],
-                    ]
-                )
-            );
+                    ],
+                ]));
 
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'final',
-                        'required' => true,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'onHomepage',
-                        'required' => true,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'sequence',
-                        'required'   => false,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            ['name' => 'Int'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'url',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'imageUrl',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'call',
-                        'required' => false,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'dateEnd',
-                        'required'   => true,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            [
-                                'name'    => 'DateTime',
-                                'options' => [
-                                    'pattern' => 'yyyy-mm-dd HH:mm',
-                                ],
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'final',
+                    'required' => true,
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'onHomepage',
+                    'required' => true,
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'       => 'sequence',
+                    'required'   => false,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        ['name' => 'Int'],
+                    ],
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'url',
+                    'required' => false,
+                    'filters'  => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'imageUrl',
+                    'required' => false,
+                    'filters'  => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'     => 'call',
+                    'required' => false,
+                ]));
+            $this->inputFilter->add($factory->createInput([
+                    'name'       => 'dateEnd',
+                    'required'   => true,
+                    'filters'    => [
+                        ['name' => 'StripTags'],
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
+                            'name'    => 'DateTime',
+                            'options' => [
+                                'pattern' => 'yyyy-mm-dd HH:mm',
                             ],
-                            [
-                                'name'    => 'Callback',
-                                'options' => [
-                                    'messages' => [
-                                        Callback::INVALID_VALUE => 'The end date should be greater than start date',
-                                    ],
-                                    'callback' => function ($value, $context = []) {
-                                        $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                                        $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
+                        ],
+                        [
+                            'name'    => 'Callback',
+                            'options' => [
+                                'messages' => [
+                                    Callback::INVALID_VALUE => 'The end date should be greater than start date',
+                                ],
+                                'callback' => function ($value, $context = []) {
+                                    $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
+                                    $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
-                                        return $dateEnd > $dateFrom;
-                                    },
-                                ],
+                                    return $dateEnd > $dateFrom;
+                                },
                             ],
                         ],
-                    ]
-                )
-            );
+                    ],
+                ]));
         }
 
         return $this->inputFilter;

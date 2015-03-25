@@ -1,12 +1,13 @@
 <?php
 /**
- * Debranova copyright message placeholder
+ * Debranova copyright message placeholder.
  *
  * @category  Calendar
- * @package   Entity
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 Debranova
  */
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -18,7 +19,7 @@ use Zend\Permissions\Acl\Role\RoleInterface;
 class Calendar extends AssertionAbstract
 {
     /**
-     * Returns true if and only if the assertion conditions are met
+     * Returns true if and only if the assertion conditions are met.
      *
      * This method is passed the ACL, Role, Resource, and privilege to which the authorization query applies. If the
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
@@ -40,11 +41,11 @@ class Calendar extends AssertionAbstract
         }
 
         if (!$resource instanceof CalendarEntity) {
-            /**
+            /*
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            /**
+            /*
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
             $resource = $this->getCalendarService()->setCalendarId($id)->getCalendar();
@@ -62,7 +63,7 @@ class Calendar extends AssertionAbstract
                     return true;
                 }
 
-                /**
+                /*
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
@@ -84,7 +85,7 @@ class Calendar extends AssertionAbstract
                 return $this->hasContact();
             case 'view-community':
             case 'send-message':
-                /**
+                /*
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */

@@ -1,13 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Calendar
- * @package    View
- * @subpackage Helper
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
@@ -17,8 +17,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 
 /**
- * Class CalendarServiceProxy
- * @package Calendar\View\Helper
+ * Class CalendarServiceProxy.
  */
 class CalendarServiceProxy extends AbstractHelper implements ServiceLocatorAwareInterface
 {

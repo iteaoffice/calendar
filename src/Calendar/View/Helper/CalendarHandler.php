@@ -1,13 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Calendar
- * @package    View
- * @subpackage Helper
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
@@ -21,8 +21,7 @@ use ZfcTwig\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
 /**
- * Class CountryHandler
- * @package Country\View\Helper
+ * Class CountryHandler.
  */
 class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInterface
 {
@@ -67,8 +66,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     'og:description',
                     $this->getCalendarService()->getCalendar()->getDescription()
                 );
-                /**
-                 * @var $calendarLink CalendarLink
+                /*
+                 * @var CalendarLink
                  */
                 $calendarLink = $this->serviceLocator->get('calendarLink');
                 $this->serviceLocator->get('headmeta')->setProperty(
@@ -109,7 +108,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
         }
         foreach ($content->getContentParam() as $param) {
-            /**
+            /*
              * When the parameterId is 0 (so we want to get the article from the URL
              */
             switch ($param->getParameter()->getParam()) {
@@ -174,7 +173,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Set the newsService based on the DocRef
+     * Set the newsService based on the DocRef.
      *
      * @param $docRef
      *
@@ -216,7 +215,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Show the details of 1 calendar item
+     * Show the details of 1 calendar item.
      *
      * @param Calendar $calendar
      *
@@ -239,7 +238,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Produce a list of upcoming events
+     * Produce a list of upcoming events.
      *
      * @return string
      */
@@ -276,7 +275,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Produce a list of upcoming events
+     * Produce a list of upcoming events.
      *
      * @return string
      */
@@ -314,7 +313,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Create a list of all countries which are active (have projects)
+     * Create a list of all countries which are active (have projects).
      *
      * @return string
      */
@@ -332,7 +331,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Create a list of calls
+     * Create a list of calls.
      *
      * @param int $year
      *
@@ -340,7 +339,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseYearSelector($year)
     {
-        /**
+        /*
          * take the last three years for the calendar
          */
         $years = range(date("Y"), date("Y") - 2);

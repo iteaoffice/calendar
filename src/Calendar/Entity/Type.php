@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
  * @category  Calendar
- * @package   Entity
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
 /**
- * CalendarType
+ * CalendarType.
  *
  * @ORM\Table(name="calendar_type")
  * @ORM\Entity
@@ -26,37 +27,44 @@ class Type
      * @ORM\Column(name="type_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
     /**
      * @ORM\Column(name="type", type="string", length=30, nullable=false)
+     *
      * @var string
      */
     private $type;
     /**
      * @ORM\Column(name="color", type="string", length=7, nullable=true)
+     *
      * @var string
      */
     private $color;
     /**
      * @ORM\Column(name="color_font", type="string", length=7, nullable=true)
+     *
      * @var string
      */
     private $colorFont;
     /**
      * @ORM\Column(name="url", type="string", length=30, nullable=true)
+     *
      * @var string
      */
     private $url;
     /**
      * @ORM\Column(name="autoplan", type="smallint", nullable=false)
+     *
      * @var integer
      */
     private $autoPlan;
     /**
      * @ORM\OneToMany(targetEntity="\Calendar\Entity\Calendar", cascade={"persist"}, mappedBy="type")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
@@ -70,6 +78,7 @@ class Type
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Admin\Entity\Access"})
      * @Annotation\Attributes({"label":"txt-access"})
+     *
      * @var \Admin\Entity\Access[]
      */
     private $access;
@@ -85,7 +94,7 @@ class Type
     }
 
     /**
-     * Return a link to the Css Filename
+     * Return a link to the Css Filename.
      *
      * @return string
      */
@@ -96,7 +105,7 @@ class Type
     }
 
     /**
-     * Return a normalized CSS name for the type
+     * Return a normalized CSS name for the type.
      */
     public function parseCssName()
     {
@@ -104,7 +113,7 @@ class Type
     }
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {

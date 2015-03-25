@@ -1,25 +1,23 @@
 <?php
 
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Calendar
- * @package    View
- * @subpackage Helper
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
 use Calendar\Entity;
 
 /**
- * Create a link to an project
+ * Create a link to an project.
  *
  * @category   Calendar
- * @package    View
- * @subpackage Helper
  */
 class DocumentLink extends LinkAbstract
 {
@@ -34,6 +32,7 @@ class DocumentLink extends LinkAbstract
      * @param string          $show
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function __invoke(
@@ -55,7 +54,7 @@ class DocumentLink extends LinkAbstract
             ]
         );
 
-        /**
+        /*
          * Check the access to the object
          */
         if (!$this->hasAccess(
@@ -73,7 +72,7 @@ class DocumentLink extends LinkAbstract
     }
 
     /**
-     * Parse te action and fill the correct parameters
+     * Parse te action and fill the correct parameters.
      */
     public function parseAction()
     {

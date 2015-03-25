@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Controller
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Controller;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
@@ -71,7 +72,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Controller which gives an overview of upcoming invites
+     * Controller which gives an overview of upcoming invites.
      *
      * @return ViewModel
      */
@@ -90,7 +91,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar
+     * Special action which produces an HTML version of the review calendar.
      *
      * @return ViewModel
      */
@@ -109,7 +110,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar
+     * Special action which produces an HTML version of the review calendar.
      *
      * @return ViewModel
      */
@@ -164,7 +165,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $document = $form->getData();
             $document->setCalendar($calendarService->getCalendar());
             $document->setContact($this->zfcUserAuthentication()->getIdentity());
-            /**
+            /*
              * Add the file
              */
             $file = $data['file'];
@@ -184,7 +185,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
                 )
             );
 
-            /**
+            /*
              * Document uploaded
              */
             return $this->redirect()->toRoute(
@@ -195,7 +196,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             );
         }
 
-        /**
+        /*
          * Add the resource on the fly because it is not triggered via the link Generator
          */
         $this->getCalendarService()->addResource($calendarService->getCalendar(), CalendarAssertion::class);
@@ -246,7 +247,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar
+     * Special action which produces an HTML version of the review calendar.
      *
      * @return ViewModel
      */
@@ -295,7 +296,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
 
                     $calendarContacts->removeElement($calendarContact);
 
-                    /**
+                    /*
                      * Save a new one.
                      */
                     if (is_null($calendarContact)) {
@@ -380,7 +381,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar
+     * Special action which produces an HTML version of the review calendar.
      *
      * @return ViewModel
      */
@@ -410,13 +411,13 @@ class CalendarCommunityController extends CalendarAbstractController implements
                     ['fragment' => 'attendees']
                 );
             }
-            /**
+            /*
              * Send the email tot he office
              */
             $email = $this->getEmailService()->create();
             $email->setPersonal(false);
             $email->setFromContact($this->zfcUserAuthentication()->getIdentity());
-            /**
+            /*
              * Inject the contacts in the email
              */
             foreach ($calendarService->getCalendar()->getCalendarContact() as $calendarContact) {

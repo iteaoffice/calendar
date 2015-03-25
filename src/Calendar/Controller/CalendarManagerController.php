@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Controller
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Controller;
 
 use Calendar\Entity\Calendar;
@@ -25,7 +26,7 @@ use Zend\View\Model\ViewModel;
 class CalendarManagerController extends CalendarAbstractController
 {
     /**
-     * Display the calendar on the website
+     * Display the calendar on the website.
      *
      * @return ViewModel
      */
@@ -41,7 +42,7 @@ class CalendarManagerController extends CalendarAbstractController
         )->getResult();
         $calender = [];
         foreach ($birthDays as $birthDay) {
-            /**
+            /*
              * Produce a index which holds the current year
              */
             $index = sprintf(
@@ -83,7 +84,7 @@ class CalendarManagerController extends CalendarAbstractController
     }
 
     /**
-     * Action for the creation of a new project
+     * Action for the creation of a new project.
      *
      * @return ViewModel
      */
@@ -93,7 +94,7 @@ class CalendarManagerController extends CalendarAbstractController
         $data = $this->getRequest()->getPost()->toArray();
         $form = $this->getFormService()->prepare('calendar', $calendar, $data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
-            /**
+            /*
              * Return when cancel is pressed
              */
             if (isset($data['cancel'])) {
@@ -116,7 +117,7 @@ class CalendarManagerController extends CalendarAbstractController
     }
 
     /**
-     * Action to edit a calendar element
+     * Action to edit a calendar element.
      *
      * @return ViewModel
      */
@@ -128,7 +129,7 @@ class CalendarManagerController extends CalendarAbstractController
         $form = $this->getFormService()->prepare('calendar', $calendarService->getCalendar(), $_POST);
         if ($this->getRequest()->isPost() && $form->isValid()) {
             $calendar = $form->getData();
-            /**
+            /*
              * Return when cancel is pressed
              */
             if (isset($data['cancel'])) {
@@ -137,7 +138,7 @@ class CalendarManagerController extends CalendarAbstractController
                     ['id' => $calendar->getId()]
                 );
             }
-            /**
+            /*
              * Return when cancel is pressed
              */
             if (isset($data['delete'])) {
@@ -185,7 +186,7 @@ class CalendarManagerController extends CalendarAbstractController
             $document = $form->getData();
             $document->setCalendar($calendarService->getCalendar());
             $document->setContact($this->zfcUserAuthentication()->getIdentity());
-            /**
+            /*
              * Add the file
              */
             $file = $data['file'];
@@ -205,7 +206,7 @@ class CalendarManagerController extends CalendarAbstractController
                 )
             );
 
-            /**
+            /*
              * Document uploaded
              */
             return $this->redirect()->toRoute(

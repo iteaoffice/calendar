@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
- * @package   Repository
+ *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Repository;
 
 use Admin\Entity\Access;
@@ -19,7 +20,6 @@ use Project\Entity\Project;
 
 /**
  * @category    Calendar
- * @package     Repository
  */
 class Calendar extends EntityRepository
 {
@@ -78,7 +78,7 @@ class Calendar extends EntityRepository
                 break;
         }
         if ($filterForAccess) {
-            /**
+            /*
              * When no contact is given, simply return all the public calendar items
              */
             if (is_null($contact)) {
@@ -127,7 +127,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * Function which returns true/false based ont he fact if a user can view the calendar
+     * Function which returns true/false based ont he fact if a user can view the calendar.
      *
      * @param Entity\Calendar $calendar
      * @param Contact         $contact

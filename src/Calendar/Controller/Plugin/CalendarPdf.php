@@ -1,31 +1,32 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Calendar
- * @package    Controller
- * @subpackage Plugin
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  2004-2014 ITEA Office
  * @license    http://debranova.org/license.txt proprietary
+ *
  * @link       http://debranova.org
  */
+
 namespace Calendar\Controller\Plugin;
 
 /**
- * Create a link to an project
+ * Create a link to an project.
  *
  * @category   Calendar
- * @package    Controller
- * @subpackage Plugin
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @license    http://debranova.org/licence.txt proprietary
+ *
  * @link       http://debranova.org
  */
 class CalendarPdf extends \FPDI
 {
     /**
-     * "Remembers" the template id of the imported page
+     * "Remembers" the template id of the imported page.
      */
     protected $_tplIdx;
     /**
@@ -34,7 +35,7 @@ class CalendarPdf extends \FPDI
     protected $template;
 
     /**
-     * Draw an imported PDF logo on every page
+     * Draw an imported PDF logo on every page.
      */
     public function header()
     {

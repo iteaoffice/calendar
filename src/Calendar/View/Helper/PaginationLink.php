@@ -1,28 +1,29 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Content
- * @package    View
- * @subpackage Helper
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  2004-2014 ITEA Office
  * @license    http://debranova.org/license.txt proprietary
+ *
  * @link       http://debranova.org
  */
+
 namespace Calendar\View\Helper;
 
 use Zend\View\Helper\Url;
 
 /**
- * Create a link to an document
+ * Create a link to an document.
  *
  * @category   Affiliation
- * @package    View
- * @subpackage Helper
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  2004-2014 ITEA Office
  * @license    http://debranova.org/license.txt proprietary
+ *
  * @link       http://debranova.org
  */
 class PaginationLink extends LinkAbstract
@@ -44,8 +45,8 @@ class PaginationLink extends LinkAbstract
             ]
         );
 
-        /**
-         * @var $url Url
+        /*
+         * @var Url
          */
         $url = $this->serviceLocator->get('url');
 

@@ -24,6 +24,8 @@
             <dd>{{ calendarService.calendar.type }}</dd>
             <dt>{{ translate("txt-location") }}</dt>
             <dd>{{ calendarService.calendar.location }}</dd>
+            <dt>{{ translate("txt-description") }}</dt>
+            <dd>{{ calendarService.calendar.description|default("-") }}</dd>
             <dt>{{ translate("txt-documents") }}</dt>
             <dd>{{ translate("txt-%s-documents")|format(calendarService.calendar.document.count()) }}</dd>
         </dl>
