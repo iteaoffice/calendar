@@ -1,13 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office copyright message placeholder
  *
  * @category   Calendar
- *
+ * @package    View
+ * @subpackage Helper
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
@@ -21,7 +21,8 @@ use ZfcTwig\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
 /**
- * Class CountryHandler.
+ * Class CountryHandler
+ * @package Country\View\Helper
  */
 class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInterface
 {
@@ -33,6 +34,10 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      * @var int
      */
     protected $year;
+    /**
+     * @var int
+     */
+    protected $type;
     /**
      * @var int
      */
@@ -66,8 +71,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     'og:description',
                     $this->getCalendarService()->getCalendar()->getDescription()
                 );
-                /*
-                 * @var CalendarLink
+                /**
+                 * @var $calendarLink CalendarLink
                  */
                 $calendarLink = $this->serviceLocator->get('calendarLink');
                 $this->serviceLocator->get('headmeta')->setProperty(
@@ -108,7 +113,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
         }
         foreach ($content->getContentParam() as $param) {
-            /*
+            /**
              * When the parameterId is 0 (so we want to get the article from the URL
              */
             switch ($param->getParameter()->getParam()) {
@@ -124,6 +129,12 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                         $this->setLimit($param->getParameterId());
                     }
                     break;
+                case 'type':
+                    if (!is_null($type = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                        $this->setType($type);
+                    }
+                    break;
+
                 case 'year':
                     if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
@@ -173,7 +184,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Set the newsService based on the DocRef.
+     * Set the newsService based on the DocRef
      *
      * @param $docRef
      *
@@ -215,7 +226,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Show the details of 1 calendar item.
+     * Show the details of 1 calendar item
      *
      * @param Calendar $calendar
      *
@@ -238,7 +249,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Produce a list of upcoming events.
+     * Produce a list of upcoming events
      *
      * @return string
      */
@@ -261,6 +272,23 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     /**
      * @return int
      */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * @return int
+     */
     public function getLimit()
     {
         return $this->limit;
@@ -275,7 +303,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Produce a list of upcoming events.
+     * Produce a list of upcoming events
      *
      * @return string
      */
@@ -285,7 +313,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->findCalendarItems(
                 CalendarService::WHICH_PAST,
                 $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity(),
-                $this->getYear()
+                $this->getYear(),
+                $this->getType()
             )
             ->setMaxResults((int) $this->getLimit())
             ->getResult();
@@ -313,7 +342,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Create a list of all countries which are active (have projects).
+     * Create a list of all countries which are active (have projects)
      *
      * @return string
      */
@@ -331,7 +360,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * Create a list of calls.
+     * Create a list of calls
      *
      * @param int $year
      *
@@ -339,7 +368,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseYearSelector($year)
     {
-        /*
+        /**
          * take the last three years for the calendar
          */
         $years = range(date("Y"), date("Y") - 2);

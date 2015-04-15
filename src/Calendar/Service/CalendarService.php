@@ -1,13 +1,12 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office copyright message placeholder
  *
  * @category  Calendar
- *
+ * @package   Service
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\Service;
 
 use Calendar\Entity;
@@ -23,7 +22,7 @@ use Project\Entity\Project;
 class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterface
 {
     /**
-     * Constant to determine which affiliations must be taken from the database.
+     * Constant to determine which affiliations must be taken from the database
      */
     const WHICH_UPCOMING = 'upcoming';
     const WHICH_UPDATED = 'updated';
@@ -119,9 +118,8 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param string  $which
-     * @param Contact $contact
-     *
+     * @param  string            $which
+     * @param  Contact           $contact
      * @return CalendarContact[]
      */
     public function findCalendarContactByContact($which = self::WHICH_UPCOMING, Contact $contact = null)
@@ -157,7 +155,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * This function will return a boolean value to see if a contact can view the calendar.
+     * This function will return a boolean value to see if a contact can view the calendar
      *
      * @param Contact $contact
      *
@@ -174,14 +172,15 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      * @param string  $which
      * @param Contact $contact
      * @param integer $year
+     * @param integer $type
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which = self::WHICH_UPCOMING, Contact $contact = null, $year = null)
+    public function findCalendarItems($which = self::WHICH_UPCOMING, Contact $contact = null, $year = null, $type = null)
     {
         return $this->getEntityManager()
             ->getRepository($this->getFullEntityName('Calendar'))
-            ->findCalendarItems($which, true, $contact, $year);
+            ->findCalendarItems($which, true, $contact, $year, $type);
     }
 
     /**
@@ -192,7 +191,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     public function findCalendarByProject(Project $project)
     {
         $calendar = [];
-        /*
+        /**
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
@@ -210,7 +209,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * return the review-meeting corresponding to a calendar item.
+     * return the review-meeting corresponding to a calendar item
      *
      * @param Project $project
      *
@@ -248,7 +247,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * Return an array of all which-values.
+     * Return an array of all which-values
      *
      * @return string[]
      */

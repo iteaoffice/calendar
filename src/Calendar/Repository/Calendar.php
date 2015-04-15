@@ -1,13 +1,12 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office copyright message placeholder
  *
  * @category  Calendar
- *
+ * @package   Repository
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\Repository;
 
 use Admin\Entity\Access;
@@ -20,6 +19,7 @@ use Project\Entity\Project;
 
 /**
  * @category    Calendar
+ * @package     Repository
  */
 class Calendar extends EntityRepository
 {
@@ -31,7 +31,7 @@ class Calendar extends EntityRepository
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which, $filterForAccess = true, Contact $contact = null, $year = null)
+    public function findCalendarItems($which, $filterForAccess = true, Contact $contact = null, $year = null, $type = null)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('c');
@@ -78,7 +78,7 @@ class Calendar extends EntityRepository
                 break;
         }
         if ($filterForAccess) {
-            /*
+            /**
              * When no contact is given, simply return all the public calendar items
              */
             if (is_null($contact)) {
@@ -90,11 +90,17 @@ class Calendar extends EntityRepository
             }
             $qb = $this->filterForAccess($qb, $contact);
         }
+
         if (!is_null($year)) {
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
             $qb->setParameter(8, (int) $year);
+        }
+
+        if (!is_null($type)) {
+            $qb->andWhere('c.type = ?9');
+            $qb->setParameter(9, (int) $type);
         }
 
         return $qb->getQuery();
@@ -113,7 +119,6 @@ class Calendar extends EntityRepository
 
         $qb->join('c.projectCalendar', 'pc');
         $qb->andWhere('pc.project = :project');
-
         $qb->andWhere('c.dateEnd < ?1');
         $qb->orderBy('c.dateFrom', 'DESC');
         $qb->setParameter(1, new \DateTime());
@@ -127,7 +132,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * Function which returns true/false based ont he fact if a user can view the calendar.
+     * Function which returns true/false based ont he fact if a user can view the calendar
      *
      * @param Entity\Calendar $calendar
      * @param Contact         $contact
