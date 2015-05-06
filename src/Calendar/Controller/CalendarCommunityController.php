@@ -188,6 +188,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             /*
              * Document uploaded
              */
+
             return $this->redirect()->toRoute(
                 'community/calendar/calendar',
                 [

@@ -46,7 +46,7 @@ class Calendar extends EntityRepository
                 break;
             case CalendarService::WHICH_PAST:
                 $qb->andWhere('c.dateEnd < ?1');
-                if(null !== $type){
+                if (null !== $type) {
                     $qb->andWhere('c.type = ?9');
                     $qb->setParameter(9,1 );
                 }
@@ -101,8 +101,6 @@ class Calendar extends EntityRepository
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
             $qb->setParameter(8, (int) $year);
         }
-
-
 
         return $qb->getQuery();
     }

@@ -556,7 +556,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
         $this->ambassadorCalendar = $ambassadorCalendar;
     }
 
-
     /**
      * @return \Calendar\Entity\Contact
      */

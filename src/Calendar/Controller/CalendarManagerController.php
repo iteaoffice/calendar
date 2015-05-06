@@ -209,6 +209,7 @@ class CalendarManagerController extends CalendarAbstractController
             /*
              * Document uploaded
              */
+
             return $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/calendar',
                 [

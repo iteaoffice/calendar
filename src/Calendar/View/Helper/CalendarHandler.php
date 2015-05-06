@@ -113,7 +113,6 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             $this->setCalendarDocRef($this->getRouteMatch()->getParam('docRef'));
         }
 
-
         foreach ($content->getContentParam() as $param) {
             /**
              * When the parameterId is 0 (so we want to get the article from the URL
@@ -286,7 +285,6 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     {
         $this->type = $type;
     }
-
 
     /**
      * @return int
