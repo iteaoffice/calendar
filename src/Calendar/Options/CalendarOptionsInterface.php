@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ARTEMIS-IA Office copyright message placeholder.
  *
@@ -7,7 +8,6 @@
  * @author      Andre Hebben <andre.hebben@artemis-ia.eu>
  * @copyright   Copyright (c) 2007-2014 ARTEMIS-IA Office (http://artemis-ia.eu)
  */
-
 namespace Calendar\Options;
 
 /**
@@ -27,7 +27,7 @@ interface CalendarOptionsInterface
     /**
      * Enable the calendar contacts.
      *
-     * @return boolean
+     * @return bool
      */
     public function getCommunityCalendarContactEnabled();
 
@@ -39,7 +39,7 @@ interface CalendarOptionsInterface
     public function setCalendarContactTemplate($calendarContactTemplate);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getCalendarContactTemplate();
 
@@ -51,7 +51,7 @@ interface CalendarOptionsInterface
     public function setReviewCalendarTemplate($reviewCalendarTemplate);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getReviewCalendarTemplate();
 }

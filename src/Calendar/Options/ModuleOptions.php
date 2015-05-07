@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office copyright message placeholder.
  *
@@ -7,7 +8,6 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
-
 namespace Calendar\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -21,7 +21,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     /**
      * Activate Calendar Contacts in Community.
      *
-     * @var boolean
+     * @var bool
      */
     protected $communityCalendarContactEnabled = true;
     /**
@@ -54,7 +54,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     /**
      * Enable the calendar contacts.
      *
-     * @return boolean
+     * @return bool
      */
     public function getCommunityCalendarContactEnabled()
     {
