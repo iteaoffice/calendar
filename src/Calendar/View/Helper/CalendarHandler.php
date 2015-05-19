@@ -314,7 +314,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parsePastCalendar()
     {
-        
+
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_PAST,
