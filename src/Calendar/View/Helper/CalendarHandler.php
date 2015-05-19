@@ -50,7 +50,9 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function __invoke(Content $content)
     {
+
         $this->extractContentParam($content);
+
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
 
@@ -83,16 +85,18 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                         'social'
                     )
                 );
-
                 return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
             case 'calendar':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
-
                 return $this->parseCalendar($this->getLimit());
             case 'calendar_past':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
 
+
                 return $this->parsePastCalendar($this->getLimit());
+
+
+
             case 'calendar_small':
                 return $this->parseCalendarSmall($this->getLimit());
             case 'calendar_year_selector':
@@ -114,6 +118,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         }
 
         foreach ($content->getContentParam() as $param) {
+
             /**
              * When the parameterId is 0 (so we want to get the article from the URL
              */
@@ -131,9 +136,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     }
                     break;
                 case 'type':
-                    if (!is_null($type = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setType($type);
-                    }
+                        $this->setType($param->getParameterId());
                     break;
 
                 case 'year':
@@ -256,6 +259,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseCalendar()
     {
+
+
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_UPCOMING,
@@ -309,7 +314,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parsePastCalendar()
     {
-
+        
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_PAST,

@@ -22,6 +22,8 @@ class CalendarController extends CalendarAbstractController
      */
     public function calendarTypeColorCssAction()
     {
+
+
         $calendarTypes = $this->getCalendarService()->findAll('Type');
         $calendarType = new Type();
         $cacheFileName = $calendarType->getCacheCssFileName();
