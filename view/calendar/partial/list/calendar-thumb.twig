@@ -1,0 +1,20 @@
+{% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
+    <div class="col-lg-4">
+        <div class="thumbnail">
+            <a href="{{ calendar.url }}" target="_blank">
+                <img class="img-responsive" src="{{ calendar.imageUrl }}">
+            </a>
+            <div class="caption">
+                <h4>{{ calendarLink(calendar,'view','name') }}</h4>
+                <div class="row row-no-padding">
+                    <div class="col-md-7">
+                        <p>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}<br>{{ calendar.location }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><a href="{{ calendar.url }}" class="btn btn-primary">Read more</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

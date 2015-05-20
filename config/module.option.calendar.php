@@ -9,9 +9,12 @@ $options = [
     /**
      * Indicate here if a project has versions
      */
+    'default_year' => date('Y'),
     'community_calendar_contact_enabled' => true,
     'calendar_contact_template'          => __DIR__ . '/../../../../styles/itea/template/pdf/itea-template.pdf',
     'review_calendar_template'           => __DIR__ . '/../../../../styles/itea/template/pdf/review-calendar-template.pdf',
+    'calendar_past_template' => 'calendar/partial/list/calendar-past' ,
+    'calendar_upcoming_template' => 'calendar/partial/list/calendar',
 ];
 /**
  * You do not need to edit below this line
