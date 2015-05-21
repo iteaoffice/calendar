@@ -163,6 +163,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     public function setCalendarPastTemplate($calendarPastTemplate)
     {
         $this->calendarPastTemplate = $calendarPastTemplate;
+
         return $this;
     }
 
