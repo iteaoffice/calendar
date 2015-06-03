@@ -124,7 +124,8 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * Returns the default year
      * @return int
      */
-    public function getDefaultYear(){
+    public function getDefaultYear()
+    {
         return $this->defaultYear;
     }
 
@@ -132,7 +133,8 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * @param $defaultYear
      * @return $this
      */
-    public function setDefaultYear($defaultYear){
+    public function setDefaultYear($defaultYear)
+    {
         $this->defaultYear = $defaultYear;
         return $this;
     }
@@ -142,8 +144,9 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * @param string $calendarUpcomingTemplate
      * @return $this
      */
-    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate){
-         $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
+    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
+    {
+        $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
         return $this;
     }
 
@@ -175,6 +178,4 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     {
         return $this->calendarPastTemplate;
     }
-
-
 }

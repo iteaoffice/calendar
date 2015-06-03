@@ -187,7 +187,7 @@ abstract class ServiceAbstract implements
     public function getEntityManager()
     {
         if (null === $this->entityManager) {
-            $this->entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+            $this->entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         }
 
         return $this->entityManager;

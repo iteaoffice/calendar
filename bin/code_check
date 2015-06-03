@@ -3,6 +3,6 @@ SRC_DIR="`pwd`"
 cd "`dirname "$0"`"
 
 ./../../../bin/parallel-lint ./../src
-./../../../bin/twig-lint lint ./../view/
-./../../../bin/php-cs-fixer fix -v ./../src
-./../../../bin/phpcs -n -p --standard=PSR2 ./../src/
+./../../../bin/twig-lint lint ./../view
+./../../../bin/php-cs-fixer fix -v ./../src --level=psr2
+./../../../bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./../src

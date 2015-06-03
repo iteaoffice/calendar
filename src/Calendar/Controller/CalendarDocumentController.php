@@ -87,7 +87,7 @@ class CalendarDocumentController extends CalendarAbstractController
         if (is_null($document)) {
             return $this->notFoundAction();
         }
-        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $data = array_merge_recursive(
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()

@@ -31,7 +31,7 @@ class CreateObject extends Form
     {
         parent::__construct($object->get('underscore_entity_name'));
         $this->serviceManager = $serviceManager;
-        $entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
+        $entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
         $objectSpecificFieldset = '\Calendar\Form\\'.ucfirst($object->get('entity_name')).'Fieldset';
         /*
          * Load a specific fieldSet when present

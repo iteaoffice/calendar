@@ -50,7 +50,6 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function __invoke(Content $content)
     {
-
         $this->extractContentParam($content);
 
         switch ($content->getHandler()->getHandler()) {
@@ -336,7 +335,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function setYear($year)
     {
-        if(is_null($year)){
+        if (is_null($year)) {
             $this->year = null;
         } else {
             $this->year = (int)$year;

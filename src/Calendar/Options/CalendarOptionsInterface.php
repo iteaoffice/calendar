@@ -92,5 +92,4 @@ interface CalendarOptionsInterface
      * @return string
      */
     public function getCalendarPastTemplate();
-
 }

@@ -155,7 +155,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()
         );
-        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $form = new CreateCalendarDocument($entityManager);
         $form->bind(new Document());
         //Add the missing form fields
