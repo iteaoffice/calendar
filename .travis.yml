@@ -11,11 +11,14 @@ before_script:
 
 script:
   - ./vendor/bin/parallel-lint ./src/
-  - ./vendor/bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./src/
-  - ./vendor/bin/php-cs-fixer fix -v ./src --level=psr2 --dry-run
+  - ./vendor/bin/phpcs -n -p --standard=PSR2 ./src/
+  - ./vendor/bin/php-cs-fixer fix -v --dry-run ./src/
 
 notifications:
-  email: info@jield.nl
+  email:
+    - info@jield.nl
+    - andre.hebben@artemis-ia.eu
+
 
 matrix:
   fast_finish: true
