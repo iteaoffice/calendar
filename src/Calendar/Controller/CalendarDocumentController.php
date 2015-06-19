@@ -38,6 +38,7 @@ class CalendarDocumentController extends CalendarAbstractController
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
+
         /*
          * Due to the BLOB issue, we treat this as an array and we need to capture the first element
          */

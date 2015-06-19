@@ -94,7 +94,6 @@ class Document extends EntityAbstract implements ResourceInterface
      * @var \Calendar\Entity\DocumentObject
      */
     private $object;
-
     /**
      * Magic Getter.
      *

@@ -7,7 +7,7 @@
             <a href="{{ calendar.url }}" target="_blank">
                 <div class="thumbnail-image">
                     <img class="img-responsive" src="{{ calendar.imageUrl }}">
-                    <div class="thumbnail-caption-overlay">
+                    <div class="thumbnail-caption-overlay  hidden-sm">
                         <p>{{ calendar.description | slice(0, 400) | raw }} {{ (calendar.description|length > 400) ? '...' : '' }}</p>
                     </div>
                 </div>
