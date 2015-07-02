@@ -42,7 +42,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $defaultYear;
 
-
     /**
      * Template to use for upcoming events
      * @var string
@@ -54,7 +53,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * @var string
      */
     protected $calendarPastTemplate = '';
-
 
     /**
      * Sets whether the review invitations should be enabled on the homepage of the community.
@@ -136,17 +134,18 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     public function setDefaultYear($defaultYear)
     {
         $this->defaultYear = $defaultYear;
+
         return $this;
     }
 
-
     /**
-     * @param string $calendarUpcomingTemplate
+     * @param  string $calendarUpcomingTemplate
      * @return $this
      */
     public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
     {
         $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
+
         return $this;
     }
 

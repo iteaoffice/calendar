@@ -84,12 +84,15 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                         'social'
                     )
                 );
+
                 return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
             case 'calendar':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+
                 return $this->parseCalendar($this->getLimit());
             case 'calendar_past':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
+
                 return $this->parsePastCalendar($this->getLimit());
 
             case 'calendar_small':
@@ -338,7 +341,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         if (is_null($year)) {
             $this->year = null;
         } else {
-            $this->year = (int)$year;
+            $this->year = (int) $year;
         }
     }
 

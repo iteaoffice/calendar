@@ -67,10 +67,8 @@ interface CalendarOptionsInterface
      */
     public function setDefaultYear($defaultYear);
 
-
-
     /**
-     * @param string $calendarUpcomingTemplate
+     * @param  string $calendarUpcomingTemplate
      * @return $this
      */
     public function setCalendarUpcomingTemplate($calendarUpcomingTemplate);

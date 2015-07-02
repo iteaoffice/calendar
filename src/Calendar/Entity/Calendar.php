@@ -505,7 +505,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string)$this->calendar;
+        return (string) $this->calendar;
     }
 
     /**
