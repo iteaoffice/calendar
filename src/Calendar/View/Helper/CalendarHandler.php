@@ -334,7 +334,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * @param int $year
+     * @param int $year    
      */
     public function setYear($year)
     {
