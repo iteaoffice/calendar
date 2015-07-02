@@ -51,7 +51,6 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     public function __invoke(Content $content)
     {
         $this->extractContentParam($content);
-
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
 
@@ -84,14 +83,16 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                         'social'
                     )
                 );
+
                 return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
             case 'calendar':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+
                 return $this->parseCalendar($this->getLimit());
             case 'calendar_past':
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
-                return $this->parsePastCalendar($this->getLimit());
 
+                return $this->parsePastCalendar($this->getLimit());
             case 'calendar_small':
                 return $this->parseCalendarSmall($this->getLimit());
             case 'calendar_year_selector':
@@ -130,14 +131,16 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     }
                     break;
                 case 'type':
-                        $this->setType($param->getParameterId());
+                    if (!is_null($type = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                        $this->setType($type);
+                    }
                     break;
 
                 case 'year':
                     if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
-                        $this->setYear($this->getCalendarService()->getOptions()->getDefaultYear());
+                        $this->setYear(date('Y'));
                     } else {
                         $this->setYear($param->getParameterId());
                     }
@@ -262,7 +265,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->getResult();
 
         return $this->getRenderer()->render(
-            $this->getCalendarService()->getOptions()->getCalendarUpcomingTemplate(),
+            'calendar/partial/list/calendar',
             ['calendarItems' => $calendarItems]
         );
     }
@@ -306,6 +309,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parsePastCalendar()
     {
+
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_PAST,
@@ -317,7 +321,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->getResult();
 
         return $this->getRenderer()->render(
-            $this->getCalendarService()->getOptions()->getCalendarPastTemplate(),
+            'calendar/partial/list/calendar-past',
             ['calendarItems' => $calendarItems]
         );
     }
@@ -335,11 +339,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function setYear($year)
     {
-        if (is_null($year)) {
-            $this->year = null;
-        } else {
-            $this->year = (int)$year;
-        }
+        $this->year = (int) $year;
     }
 
     /**

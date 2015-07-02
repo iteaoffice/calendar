@@ -99,7 +99,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
 
     /**
      * @param Calendar $calendar
-     * @param Contact  $contact
+     * @param Contact $contact
      *
      * @return bool
      */
@@ -118,8 +118,8 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param  string            $which
-     * @param  Contact           $contact
+     * @param  string $which
+     * @param  Contact $contact
      * @return CalendarContact[]
      */
     public function findCalendarContactByContact($which = self::WHICH_UPCOMING, Contact $contact = null)
@@ -130,7 +130,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param Contact  $contact
+     * @param Contact $contact
      * @param Calendar $calendar
      *
      * @return CalendarContact
@@ -169,39 +169,46 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param string  $which
+     * @param string $which
      * @param Contact $contact
      * @param integer $year
      * @param integer $type
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which = self::WHICH_UPCOMING, Contact $contact = null, $year = null, $type = null)
-    {
+    public function findCalendarItems(
+        $which = self::WHICH_UPCOMING,
+        Contact $contact = null,
+        $year = null,
+        $type = null
+    ) {
         return $this->getEntityManager()
             ->getRepository($this->getFullEntityName('Calendar'))
             ->findCalendarItems($which, true, $contact, $year, $type);
     }
 
     /**
+     * @param bool $onlyFinal
      * @param Project $project
      *
      * @return Calendar[]
      */
-    public function findCalendarByProject(Project $project)
+    public function findCalendarByProject(Project $project, $onlyFinal = true)
     {
         $calendar = [];
         /**
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            //            if ($calendarItem->getCalendar()->getDateEnd() > new \DateTime()) {
-            $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
-            //            }
+            if (!$onlyFinal || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL) {
+                $calendar[$calendarItem->getCalendar()->getId()] = $calendarItem->getCalendar();
+            }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if ($calendarItem->getDateEnd() > new \DateTime()) {
-                $calendar[$calendarItem->getId()] = $calendarItem;
+            if (!$onlyFinal || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL) {
+                if ($calendarItem->getDateEnd() > new \DateTime()) {
+                    $calendar[$calendarItem->getId()] = $calendarItem;
+                }
             }
         }
 
@@ -220,6 +227,33 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         return $this->getEntityManager()->getRepository(
             $this->getFullEntityName('calendar')
         )->findLatestProjectCalendar($project);
+    }
+
+    /**
+     * Return the news review meeting
+     *
+     * @param Project $project
+     * @param \DateTime $datetime
+     *
+     * @return Calendar|null
+     */
+    public function findNextProjectCalendar(Project $project, \DateTime $datetime)
+    {
+        return $this->getEntityManager()->getRepository(Calendar::class)->findNextProjectCalendar($project, $datetime);
+    }
+
+    /**
+     * Return the lastest review meeting
+     *
+     * @param Project $project
+     * @param \DateTime $datetime
+     *
+     * @return Calendar|null
+     */
+    public function findPreviousProjectCalendar(Project $project, \DateTime $datetime)
+    {
+        return $this->getEntityManager()->getRepository(Calendar::class)->findPreviousProjectCalendar($project,
+            $datetime);
     }
 
     /**

@@ -25,14 +25,19 @@ class Calendar extends EntityRepository
 {
     /**
      * @param         $which
-     * @param bool    $filterForAccess
+     * @param bool $filterForAccess
      * @param Contact $contact
-     * @param null    $year
+     * @param null $year
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findCalendarItems($which, $filterForAccess = true, Contact $contact = null, $year = null, $type = null)
-    {
+    public function findCalendarItems(
+        $which,
+        $filterForAccess = true,
+        Contact $contact = null,
+        $year = null,
+        $type = null
+    ) {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('c');
         $qb->from("Calendar\Entity\Calendar", 'c');
@@ -98,7 +103,7 @@ class Calendar extends EntityRepository
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
-            $qb->setParameter(8, (int) $year);
+            $qb->setParameter(8, (int)$year);
         }
 
         return $qb->getQuery();
@@ -130,10 +135,65 @@ class Calendar extends EntityRepository
     }
 
     /**
+     * @param Project $project
+     * @param \DateTime $dateTime
+     *
+     * @return Calendar|null
+     */
+    public function findNextProjectCalendar(Project $project, \DateTime $dateTime)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('c');
+        $qb->from("Calendar\Entity\Calendar", 'c');
+
+        $qb->join('c.projectCalendar', 'pc');
+        $qb->andWhere('pc.project = :project');
+        $qb->andWhere('c.dateEnd > ?1');
+        $qb->andWhere('c.final = ?3');
+        $qb->orderBy('c.dateFrom', 'ASC');
+
+        $qb->setParameter(1, $dateTime);
+        $qb->setParameter('project', $project);
+        $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Project $project
+     * @param \DateTime $dateTime
+     *
+     * @return Calendar|null
+     */
+    public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('c');
+        $qb->from("Calendar\Entity\Calendar", 'c');
+
+        $qb->join('c.projectCalendar', 'pc');
+        $qb->andWhere('pc.project = :project');
+        $qb->andWhere('c.dateEnd < ?1');
+        $qb->andWhere('c.final = ?3');
+        $qb->orderBy('c.dateFrom', 'DESC');
+
+        $qb->setParameter(1, $dateTime);
+        $qb->setParameter('project', $project);
+        $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+
+    /**
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
      * @param Entity\Calendar $calendar
-     * @param Contact         $contact
+     * @param Contact $contact
      *
      * @return bool
      */
@@ -160,7 +220,7 @@ class Calendar extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param Contact      $contact
+     * @param Contact $contact
      *
      * @return QueryBuilder $qb
      */
@@ -179,7 +239,7 @@ class Calendar extends EntityRepository
         $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
         $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
-        $subSelectCalendarContact->andWhere('contact2.id = '.$contact);
+        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
         $qb->andWhere(
             $qb->expr()->orX(
                 $qb->expr()->in('c.type', $subSelect->getDQL()),
