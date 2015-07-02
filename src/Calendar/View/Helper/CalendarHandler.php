@@ -262,9 +262,8 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             )
             ->setMaxResults((int)$this->getLimit())
             ->getResult();
-
         return $this->getRenderer()->render(
-            'calendar/partial/list/calendar',
+            $this->getCalendarService()->getOptions()->getCalendarUpcomingTemplate(),
             ['calendarItems' => $calendarItems]
         );
     }
@@ -319,7 +318,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->getResult();
 
         return $this->getRenderer()->render(
-            'calendar/partial/list/calendar-past',
+             $this->getCalendarService()->getOptions()->getCalendarPastTemplate(),
             ['calendarItems' => $calendarItems]
         );
     }
