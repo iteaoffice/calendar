@@ -47,7 +47,6 @@ class Contact extends AssertionAbstract
         $this->getCalendarService()->setCalendar($resource->getCalendar());
 
         switch ($privilege) {
-
             case 'update-status':
                 if ($this->getCalendarService()->calendarHasContact(
                     $this->getCalendarService()->getCalendar(),
