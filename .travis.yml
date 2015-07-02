@@ -8,12 +8,12 @@ php:
 
 before_script:
   - composer self-update
-  - composer install --dev --prefer-source;
+  - composer install --prefer-dist;
 
 script:
   - ./vendor/bin/parallel-lint ./src/
   - ./vendor/bin/phpcs -n -p --standard=PSR2 ./src/
-  - ./vendor/bin/php-cs-fixer fix -v --dry-run ./src/
+  - ./vendor/bin/php-cs-fixer fix -v ./src --level=psr2 --dry-run
 
 notifications:
   email:
