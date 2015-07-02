@@ -3,17 +3,17 @@
     <div class="row">
     {% endif %}
     <div class="col-lg-4">
-        <div class="thumbnail ">
+        <div class="thumbnail thumbnail-width-350">
             <a href="{{ calendar.url }}" target="_blank">
                 <div class="thumbnail-image">
                     <img class="img-responsive" src="{{ calendar.imageUrl }}">
-                    <div class="thumbnail-caption-overlay  hidden-sm">
+                    <div class="thumbnail-caption-overlay">
                         <p>{{ calendar.description | slice(0, 400) | raw }} {{ (calendar.description|length > 400) ? '...' : '' }}</p>
                     </div>
                 </div>
             </a>
             <div class="caption nomarginright">
-                <h4>{{ calendarLink(calendar,'view','name') }}</h4>
+                <h4><a href="{{ calendar.url }}" target="_blank">{{ calendar.calendar }}</a></h4>
                 <div class="row">
                     <div class="col-md-7">
                         <p>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}<br>{{ calendar.location }}</p>

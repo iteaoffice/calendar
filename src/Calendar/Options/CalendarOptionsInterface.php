@@ -54,4 +54,40 @@ interface CalendarOptionsInterface
      * @return boolean
      */
     public function getReviewCalendarTemplate();
+
+    /**
+     * Returns the default year
+     * @return int
+     */
+    public function getDefaultYear();
+
+    /**
+     * @param $defaultYear
+     * @return $this
+     */
+    public function setDefaultYear($defaultYear);
+
+    /**
+     * @param  string $calendarUpcomingTemplate
+     * @return $this
+     */
+    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate);
+
+    /**
+     * Return template to use for Upcoming Event rendering
+     * @return string
+     */
+    public function getCalendarUpcomingTemplate();
+
+    /**
+     * @param $calendarPastTemplate
+     * @return $this
+     */
+    public function setCalendarPastTemplate($calendarPastTemplate);
+
+    /**
+     * Return template to use for Past Event rendering
+     * @return string
+     */
+    public function getCalendarPastTemplate();
 }

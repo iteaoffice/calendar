@@ -157,7 +157,6 @@ class CalendarNavigationService
                 }
                 break;
             case 'community/calendar/document/document':
-
                 $document = $this->getCalendarService()->findEntityById(
                     'Document',
                     $this->getRouteMatch()->getParam('id')
@@ -196,7 +195,6 @@ class CalendarNavigationService
                 );
                 break;
             case 'community/calendar/document/edit':
-
                 $document = $this->getCalendarService()->findEntityById(
                     'Document',
                     $this->getRouteMatch()->getParam('id')

@@ -12,6 +12,10 @@ namespace Calendar\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
+/**
+ * Class ModuleOptions
+ * @package Calendar\Options
+ */
 class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 {
     /**
@@ -36,6 +40,23 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * @var string
      */
     protected $reviewCalendarTemplate = '';
+    /**
+     * Default year to show past events
+     *
+     */
+    protected $defaultYear;
+
+    /**
+     * Template to use for upcoming events
+     * @var string
+     */
+    protected $calendarUpcomingTemplate = '';
+
+    /**
+     * Template to use for past events
+     * @var string
+     */
+    protected $calendarPastTemplate = '';
 
     /**
      * Sets whether the review invitations should be enabled on the homepage of the community.
@@ -99,5 +120,66 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
         $this->reviewCalendarTemplate = $reviewCalendarTemplate;
 
         return $this;
+    }
+
+
+    /**
+     * Returns the default year
+     * @return int
+     */
+    public function getDefaultYear()
+    {
+        return $this->defaultYear;
+    }
+
+    /**
+     * @param $defaultYear
+     * @return $this
+     */
+    public function setDefaultYear($defaultYear)
+    {
+        $this->defaultYear = $defaultYear;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $calendarUpcomingTemplate
+     * @return $this
+     */
+    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
+    {
+        $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Return template to use for Upcoming Event rendering
+     * @return string
+     */
+    public function getCalendarUpcomingTemplate()
+    {
+        return $this->calendarUpcomingTemplate;
+    }
+
+    /**
+     * @param $calendarPastTemplate
+     * @return $this
+     */
+    public function setCalendarPastTemplate($calendarPastTemplate)
+    {
+        $this->calendarPastTemplate = $calendarPastTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Return template to use for Past Event rendering
+     * @return string
+     */
+    public function getCalendarPastTemplate()
+    {
+        return $this->calendarPastTemplate;
     }
 }

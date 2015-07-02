@@ -252,8 +252,10 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findPreviousProjectCalendar(Project $project, \DateTime $datetime)
     {
-        return $this->getEntityManager()->getRepository(Calendar::class)->findPreviousProjectCalendar($project,
-            $datetime);
+        return $this->getEntityManager()->getRepository(Calendar::class)->findPreviousProjectCalendar(
+            $project,
+            $datetime
+        );
     }
 
     /**
