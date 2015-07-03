@@ -10,7 +10,6 @@ class CalendarNavigationServiceFactoryTest extends BaseTestCase
 {
     public function testWillInstantiateFromFQCN()
     {
-
         $name = 'testFactory';
         $factory = new CalendarNavigationServiceFactory($name);
 

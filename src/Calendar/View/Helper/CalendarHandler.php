@@ -318,7 +318,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->getResult();
 
         return $this->getRenderer()->render(
-             $this->getCalendarService()->getOptions()->getCalendarPastTemplate(),
+            $this->getCalendarService()->getOptions()->getCalendarPastTemplate(),
             ['calendarItems' => $calendarItems]
         );
     }
@@ -332,7 +332,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
-     * @param int $year    
+     * @param int $year
      */
     public function setYear($year)
     {
