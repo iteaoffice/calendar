@@ -205,7 +205,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (!$onlyFinal || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL) {
+            if (!$onlyFinal || $calendarItem->getFinal() === Calendar::FINAL_FINAL) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {
                     $calendar[$calendarItem->getId()] = $calendarItem;
                 }
