@@ -130,16 +130,14 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     }
                     break;
                 case 'type':
-                    if (!is_null($type = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setType($type);
-                    }
+                    $this->setType($param->getParameterId());
                     break;
 
                 case 'year':
                     if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
-                        $this->setYear(date('Y'));
+                        $this->setYear($this->getCalendarService()->getOptions()->getDefaultYear());
                     } else {
                         $this->setYear($param->getParameterId());
                     }
