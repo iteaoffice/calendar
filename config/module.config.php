@@ -50,7 +50,6 @@ $config = [
     'view_helpers'    => [
         'invokables' => [
             'calendarDocumentLink' => 'Calendar\View\Helper\DocumentLink',
-            'paginationLink'       => 'Calendar\View\Helper\PaginationLink'
         ]
     ],
     'doctrine'        => [
