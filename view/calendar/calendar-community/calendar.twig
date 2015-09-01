@@ -190,7 +190,10 @@
                             {% for report in projectService.project.report %}
                                 <tr>
                                     <td>{{ reportLink(report,'report-community', 'name') }} {{ reportLink(report,'download', 'icon') }}</td>
-                                    <td>{{ report.contact.displayName }}</td>
+                                    <td>{{ report.contact.displayName }}
+                                        <div class="pull-right"><a href="mailto:{{ report.contact.email }}"><i
+                                                        class="fa fa-envelope-o"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
+                                        </div></td>
                                     <td>{{ report.dateCreated|string_date }}</td>
                                     <td>{{ report.item.count() }}</td>
                                 </tr>
@@ -222,7 +225,10 @@
                                     {{ resultLink(result,'download', 'public-name') }}
                                 </td>
                                 <td>{{ result.dateCreated|string_date }}</td>
-                                <td>{{ result.contact.displayName }}</td>
+                                <td>{{ result.contact.displayName }}
+                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
+                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+                                    </div></td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -258,7 +264,10 @@
                                     {{ resultLink(result,'download', 'public-name') }}
                                 </td>
                                 <td>{{ result.dateCreated|string_date }}</td>
-                                <td>{{ result.contact.displayName }}</td>
+                                <td>{{ result.contact.displayName }}
+                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
+                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+                                    </div></td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -317,8 +326,11 @@
                             {% if zfcUserIdentity().getId() == contactService.contact.id %}
                                 <i class="fa fa-user"></i>
                             {% endif %}
-                            {{ calendarContact.contact.displayName }}</td>
-                        <td>{{ contactService.parseOrganisation() }}</td>
+                            {{ calendarContact.contact.displayName }}
+                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
+                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+                            </div></td>
+                        <td>{{ contactService.parseOrganisation() }} ({{ contactService.parseCountry() }}) </td>
                         <td>{{ calendarContact.role }}</td>
                         <td>
                             {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
