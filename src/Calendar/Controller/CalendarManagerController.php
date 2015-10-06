@@ -50,8 +50,10 @@ class CalendarManagerController extends CalendarAbstractController
              */
             $dateOfBirth = $birthDay->getDateOfBirth();
 
-            $birthDayDate = \DateTime::createFromFormat('Y-m-d',
-                sprintf("%s-%s", date('Y'), $dateOfBirth->format('m-d')));
+            $birthDayDate = \DateTime::createFromFormat(
+                'Y-m-d',
+                sprintf("%s-%s", date('Y'), $dateOfBirth->format('m-d'))
+            );
 
             if ($birthDayDate < $today) {
                 continue;
@@ -72,7 +74,6 @@ class CalendarManagerController extends CalendarAbstractController
          * @var $calendarItem Calendar
          */
         foreach ($calendarItems as $calendarItem) {
-
             if ($calendarItem->getDateFrom() < $today) {
                 continue;
             }
@@ -154,7 +155,6 @@ class CalendarManagerController extends CalendarAbstractController
 
         $form = $this->getFormService()->prepare('calendar', $calendarService->getCalendar(), $data);
         if ($this->getRequest()->isPost()) {
-
             /*
              * Return when cancel is pressed
              */
@@ -195,7 +195,6 @@ class CalendarManagerController extends CalendarAbstractController
                 );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
-
             }
         }
 
