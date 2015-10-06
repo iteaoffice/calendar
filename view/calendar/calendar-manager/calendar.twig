@@ -1,3 +1,6 @@
+{% do headTitle().append(translate("txt-admin")) %}
+{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendarService.calendar)) %}
+
 <h1>{{ translate("txt-calendar-item-%s")|format(calendarService.calendar) }}</h1>
 
 <!-- Nav tabs -->

@@ -9,6 +9,8 @@
  */
 namespace Calendar;
 
+use Calendar\Controller;
+
 return [
     'router' => [
         'routes' => [
@@ -26,7 +28,7 @@ return [
                             'route'    => "/css/calendar-type-color.css",
                             'defaults' => [
                                 //Explicitly add the controller here as the assets are collected
-                                'controller' => 'calendar-index',
+                                'controller' => Controller\CalendarController::class,
                                 'action'     => 'calendar-type-color-css',
                             ],
                         ],
@@ -42,7 +44,7 @@ return [
                             'route'    => '/calendar',
                             'defaults' => [
                                 'namespace'  => __NAMESPACE__,
-                                'controller' => 'calendar-community',
+                                'controller' => Controller\CalendarCommunityController::class,
                                 'action'     => 'index',
                             ],
                         ],
@@ -142,7 +144,7 @@ return [
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => 'calendar-document',
+                                        'controller' => Controller\CalendarDocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],
@@ -193,7 +195,7 @@ return [
                             'route'    => '/calendar',
                             'defaults' => [
                                 'namespace'  => __NAMESPACE__,
-                                'controller' => 'calendar-manager',
+                                'controller' => Controller\CalendarManagerController::class,
                                 'action'     => 'index',
                             ],
                         ],
@@ -242,7 +244,7 @@ return [
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => 'calendar-document',
+                                        'controller' => Controller\CalendarDocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],

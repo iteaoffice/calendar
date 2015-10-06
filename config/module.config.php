@@ -7,40 +7,37 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c] 2004-2014 ITEA Office (http://itea3.org]
  */
-use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
-use Calendar\Acl\Assertion\Contact as ContactAssertion;
-use Calendar\Acl\Assertion\Document as DocumentAssertion;
-use Calendar\Controller\ControllerInitializer;
-use Calendar\Service\CalendarService;
-use Calendar\Service\FormService;
-use Calendar\Service\ServiceInitializer;
+use Calendar\Acl\Assertion;
+use Calendar\Controller;
+use Calendar\Service;
+use Calendar\View\Helper;
 
 $config = [
     'controllers'     => [
         'initializers' => [
-            ControllerInitializer::class
+            Controller\ControllerInitializer::class
         ],
         'invokables'   => [
-            'calendar-index'     => 'Calendar\Controller\CalendarController',
-            'calendar-community' => 'Calendar\Controller\CalendarCommunityController',
-            'calendar-manager'   => 'Calendar\Controller\CalendarManagerController',
-            'calendar-document'  => 'Calendar\Controller\CalendarDocumentController',
+            Controller\CalendarController::class          => Controller\CalendarController::class,
+            Controller\CalendarCommunityController::class => Controller\CalendarCommunityController::class,
+            Controller\CalendarManagerController::class   => Controller\CalendarManagerController::class,
+            Controller\CalendarDocumentController::class  => Controller\CalendarDocumentController::class,
         ],
     ],
     'service_manager' => [
         'initializers' => [
-            ServiceInitializer::class
+            Service\ServiceInitializer::class
         ],
         'factories'    => [
             'calendar_module_options'     => 'Calendar\Factory\OptionServiceFactory',
             'calendar_navigation_service' => 'Calendar\Navigation\Factory\CalendarNavigationServiceFactory',
         ],
         'invokables'   => [
-            CalendarAssertion::class        => CalendarAssertion::class,
-            ContactAssertion::class         => ContactAssertion::class,
-            DocumentAssertion::class        => DocumentAssertion::class,
-            CalendarService::class          => CalendarService::class,
-            FormService::class              => FormService::class,
+            Assertion\Calendar::class       => Assertion\Calendar::class,
+            Assertion\Contact::class        => Assertion\Contact::class,
+            Assertion\Document::class       => Assertion\Document::class,
+            Service\CalendarService::class  => Service\CalendarService::class,
+            Service\FormService::class      => Service\FormService::class,
             'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
         ]
     ],
@@ -49,7 +46,7 @@ $config = [
     ],
     'view_helpers'    => [
         'invokables' => [
-            'calendarDocumentLink' => 'Calendar\View\Helper\DocumentLink',
+            'calendarDocumentLink' => Helper\DocumentLink::class,
         ]
     ],
     'doctrine'        => [
@@ -58,7 +55,11 @@ $config = [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'paths' => [__DIR__ . '/../src/Calendar/Entity/']
             ],
-            'orm_default'                => ['drivers' => ['Calendar\Entity' => 'calendar_annotation_driver',]]
+            'orm_default'                => [
+                'drivers' => [
+                    'Calendar\Entity' => 'calendar_annotation_driver',
+                ]
+            ]
         ],
         'eventmanager' => [
             'orm_default' => [

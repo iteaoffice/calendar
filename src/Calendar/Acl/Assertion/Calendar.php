@@ -25,16 +25,16 @@ class Calendar extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $resource
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
     public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
     {
-        $id = (int) $this->getRouteMatch()->getParam('id');
+        $id = (int)$this->getRouteMatch()->getParam('id');
 
         if (is_null($privilege)) {
             $privilege = $this->getRouteMatch()->getParam('privilege');
@@ -91,6 +91,15 @@ class Calendar extends AssertionAbstract
                  */
                 if ($this->getContactService()->hasPermit('view', $resource)) {
                     return true;
+                }
+
+                /*
+                 * The project leader also has rights to invite users
+                 */
+                if (!is_null($resource->getProjectCalendar())) {
+                    if ($this->getContactService()->hasPermit('view', $resource->getProjectCalendar()->getProject())) {
+                        return true;
+                    }
                 }
 
                 return $this->rolesHaveAccess($resource->getType()->getAccess());
