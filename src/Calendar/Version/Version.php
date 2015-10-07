@@ -21,7 +21,7 @@ final class Version
     /**
      * Zend Framework version identification - see compareVersion().
      */
-    const VERSION = '1.2-dev';
+    const VERSION = '1.1.2';
     /**
      * Github Service Identifier for version information is retrieved from.
      */
