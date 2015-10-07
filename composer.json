@@ -1,18 +1,14 @@
 {
-  "name": "debranova/calendar",
+  "name": "iteaoffice/calendar",
   "type": "library",
   "license": "proprietary",
-  "description": "General code for Debranova Calendar items",
+  "description": "General code for Calendar items",
   "keywords": ["calendar"],
-  "homepage": "http://debranova.org",
+  "homepage": "https://itea3.org",
   "authors": [
     {
       "name": "Johan van der Heide",
       "email": "johan.van.der.heide@itea3.org"
-    },
-    {
-      "name": "Andre Hebben",
-      "email": "andre.hebben@artemis-ia.eu"
     }
   ],
   "minimum-stability": "dev",
