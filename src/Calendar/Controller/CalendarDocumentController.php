@@ -1,14 +1,16 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    Calendar
- * @package     Controller
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Controller;
 
+use Calendar\Entity\Document;
 use Calendar\Form\CreateCalendarDocument;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\ViewModel;
@@ -19,13 +21,16 @@ use Zend\View\Model\ViewModel;
 class CalendarDocumentController extends CalendarAbstractController
 {
     /**
-     * Download a document
+     * Download a document.
      *
      * @return int
      */
     public function downloadAction()
     {
         set_time_limit(0);
+        /*
+         * @var Document
+         */
         $document = $this->getCalendarService()->findEntityById(
             'Document',
             $this->getEvent()->getRouteMatch()->getParam('id')
@@ -33,23 +38,23 @@ class CalendarDocumentController extends CalendarAbstractController
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
-        /**
+
+        /*
          * Due to the BLOB issue, we treat this as an array and we need to capture the first element
          */
         $object = $document->getObject()->first()->getObject();
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
         $response->getHeaders()
-                 ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-                 ->addHeaderLine(
-                     'Content-Disposition',
-                     'attachment; filename="' . $document->parseFilename() . '.' .
-                     $document->getContentType()->getExtension() . '"'
-                 )
-                 ->addHeaderLine("Pragma: public")
-                 ->addHeaderLine('Content-Type: ' . $document->getContentType()->getContentType())
-                 ->addHeaderLine('Content-Length: ' . $document->getSize());
+            ->addHeaderLine('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="'.$document->parseFilename().'"'
+            )
+            ->addHeaderLine("Pragma: public")
+            ->addHeaderLine('Content-Type: '.$document->getContentType()->getContentType())
+            ->addHeaderLine('Content-Length: '.$document->getSize());
 
         return $this->response;
     }
@@ -64,7 +69,11 @@ class CalendarDocumentController extends CalendarAbstractController
             $this->getEvent()->getRouteMatch()->getParam('id')
         );
 
-        return new ViewModel(array('document' => $document));
+        if (is_null($document)) {
+            return $this->notFoundAction();
+        }
+
+        return new ViewModel(['document' => $document]);
     }
 
     /**
@@ -79,7 +88,7 @@ class CalendarDocumentController extends CalendarAbstractController
         if (is_null($document)) {
             return $this->notFoundAction();
         }
-        $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $data = array_merge_recursive(
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()
@@ -89,28 +98,32 @@ class CalendarDocumentController extends CalendarAbstractController
         $form->getInputFilter()->get('file')->setRequired(false);
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
+            /*
+             * @var Document
+             */
             $document = $form->getData();
-            /**
+            /*
              * Remove the file if delete is pressed
              */
             if (isset($data['delete'])) {
                 $this->flashMessenger()->setNamespace('success')->addMessage(
                     sprintf(_("txt-calendar-document-%s-successfully-removed"), $document->parseFileName())
                 );
-                $this->getDocumentService()->removeEntity($document);
+                $this->getCalendarService()->removeEntity($document);
 
                 return $this->redirect()->toRoute(
-                    'zfcadmin/calendar-manager/calendar',
-                    array('id' => $document->getCalendar()->getId())
+                    'community/calendar/calendar',
+                    ['id' => $document->getCalendar()->getId()],
+                    ['fragment' => 'documents']
                 );
             }
-            /**
+            /*
              * Handle when
              */
             if (!isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
                 if (!empty($file['name']) && $file['error'] === 0) {
-                    /**
+                    /*
                      * Update the document
                      */
                     $fileSizeValidator = new FilesSize(PHP_INT_MAX);
@@ -119,7 +132,7 @@ class CalendarDocumentController extends CalendarAbstractController
                     $document->setContentType(
                         $this->getGeneralService()->findContentTypeByContentTypeName($file['type'])
                     );
-                    /**
+                    /*
                      * Update the object
                      */
                     $documentObject = $document->getObject()->first();
@@ -131,17 +144,18 @@ class CalendarDocumentController extends CalendarAbstractController
                     sprintf(_("txt-calendar-document-%s-successfully-updated"), $document->parseFileName())
                 );
             }
-            $this->redirect()->toRoute(
-                'zfcadmin/calendar-manager/document/document',
-                array('id' => $document->getId())
+
+            return $this->redirect()->toRoute(
+                'community/calendar/document/document',
+                ['id' => $document->getId()]
             );
         }
 
         return new ViewModel(
-            array(
+            [
                 'document' => $document,
-                'form'     => $form
-            )
+                'form'     => $form,
+            ]
         );
     }
 }

@@ -1,40 +1,46 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
  * @category   Project
- * @package    Acl
- * @subpackage Assertion
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  2004-2014 ITEA Office
  * @license    http://debranova.org/license.txt proprietary
+ *
  * @link       http://debranova.org
  */
+
 namespace Calendar\Acl\Assertion;
 
+use Admin\Entity\Access;
+use Admin\Service\AdminService;
+use Admin\Service\AdminServiceAwareInterface;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Contact\Service\ContactService;
 use Contact\Service\ContactServiceAwareInterface;
+use Doctrine\ORM\PersistentCollection;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Create a link to an document
+ * Create a link to an document.
  *
  * @category   Calendar
- * @package    Acl
- * @subpackage Assertion
+ *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  2004-2014 ITEA Office
  * @license    http://debranova.org/license.txt proprietary
+ *
  * @link       http://debranova.org
  */
 abstract class AssertionAbstract implements
     AssertionInterface,
     ServiceLocatorAwareInterface,
+    AdminServiceAwareInterface,
     ContactServiceAwareInterface,
     CalendarServiceAwareInterface
 {
@@ -46,6 +52,10 @@ abstract class AssertionAbstract implements
      * @var ContactService
      */
     protected $contactService;
+    /**
+     * @var AdminService
+     */
+    protected $adminService;
     /**
      * @var CalendarService
      */
@@ -111,7 +121,7 @@ abstract class AssertionAbstract implements
     }
 
     /**
-     * The contact service
+     * The contact service.
      *
      * @param ContactService $contactService
      *
@@ -125,7 +135,7 @@ abstract class AssertionAbstract implements
     }
 
     /**
-     * Get calendar service
+     * Get calendar service.
      *
      * @return CalendarService
      */
@@ -135,7 +145,7 @@ abstract class AssertionAbstract implements
     }
 
     /**
-     * The calendar service
+     * The calendar service.
      *
      * @param CalendarService $calendarService
      *
@@ -149,24 +159,54 @@ abstract class AssertionAbstract implements
     }
 
     /**
-     * Returns true when a role or roles have access
+     * Returns true when a role or roles have access.
      *
-     * @param $roles
+     * @param string|array|PersistentCollection $access
      *
      * @return boolean
      */
-    protected function rolesHaveAccess($roles)
+    public function rolesHaveAccess($access)
     {
-        if (!is_array($roles)) {
-            $roles = array($roles);
+        $accessRoles = $this->prepareAccessRoles($access);
+        if (sizeof($accessRoles) === 0) {
+            return true;
         }
-        foreach ($this->getAccessRoles() as $access) {
-            if (in_array(strtolower($access), $roles)) {
+
+        foreach ($accessRoles as $accessRole) {
+            if (strtolower($accessRole->getAccess()) === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
+            }
+            if ($this->hasContact()) {
+                if (in_array(
+                    strtolower($accessRole->getAccess()),
+                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContactService()->getContact())
+                )
+                ) {
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param $access
+     *
+     * @return Access[]
+     */
+    protected function prepareAccessRoles($access)
+    {
+        if (!$access instanceof PersistentCollection) {
+            /*
+             * We only have a string, so we need to lookup the role
+             */
+            $access = [
+                $this->getAdminService()->findAccessByName($access),
+            ];
+        }
+
+        return $access;
     }
 
     /**
@@ -175,9 +215,29 @@ abstract class AssertionAbstract implements
     public function getAccessRoles()
     {
         if (empty($this->accessRoles) && !$this->getContactService()->isEmpty()) {
-            $this->accessRoles = $this->getContactService()->getContact()->getRoles();
+            $this->accessRoles = $this->getAdminService()->findAccessRolesByContactAsArray($this->getContactService()->getContact());
         }
 
         return $this->accessRoles;
+    }
+
+    /**
+     * @return AdminService
+     */
+    public function getAdminService()
+    {
+        return $this->adminService;
+    }
+
+    /**
+     * @param AdminService $adminService
+     *
+     * @return AssertionAbstract
+     */
+    public function setAdminService(AdminService $adminService)
+    {
+        $this->adminService = $adminService;
+
+        return $this;
     }
 }

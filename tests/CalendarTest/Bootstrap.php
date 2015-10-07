@@ -1,8 +1,9 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA Office copyright message placeholder
  *
- * @category    CalendarTest
+ * @category    Program
+ * @package     Test
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
@@ -11,6 +12,7 @@ namespace CalendarTest;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\Tools\SchemaValidator;
 use RuntimeException;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
@@ -44,43 +46,47 @@ class Bootstrap
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
         static::$serviceManager = $serviceManager;
-        $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
 
-        return true;
-//        //Validate the schema;
-//        $validator = new SchemaValidator($entityManager);
-//        $errors    = $validator->validateMapping();
-//
-//        if (count($errors) > 0) {
-//            foreach ($errors AS $entity => $errors) {
-//                echo "Error in Entity: '" . $entity . "':\n";
-//                echo implode("\n", $errors);
-//                echo "\n";
-//            }
-//            die();
-//        }
-        //Create the schema
-        $tool      = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
-        $mdFactory = $entityManager->getMetadataFactory();
-        $mdFactory->getAllMetadata();
-        $tool->dropDatabase();
-        $tool->createSchema($mdFactory->getAllMetadata());
-        $loader = new Loader();
-        $loader->addFixture(new \ProjectTest\Fixture\LoadVersionData());
-        $loader->addFixture(new \ProgramTest\Fixture\LoadDomainData());
-        $loader->addFixture(new \ProgramTest\Fixture\LoadCallData());
-        $loader->addFixture(new \ContactTest\Fixture\LoadContactData());
-        $loader->addFixture(new \ProjectTest\Fixture\LoadProjectLogoData());
-        $loader->addFixture(new \ProjectTest\Fixture\LoadDocumentTypeData());
-//
-        $purger   = new ORMPurger();
-        $executor = new ORMExecutor($entityManager, $purger);
-        $executor->execute($loader->getFixtures());
+        if (defined("TEST_SUITE") && constant("TEST_SUITE") == 'full') {
+            $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
+            //Validate the schema;
+            $validator = new SchemaValidator($entityManager);
+            $errors = $validator->validateMapping();
+            if (count($errors) > 0) {
+                foreach ($errors as $entity => $errors) {
+                    echo "Error in Entity: '" . $entity . "':\n";
+                    echo implode("\n", $errors);
+                    echo "\n";
+                }
+                die();
+            }
+            //Create the schema
+            $tool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
+            $mdFactory = $entityManager->getMetadataFactory();
+            $mdFactory->getAllMetadata();
+            $tool->dropDatabase();
+            $tool->createSchema($mdFactory->getAllMetadata());
+            $loader = new Loader();
+            $loader->addFixture(new \AdminTest\Fixture\LoadAccessData());
+            $purger = new ORMPurger();
+            $executor = new ORMExecutor($entityManager, $purger);
+            $executor->execute($loader->getFixtures());
+        }
     }
 
-    public static function getServiceManager()
+    protected static function findParentPath($path)
     {
-        return static::$serviceManager;
+        $dir = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
     }
 
     protected static function initAutoloader()
@@ -118,19 +124,9 @@ class Bootstrap
         );
     }
 
-    protected static function findParentPath($path)
+    public static function getServiceManager()
     {
-        $dir         = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
+        return static::$serviceManager;
     }
 }
 

@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
- * CalendarDocumentObject
+ * CalendarDocumentObject.
  *
  * @ORM\Table(name="calendar_document_object")
  * @ORM\Entity
@@ -25,11 +26,13 @@ class DocumentObject extends EntityAbstract
      * @ORM\Column(name="object_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
     /**
      * @ORM\Column(name="object", type="blob", nullable=true)
+     *
      * @var resource
      */
     private $object;
@@ -38,12 +41,13 @@ class DocumentObject extends EntityAbstract
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="document_id", referencedColumnName="document_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\Document
      */
     private $document;
 
     /**
-     * Magic Getter
+     * Magic Getter.
      *
      * @param $property
      *
@@ -55,12 +59,10 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * Magic Setter
+     * Magic Setter.
      *
      * @param $property
      * @param $value
-     *
-     * @return void
      */
     public function __set($property, $value)
     {
@@ -68,11 +70,10 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * Set input filter
+     * Set input filter.
      *
      * @param InputFilterInterface $inputFilter
      *
-     * @return void
      * @throws \Exception
      */
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -86,7 +87,7 @@ class DocumentObject extends EntityAbstract
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter       = new InputFilter();
+            $inputFilter = new InputFilter();
             $this->inputFilter = $inputFilter;
         }
 

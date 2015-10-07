@@ -1,36 +1,37 @@
 <?php
 /**
- * Japaveh Webdesign copyright message placeholder
+ * Japaveh Webdesign copyright message placeholder.
  *
- * @category    Calendar
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ *
+ * @link      http://solodb.net
  */
+
 namespace Calendar\Service;
 
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Japaveh Webdesign copyright message placeholder
+ * Japaveh Webdesign copyright message placeholder.
  *
- * @category    Calendar
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ *
+ * @link      http://solodb.net
  */
 class ServiceInitializer implements InitializerInterface
 {
     /**
      * @param                         $instance
      * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return void
      */
     public function initialize($instance, ServiceLocatorInterface $serviceLocator)
     {
@@ -39,8 +40,9 @@ class ServiceInitializer implements InitializerInterface
         }
         $arrayCheck = [
             CalendarServiceAwareInterface::class => CalendarService::class,
+            ModuleOptionAwareInterface::class       => 'calendar_module_options',
         ];
-        /**
+        /*
          * Go over each interface to see if we should add an interface
          */
         foreach (class_implements($instance) as $interface) {

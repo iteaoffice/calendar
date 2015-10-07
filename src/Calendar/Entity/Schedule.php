@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
 /**
- * CalendarSchedule
+ * CalendarSchedule.
  *
  * @ORM\Table(name="calendar_schedule")
  * @ORM\Entity
@@ -25,16 +26,19 @@ class Schedule
      * @ORM\Column(name="schedule_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
     /**
      * @ORM\Column(name="date_start", type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $dateStart;
     /**
      * @ORM\Column(name="date_end", type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
     private $dateEnd;
@@ -43,18 +47,20 @@ class Schedule
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\ScheduleContact", cascade={"persist"}, mappedBy="schedule")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\ScheduleContact[]
      */
     private $scheduleContact;
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {

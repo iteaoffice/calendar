@@ -1,16 +1,19 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    SoloDB
- * @package     Calendar
- * @subpackage  Module
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
- * @version     4.0
+ * @category   SoloDB
+ *
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ *
+ * @version    4.0
  */
+
 namespace Calendar;
 
+use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
 use Zend\Mvc\MvcEvent;
@@ -26,16 +29,16 @@ class Module implements
 {
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/../../autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/../../src/' . __NAMESPACE__,
-                ),
-            ),
-        );
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
+                __DIR__.'/../../autoload_classmap.php',
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
+                    __NAMESPACE__ => __DIR__.'/../../src/'.__NAMESPACE__,
+                ],
+            ],
+        ];
     }
 
     /**
@@ -43,17 +46,17 @@ class Module implements
      */
     public function getConfig()
     {
-        return include __DIR__ . '/../../config/module.config.php';
+        return include __DIR__.'/../../config/module.config.php';
     }
 
     /**
-     * Go to the service configuration
+     * Go to the service configuration.
      *
      * @return array
      */
     public function getServiceConfig()
     {
-        return include __DIR__ . '/../../config/services.config.php';
+        return include __DIR__.'/../../config/services.config.php';
     }
 
     /**
@@ -61,11 +64,36 @@ class Module implements
      */
     public function getViewHelperConfig()
     {
-        return include __DIR__ . '/../../config/viewhelpers.config.php';
+        return include __DIR__.'/../../config/viewhelpers.config.php';
     }
 
     /**
-     * Listen to the bootstrap event
+     * Move this to here to have config cache working.
+     *
+     * @return array
+     */
+    public function getControllerPluginConfig()
+    {
+        return [
+            'factories' => [
+                'renderCalendarContactList' => function ($sm) {
+                    $renderCalendarContactList = new RenderCalendarContactList();
+                    $renderCalendarContactList->setServiceLocator($sm->getServiceLocator());
+
+                    return $renderCalendarContactList;
+                },
+                'renderReviewCalendar'      => function ($sm) {
+                    $renderReviewCalendar = new RenderReviewCalendar();
+                    $renderReviewCalendar->setServiceLocator($sm->getServiceLocator());
+
+                    return $renderReviewCalendar;
+                },
+            ],
+        ];
+    }
+
+    /**
+     * Listen to the bootstrap event.
      *
      * @param EventInterface $e
      *
@@ -74,7 +102,7 @@ class Module implements
     public function onBootstrap(EventInterface $e)
     {
         $app = $e->getParam('application');
-        $em  = $app->getEventManager();
+        $em = $app->getEventManager();
         $em->attach(
             MvcEvent::EVENT_DISPATCH,
             function ($event) {

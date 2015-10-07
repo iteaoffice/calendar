@@ -9,6 +9,8 @@
  */
 namespace Calendar;
 
+use Calendar\Controller;
+
 return [
     'router' => [
         'routes' => [
@@ -26,7 +28,7 @@ return [
                             'route'    => "/css/calendar-type-color.css",
                             'defaults' => [
                                 //Explicitly add the controller here as the assets are collected
-                                'controller' => 'calendar-index',
+                                'controller' => Controller\CalendarController::class,
                                 'action'     => 'calendar-type-color-css',
                             ],
                         ],
@@ -42,22 +44,22 @@ return [
                             'route'    => '/calendar',
                             'defaults' => [
                                 'namespace'  => __NAMESPACE__,
-                                'controller' => 'calendar-community',
+                                'controller' => Controller\CalendarCommunityController::class,
                                 'action'     => 'index',
                             ],
                         ],
-                        'may_terminate' => true,
+                        'may_terminate' => false,
                         'child_routes'  => [
-                            'overview'        => [
+                            'overview'                 => [
                                 'type'    => 'Segment',
                                 'options' => [
-                                    'route'    => '/overview[/:which][/page-:page].html',
+                                    'route'    => '/overview[/which-:which][/page-:page].html',
                                     'defaults' => [
                                         'action' => 'overview',
                                     ],
                                 ],
                             ],
-                            'calendar'        => [
+                            'calendar'                 => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/view/[:id].html',
@@ -67,21 +69,82 @@ return [
                                     ],
                                 ],
                             ],
-                            'review-calendar' => [
+                            'select-attendees'         => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/select-attendees/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'select-attendees',
+                                        'privilege' => 'select-attendees',
+                                    ],
+                                ],
+                            ],
+                            'send-message'             => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/send-message/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'send-message',
+                                        'privilege' => 'send-message',
+                                    ],
+                                ],
+                            ],
+                            'presence-list'            => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/presence-list/[:id].pdf',
+                                    'defaults' => [
+                                        'action'    => 'presence-list',
+                                        'privilege' => 'presence-list',
+                                    ],
+                                ],
+                            ],
+                            'review-calendar'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/review-calendar.html',
                                     'defaults' => [
-                                        'action' => 'review-calendar',
+                                        'action'    => 'review-calendar',
+                                        'privilege' => 'review-calendar',
                                     ],
                                 ],
                             ],
-                            'document'        => [
+                            'download-review-calendar' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/download/review-calendar.pdf',
+                                    'defaults' => [
+                                        'action'    => 'download-review-calendar',
+                                        'privilege' => 'review-calendar',
+                                    ],
+                                ],
+                            ],
+                            'contact'                  => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/contact.html',
+                                    'defaults' => [
+                                        'action'    => 'contact',
+                                        'privilege' => 'contact',
+                                    ],
+                                ],
+                            ],
+                            'update-status'            => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/update-status.html',
+                                    'defaults' => [
+                                        'action'    => 'update-status',
+                                        'privilege' => 'update-status',
+                                    ],
+                                ],
+                            ],
+                            'document'                 => [
                                 'type'          => 'Segment',
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => 'calendar-document',
+                                        'controller' => Controller\CalendarDocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],
@@ -92,16 +155,28 @@ return [
                                         'options' => [
                                             'route'    => '/[:id].html',
                                             'defaults' => [
-                                                'action' => 'document',
+                                                'action'    => 'document',
+                                                'privilege' => 'document-community',
+                                            ],
+                                        ],
+                                    ],
+                                    'edit'     => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/edit/[:id].html',
+                                            'defaults' => [
+                                                'action'    => 'edit',
+                                                'privilege' => 'edit-community',
                                             ],
                                         ],
                                     ],
                                     'download' => [
                                         'type'    => 'Segment',
                                         'options' => [
-                                            'route'    => '/download/[:id]/[:filename].[:ext]',
+                                            'route'    => '/download/[:id]/[:filename]',
                                             'defaults' => [
-                                                'action' => 'download',
+                                                'action'    => 'download',
+                                                'privilege' => 'download',
                                             ],
                                         ],
                                     ],
@@ -120,7 +195,7 @@ return [
                             'route'    => '/calendar',
                             'defaults' => [
                                 'namespace'  => __NAMESPACE__,
-                                'controller' => 'calendar-manager',
+                                'controller' => Controller\CalendarManagerController::class,
                                 'action'     => 'index',
                             ],
                         ],
@@ -169,7 +244,7 @@ return [
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => 'calendar-document',
+                                        'controller' => Controller\CalendarDocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],

@@ -1,12 +1,13 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -14,34 +15,38 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
 /**
- * CalendarContactRole
+ * CalendarContactRole.
  *
  * @ORM\Table(name="calendar_contact_role")
  * @ORM\Entity
  */
 class ContactRole
 {
+    const ROLE_ATTENDEE = 1;
     /**
      * @ORM\Column(name="role_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
     /**
      * @ORM\Column(name="role", type="string", length=45, nullable=false)
+     *
      * @var string
      */
     private $role;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="role")
      * @Annotation\Exclude()
+     *
      * @var \Calendar\Entity\Contact[]
      */
     private $calendarContact;
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {
@@ -49,7 +54,7 @@ class ContactRole
     }
 
     /**
-     * Return the name of the role
+     * Return the name of the role.
      *
      * @return string
      */

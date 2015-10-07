@@ -1,0 +1,39 @@
+<h1 style="color: #00a651; font-size: 18px">{{ translate("txt-list-of-participants") }}
+    <br>{{ calendarService.calendar }}</h1>
+<h2 style="color: #808285; font-size: 14px">{{ calendarService.calendar.dateFrom|date('M. jS, Y ') }}
+    - {{ calendarService.calendar.location }}</h2>
+
+<p>&nbsp;<p>
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th height="20" valign="middle"><strong>{{ translate("txt-name") }}</strong></th>
+        <th valign="middle"><strong>{{ translate("txt-organisation") }}</strong></th>
+        <th valign="middle"><strong>{{ translate("txt-role") }}</strong></th>
+        <th valign="middle"><strong>{{ translate("txt-signature") }}</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set extraLimit = 13 - calendarContacts|length %}
+    {% for calendarContact in calendarContacts %}
+        <tr>
+            {% set contactService = contactServiceProxy(calendarContact.contact) %}
+            <td height="40" valign="middle">{{ calendarContact.contact.displayName }}</td>
+            <td valign="middle">{{ contactService.parseOrganisation() }}</td>
+            <td valign="middle">{{ calendarContact.role }}</td>
+            <td valign="middle"></td>
+        </tr>
+    {% endfor %}
+    {% if extraLimit > 1 %}
+        {% for i in 1..extraLimit %}
+            <tr>
+                <td height="40" valign="center"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+
+    </tbody>
+</table>

@@ -1,34 +1,38 @@
 <?php
 
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category   Calendar
+ *
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\View\Helper;
 
+use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
 use Calendar\Entity;
-use Zend\View\Helper\AbstractHelper;
 
 /**
- * Create a link to an project
+ * Create a link to an project.
  *
- * @category    Calendar
- * @package     View
- * @subpackage  Helper
+ * @category   Calendar
  */
-class DocumentLink extends AbstractHelper
+class DocumentLink extends LinkAbstract
 {
+    /**
+     * @var Entity\Document
+     */
+    protected $document;
+
     /**
      * @param Entity\Document $document
      * @param string          $action
      * @param string          $show
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     public function __invoke(
@@ -36,69 +40,101 @@ class DocumentLink extends AbstractHelper
         $action = 'view',
         $show = 'text'
     ) {
-        $translate = $this->view->plugin('translate');
-        $url       = $this->view->plugin('url');
-        $serverUrl = $this->view->plugin('serverUrl');
-        $params = array(
-            'entity' => 'document'
+        $this->setDocument($document);
+        $this->setAction($action);
+        $this->setShow($show);
+
+        /**LiLik
+         * Set the non-standard options needed to give an other link value
+         */
+        $this->setShowOptions(
+            [
+
+                'name' => $this->getDocument()->getDocument(),
+            ]
         );
-        switch ($action) {
+
+        /*
+         * Check the access to the object
+         */
+        if (!$this->hasAccess(
+            $this->getDocument(),
+            CalendarDocumentAssertion::class,
+            $this->getAction()
+        )
+        ) {
+            return '';
+        }
+
+        $this->addRouterParam('id', $this->getDocument()->getId());
+
+        return $this->createLink();
+    }
+
+    /**
+     * Parse te action and fill the correct parameters.
+     */
+    public function parseAction()
+    {
+        switch ($this->getAction()) {
             case 'document-community':
-                $router = 'community/calendar/document/document';
-                $text   = sprintf($translate("txt-view-calendar-document-%s"), $document->getDocument());
+                $this->setRouter('community/calendar/document/document');
+                $this->setText(
+                    sprintf($this->translate("txt-view-calendar-document-%s"), $this->getDocument()->getDocument())
+                );
+                break;
+            case 'edit-community':
+                $this->setRouter('community/calendar/document/edit');
+                $this->setText(
+                    sprintf($this->translate("txt-edit-calendar-document-%s"), $this->getDocument()->getDocument())
+                );
                 break;
             case 'document-admin':
-                $router = 'zfcadmin/calendar-manager/document/document';
-                $text   = sprintf($translate("txt-view-calendar-document-%s"), $document->getDocument());
+                $this->setRouter('zfcadmin/calendar-manager/document/document');
+                $this->setText(
+                    sprintf($this->translate("txt-view-calendar-document-%s"), $this->getDocument()->getDocument())
+                );
                 break;
             case 'edit':
-                $router = 'zfcadmin/calendar-manager/document/edit';
-                $text   = sprintf($translate("txt-edit-calendar-document-%s"), $document->getDocument());
+                $this->setRouter('zfcadmin/calendar-manager/document/edit');
+                $this->setText(
+                    sprintf($this->translate("txt-edit-calendar-document-%s"), $this->getDocument()->getDocument())
+                );
                 break;
             case 'download':
-                $params['filename'] = $document->parseFileName();
-                $params['ext']      = $document->getContentType()->getExtension();
-                $router             = 'community/calendar/document/download';
-                $text               = sprintf(
-                    $translate("txt-download-calendar-document-%s"),
-                    $document->getDocument()
+                $this->addRouterParam('filename', $this->getDocument()->parseFileName());
+                $this->setRouter('community/calendar/document/download');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-download-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
                 );
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf("%s is an incorrect action for %s", $action, __CLASS__));
+                throw new \InvalidArgumentException(
+                    sprintf("%s is an incorrect action for %s", $this->getAction(), __CLASS__)
+                );
         }
-        $params['id'] = $document->getId();
-        $classes      = [];
-        $linkContent  = [];
-        switch ($show) {
-            case 'icon':
-                if ($action === 'edit') {
-                    $linkContent[] = '<span class="glyphicon glyphicon-edit"></span>';
-                } elseif ($action === 'download') {
-                    $linkContent[] = '<span class="glyphicon glyphicon-download"></span>';
-                } else {
-                    $linkContent[] = '<span class="glyphicon glyphicon-info-sign"></span>';
-                }
-                break;
-            case 'button':
-                $linkContent[] = '<span class="glyphicon glyphicon-info"></span> ' . $text;
-                $classes[]     = "btn btn-primary";
-                break;
-            case 'name':
-                $linkContent[] = $document->parseFileName();
-                break;
-            default:
-                $linkContent[] = $document->getDocument();
-                break;
-        }
-        $uri = '<a href="%s" title="%s" class="%s">%s</a>';
+    }
 
-        return sprintf(
-            $uri,
-            $serverUrl->__invoke() . $url($router, $params),
-            $text,
-            implode($classes),
-            implode($linkContent)
-        );
+    /**
+     * @return Entity\Document
+     */
+    public function getDocument()
+    {
+        if (is_null($this->document)) {
+            $this->document = new Entity\Document();
+        }
+
+        return $this->document;
+    }
+
+    /**
+     * @param Entity\Document $document
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
     }
 }

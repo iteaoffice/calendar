@@ -2,10 +2,10 @@
 /**
  * ITEA copyright message placeholder
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ * @package   Entity
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
 namespace Calendar\Entity;
 
@@ -52,20 +52,20 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @var array
      */
-    protected $finalTemplates = array(
+    protected $finalTemplates = [
         self::FINAL_DRAFT     => 'txt-draft',
         self::FINAL_TENTATIVE => 'txt-tentative',
-        self::FINAL_FINAL     => 'txt-final'
-    );
+        self::FINAL_FINAL     => 'txt-final',
+    ];
     /**
      * Textual versions of the on homepage
      *
      * @var array
      */
-    protected $onHomepageTemplates = array(
+    protected $onHomepageTemplates = [
         self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
-        self::ON_HOMEPAGE     => 'txt-on-homepage'
-    );
+        self::ON_HOMEPAGE     => 'txt-on-homepage',
+    ];
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
      * @ORM\Id
@@ -208,6 +208,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     private $calendarContact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
+     * @ORM\OrderBy({"document"="ASC"})
      * @Annotation\Exclude()
      * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
      */
@@ -239,14 +240,21 @@ class Calendar extends EntityAbstract implements ResourceInterface
     private $call;
 
     /**
+     * @ORM\OneToOne(targetEntity="Ambassador\Entity\Calendar", cascade={"persist","remove"}, mappedBy="calendar")
+     * @Annotation\Exclude()
+     * @var \Ambassador\Entity\Calendar
+     */
+    private $ambassadorCalendar;
+
+    /**
      * Class constructor
      */
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
-        $this->document        = new Collections\ArrayCollection();
-        $this->schedule        = new Collections\ArrayCollection();
-        $this->call            = new Collections\ArrayCollection();
+        $this->document = new Collections\ArrayCollection();
+        $this->schedule = new Collections\ArrayCollection();
+        $this->call = new Collections\ArrayCollection();
     }
 
     /**
@@ -327,166 +335,150 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-            $factory     = new InputFactory();
-            $inputFilter->add(
+            $this->inputFilter = new InputFilter();
+            $factory = new InputFactory();
+            $this->inputFilter->add(
                 $factory->createInput(
-                    array(
+                    [
                         'name'     => 'calendar',
                         'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+                        'filters'  => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                    ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
-                    array(
+                    [
                         'name'     => 'location',
                         'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
+                        'filters'  => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                    ]
                 )
             );
-            $inputFilter->add(
+            $this->inputFilter->add(
                 $factory->createInput(
-                    array(
+                    [
                         'name'       => 'dateFrom',
                         'required'   => true,
-                        'filters'    => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
+                        'filters'    => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                        'validators' => [
+                            [
                                 'name'    => 'DateTime',
-                                'options' => array(
+                                'options' => [
                                     'pattern' => 'yyyy-mm-dd HH:mm',
-                                )
-                            )
-                        )
-                    )
+                                ],
+                            ],
+                        ],
+                    ]
                 )
             );
-            $inputFilter->add(
+
+            $this->inputFilter->add(
                 $factory->createInput(
-                    array(
+                    [
+                        'name'     => 'final',
+                        'required' => true,
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'     => 'onHomepage',
+                        'required' => true,
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'       => 'sequence',
+                        'required'   => false,
+                        'filters'    => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                        'validators' => [
+                            ['name' => 'Int'],
+                        ],
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'     => 'url',
+                        'required' => false,
+                        'filters'  => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'     => 'imageUrl',
+                        'required' => false,
+                        'filters'  => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
+                        'name'     => 'call',
+                        'required' => false,
+                    ]
+                )
+            );
+            $this->inputFilter->add(
+                $factory->createInput(
+                    [
                         'name'       => 'dateEnd',
                         'required'   => true,
-                        'filters'    => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
+                        'filters'    => [
+                            ['name' => 'StripTags'],
+                            ['name' => 'StringTrim'],
+                        ],
+                        'validators' => [
+                            [
                                 'name'    => 'DateTime',
-                                'options' => array(
+                                'options' => [
                                     'pattern' => 'yyyy-mm-dd HH:mm',
-                                )
-                            ),
-                            array(
+                                ],
+                            ],
+                            [
                                 'name'    => 'Callback',
-                                'options' => array(
-                                    'messages' => array(
+                                'options' => [
+                                    'messages' => [
                                         Callback::INVALID_VALUE => 'The end date should be greater than start date',
-                                    ),
+                                    ],
                                     'callback' => function ($value, $context = []) {
                                         $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                                        $dateEnd  = \DateTime::createFromFormat('Y-m-d H:i', $value);
+                                        $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
                                         return $dateEnd > $dateFrom;
                                     },
-                                ),
-                            ),
-                        )
-                    )
+                                ],
+                            ],
+                        ],
+                    ]
                 )
             );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'       => 'final',
-                        'required'   => true,
-                        'validators' => array(
-                            array(
-                                'name'    => 'InArray',
-                                'options' => array(
-                                    'haystack' => array_keys($this->getFinalTemplates())
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'       => 'onHomepage',
-                        'required'   => true,
-                        'validators' => array(
-                            array(
-                                'name'    => 'InArray',
-                                'options' => array(
-                                    'haystack' => array_keys($this->getOnHomepageTemplates())
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'       => 'sequence',
-                        'required'   => false,
-                        'filters'    => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Int')
-                        )
-                    )
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'url',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'imageUrl',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StripTags'),
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'call',
-                        'required' => false,
-                    )
-                )
-            );
-            $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
@@ -533,7 +525,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return \Calendar\Entity\Contact[]
+     * @return \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
     public function getCalendarContact()
     {
@@ -546,6 +538,22 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function setCalendarContact($calendarContact)
     {
         $this->calendarContact = $calendarContact;
+    }
+
+    /**
+     * @return \Ambassador\Entity\Calendar[]|Collections\ArrayCollection
+     */
+    public function getAmbassadorCalendar()
+    {
+        return $this->ambassadorCalendar;
+    }
+
+    /**
+     * @param \Ambassador\Entity\Calendar[] $ambassadorCalendar
+     */
+    public function setAmbassadorCalendar($ambassadorCalendar)
+    {
+        $this->ambassadorCalendar = $ambassadorCalendar;
     }
 
     /**

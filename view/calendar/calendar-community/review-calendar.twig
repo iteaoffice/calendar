@@ -1,12 +1,13 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-review-calendar")) %}
 <h1>{{ translate("txt-review-calendar") }}</h1>
 
-<table class="table table-listing table-condensed table-striped">
+<table class="table table-hover table-condensed table-striped">
     <thead>
     <tr>
         <th>{{ translate("txt-project") }}</th>
-        <th>{{ translate("txt-call") }}</th>
         <th>{{ translate("txt-name") }}</th>
-        <th>{{ translate("txt-review-number") }}</th>
+        <th>{{ translate("txt-call") }}</th>
         <th>{{ translate("txt-date") }}</th>
         <th>{{ translate("txt-location") }}</th>
         <th>{{ translate("txt-project-leader") }}</th>
@@ -18,56 +19,68 @@
         <th>{{ translate("txt-chairman") }}</th>
     </tr>
     </thead>
-    <thead>
+    <tfoot>
+    <tr>
+        <th>{{ translate("txt-project") }}</th>
+        <th>{{ translate("txt-name") }}</th>
+        <th>{{ translate("txt-call") }}</th>
+        <th>{{ translate("txt-date") }}</th>
+        <th>{{ translate("txt-location") }}</th>
+        <th>{{ translate("txt-project-leader") }}</th>
+        <th>{{ translate("txt-country-external-expert") }}</th>
+        <th>{{ translate("txt-mentor") }}</th>
+        <th>{{ translate("txt-stg-reviewers") }}</th>
+        <th>{{ translate("txt-stg-spare-reviewer") }}</th>
+        <th>{{ translate("txt-secretary") }}</th>
+        <th>{{ translate("txt-chairman") }}</th>
+    </tr>
+    </tfoot>
+    <tbody>
     {% for calendar in calendarItems %}
-        <tr>
+        <tr {% if 'final' in calendar.calendar %}class="success"{% endif %}>
             {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            <td>{{ projectLink(projectService,'view-community', 'name') }}</td>
-            <td>{{ calendar.projectCalendar.project.call }}</td>
+            <td>{{ projectLink(projectService,'view-community', 'number') }}</td>
             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
-            <td>
-                {{ constant("Calendar\\Entity\\Calendar::FINAL_FINAL") }}
-                {% if calendar.final is constant("Calendar\\Entity\\Calendar::FINAL_FINAL") %}
-                    ({{ translate("txt-final") }})
-                {% endif %}
-            </td>
+            <td>{{ calendar.projectCalendar.project.call.shortName }}</td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
             <td>{{ calendar.location }}</td>
             {% set contactService = contactServiceProxy(projectService.project.contact) %}
-            <td>{{ contactService.parseFullName }} ({{ contactService.parseOrganisation() }})</td>
+            <td>{{ contactService.contact.shortName }}<br>
+                <small>({{ contactService.parseOrganisation() }})</small>
+            </td>
             <td>
-                {% for contact in calendar.calendarContact if contact.role.id == 5 %}
-                    {{ contact.contact.displayName }}
+                {% for contact in calendar.calendarContact if contact.role.id == 6 %}
+                    {{ contact.contact.shortName }}
                 {% endfor %}
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 9 %}
-                    {{ contact.contact.displayName }}
+                    {{ contact.contact.shortName }}
                 {% endfor %}
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 7 %}
-                    {{ contact.contact.displayName }}
+                    {{ contact.contact.shortName }}<br>
                 {% endfor %}
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 8 %}
-                    {{ contact.contact.displayName }}
+                    {{ contact.contact.shortName }}
                 {% endfor %}
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 4 %}
-                    {{ contact.contact.displayName }}
+                    {{ contact.contact.shortName }}
                 {% endfor %}
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 2 %}
-                    {{ contact.contact.displayName }}
+                    {{ contact.contact.shortName }}
                 {% endfor %}
             </td>
         </tr>
     {% endfor %}
-    </thead>
-
-
+    </tbody>
 </table>
+
+{{ calendarLink(null,'download-review-calendar','button') }}

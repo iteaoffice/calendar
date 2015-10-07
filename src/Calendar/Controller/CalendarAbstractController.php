@@ -1,28 +1,38 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    Calendar
- * @package     Controller
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Controller;
 
+use BjyAuthorize\Controller\Plugin\IsAllowed;
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
 use Calendar\Service\FormServiceAwareInterface;
 use Contact\Service\ContactService;
 use Contact\Service\ContactServiceAwareInterface;
+use General\Service\EmailService;
 use General\Service\GeneralService;
 use General\Service\GeneralServiceAwareInterface;
+use Project\Service\ProjectService;
+use Project\Service\WorkpackageService;
+use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
 
 /**
- *
+ * @method      ZfcUserAuthentication zfcUserAuthentication()
+ * @method      FlashMessenger flashMessenger()
+ * @method      isAllowed isAllowed($resource, $action)
  */
 abstract class CalendarAbstractController extends AbstractActionController implements
     FormServiceAwareInterface,
@@ -40,6 +50,14 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      */
     protected $contactService;
     /**
+     * @var ProjectService
+     */
+    protected $projectService;
+    /**
+     * @var WorkpackageService
+     */
+    protected $workpackageService;
+    /**
      * @var CalendarService;
      */
     protected $calendarService;
@@ -51,6 +69,10 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
+    /**
+     * @var EmailService
+     */
+    protected $emailService;
 
     /**
      * @return \Calendar\Service\FormService
@@ -130,6 +152,83 @@ abstract class CalendarAbstractController extends AbstractActionController imple
         $this->generalService = $generalService;
 
         return $this;
+    }
+
+    /**
+     * @return WorkpackageService
+     */
+    public function getWorkpackageService()
+    {
+        return $this->workpackageService;
+    }
+
+    /**
+     * @param WorkpackageService $workpackageService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setWorkpackageService(WorkpackageService $workpackageService)
+    {
+        $this->workpackageService = $workpackageService;
+
+        return $this;
+    }
+
+    /**
+     * @return ProjectService
+     */
+    public function getProjectService()
+    {
+        return $this->projectService;
+    }
+
+    /**
+     * @param ProjectService $projectService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setProjectService(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+
+        return $this;
+    }
+
+    /**
+     * @return EmailService
+     */
+    public function getEmailService()
+    {
+        return $this->emailService;
+    }
+
+    /**
+     * @param EmailService $emailService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setEmailService(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+
+        return $this;
+    }
+
+    /**
+     * Proxy for the flash messenger helper to have the string translated earlier.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    protected function translate($string)
+    {
+        /*
+         * @var Translate
+         */
+        $translate = $this->getServiceLocator()->get('ViewHelperManager')->get('translate');
+
+        return $translate($string);
     }
 
     /**

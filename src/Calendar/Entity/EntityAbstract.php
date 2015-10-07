@@ -1,24 +1,28 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
-use Project\Entity\EntityInterface;
+use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 
 /**
- * Annotations class
+ * Annotations class.
  *
- * @author  Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @author Johan van der Heide <johan.van.der.heide@itea3.org>
  */
 abstract class EntityAbstract implements EntityInterface, InputFilterAwareInterface
 {
+    /**
+     * @var InputFilter
+     */
     protected $inputFilter;
 
     /**
@@ -47,7 +51,7 @@ abstract class EntityAbstract implements EntityInterface, InputFilterAwareInterf
     {
         switch ($switch) {
             case 'entity_name':
-                return join('', array_slice(explode('\\', get_class($this)), -1));
+                return implode('', array_slice(explode('\\', get_class($this)), -1));
             case 'dashed_entity_name':
                 $dash = function ($m) {
                     return '-' . strtolower($m[1]);

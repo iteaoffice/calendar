@@ -1,18 +1,19 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CalendarScheduleContact
+ * CalendarScheduleContact.
  *
  * @ORM\Table(name="calendar_schedule_contact")
  * @ORM\Entity
@@ -23,6 +24,7 @@ class ScheduleContact
      * @ORM\Column(name="schedule_contact_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
@@ -31,6 +33,7 @@ class ScheduleContact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\ContactStatus
      */
     private $status;
@@ -39,6 +42,7 @@ class ScheduleContact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="schedule_id", referencedColumnName="schedule_id")
      * })
+     *
      * @var \Calendar\Entity\Schedule
      */
     private $schedule;
@@ -47,6 +51,7 @@ class ScheduleContact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      * })
+     *
      * @var \Contact\Entity\Contact
      */
     private $contact;

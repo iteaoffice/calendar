@@ -1,4 +1,6 @@
-<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }}</h1>
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(calendarService.calendar.calendar) %}
+<h1>{{ calendarService.calendar }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
@@ -9,99 +11,55 @@
 
 <!-- Tab panes -->
 <div class="tab-content">
-<div class="tab-pane active" id="calendar">
-    <h2>{{ translate("txt-calendar-item-details") }}</h2>
-
-    <dl class="dl-horizontal">
-        {% if calendar.projectCalendar %}
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            <dt>{{ translate("txt-project") }}</dt>
-            <dd>{{ projectLink(projectService,'view-community') }}</dd>
-        {% endif %}
-        <dt>{{ translate("txt-date") }}</dt>
-        <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
-        <dt>{{ translate("txt-type") }}</dt>
-        <dd>{{ calendar.type }}</dd>
-        <dt>{{ translate("txt-location") }}</dt>
-        <dd>{{ calendar.location }}</dd>
-        <dt>{{ translate("txt-documents") }}</dt>
-        <dd>{{ translate("txt-%s-documents")|format(calendar.document.count()) }}</dd>
-    </dl>
-
-</div>
-<div class="tab-pane" id="documents">
-
-    <h2>{{ translate("txt-documents") }}</h2>
-
-    <ul class="nav nav-pills nav-nos-menu">
-        <li class="active"><a href="#total-calendar-documents"
-                              data-toggle="pill">{{ translate("txt-total-calendar-documents") }}</a></li>
-        {% if calendar.projectCalendar %}
-            <li><a href="#proposal-documents"
-                   data-toggle="pill">{{ translate("txt-proposal-documents") }}</a></li>
-            <li><a href="#report-documents"
-                   data-toggle="pill">{{ translate("txt-report-documents") }}</a></li>
-            <li><a href="#project-results"
-                   data-toggle="pill">{{ translate("txt-project-results") }}</a></li>
-            <li><a href="#workpackage-deliverables"
-                   data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
-        {% endif %}
-    </ul>
-
-    <div class="tab-content">
-
-        <div class="tab-pane active" id="total-calendar-documents">
-
-            <h3>{{ translate("txt-calendar-documents") }}</h3>
-
-            {% if calendar.document.count() > 0 %}
-                <table class="table table-striped table-hover table-bordered">
-                    <thead>
-                    <tr>
-                        <th>{{ translate("txt-document") }}</th>
-                        <th>{{ translate("txt-content-type") }}</th>
-                        <th>{{ translate("txt-created") }}</th>
-                        <th>{{ translate("txt-size") }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for document in calendar.document %}
-                        <tr>
-                            <td>
-                                {{ calendarDocumentLink(document,'document-community') }}
-                                {{ calendarDocumentLink(document,'download','icon') }}
-                            </td>
-                            <td>{{ document.contentType.description }}</td>
-                            <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
-                            <td>{{ document.size|parse_size }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
+    <div class="tab-pane active" id="calendar">
+        <dl class="dl-horizontal">
+            {% if calendarService.calendar.projectCalendar %}
+                {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+                <dt>{{ translate("txt-project") }}</dt>
+                <dd>{{ projectLink(projectService,'view-community','name') }}</dd>
             {% endif %}
+            <dt>{{ translate("txt-date") }}</dt>
+            <dd>{{ calendarService.calendar.dateFrom|from_to_date(calendarService.calendar.dateEnd) }}</dd>
+            <dt>{{ translate("txt-type") }}</dt>
+            <dd>{{ calendarService.calendar.type }}</dd>
+            <dt>{{ translate("txt-location") }}</dt>
+            <dd>{{ calendarService.calendar.location }}</dd>
+            <dt>{{ translate("txt-description") }}</dt>
+            <dd>{{ calendarService.calendar.description|default("-")|raw }}</dd>
+            <dt>{{ translate("txt-documents") }}</dt>
+            <dd>{{ translate("txt-%s-documents")|format(calendarService.calendar.document.count()) }}</dd>
+        </dl>
 
-        </div>
+    </div>
+    <div class="tab-pane" id="documents">
 
-        {% if calendar.projectCalendar %}
-            <div class="tab-pane" id="proposal-documents">
+        <br>
 
-                <h3>{{ translate("txt-proposal-documents") }}</h3>
+        <ul class="nav nav-pills nav-nos-menu">
+            <li class="active"><a href="#total-calendar-documents"
+                                  data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
+            {% if calendarService.calendar.projectCalendar %}
+                <li><a href="#version-documents"
+                       data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
+                <li><a href="#reporting"
+                       data-toggle="pill">{{ translate("txt-reporting") }}</a></li>
+                <li><a href="#public-project-results"
+                       data-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
+                <li><a href="#workpackage-deliverables"
+                       data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
+            {% endif %}
+        </ul>
 
-                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-                {% set version = projectService.getLatestProjectVersion() %}
 
-                <p>{{ translate("txt-find-here-documents-for-version-of-type-%s")|format(version.versionType) }}</p>
+        <div class="tab-content">
 
-                <p>{{ translate("txt-this-version-%s-has-been-%s-and-submitted-on-%s")|format(
-                    version.versionType,
-                    translate(version.getApproved(true)),
-                    version.dateReviewed|date('d-m-Y')
-                    ) }}</p>
 
-                {% if version.versionDocument.count() > 0 %}
-                    <table class="table table-striped table-hover table-bordered">
+            <div class="tab-pane active" id="total-calendar-documents">
+
+                <h3>{{ translate("txt-calendar-documents") }}</h3>
+
+                {% if calendarService.calendar.document.count() > 0 %}
+                    <table class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th>{{ translate("txt-document") }}</th>
@@ -111,11 +69,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for document in version.versionDocument %}
+                        {% for document in calendarService.calendar.document %}
                             <tr>
                                 <td>
-                                    {{ versionDocumentLink(document,'document-community') }}
-                                    {{ versionDocumentLink(document,'download','icon') }}
+                                    {{ contentTypeIcon(document.contentType) }}&nbsp;
+                                    {{ calendarDocumentLink(document,'document-community', 'name') }}
+                                    {{ calendarDocumentLink(document,'download','icon') }}
                                 </td>
                                 <td>{{ document.contentType.description }}</td>
                                 <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
@@ -124,97 +83,282 @@
                         {% endfor %}
                         </tbody>
                     </table>
+
+                    {{ calendarLink(calendarService.calendar, 'download-calendar-document-binder', 'button') }}
                 {% else %}
                     {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
                 {% endif %}
 
+                {% if isAllowed(calendarService.calendar, 'add-document') %}
+                    <hr>
+                    <h4>{{ translate("txt-upload-new-document") }}</h4>
+
+                    {% do form.prepare() %}
+                    {% do form.setAttribute('class','form-inline') %}
+
+                    {{ form().openTag(form)|raw }}
+
+                    <div class="form-group col-md-6">
+                        {{ formlabel(form.get('document')) }}
+                        {{ formelement(form.get('document')) }}
+                        {{ formelementerrors(form.get('document')) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ formlabel(form.get('file')) }}
+                        {{ formelement(form.get('file')) }}
+                        {{ formelementerrors(form.get('file')) }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="file">&nbsp;</label>
+                        {{ ztbformelement(form.get('submit')) }}
+                    </div>
+
+                    <br>
+
+
+
+                    {{ form().closeTag()|raw }}
+                {% endif %}
             </div>
 
-            <div class="tab-pane" id="report-documents">
+            {% if calendarService.calendar.projectCalendar %}
+                <div class="tab-pane" id="version-documents">
 
-                <h3>{{ translate("txt-report-documents") }}</h3>
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+                    {% set version = projectService.getLatestProjectVersion() %}
+                    {% set versionService = versionServiceProxy(version) %}
 
-                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
+                    <h3>{{ translate("txt-version-documents") }}</h3>
 
-                <table class="table table-bordered table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>{{ translate("txt-report") }}</th>
-                        <th>{{ translate("txt-contact") }}</th>
-                        <th>{{ translate("txt-date") }}</th>
-                        <th>{{ translate("txt-amount-of-documents") }}</th>
-                        <th>{{ translate("txt-download") }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for report in projectService.project.report %}
+                    {{ ztbalert().info(translate("txt-this-version-%s-has-been-%s-and-submitted-on-%s")|format(
+                    version.versionType,
+                    translate(version.getApproved(true)),
+                    version.dateReviewed|date('d-m-Y')
+                    ))|raw }}
+
+                    {% if version.versionDocument.count() > 0 %}
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>{{ translate("txt-document") }}</th>
+                                <th>{{ translate("txt-content-type") }}</th>
+                                <th>{{ translate("txt-created") }}</th>
+                                <th>{{ translate("txt-size") }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for document in version.versionDocument %}
+                                <tr>
+                                    <td>
+                                        {{ contentTypeIcon(document.contentType) }}
+                                        {{ versionDocumentLink(document,'view-community', 'name') }}
+                                        {{ versionDocumentLink(document,'download','icon') }}
+                                    </td>
+                                    <td>{{ document.contentType.description }}</td>
+                                    <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
+                                    <td>{{ document.size|parse_size }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {{ versionLink(versionService,'download-version-document-binder','button') }}
+                    {% else %}
+                        {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
+                    {% endif %}
+
+                </div>
+
+                <div class="tab-pane" id="reporting">
+
+                    <h3>{{ translate("txt-progress-reports") }}</h3>
+
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+
+                    {% if projectService.project.report.count() > 0 %}
+
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ translate("txt-report") }}</th>
+                                <th>{{ translate("txt-contact") }}</th>
+                                <th>{{ translate("txt-date") }}</th>
+                                <th>{{ translate("txt-amount-of-documents") }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for report in projectService.project.report %}
+                                <tr>
+                                    <td>{{ reportLink(report,'report-community', 'name') }} {{ reportLink(report,'download', 'icon') }}</td>
+                                    <td>{{ report.contact.displayName }}
+                                        <div class="pull-right"><a href="mailto:{{ report.contact.email }}"><i
+                                                        class="fa fa-envelope-o"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
+                                        </div></td>
+                                    <td>{{ report.dateCreated|string_date }}</td>
+                                    <td>{{ report.item.count() }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    {% else %}
+                        {{ ztbalert().info(translate("txt-no-report-documents-attached"))|raw }}
+                    {% endif %}
+
+                    <h3>{{ translate("txt-review-documents") }}</h3>
+
+                    <table class="table table-hover table-striped">
+                        <thead>
                         <tr>
-                            <td>{{ reportLink(report,'report-community', 'name') }}</td>
-                            <td>{{ report.contact.displayName }}</td>
-                            <td>{{ report.dateCreated|string_date }}</td>
-                            <td>{{ report.item.count() }}</td>
-                            <td>{{ reportLink(report,'download', 'icon') }}</td>
+                            <th>{{ translate("txt-report") }}</th>
+                            <th>{{ translate("txt-date") }}</th>
+                            <th>{{ translate("txt-contact") }}</th>
+                            <th>{{ translate("txt-content-type") }}</th>
+                            <th>{{ translate("txt-size") }}</th>
                         </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_REVIEW") %}
+                            <tr>
+                                <td>
+                                    {{ contentTypeIcon(result.contentType) }}
+                                    {{ resultLink(result,'download', 'public-name') }}
+                                </td>
+                                <td>{{ result.dateCreated|string_date }}</td>
+                                <td>{{ result.contact.displayName }}
+                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
+                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+                                    </div></td>
+                                <td>{{ result.contentType.description }}</td>
+                                <td>{{ result.size|parse_size }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="tab-pane" id="public-project-results">
+
+                    <h3>{{ translate("txt-public-project-results") }}</h3>
+
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{{ translate("txt-report") }}</th>
+                            <th>{{ translate("txt-date") }}</th>
+                            <th>{{ translate("txt-contact") }}</th>
+                            <th>{{ translate("txt-content-type") }}</th>
+                            <th>{{ translate("txt-size") }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                            <tr>
+                                <td>
+                                    {{ contentTypeIcon(result.contentType) }}
+                                    {{ resultLink(result,'download', 'public-name') }}
+                                </td>
+                                <td>{{ result.dateCreated|string_date }}</td>
+                                <td>{{ result.contact.displayName }}
+                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
+                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+                                    </div></td>
+                                <td>{{ result.contentType.description }}</td>
+                                <td>{{ result.size|parse_size }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <h3>{{ translate("txt-public-deliverables") }}</h3>
+
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+
+                    {% include 'project/partial/list/workpackage-document' with {'documents':projectService.findPublicWorkpackageDocuments()} %}
+
+                </div>
+
+                <div class="tab-pane" id="workpackage-deliverables">
+
+                    <h3>{{ translate("txt-workpackage-deliverables") }}</h3>
+
+                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+
+                    {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(projectService.project) if workpackage.document.count() > 0 %}
+                        <h4 class="home">{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
+                        {% include 'project/partial/list/workpackage-document' with {'documents':workpackage.document} %}
+                        <hr>
                     {% endfor %}
-                    </tbody>
-                </table>
 
-            </div>
+                    {{ projectLink(projectService, 'download-workpackage-document-binder', 'button') }}
+                </div>
+            {% endif %}
 
-            <div class="tab-pane" id="project-results">
+        </div>
 
-                <h3>{{ translate("txt-project-results") }}</h3>
-
-                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-
-
-            </div>
-
-            <div class="tab-pane" id="workpackage-deliverables">
-
-                <h3>{{ translate("txt-workpackage-deliverables") }}</h3>
-
-                {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-
-            </div>
-        {% endif %}
 
     </div>
+    <div class="tab-pane" id="attendees">
 
+        {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendarService.calendar) %}
 
-</div>
-<div class="tab-pane" id="attendees">
-    <h2>{{ translate("txt-calendar-attendees") }}</h2>
-
-    {% if calendar.calendarContact.count() > 0 %}
-        <table class="table table-hover table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>{{ translate("txt-name") }}</th>
-                <th>{{ translate("txt-organisation") }}</th>
-                <th>{{ translate("txt-role") }}</th>
-                <th>{{ translate("txt-presence") }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for calendarContact in calendar.calendarContact %}
-                {% set contactService = contactServiceProxy(calendarContact.contact) %}
-                <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
-                    <td>
-                        {% if zfcUserIdentity().getId() == contactService.contact.id %}
-                            <span class="glyphicon glyphicon-user"></span>
-                        {% endif %}
-                        {{ calendarContact.contact.displayName }}</td>
-                    <td>{{ contactService.parseOrganisation() }}</td>
-                    <td>{{ calendarContact.role }}</td>
-                    <td>{{ calendarContact.status }}</td>
+        {% if calendarContacts|length > 0 %}
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>{{ translate("txt-name") }}</th>
+                    <th>{{ translate("txt-organisation") }}</th>
+                    <th>{{ translate("txt-role") }}</th>
+                    <th>{{ translate("txt-presence") }}</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        {{ ztbalert().info(translate("txt-no-attendees-selected"))|raw }}
-    {% endif %}
+                </thead>
+                <tbody>
+                {% for calendarContact in calendarContacts %}
+                    {% set contactService = contactServiceProxy(calendarContact.contact) %}
+                    <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
+                        <td>
+                            {% if zfcUserIdentity().getId() == contactService.contact.id %}
+                                <i class="fa fa-user"></i>
+                            {% endif %}
+                            {{ calendarContact.contact.displayName }}
+                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
+                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+                            </div></td>
+                        <td>{{ contactService.parseOrganisation() }} ({{ contactService.parseCountry() }}) </td>
+                        <td>{{ calendarContact.role }}</td>
+                        <td>
+                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% if isAllowed(calendarContact,'update-status') %}
+                            <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                            {% else %}
+                            {{ calendarContact.status }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-attendees-selected"))|raw }}
+        {% endif %}
 
-</div>
+        {{ calendarLink(calendarService.calendar,'select-attendees', 'button') }}
+        {% if calendarContacts|length > 0 %}
+            {{ calendarLink(calendarService.calendar,'send-message', 'button') }}
+            {{ calendarLink(calendarService.calendar,'presence-list', 'button') }}
+        {% endif %}
+    </div>
 </div>

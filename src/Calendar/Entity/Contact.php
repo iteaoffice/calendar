@@ -1,28 +1,32 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * ITEA copyright message placeholder.
  *
- * @category    Calendar
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zend\InputFilter\InputFilterInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
- * Contact
+ * Contact.
  *
  * @ORM\Table(name="calendar_contact")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
-class Contact
+class Contact extends EntityAbstract implements ResourceInterface
 {
     /**
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      * @var integer
      */
     private $id;
@@ -31,6 +35,7 @@ class Contact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\ContactRole
      */
     private $role;
@@ -39,6 +44,7 @@ class Contact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      * })
+     *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
@@ -47,6 +53,7 @@ class Contact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      * })
+     *
      * @var \Calendar\Entity\ContactStatus
      */
     private $status;
@@ -55,9 +62,63 @@ class Contact
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      * })
+     *
      * @var \Contact\Entity\Contact
      */
     private $contact;
+
+    /**
+     * Magic Getter.
+     *
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter.
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * Returns the string identifier of the Resource.
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return sprintf("%s:%s", __CLASS__, $this->id);
+    }
+
+    /**
+     * Set input filter.
+     *
+     * @param InputFilterInterface $inputFilter
+     *
+     * @throws \Exception
+     */
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new \Exception("Setting an inputFilter is currently not supported");
+    }
+
+    /**
+     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
+     */
+    public function getInputFilter()
+    {
+        return [];
+    }
 
     /**
      * @return string

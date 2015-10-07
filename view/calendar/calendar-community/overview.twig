@@ -1,8 +1,10 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-community-calendar")) %}
 <h1>{{ translate("txt-community-calendar") }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
-    {% for whichValue in whichValues %}
+    {% for whichValue in whichValues if whichValue != constant("Calendar\\Service\\CalendarService::WHICH_UPDATED") %}
         <li {% if (which == whichValue) %}class="active"{% endif %}>
             {{ calendarLink(null,'overview', 'text-which-tab', whichValue) }}
         </li>
@@ -14,33 +16,7 @@
     <div class="tab-pane active" id="upcoming">
         <h2>{{ translate("txt-%s-events")|format(which|capitalize) }}</h2>
 
-        <table class="table table-condensed table-listed table-hover">
-            <head>
-                <tr>
-                    <th>{{ translate("txt-date") }}</th>
-                    <th>{{ translate("txt-event-meeting") }}</th>
-                    <th>{{ translate("txt-location") }}</th>
-                    <th>{{ translate("txt-type") }}</th>
-                    <th>{{ translate("txt-documents") }}</th>
-                </tr>
-            </head>
-            <tbody>
-            {% for calendar in paginator.getCurrentItems() %}
-                {% set calendarService = calendarServiceProxy(calendar) %}
-                <tr {% if calendarService.calendarHasContact(zfcUserIdentity()) %}class="active"{% endif %}>
-                    <td>
-                        {% if calendarService.calendarHasContact(zfcUserIdentity()) %}
-                            <span class="glyphicon glyphicon-user"></span>
-                        {% endif %}
-                        {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
-                    <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
-                    <td>{{ calendar.location }}</td>
-                    <td>{{ calendar.type }}</td>
-                    <td>{{ calendar.document.count() }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% include 'calendar/partial/list/calendar-community' with {'elements': paginator.getCurrentItems()} %}
 
         {% include 'calendar/partial/pagination-control' %}
     </div>

@@ -1,43 +1,45 @@
 <?php
 /**
- * Japaveh Webdesign copyright message placeholder
+ * Japaveh Webdesign copyright message placeholder.
  *
- * @category    Controller
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Controller
+ *
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ *
+ * @link      http://solodb.net
  */
+
 namespace Calendar\Controller;
 
 use Calendar\Service\CalendarService;
 use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
 use Calendar\Service\FormServiceAwareInterface;
+use Calendar\Service\ModuleOptionAwareInterface;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\InitializerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Japaveh Webdesign copyright message placeholder
+ * Japaveh Webdesign copyright message placeholder.
  *
- * @category    Controller
- * @package     Service
- * @author      Johan van der Heide <info@japaveh.nl>
- * @copyright   2004-2014 Japaveh Webdesign
- * @license     http://solodb.net/license.txt proprietary
- * @link        http://solodb.net
+ * @category  Controller
+ *
+ * @author    Johan van der Heide <info@japaveh.nl>
+ * @copyright 2004-2014 Japaveh Webdesign
+ * @license   http://solodb.net/license.txt proprietary
+ *
+ * @link      http://solodb.net
  */
 class ControllerInitializer implements InitializerInterface
 {
     /**
      * @param                                           $instance
-     * @param ServiceLocatorInterface|ControllerManager $serviceLocator
-     *
-     * @return CalendarAbstractController
+     * @param ControllerManager|ServiceLocatorInterface $controllerManager
      */
-    public function initialize($instance, ServiceLocatorInterface $serviceLocator)
+    public function initialize($instance, ServiceLocatorInterface $controllerManager)
     {
         if (!is_object($instance)) {
             return;
@@ -45,12 +47,13 @@ class ControllerInitializer implements InitializerInterface
         $arrayCheck = [
             FormServiceAwareInterface::class     => FormService::class,
             CalendarServiceAwareInterface::class => CalendarService::class,
+            ModuleOptionAwareInterface::class    => 'calendar_module_options',
         ];
-        /**
-         * @var $sm ServiceLocatorInterface
+        /*
+         * @var $controllerManager ControllerManager
          */
-        $sm = $serviceLocator->getServiceLocator();
-        /**
+        $sm = $controllerManager->getServiceLocator();
+        /*
          * Go over each interface to see if we should add an interface
          */
         foreach (class_implements($instance) as $interface) {

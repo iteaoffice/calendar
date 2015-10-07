@@ -1,4 +1,4 @@
-<h1>{{ translate("txt-edit-calendar-item") }}</h1>
+<h1>{{ translate("txt-edit-calendar-document") }}</h1>
 
 <p class="lead">{{ translate("txt-edit-calendar-document-%s-explanation")|format(document) }}</p>
 
@@ -11,7 +11,7 @@
     <label class="col-sm-3 control-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarLink(document.calendar,'view-admin') }}</p>
+        <p class="form-control-static">{{ calendarLink(document.calendar,'view-community') }}</p>
     </div>
 </div>
 
@@ -27,7 +27,7 @@
 
 {{ ztbformelement(form.get('file')) }}
 
-{{ formelement(form.get('csrf')) }}
+
 
 
 <div class="form-group">

@@ -1,0 +1,62 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-edit-attendees-of-calendar-item")) %}
+<h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+
+{% do form.prepare() %}
+
+{{ form().openTag(form)|raw }}
+
+{% if calendarService.calendar.projectCalendar %}
+    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{ translate("txt-project-name") }}</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-static">{{ projectLink(projectService,'view-community', 'name') }}</p>
+        </div>
+    </div>
+{% endif %}
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">{{ translate("txt-name") }}</label>
+
+    <div class="col-sm-9">
+        <p class="form-control-static">{{ calendarService.calendar }}</p>
+    </div>
+</div>
+
+<h3>{{ translate("txt-project-reviewers") }}</h3>
+<table class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th>{{ translate("txt-reviewer") }}</th>
+        <th>{{ translate("txt-type") }}</th>
+        <th>{{ translate("txt-organisation") }}</th>
+        <th>{{ translate("txt-country") }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for calendarContact in calendarService.findGeneralCalendarContactByCalendar(calendarService.calendar) %}
+        {% set contactService = contactServiceProxy(calendarContact.contact) %}
+        <tr>
+            <td>{{ contactService.parseFullname() }}</td>
+            <td>{{ calendarContact.role }}</td>
+            <td>{{ contactService.parseOrganisation() }}</td>
+            <td>{{ contactService.parseCountry() }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ ztbformelement(form.get('contact')) }}
+
+<hr>
+
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ ztbformelement(form.get('submit')) }}
+        {{ ztbformelement(form.get('cancel')) }}
+    </div>
+</div>
+
+{{ form().closeTag()|raw }}

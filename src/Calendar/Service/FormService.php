@@ -1,13 +1,14 @@
 <?php
 
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office copyright message placeholder.
  *
- * @category    Calendar
- * @package     Service
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
  */
+
 namespace Calendar\Service;
 
 use Zend\Form\Form;
@@ -31,10 +32,10 @@ class FormService extends ServiceAbstract
         if (!$entity) {
             $entity = $this->getEntity($className);
         }
-        $formName   = 'calendar_' . $entity->get('underscore_entity_name') . '_form';
-        $form       = $this->getServiceLocator()->get($formName);
-        $filterName = 'calendar_' . $entity->get('underscore_entity_name') . '_form_filter';
-        $filter     = $this->getServiceLocator()->get($filterName);
+        $formName = 'calendar_'.$entity->get('underscore_entity_name').'_form';
+        $form = $this->getServiceLocator()->get($formName);
+        $filterName = 'calendar_'.$entity->get('underscore_entity_name').'_form_filter';
+        $filter = $this->getServiceLocator()->get($filterName);
         $form->setInputFilter($filter);
         if ($bind) {
             $form->bind($entity);

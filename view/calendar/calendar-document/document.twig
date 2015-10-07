@@ -4,11 +4,11 @@
     <dt>{{ translate("txt-calendar") }}</dt>
     <dd>{{ calendarLink(document.calendar,'view-community','text') }}</dd>
     <dt>{{ translate("txt-title") }}</dt>
-    <dd>{{ document.document }} {{ calendarDocumentLink(document,'download','icon') }}</dd>
+    <dd>{{ document.document }}</dd>
     <dt>{{ translate("txt-content-type") }}</dt>
     <dd>{{ document.contentType.description }}</dd>
     <dt>{{ translate("txt-size") }}</dt>
     <dd>{{ document.size|parse_size }}</dd>
 </dl>
-
-{{ calendarDocumentLink(document, 'edit', 'button') }}
+{{ calendarDocumentLink(document, 'edit-community', 'button') }}
+{{ calendarDocumentLink(document, 'download', 'button') }}
