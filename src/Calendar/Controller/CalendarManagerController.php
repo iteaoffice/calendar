@@ -34,7 +34,6 @@ class CalendarManagerController extends CalendarAbstractController
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
         $page = $this->getEvent()->getRouteMatch()->getParam('page', 1);
-        $year = $this->getEvent()->getRouteMatch()->getParam('year', date("Y"));
         $birthDays = $this->getContactService()->findContactsWithDateOfBirth();
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             $which,

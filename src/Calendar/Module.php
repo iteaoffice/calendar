@@ -16,6 +16,8 @@ use Calendar\Controller\Plugin\RenderCalendarContactList;
 use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
+use Zend\Mvc\Application;
+use Zend\Mvc\Controller\PluginManager;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -31,11 +33,11 @@ class Module implements
     {
         return [
             'Zend\Loader\ClassMapAutoloader' => [
-                __DIR__.'/../../autoload_classmap.php',
+                __DIR__ . '/../../autoload_classmap.php',
             ],
             'Zend\Loader\StandardAutoloader' => [
                 'namespaces' => [
-                    __NAMESPACE__ => __DIR__.'/../../src/'.__NAMESPACE__,
+                    __NAMESPACE__ => __DIR__ . '/../../src/' . __NAMESPACE__,
                 ],
             ],
         ];
@@ -46,7 +48,7 @@ class Module implements
      */
     public function getConfig()
     {
-        return include __DIR__.'/../../config/module.config.php';
+        return include __DIR__ . '/../../config/module.config.php';
     }
 
     /**
@@ -56,7 +58,7 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return include __DIR__.'/../../config/services.config.php';
+        return include __DIR__ . '/../../config/services.config.php';
     }
 
     /**
@@ -64,7 +66,7 @@ class Module implements
      */
     public function getViewHelperConfig()
     {
-        return include __DIR__.'/../../config/viewhelpers.config.php';
+        return include __DIR__ . '/../../config/viewhelpers.config.php';
     }
 
     /**
@@ -76,13 +78,14 @@ class Module implements
     {
         return [
             'factories' => [
-                'renderCalendarContactList' => function ($sm) {
-                    $renderCalendarContactList = new RenderCalendarContactList();
+                'renderCalendarContactList' => function (PluginManager $sm) {
+                    $renderCalendarContactList
+                        = new RenderCalendarContactList();
                     $renderCalendarContactList->setServiceLocator($sm->getServiceLocator());
 
                     return $renderCalendarContactList;
                 },
-                'renderReviewCalendar'      => function ($sm) {
+                'renderReviewCalendar'      => function (PluginManager $sm) {
                     $renderReviewCalendar = new RenderReviewCalendar();
                     $renderReviewCalendar->setServiceLocator($sm->getServiceLocator());
 
@@ -101,13 +104,14 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
+        /**
+         * @var $app Application
+         */
         $app = $e->getParam('application');
         $em = $app->getEventManager();
-        $em->attach(
-            MvcEvent::EVENT_DISPATCH,
-            function ($event) {
-                $event->getApplication()->getServiceManager()->get('calendar_navigation_service')->update();
-            }
-        );
+        $em->attach(MvcEvent::EVENT_DISPATCH, function (MvcEvent $event) {
+            $event->getApplication()->getServiceManager()
+                ->get('calendar_navigation_service')->update();
+        });
     }
 }
