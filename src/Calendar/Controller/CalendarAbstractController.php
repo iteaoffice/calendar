@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2014 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Controller;
@@ -28,6 +28,7 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
+use Contact\Service\SelectionService;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
@@ -73,6 +74,10 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var EmailService
      */
     protected $emailService;
+    /**
+     * @var SelectionService
+     */
+    protected $selectionService;
 
     /**
      * @return \Calendar\Service\FormService
@@ -247,6 +252,26 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * @return SelectionService
+     */
+    public function getSelectionService()
+    {
+        return $this->selectionService;
+    }
+
+    /**
+     * @param SelectionService $selectionService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setSelectionService(SelectionService $selectionService)
+    {
+        $this->selectionService = $selectionService;
 
         return $this;
     }

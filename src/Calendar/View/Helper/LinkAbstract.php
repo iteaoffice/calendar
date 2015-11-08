@@ -6,14 +6,16 @@
  * @category   Calendar
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright  Copyright (c) 2004-2014 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\View\Helper;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
 use BjyAuthorize\Service\Authorize;
+use Calendar\Entity\Calendar;
 use Calendar\Entity\EntityAbstract;
+use Project\Entity\Project;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -71,6 +73,22 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
      * @var array
      */
     protected $showOptions = [];
+    /**
+     * @var Calendar
+     */
+    protected $calendar;
+    /**
+     * @var int
+     */
+    protected $year;
+    /**
+     * @var
+     */
+    protected $which;
+    /**
+     * @var Project
+     */
+    protected $project;
 
     /**
      * This function produces the link in the end.
@@ -92,7 +110,8 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
         $this->parseAction();
         $this->parseShow();
         if ('social' === $this->getShow()) {
-            return $serverUrl->__invoke() . $url($this->router, $this->routerParams);
+            return $serverUrl->__invoke() . $url($this->router,
+                $this->routerParams);
         }
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
@@ -101,10 +120,9 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
             $serverUrl() . $url($this->router, $this->routerParams),
             htmlentities($this->text),
             implode(' ', $this->classes),
-            in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode(
-                '',
-                $this->linkContent
-            ) : htmlentities(implode('', $this->linkContent))
+            in_array($this->getShow(), ['icon', 'button', 'alternativeShow'])
+            ? implode('', $this->linkContent)
+            : htmlentities(implode('', $this->linkContent))
         );
     }
 
@@ -166,9 +184,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                 break;
             case 'paginator':
                 if (is_null($this->getAlternativeShow())) {
-                    throw new \InvalidArgumentException(
-                        sprintf("this->alternativeShow cannot be null for a paginator link")
-                    );
+                    throw new \InvalidArgumentException(sprintf("this->alternativeShow cannot be null for a paginator link"));
                 }
                 $this->addLinkContent($this->getAlternativeShow());
                 break;
@@ -180,13 +196,11 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
                 return;
             default:
                 if (!array_key_exists($this->getShow(), $this->showOptions)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
-                            $this->getShow(),
-                            implode(', ', array_keys($this->showOptions))
-                        )
-                    );
+                    throw new \InvalidArgumentException(sprintf(
+                        "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
+                        $this->getShow(),
+                        implode(', ', array_keys($this->showOptions))
+                    ));
                 }
                 $this->addLinkContent($this->showOptions[$this->getShow()]);
                 break;
@@ -309,9 +323,12 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function hasAccess(EntityAbstract $entity, $assertion, $action)
     {
         $assertion = $this->getAssertion($assertion);
-        if (!is_null($entity) && !$this->getAuthorizeService()->getAcl()->hasResource($entity)) {
+        if (!is_null($entity)
+            && !$this->getAuthorizeService()->getAcl()->hasResource($entity)
+        ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
-            $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
+            $this->getAuthorizeService()->getAcl()
+                ->allow([], $entity, [], $assertion);
         }
         if (!$this->isAllowed($entity, $action)) {
             return false;
@@ -359,7 +376,8 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
      */
     public function getAuthorizeService()
     {
-        return $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
+        return $this->getServiceLocator()
+            ->get('BjyAuthorize\Service\Authorize');
     }
 
     /**
@@ -388,7 +406,10 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function addRouterParam($key, $value, $allowNull = true)
     {
         if (!$allowNull && is_null($value)) {
-            throw new \InvalidArgumentException(sprintf("null is not allowed for %s", $key));
+            throw new \InvalidArgumentException(sprintf(
+                "null is not allowed for %s",
+                $key
+            ));
         }
         if (!is_null($value)) {
             $this->routerParams[$key] = $value;
@@ -428,7 +449,8 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function getRouteMatch()
     {
         if (is_null($this->routeMatch)) {
-            $this->routeMatch = $this->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
+            $this->routeMatch = $this->getServiceLocator()->get('application')
+                ->getMvcEvent()->getRouteMatch();
         }
 
         return $this->routeMatch;
@@ -450,5 +472,82 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function translate($string)
     {
         return $this->serviceLocator->get('translate')->__invoke($string);
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        if (is_null($this->project)) {
+            $this->project = new Project();
+        }
+
+        return $this->project;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return LinkAbstract
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        if (is_null($this->calendar)) {
+            $this->calendar = new Calendar();
+        }
+
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWhich()
+    {
+        return $this->which;
+    }
+
+    /**
+     * @param mixed $which
+     */
+    public function setWhich($which)
+    {
+        $this->which = $which;
     }
 }

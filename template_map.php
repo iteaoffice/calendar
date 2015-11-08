@@ -26,6 +26,7 @@ return array(
     'calendar/calendar-community/contact'           => __DIR__ . '//view/calendar/calendar-community/contact.twig',
     'calendar/calendar-manager/overview'            => __DIR__ . '//view/calendar/calendar-manager/overview.twig',
     'calendar/calendar-manager/new'                 => __DIR__ . '//view/calendar/calendar-manager/new.twig',
+    'calendar/calendar-manager/select-attendees'    => __DIR__ . '//view/calendar/calendar-manager/select-attendees.twig',
     'calendar/calendar-manager/calendar'            => __DIR__ . '//view/calendar/calendar-manager/calendar.twig',
     'calendar/calendar-manager/edit'                => __DIR__ . '//view/calendar/calendar-manager/edit.twig',
 );

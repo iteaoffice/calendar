@@ -1,16 +1,16 @@
 <?php
 /**
- * ARTEMIS-IA Office copyright message placeholder.
+ * ITEA Office copyright message placeholder.
  *
  * PHP Version 5
  *
  * @category    Calendar
  *
- * @author      Andre Hebben <andre.hebben@artemis-ia.eu>
- * @copyright   2007-2014 ARTEMIS-IA Office
- * @license     http://debranova.org/license.txt proprietary
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @license     https://itea3.org/license.txt proprietary
  *
- * @link        http://debranova.org
+ * @link        https://itea3.org
  */
 
 namespace Calendar\Service;
@@ -20,10 +20,10 @@ use Calendar\Options\ModuleOptions as ModuleOptions;
 /**
  * @category   Calendar
  *
- * @author     Andre Hebben <andre.hebben@artemis-ia.eu>
- * @license    http://debranova.org/licence.txt proprietary
+ * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @license    https://itea3.org/licence.txt proprietary
  *
- * @link       http://debranova.org
+ * @link       https://itea3.org
  */
 interface ModuleOptionAwareInterface
 {

@@ -8,7 +8,7 @@
          processIsolation="false"
          backupGlobals="false"
          syntaxCheck="true"
-        >
+>
     <testsuite name="debranova/calendar Test Suite">
         <directory>./tests/CalendarTest</directory>
     </testsuite>

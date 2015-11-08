@@ -1,11 +1,11 @@
 <?php
 /**
- * Debranova copyright message placeholder.
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 Debranova
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Acl\Assertion;
@@ -32,19 +32,24 @@ class Document extends AssertionAbstract
      *
      * @return bool
      */
-    public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
-    {
+    public function assert(
+        Acl $acl,
+        RoleInterface $role = null,
+        ResourceInterface $resource = null,
+        $privilege = null
+    ) {
         if (!$resource instanceof DocumentEntity) {
             /*
              * We are coming via the router, so we need to build up the information via the  routeMatch
              * The id and privilege are important
              */
-            $documentId = (int) $this->getRouteMatch()->getParam('id');
+            $documentId = (int)$this->getRouteMatch()->getParam('id');
             $privilege = $this->getRouteMatch()->getParam('privilege');
             /*
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $resource = $this->getCalendarService()->findEntityById('Document', $documentId);
+            $resource = $this->getCalendarService()
+                ->findEntityById('Document', $documentId);
         }
 
         /*
@@ -60,9 +65,12 @@ class Document extends AssertionAbstract
         switch ($privilege) {
             case 'document-community':
             case 'download':
-                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
+                return $this->getCalendarService()
+                    ->canViewCalendar($this->getContactService()->getContact());
             case 'edit-community':
-                if ($this->getContactService()->hasPermit('edit', $resource->getCalendar())) {
+                if ($this->getContactService()
+                    ->hasPermit('edit', $resource->getCalendar())
+                ) {
                     return true;
                 }
 
@@ -72,7 +80,8 @@ class Document extends AssertionAbstract
                 if (!is_null($resource->getCalendar()->getProjectCalendar())) {
                     if ($this->getContactService()->hasPermit(
                         'edit',
-                        $resource->getCalendar()->getProjectCalendar()->getProject()
+                        $resource->getCalendar()->getProjectCalendar()
+                            ->getProject()
                     )
                     ) {
                         return true;
@@ -80,6 +89,9 @@ class Document extends AssertionAbstract
                 }
 
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+            case 'document-admin':
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+
         }
 
         return false;
