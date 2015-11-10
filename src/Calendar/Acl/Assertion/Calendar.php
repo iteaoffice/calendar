@@ -62,6 +62,30 @@ class Calendar extends AssertionAbstract
             case 'edit':
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'select-attendees':
+                /**
+                 * Stop this case when there is no project calendar
+                 */
+                if (is_null($resource->getProjectCalendar())) {
+                    return false;
+                }
+                if ($this->getContactService()->hasPermit('edit', $resource)) {
+                    return true;
+                }
+
+                /*
+                 * The project leader also has rights to invite users
+                 */
+                if (!is_null($resource->getProjectCalendar())) {
+                    if ($this->getContactService()->hasPermit(
+                        'edit',
+                        $resource->getProjectCalendar()->getProject()
+                    )
+                    ) {
+                        return true;
+                    }
+                }
+
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'add-document':
             case 'presence-list':
                 if ($this->getContactService()->hasPermit('edit', $resource)) {
