@@ -48,8 +48,8 @@ class CalendarCommunityController extends CalendarAbstractController implements
      */
     public function overviewAction()
     {
-        $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
-        $page = $this->getEvent()->getRouteMatch()->getParam('page', 1);
+        $which = $this->params('which', CalendarService::WHICH_UPCOMING);
+        $page = $this->params('page', 1);
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             $which,
             $this->zfcUserAuthentication()->getIdentity()
@@ -145,7 +145,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function calendarAction()
     {
         $calendarService = $this->getCalendarService()->setCalendarId(
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if ($calendarService->isEmpty()) {
             return $this->notFoundAction();
@@ -255,7 +255,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function selectAttendeesAction()
     {
         $calendarService = $this->getCalendarService()->setCalendarId(
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if ($calendarService->isEmpty()) {
             return $this->notFoundAction();
@@ -357,7 +357,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function presenceListAction()
     {
         $calendarService = $this->getCalendarService()->setCalendarId(
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if ($calendarService->isEmpty()) {
             return $this->notFoundAction();
@@ -389,7 +389,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
     public function sendMessageAction()
     {
         $calendarService = $this->getCalendarService()->setCalendarId(
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if (is_null($calendarService->getCalendar()->getId())) {
             return $this->notFoundAction();

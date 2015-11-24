@@ -33,7 +33,7 @@ class CalendarDocumentController extends CalendarAbstractController
          */
         $document = $this->getCalendarService()->findEntityById(
             'Document',
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
@@ -66,7 +66,7 @@ class CalendarDocumentController extends CalendarAbstractController
     {
         $document = $this->getCalendarService()->findEntityById(
             'document',
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
 
         if (is_null($document)) {
@@ -83,7 +83,7 @@ class CalendarDocumentController extends CalendarAbstractController
     {
         $document = $this->getCalendarService()->findEntityById(
             'document',
-            $this->getEvent()->getRouteMatch()->getParam('id')
+            $this->params('id')
         );
         if (is_null($document)) {
             return $this->notFoundAction();
