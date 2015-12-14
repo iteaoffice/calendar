@@ -41,6 +41,7 @@ class CreateCalendarDocument extends Form
                 'help-block' => _("txt-document-name-explanation"),
             ],
             'attributes' => [
+                'class'       => 'form-control',
                 'placeholder' => _("txt-please-give-a-calendar-document-name"),
             ],
         ]);
@@ -49,6 +50,7 @@ class CreateCalendarDocument extends Form
             'name'    => 'file',
             'options' => [
                 "label"      => "txt-file",
+                'class'      => 'form-control',
                 "help-block" => _("txt-file-requirements"),
             ],
         ]);
