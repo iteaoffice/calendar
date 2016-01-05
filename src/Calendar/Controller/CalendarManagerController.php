@@ -130,6 +130,7 @@ class CalendarManagerController extends CalendarAbstractController implements Pr
         $calendar = new Calendar();
         $data = $this->getRequest()->getPost()->toArray();
         $form = $this->getFormService()->prepare('calendar', $calendar, $data);
+        $form->remove('delete');
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed

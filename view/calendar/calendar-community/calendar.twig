@@ -263,7 +263,7 @@
                                     {{ contentTypeIcon(result.contentType) }}
                                     {{ resultLink(result,'download', 'public-name') }}
                                 </td>
-                                <td>{{ result.dateCreated|string_date }}</td>
+                                <td>{{ result.dateCreated|time_diff }}</td>
                                 <td>{{ result.contact.displayName }}
                                     <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
                                                     class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}

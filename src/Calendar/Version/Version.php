@@ -130,13 +130,13 @@ final class Version
      */
     protected static function getLatestFromGithub(Http\Client $httpClient = null)
     {
-        $url = 'https://api.github.com/repos/debranova/calendar/git/refs/tags/release-';
-        $url .= '?client_id=2b1088587b9820f33583&amp;client_secret=1738809f67b3fbf4198f2bc36ef54c52d6a3bb6c';
+        $url = 'https://api.github.com/repos/iteaoffice/calendar/git/refs/tags/release-';
+
         if ($httpClient === null) {
             $context = stream_context_create(
                 [
                     'http' => [
-                        'user_agent' => sprintf('debranova-version/%s', self::VERSION),
+                        'user_agent' => sprintf('iteaoffice-version/%s', self::VERSION),
                     ],
                 ]
             );

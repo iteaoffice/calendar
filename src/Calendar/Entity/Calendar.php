@@ -449,7 +449,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                 $factory->createInput(
                     [
                         'name'       => 'dateEnd',
-                        'required'   => true,
+                        'required'   => false,
                         'filters'    => [
                             ['name' => 'StripTags'],
                             ['name' => 'StringTrim'],
@@ -465,13 +465,13 @@ class Calendar extends EntityAbstract implements ResourceInterface
                                 'name'    => 'Callback',
                                 'options' => [
                                     'messages' => [
-                                        Callback::INVALID_VALUE => 'The end date should be greater than start date',
+                                        Callback::INVALID_VALUE => 'The end date cannot be smaller than start date',
                                     ],
                                     'callback' => function ($value, $context = []) {
                                         $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
                                         $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
-                                        return $dateEnd > $dateFrom;
+                                        return $dateEnd >= $dateFrom;
                                     },
                                 ],
                             ],

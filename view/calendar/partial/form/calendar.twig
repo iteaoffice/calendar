@@ -18,7 +18,7 @@
 {{ ztbformelement(calendar.get('type')) }}
 {{ ztbformelement(calendar.get('location')) }}
 
-{% if not projectService.isEmpty() %}
+{% if projectService %}
     <div class="form-group">
         <label class="col-sm-3 control-label">{{ translate("txt-project") }}</label>
 
@@ -26,6 +26,7 @@
             <p class="form-control-static">{{ projectService.parseFullName() }}</p></div>
     </div>
 {% endif %}
+
 {{ ztbformelement(calendar.get('final')) }}
 {{ ztbformelement(calendar.get('onHomepage')) }}
 {{ ztbformelement(calendar.get('sequence')) }}
@@ -40,7 +41,9 @@
 <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
-        {{ ztbformelement(form.get('delete')) }}
+        {% if form.has('delete') %}
+            {{ ztbformelement(form.get('delete')) }}
+        {% endif %}
         {{ ztbformelement(form.get('cancel')) }}
     </div>
 </div>
