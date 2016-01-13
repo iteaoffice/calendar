@@ -84,7 +84,7 @@
                         </tbody>
                     </table>
 
-                    {{ calendarLink(calendarService.calendar, 'download-calendar-document-binder', 'button') }}
+                    {{ calendarLink(calendarService.calendar, 'download-binder', 'button') }}
                 {% else %}
                     {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
                 {% endif %}

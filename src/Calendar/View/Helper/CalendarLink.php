@@ -64,12 +64,7 @@ class CalendarLink extends LinkAbstract
         /*
          * Check the access to the object
          */
-        if (!$this->hasAccess(
-            $this->getCalendar(),
-            CalendarAssertion::class,
-            $this->getAction()
-        )
-        ) {
+        if (!$this->hasAccess($this->getCalendar(), CalendarAssertion::class, $this->getAction())) {
             return '';
         }
 
@@ -91,10 +86,7 @@ class CalendarLink extends LinkAbstract
         switch ($this->getAction()) {
             case 'edit':
                 $this->setRouter('zfcadmin/calendar-manager/edit');
-                $this->setText(sprintf(
-                    $this->translate("txt-edit-calendar-%s"),
-                    $this->getCalendar()
-                ));
+                $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
                 break;
             case 'list':
                 /*
@@ -136,28 +128,22 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('community/calendar/send-message');
                 $this->setText($this->translate("txt-send-message-to-attendees"));
                 break;
+            case 'download-binder':
+                $this->setRouter('community/calendar/download-binder');
+                $this->setText($this->translate("txt-download-binder"));
+                break;
             case 'presence-list':
                 $this->setRouter('community/calendar/presence-list');
                 $this->setText($this->translate("txt-download-presence-list"));
                 break;
             case 'overview-admin':
                 $this->setRouter('zfcadmin/calendar-manager/overview');
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-%s"),
-                    $this->getCalendar()
-                ));
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view':
-                $this->setRouter('route-' . $this->getCalendar()
-                        ->get("underscore_full_entity_name"));
-                $this->addRouterParam(
-                    'calendar',
-                    $this->getCalendar()->getId()
-                );
-                $this->addRouterParam(
-                    'docRef',
-                    $this->getCalendar()->getDocRef()
-                );
+                $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
+                $this->addRouterParam('calendar', $this->getCalendar()->getId());
+                $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
                 $this->setText(sprintf(
                     $this->translate("txt-view-calendar-item-%s"),
                     $this->getCalendar()->getCalendar()
@@ -165,43 +151,27 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'view-community':
                 $this->setRouter('community/calendar/calendar');
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-%s"),
-                    $this->getCalendar()
-                ));
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view-admin':
                 $this->setRouter('zfcadmin/calendar-manager/calendar');
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-%s"),
-                    $this->getCalendar()
-                ));
+                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'edit-attendees-admin':
                 $this->setRouter('zfcadmin/calendar-manager/select-attendees');
-                $this->setText(sprintf(
-                    $this->translate("txt-select-attendees-for-calendar-%s"),
-                    $this->getCalendar()
-                ));
+                $this->setText(sprintf($this->translate("txt-select-attendees-for-calendar-%s"), $this->getCalendar()));
                 break;
             case 'new':
                 $this->setRouter('zfcadmin/calendar-manager/new');
                 if (is_null($this->getProject())) {
                     $this->setText(sprintf($this->translate("txt-add-calendar-item")));
                 } else {
-                    $this->setText(sprintf(
-                        $this->translate("txt-review-meeting-for-%s"),
-                        $this->getProject()
-                    ));
+                    $this->setText(sprintf($this->translate("txt-review-meeting-for-%s"), $this->getProject()));
                 }
 
                 break;
             default:
-                throw new \Exception(sprintf(
-                    "%s is an incorrect action for %s",
-                    $this->getAction(),
-                    __CLASS__
-                ));
+                throw new \Exception(sprintf("%s is an incorrect action for %s", $this->getAction(), __CLASS__));
         }
     }
 }

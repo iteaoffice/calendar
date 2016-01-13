@@ -120,6 +120,16 @@ return [
                                     ],
                                 ],
                             ],
+                            'download-binder'         => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/download-binder/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'download-binder',
+                                        'privilege' => 'download-binder',
+                                    ],
+                                ],
+                            ],
                             'contact'                  => [
                                 'type'    => 'Segment',
                                 'options' => [

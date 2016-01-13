@@ -59,6 +59,11 @@ return [
                     'assertion' => CalendarAssertion::class
                 ],
                 [
+                    'route'     => 'community/calendar/download-binder',
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'assertion' => CalendarAssertion::class
+                ],
+                [
                     'route'     => 'community/calendar/presence-list',
                     'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => CalendarAssertion::class
