@@ -66,10 +66,9 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findCalendarByDocRef($docRef)
     {
-        $calendar = $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Calendar'))->findOneBy([
-                'docRef' => $docRef,
-            ]);
+        $calendar = $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))->findOneBy([
+            'docRef' => $docRef,
+        ]);
         if (is_null($calendar)) {
             return;
         }
@@ -105,11 +104,10 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function calendarHasContact(Calendar $calendar, Contact $contact)
     {
-        $calendarContact = $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))->findOneBy([
-                'calendar' => $calendar,
-                'contact'  => $contact,
-            ]);
+        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy([
+            'calendar' => $calendar,
+            'contact'  => $contact,
+        ]);
 
         return !is_null($calendarContact);
     }
@@ -128,13 +126,10 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function updateCalendarContacts(Calendar $calendar, array $data)
     {
-
-
         //Update the contacts
         if (!empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
-                $contact = $this->getContactService()
-                    ->findEntityById('contact', $contactId);
+                $contact = $this->getContactService()->findEntityById('contact', $contactId);
 
                 $contactService = clone $this->getContactService();
                 $contactService->setContact($contact);
@@ -151,10 +146,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
                      *
                      * @var $role Entity\ContactRole
                      */
-                    $role = $this->findEntityById(
-                        'contactRole',
-                        Entity\ContactRole::ROLE_ATTENDEE
-                    );
+                    $role = $this->findEntityById('contactRole', Entity\ContactRole::ROLE_ATTENDEE);
                     $calendarContact->setRole($role);
 
                     /**
@@ -162,10 +154,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
                      *
                      * @var $status Entity\ContactStatus
                      */
-                    $status = $this->findEntityById(
-                        'contactStatus',
-                        Entity\ContactStatus::STATUS_TENTATIVE
-                    );
+                    $status = $this->findEntityById('contactStatus', Entity\ContactStatus::STATUS_TENTATIVE);
                     $calendarContact->setStatus($status);
 
                     $this->newEntity($calendarContact);
@@ -177,9 +166,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         if (!empty($data['removed'])) {
             foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
-                    if ($calendarContact->getContact()->getId()
-                        === (int)$contactId
-                    ) {
+                    if ($calendarContact->getContact()->getId() === (int)$contactId) {
                         $this->removeEntity($calendarContact);
                     }
                 }
@@ -197,8 +184,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         $which = self::WHICH_UPCOMING,
         Contact $contact = null
     ) {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))
+        return $this->getEntityManager()->getRepository(CalendarContact::class)
             ->findCalendarContactByContact($which, $contact);
     }
 
@@ -212,21 +198,20 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         Contact $contact,
         Calendar $calendar
     ) {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))
+        return $this->getEntityManager()->getRepository(CalendarContact::class)
             ->findCalendarContactByContactAndCalendar($contact, $calendar);
     }
 
     /**
      * @param Calendar $calendar
+     * @param int      $status
      *
      * @return CalendarContact[]
      */
-    public function findCalendarContactsByCalendar(Calendar $calendar)
+    public function findCalendarContactsByCalendar(Calendar $calendar, $status = CalendarContact::STATUS_ALL)
     {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))
-            ->findCalendarContactsByCalendar($calendar);
+        return $this->getEntityManager()->getRepository(CalendarContact::class)
+            ->findCalendarContactsByCalendar($calendar, $status);
     }
 
     /**
@@ -238,8 +223,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function canViewCalendar(Contact $contact = null)
     {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Calendar'))
+        return $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))
             ->canViewCalendar($this->getCalendar(), $contact);
     }
 
@@ -257,8 +241,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         $year = null,
         $type = null
     ) {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Calendar'))
+        return $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))
             ->findCalendarItems($which, true, $contact, $year, $type);
     }
 
@@ -276,8 +259,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
             if (!$onlyFinal
-                || $calendarItem->getCalendar()->getFinal()
-                === Calendar::FINAL_FINAL
+                || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
                     = $calendarItem->getCalendar();
@@ -305,8 +287,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findLatestProjectCalendar(Project $project)
     {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('calendar'))
+        return $this->getEntityManager()->getRepository($this->getFullEntityName('calendar'))
             ->findLatestProjectCalendar($project);
     }
 
@@ -322,8 +303,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         Project $project,
         \DateTime $datetime
     ) {
-        return $this->getEntityManager()->getRepository(Calendar::class)
-            ->findNextProjectCalendar($project, $datetime);
+        return $this->getEntityManager()->getRepository(Calendar::class)->findNextProjectCalendar($project, $datetime);
     }
 
     /**
@@ -362,8 +342,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findGeneralCalendarContactByCalendar(Calendar $calendar)
     {
-        return $this->getEntityManager()
-            ->getRepository($this->getFullEntityName('Contact'))
+        return $this->getEntityManager()->getRepository(CalendarContact::class)
             ->findGeneralCalendarContactByCalendar($calendar);
     }
 

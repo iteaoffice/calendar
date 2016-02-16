@@ -14,6 +14,7 @@
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;
+use Calendar\Entity\Contact as CalendarContact;
 use Calendar\Service\CalendarService;
 use General\Service\GeneralService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -49,7 +50,7 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        $calendarContacts = $calendarService->findCalendarContactsByCalendar($calendarService->getCalendar());
+        $calendarContacts = $calendarService->findCalendarContactsByCalendar($calendarService->getCalendar(), CalendarContact::STATUS_NO_DECLINED);
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
@@ -59,13 +60,10 @@ class RenderCalendarContactList extends AbstractPlugin
             /*
              * Use the NDA object to render the filename
              */
-            $contactListContent = $twig->render(
-                'calendar/pdf/calendar-contact',
-                [
-                    'calendarService'  => $calendarService,
-                    'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
-                ]
-            );
+            $contactListContent = $twig->render('calendar/pdf/calendar-contact', [
+                'calendarService'  => $calendarService,
+                'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
+            ]);
 
             $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
 

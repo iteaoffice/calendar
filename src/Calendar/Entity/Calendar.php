@@ -67,7 +67,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
         self::ON_HOMEPAGE     => 'txt-on-homepage',
     ];
     /**
-     * @ORM\Column(name="calendar_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()

@@ -26,7 +26,7 @@ class ContactStatus
     const STATUS_ACCEPT = 2;
     const STATUS_DECLINE = 3;
     /**
-     * @ORM\Column(name="status_id", type="integer", nullable=false)
+     * @ORM\Column(name="status_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *

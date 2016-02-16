@@ -12,6 +12,7 @@ namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use General\Entity\ContentType;
 use Zend\Form\Annotation;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\FileInput;
@@ -28,7 +29,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
 class Document extends EntityAbstract implements ResourceInterface
 {
     /**
-     * @ORM\Column(name="document_id", type="integer", nullable=false)
+     * @ORM\Column(name="document_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -49,7 +50,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     private $document;
     /**
-     * @ORM\Column(name="size", type="integer", nullable=true)
+     * @ORM\Column(name="size", length=10, type="integer", nullable=true)
      *
      * @var integer
      */
@@ -94,6 +95,7 @@ class Document extends EntityAbstract implements ResourceInterface
      * @var \Calendar\Entity\DocumentObject
      */
     private $object;
+
     /**
      * Magic Getter.
      *
@@ -147,45 +149,34 @@ class Document extends EntityAbstract implements ResourceInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
-            $inputFilter->add(
-                $factory->createInput(
+            $inputFilter->add($factory->createInput([
+                'name'       => 'document',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
                     [
-                        'name'       => 'document',
-                        'required'   => false,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 5,
+                            'max'      => 100,
                         ],
-                        'validators' => [
-                            [
-                                'name'    => 'StringLength',
-                                'options' => [
-                                    'encoding' => 'UTF-8',
-                                    'min'      => 5,
-                                    'max'      => 100,
-                                ],
-                            ],
-                        ],
-                    ]
-                )
-            );
-            $inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'contact',
-                        'required' => false,
-                    ]
-                )
-            );
+                    ],
+                ],
+            ]));
+            $inputFilter->add($factory->createInput([
+                'name'     => 'contact',
+                'required' => false,
+            ]));
             $fileUpload = new FileInput('file');
             $fileUpload->setRequired(true);
-            $fileUpload->getValidatorChain()->attachByName(
-                'File\Size',
-                [
-                    'min' => '10kB',
-                    'max' => '8MB',
-                ]
-            );
+            $fileUpload->getValidatorChain()->attachByName('File\Size', [
+                'min' => '10kB',
+                'max' => '8MB',
+            ]);
             $inputFilter->add($fileUpload);
             $this->inputFilter = $inputFilter;
         }
@@ -200,7 +191,15 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     public function parseFileName()
     {
-        return $this->getDocument().'.'.$this->getContentType()->getExtension();
+        /**
+         * When we don't know the extension, leave out the dot at the end of the to prevent that the document
+         * is not in the zip
+         */
+        if ($this->getContentType()->getId() !== ContentType::TYPE_UNKNOWN) {
+            return sprintf("%s.%s", $this->getDocument(), $this->getContentType()->getExtension());
+        } else {
+            return sprintf("%s", $this->getDocument());
+        }
     }
 
     /**
@@ -208,7 +207,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string) $this->getDocument();
+        return (string)$this->getDocument();
     }
 
     /**

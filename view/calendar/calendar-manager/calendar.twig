@@ -93,7 +93,7 @@
                             {{ calendarDocumentLink(document,'download','icon') }}
                         </td>
                         <td>{{ contentTypeIcon(document.contentType) }} {{ document.contentType }}</td>
-                        <td>{{ document.dateCreated|time_diff }}</td>
+                        <td>{{ document.dateCreated|string_date }}</td>
                         <td>{{ document.size|parse_size }}</td>
                     </tr>
                 {% endfor %}

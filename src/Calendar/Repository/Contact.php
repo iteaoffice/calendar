@@ -100,10 +100,11 @@ class Contact extends EntityRepository
 
     /**
      * @param Entity\Calendar $calendar
+     * @param int             $status ;
      *
      * @return Entity\Contact[]
      */
-    public function findCalendarContactsByCalendar(Entity\Calendar $calendar)
+    public function findCalendarContactsByCalendar(Entity\Calendar $calendar, $status)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('cc');
@@ -113,6 +114,12 @@ class Contact extends EntityRepository
         $qb->andWhere('cc.calendar = ?11');
         $qb->setParameter(11, $calendar);
         $qb->addOrderBy('contact.lastName', 'ASC');
+
+        if ($status === Entity\Contact::STATUS_NO_DECLINED) {
+            $qb->join("cc.status", 'status');
+            $qb->andWhere('status.id <> :status');
+            $qb->setParameter('status', Entity\ContactStatus::STATUS_DECLINE);
+        }
 
         return $qb->getQuery()->getResult();
     }
@@ -131,9 +138,8 @@ class Contact extends EntityRepository
         $qb->andWhere('cc.calendar = :calendar');
 
         //Remove all the contacts which are already in the project as associate or otherwise affected
-        $findContactByProjectIdQueryBuilder = $this->_em->getRepository(
-            'Contact\Entity\Contact'
-        )->findContactByProjectIdQueryBuilder();
+        $findContactByProjectIdQueryBuilder = $this->_em->getRepository('Contact\Entity\Contact')
+            ->findContactByProjectIdQueryBuilder();
         $qb->andWhere($qb->expr()->notIn('cc.contact', $findContactByProjectIdQueryBuilder->getDQL()));
 
         $qb->setParameter(1, $calendar->getProjectCalendar()->getProject()->getId());

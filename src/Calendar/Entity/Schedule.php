@@ -23,7 +23,7 @@ use Zend\Form\Annotation;
 class Schedule
 {
     /**
-     * @ORM\Column(name="schedule_id", type="integer", nullable=false)
+     * @ORM\Column(name="schedule_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *

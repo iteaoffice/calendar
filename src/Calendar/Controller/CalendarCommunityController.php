@@ -144,9 +144,12 @@ class CalendarCommunityController extends CalendarAbstractController implements
         $data['calendar'] = $calendarService->getCalendar()->getId();
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
+            /** @var Document $document */
             $document = $form->getData();
             $document->setCalendar($calendarService->getCalendar());
             $document->setContact($this->zfcUserAuthentication()->getIdentity());
+
+
             /*
              * Add the file
              */
@@ -155,6 +158,11 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $fileSizeValidator->isValid($file);
             $document->setSize($fileSizeValidator->size);
             $document->setContentType($this->getGeneralService()->findContentTypeByContentTypeName($file['type']));
+
+            /** If no name is given, take the name of the file */
+            if (empty($data['document'])) {
+                $document->setDocument($file['name']);
+            }
             $documentObject = new DocumentObject();
             $documentObject->setDocument($document);
             $documentObject->setObject(file_get_contents($file['tmp_name']));
