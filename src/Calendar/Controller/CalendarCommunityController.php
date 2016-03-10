@@ -22,12 +22,8 @@ use Calendar\Form\CreateCalendarDocument;
 use Calendar\Form\SelectAttendee;
 use Calendar\Form\SendMessage;
 use Calendar\Service\CalendarService;
-use Calendar\Service\CalendarServiceAwareInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
-use General\Service\EmailServiceAwareInterface;
-use Project\Service\ProjectServiceAwareInterface;
-use Project\Service\WorkpackageServiceAwareInterface;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\JsonModel;
@@ -37,11 +33,7 @@ use Zend\View\Model\ViewModel;
  * @method RenderCalendarContactList renderCalendarContactList()
  * @method RenderReviewCalendar renderReviewCalendar()
  */
-class CalendarCommunityController extends CalendarAbstractController implements
-    CalendarServiceAwareInterface,
-    ProjectServiceAwareInterface,
-    WorkpackageServiceAwareInterface,
-    EmailServiceAwareInterface
+class CalendarCommunityController extends CalendarAbstractController
 {
     /**
      * @return ViewModel
@@ -59,7 +51,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel([
-            'enableCalendarContact' => $this->getCalendarService()->getOptions()->getCommunityCalendarContactEnabled(),
+            'enableCalendarContact' => $this->getModuleOptions()->getCommunityCalendarContactEnabled(),
             'which'                 => $which,
             'paginator'             => $paginator,
             'whichValues'           => $whichValues,
@@ -138,7 +130,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
             $this->getRequest()->getFiles()->toArray()
         );
         $entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        $form = new CreateCalendarDocument($entityManager);
+        $form = new CreateCalendarDocument($this->getEntityManager());
         $form->bind(new Document());
         //Add the missing form fields
         $data['calendar'] = $calendarService->getCalendar()->getId();
@@ -232,6 +224,7 @@ class CalendarCommunityController extends CalendarAbstractController implements
      */
     public function selectAttendeesAction()
     {
+        /** @var CalendarService $calendarService */
         $calendarService = $this->getCalendarService()->setCalendarId($this->params('id'));
         if ($calendarService->isEmpty()) {
             return $this->notFoundAction();

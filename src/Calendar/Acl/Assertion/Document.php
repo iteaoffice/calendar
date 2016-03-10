@@ -25,10 +25,10 @@ class Document extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $resource
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
@@ -48,9 +48,9 @@ class Document extends AssertionAbstract
             /*
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $resource = $this->getCalendarService()
-                ->findEntityById('Document', $documentId);
+            $resource = $this->getCalendarService()->findEntityById('Document', $documentId);
         }
+
 
         /*
          * No document was found, so return true because we do not now anything about the access
@@ -68,8 +68,7 @@ class Document extends AssertionAbstract
                 return $this->getCalendarService()
                     ->canViewCalendar($this->getContactService()->getContact());
             case 'edit-community':
-                if ($this->getContactService()
-                    ->hasPermit('edit', $resource->getCalendar())
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getCalendar())
                 ) {
                     return true;
                 }
@@ -78,10 +77,10 @@ class Document extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getCalendar()->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit(
+                    if ($this->getContactService()->contactHasPermit(
+                        $this->getContact(),
                         'edit',
-                        $resource->getCalendar()->getProjectCalendar()
-                            ->getProject()
+                        $resource->getCalendar()->getProjectCalendar()->getProject()
                     )
                     ) {
                         return true;

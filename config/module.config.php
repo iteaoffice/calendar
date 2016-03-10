@@ -7,39 +7,42 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c] 2004-2015 ITEA Office (https://itea3.org]
  */
-use Calendar\Acl\Assertion;
+use Calendar\Acl;
 use Calendar\Controller;
+use Calendar\Factory;
+use Calendar\Navigation;
+use Calendar\Options;
 use Calendar\Service;
 use Calendar\View\Helper;
 
 $config = [
     'controllers'     => [
-        'initializers' => [
-            Controller\ControllerInitializer::class
+        'invokables'         => [
+            //Controller\CalendarController::class         ,
+            //Controller\CalendarCommunityController::class,
+            //Controller\CalendarManagerController::class  ,
+            //Controller\CalendarDocumentController::class ,
         ],
-        'invokables'   => [
-            Controller\CalendarController::class          => Controller\CalendarController::class,
-            Controller\CalendarCommunityController::class => Controller\CalendarCommunityController::class,
-            Controller\CalendarManagerController::class   => Controller\CalendarManagerController::class,
-            Controller\CalendarDocumentController::class  => Controller\CalendarDocumentController::class,
-        ],
+        'abstract_factories' => [
+            Controller\Factory\ControllerInvokableAbstractFactory::class,
+        ]
     ],
     'service_manager' => [
-        'initializers' => [
-            Service\ServiceInitializer::class
+        'factories'          => [
+            Service\CalendarService::class                      => Factory\CalendarServiceFactory::class,
+            Service\FormService::class                          => Factory\FormServiceFactory::class,
+            Options\ModuleOptions::class                        => Factory\ModuleOptionsFactory::class,
+            //Acl\Assertion\Calendar::class,
+            //Acl\Assertion\Contact::class,
+            //Acl\Assertion\Document::class,
+            Navigation\Service\CalendarNavigationService::class => Navigation\Factory\CalendarNavigationServiceFactory::class,
         ],
-        'factories'    => [
-            'calendar_module_options'     => 'Calendar\Factory\OptionServiceFactory',
-            'calendar_navigation_service' => 'Calendar\Navigation\Factory\CalendarNavigationServiceFactory',
-        ],
-        'invokables'   => [
-            Assertion\Calendar::class       => Assertion\Calendar::class,
-            Assertion\Contact::class        => Assertion\Contact::class,
-            Assertion\Document::class       => Assertion\Document::class,
-            Service\CalendarService::class  => Service\CalendarService::class,
-            Service\FormService::class      => Service\FormService::class,
+        'invokables'         => [
             'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
-        ]
+        ],
+        'abstract_factories' => [
+            Acl\Factory\AssertionInvokableAbstractFactory::class
+        ],
     ],
     'view_manager'    => [
         'template_map' => include __DIR__ . '/../template_map.php',

@@ -4,15 +4,14 @@
  *
  * PHP Version 5
  *
- * @category    Project
+ * @category    Affiliation
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   2004-2015 ITEA Office
+ * @copyright   2004-2016 ITEA Office
  * @license     https://itea3.org/license.txt proprietary
  *
- * @link        https://itea3.org
+ * @link        http://github.com/iteaoffice/main for the canonical source repository
  */
-
 namespace Calendar\Factory;
 
 use Calendar\Options\ModuleOptions;
@@ -20,19 +19,14 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Create a link to an project.
+ * Class ModuleOptionsFactory
  *
- * @category   Calendar
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    https://itea3.org/licence.txt proprietary
- *
- * @link       https://itea3.org
+ * @package General\Factory
  */
-class OptionServiceFactory implements FactoryInterface
+class ModuleOptionsFactory implements FactoryInterface
 {
     /**
-     * {@inheritDoc}
+     * @param ServiceLocatorInterface $serviceLocator
      *
      * @return ModuleOptions
      */
@@ -40,6 +34,6 @@ class OptionServiceFactory implements FactoryInterface
     {
         $config = $serviceLocator->get('Config');
 
-        return new ModuleOptions($config['calendar_option']);
+        return new ModuleOptions(isset($config['calendar_option']) ? $config['calendar_option'] : []);
     }
 }

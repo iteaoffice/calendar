@@ -11,15 +11,8 @@
 
 namespace Calendar\Service;
 
-use Zend\Form\Form;
-
 class FormService extends ServiceAbstract
 {
-    /**
-     * @var Form
-     */
-    protected $form;
-
     /**
      * @param null $className
      * @param null $entity
@@ -32,9 +25,9 @@ class FormService extends ServiceAbstract
         if (!$entity) {
             $entity = $this->getEntity($className);
         }
-        $formName = 'calendar_'.$entity->get('underscore_entity_name').'_form';
+        $formName = 'calendar_' . $entity->get('underscore_entity_name') . '_form';
         $form = $this->getServiceLocator()->get($formName);
-        $filterName = 'calendar_'.$entity->get('underscore_entity_name').'_form_filter';
+        $filterName = 'calendar_' . $entity->get('underscore_entity_name') . '_form_filter';
         $filter = $this->getServiceLocator()->get($filterName);
         $form->setInputFilter($filter);
         if ($bind) {

@@ -102,7 +102,7 @@ class RenderReviewCalendar extends AbstractPlugin
      */
     public function getContactService()
     {
-        return $this->getServiceLocator()->get('contact_contact_service');
+        return $this->getServiceLocator()->get(ContactService::class);
     }
 
     /**

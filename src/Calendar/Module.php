@@ -14,6 +14,7 @@ namespace Calendar;
 
 use Calendar\Controller\Plugin\RenderCalendarContactList;
 use Calendar\Controller\Plugin\RenderReviewCalendar;
+use Calendar\Navigation;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
 use Zend\Mvc\Application;
@@ -110,8 +111,8 @@ class Module implements
         $app = $e->getParam('application');
         $em = $app->getEventManager();
         $em->attach(MvcEvent::EVENT_DISPATCH, function (MvcEvent $event) {
-            $event->getApplication()->getServiceManager()
-                ->get('calendar_navigation_service')->update();
+            $event->getApplication()->getServiceManager()->get(Navigation\Service\CalendarNavigationService::class)
+                ->update();
         });
     }
 }

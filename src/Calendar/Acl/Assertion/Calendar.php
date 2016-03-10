@@ -25,10 +25,10 @@ class Calendar extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $resource
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
@@ -52,11 +52,12 @@ class Calendar extends AssertionAbstract
             /*
              * Check if a Contact has access to a meeting. We need to build the meeting first
              */
-            $resource = $this->getCalendarService()->setCalendarId($id)
-                ->getCalendar();
+            $resource = $this->getCalendarService()->setCalendarId($id)->getCalendar();
         } else {
             $this->getCalendarService()->setCalendar($resource);
         }
+
+      
 
         switch ($privilege) {
             case 'edit':
@@ -68,7 +69,7 @@ class Calendar extends AssertionAbstract
                 if (is_null($resource->getProjectCalendar())) {
                     return false;
                 }
-                if ($this->getContactService()->hasPermit('edit', $resource)) {
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource)) {
                     return true;
                 }
 
@@ -76,11 +77,7 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit(
-                        'edit',
-                        $resource->getProjectCalendar()->getProject()
-                    )
-                    ) {
+                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())) {
                         return true;
                     }
                 }
@@ -88,7 +85,7 @@ class Calendar extends AssertionAbstract
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'add-document':
             case 'presence-list':
-                if ($this->getContactService()->hasPermit('edit', $resource)) {
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource)) {
                     return true;
                 }
 
@@ -96,11 +93,7 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit(
-                        'edit',
-                        $resource->getProjectCalendar()->getProject()
-                    )
-                    ) {
+                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())) {
                         return true;
                     }
                 }
@@ -126,7 +119,7 @@ class Calendar extends AssertionAbstract
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */
-                if ($this->getContactService()->hasPermit('view', $resource)) {
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $resource)) {
                     return true;
                 }
 
@@ -134,21 +127,15 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit(
-                        'view',
-                        $resource->getProjectCalendar()->getProject()
-                    )
-                    ) {
+                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $resource->getProjectCalendar()->getProject())) {
                         return true;
                     }
                 }
 
-                return $this->rolesHaveAccess($resource->getType()
-                    ->getAccess());
+                return $this->rolesHaveAccess($resource->getType()->getAccess());
 
             case 'view':
-                return $this->getCalendarService()
-                    ->canViewCalendar($this->getContactService()->getContact());
+                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
 
         }
 

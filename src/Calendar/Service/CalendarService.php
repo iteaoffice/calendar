@@ -12,15 +12,13 @@ namespace Calendar\Service;
 use Calendar\Entity;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
-use Calendar\Options\ModuleOptions;
 use Contact\Entity\Contact;
-use Contact\Service\ContactServiceAwareInterface;
 use Project\Entity\Project;
 
 /**
  *
  */
-class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterface, ContactServiceAwareInterface
+class CalendarService extends ServiceAbstract
 {
     /**
      * Constant to determine which affiliations must be taken from the database
@@ -34,10 +32,6 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      * @var Entity\Calendar
      */
     protected $calendar;
-    /**
-     * @var CalendarService
-     */
-    protected $calendarService;
 
     /**
      * @param int $id
@@ -66,39 +60,20 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findCalendarByDocRef($docRef)
     {
-        $calendar = $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))->findOneBy([
+        $calendar = $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy([
             'docRef' => $docRef,
         ]);
         if (is_null($calendar)) {
-            return;
+            return null;
         }
 
         return $calendar;
     }
 
-    /**
-     * @return ModuleOptions
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param ModuleOptions $options
-     *
-     * @return ServiceAbstract
-     */
-    public function setOptions(\Calendar\Options\ModuleOptions $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
 
     /**
      * @param Calendar $calendar
-     * @param Contact  $contact
+     * @param Contact $contact
      *
      * @return bool
      */
@@ -113,7 +88,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param array    $data
+     * @param array $data
      * @param Calendar $calendar
      *
      * array (size=5)
@@ -175,7 +150,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param  string  $which
+     * @param  string $which
      * @param  Contact $contact
      *
      * @return CalendarContact[]
@@ -189,7 +164,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     }
 
     /**
-     * @param Contact  $contact
+     * @param Contact $contact
      * @param Calendar $calendar
      *
      * @return CalendarContact
@@ -204,7 +179,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
 
     /**
      * @param Calendar $calendar
-     * @param int      $status
+     * @param int $status
      *
      * @return CalendarContact[]
      */
@@ -223,12 +198,12 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function canViewCalendar(Contact $contact = null)
     {
-        return $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)
             ->canViewCalendar($this->getCalendar(), $contact);
     }
 
     /**
-     * @param string  $which
+     * @param string $which
      * @param Contact $contact
      * @param integer $year
      * @param integer $type
@@ -241,12 +216,12 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
         $year = null,
         $type = null
     ) {
-        return $this->getEntityManager()->getRepository($this->getFullEntityName('Calendar'))
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)
             ->findCalendarItems($which, true, $contact, $year, $type);
     }
 
     /**
-     * @param bool    $onlyFinal
+     * @param bool $onlyFinal
      * @param Project $project
      *
      * @return Calendar[]
@@ -287,14 +262,13 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
      */
     public function findLatestProjectCalendar(Project $project)
     {
-        return $this->getEntityManager()->getRepository($this->getFullEntityName('calendar'))
-            ->findLatestProjectCalendar($project);
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findLatestProjectCalendar($project);
     }
 
     /**
      * Return the news review meeting
      *
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -309,7 +283,7 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
     /**
      * Return the lastest review meeting
      *
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -359,25 +333,5 @@ class CalendarService extends ServiceAbstract implements ModuleOptionAwareInterf
             self::WHICH_PAST,
             self::WHICH_REVIEWS,
         ];
-    }
-
-    /**
-     * @param \Calendar\Entity\Calendar $calendar
-     *
-     * @return $this;
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-
-        return $this;
-    }
-
-    /**
-     * @return \Calendar\Entity\Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
     }
 }

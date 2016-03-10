@@ -11,37 +11,41 @@
 namespace Calendar\Controller;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
+use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
-use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
-use Calendar\Service\FormServiceAwareInterface;
 use Contact\Service\ContactService;
-use Contact\Service\ContactServiceAwareInterface;
+use Contact\Service\SelectionService;
+use Doctrine\ORM\EntityManager;
 use General\Service\EmailService;
 use General\Service\GeneralService;
-use General\Service\GeneralServiceAwareInterface;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
-use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
-use Contact\Service\SelectionService;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
  * @method      FlashMessenger flashMessenger()
- * @method      isAllowed isAllowed($resource, $action)
+ * @method      IsAllowed isAllowed($resource, $action)
  */
-abstract class CalendarAbstractController extends AbstractActionController implements
-    FormServiceAwareInterface,
-    ServiceLocatorAwareInterface,
-    ContactServiceAwareInterface,
-    CalendarServiceAwareInterface,
-    GeneralServiceAwareInterface
+abstract class CalendarAbstractController extends AbstractActionController
 {
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+    /**
+     * @var TwigRenderer
+     */
+    protected $renderer;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
     /**
      * @var FormService
      */
@@ -66,10 +70,6 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      * @var GeneralService
      */
     protected $generalService;
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
     /**
      * @var EmailService
      */
@@ -272,6 +272,66 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setSelectionService(SelectionService $selectionService)
     {
         $this->selectionService = $selectionService;
+
+        return $this;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     *
+     * @return CalendarAbstractController
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        return $this;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     *
+     * @return CalendarAbstractController
+     */
+    public function setModuleOptions($moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
+    }
+
+    /**
+     * @param TwigRenderer $renderer
+     *
+     * @return CalendarAbstractController
+     */
+    public function setRenderer($renderer)
+    {
+        $this->renderer = $renderer;
 
         return $this;
     }

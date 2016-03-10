@@ -13,8 +13,8 @@
 
 namespace Calendar\Controller\Plugin;
 
-use Calendar\Options\ModuleOptions;
 use Calendar\Entity\Contact as CalendarContact;
+use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use General\Service\GeneralService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -50,7 +50,10 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        $calendarContacts = $calendarService->findCalendarContactsByCalendar($calendarService->getCalendar(), CalendarContact::STATUS_NO_DECLINED);
+        $calendarContacts = $calendarService->findCalendarContactsByCalendar(
+            $calendarService->getCalendar(),
+            CalendarContact::STATUS_NO_DECLINED
+        );
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
@@ -83,7 +86,7 @@ class RenderCalendarContactList extends AbstractPlugin
      */
     public function getModuleOptions()
     {
-        return $this->getServiceLocator()->get('calendar_module_options');
+        return $this->getServiceLocator()->get(ModuleOptions::class);
     }
 
     /**
