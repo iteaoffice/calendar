@@ -5,7 +5,7 @@
  * @category  Calendar
  * @package   Repository
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 namespace Calendar\Repository;
 
@@ -25,9 +25,9 @@ class Calendar extends EntityRepository
 {
     /**
      * @param         $which
-     * @param bool $filterForAccess
+     * @param bool    $filterForAccess
      * @param Contact $contact
-     * @param null $year
+     * @param null    $year
      *
      * @return \Doctrine\ORM\Query
      */
@@ -135,7 +135,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $dateTime
      *
      * @return Calendar|null
@@ -162,7 +162,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $dateTime
      *
      * @return Calendar|null
@@ -193,7 +193,7 @@ class Calendar extends EntityRepository
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
      * @param Entity\Calendar $calendar
-     * @param Contact $contact
+     * @param Contact         $contact
      *
      * @return bool
      */
@@ -203,11 +203,11 @@ class Calendar extends EntityRepository
         $qb->select('c');
         $qb->from("Calendar\Entity\Calendar", 'c');
 
-        if (is_null($contact)) {
+        if ($contact->isEmpty()) {
             $contact = new Contact();
             $contact->setId(0);
             $access = new Access();
-            $access->setAccess(Access::ACCESS_PUBLIC);
+            $access->setAccess(strtolower(Access::ACCESS_PUBLIC));
             $contact->setAccess([$access]);
         }
 
@@ -215,12 +215,13 @@ class Calendar extends EntityRepository
         $qb->andWhere('c = ?100');
         $qb->setParameter(100, $calendar);
 
+
         return !is_null($qb->getQuery()->getOneOrNullResult());
     }
 
     /**
      * @param QueryBuilder $qb
-     * @param Contact $contact
+     * @param Contact      $contact
      *
      * @return QueryBuilder $qb
      */
@@ -231,21 +232,23 @@ class Calendar extends EntityRepository
         $subSelect->select('type');
         $subSelect->from('Calendar\Entity\Type', 'type');
         $subSelect->join('type.access', 'access');
-        $subSelect->andWhere(
-            $qb->expr()->in('access.access', array_merge_recursive([Access::ACCESS_PUBLIC], $contact->getRoles()))
-        );
+        $subSelect->andWhere($qb->expr()
+            ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles())));
+
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
         $subSelectCalendarContact->select('calendar2');
         $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
         $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
         $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
-        $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->in('c.type', $subSelect->getDQL()),
-                $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
-            )
-        );
+
+        $qb->andWhere($qb->expr()->orX(
+            $qb->expr()->in(
+                'c.type',
+                $subSelect->getDQL()
+            ),
+            $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
+        ));
 
         return $qb;
     }

@@ -5,10 +5,10 @@
  * @category   Calendar
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  2004-2014 ITEA Office
- * @license    http://debranova.org/license.txt proprietary
+ * @copyright  2004-2015 ITEA Office
+ * @license    https://itea3.org/license.txt proprietary
  *
- * @link       http://debranova.org
+ * @link       https://itea3.org
  */
 
 namespace Calendar\Controller\Plugin;
@@ -19,9 +19,9 @@ namespace Calendar\Controller\Plugin;
  * @category   Calendar
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    http://debranova.org/licence.txt proprietary
+ * @license    https://itea3.org/licence.txt proprietary
  *
- * @link       http://debranova.org
+ * @link       https://itea3.org
  */
 class CalendarPdf extends \FPDI
 {
@@ -48,7 +48,7 @@ class CalendarPdf extends \FPDI
         }
         $this->SetTopMargin(35);
         $this->useTemplate($this->_tplIdx, 0, 0);
-        $this->SetFont('freesans', 'N', 15);
+//        $this->SetFont('freesans', 'N', 15);
         $this->SetTextColor(0);
         $this->SetXY(15, 5);
     }

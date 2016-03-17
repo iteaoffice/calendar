@@ -5,7 +5,7 @@
  * @category    Project
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright   Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Options;
@@ -14,6 +14,7 @@ use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class ModuleOptions
+ *
  * @package Calendar\Options
  */
 class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
@@ -48,12 +49,14 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * Template to use for upcoming events
+     *
      * @var string
      */
     protected $calendarUpcomingTemplate = '';
 
     /**
      * Template to use for past events
+     *
      * @var string
      */
     protected $calendarPastTemplate = '';
@@ -125,6 +128,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * Returns the default year
+     *
      * @return int
      */
     public function getDefaultYear()
@@ -134,6 +138,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * @param $defaultYear
+     *
      * @return $this
      */
     public function setDefaultYear($defaultYear)
@@ -145,6 +150,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * @param  string $calendarUpcomingTemplate
+     *
      * @return $this
      */
     public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
@@ -156,6 +162,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * Return template to use for Upcoming Event rendering
+     *
      * @return string
      */
     public function getCalendarUpcomingTemplate()
@@ -165,6 +172,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * @param $calendarPastTemplate
+     *
      * @return $this
      */
     public function setCalendarPastTemplate($calendarPastTemplate)
@@ -176,6 +184,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
     /**
      * Return template to use for Past Event rendering
+     *
      * @return string
      */
     public function getCalendarPastTemplate()

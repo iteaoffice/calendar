@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Entity;
@@ -26,7 +26,7 @@ class ContactStatus
     const STATUS_ACCEPT = 2;
     const STATUS_DECLINE = 3;
     /**
-     * @ORM\Column(name="status_id", type="integer", nullable=false)
+     * @ORM\Column(name="status_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *

@@ -5,14 +5,15 @@
  * @category   Program
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  2004-2014 ITEA Office
- * @license    http://debranova.org/license.txt proprietary
+ * @copyright  2004-2015 ITEA Office
+ * @license    https://itea3.org/license.txt proprietary
  *
- * @link       http://debranova.org
+ * @link       https://itea3.org
  */
 
 namespace Calendar\Controller\Plugin;
 
+use Calendar\Entity\Contact as CalendarContact;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use General\Service\GeneralService;
@@ -25,9 +26,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @category   Program
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    http://debranova.org/licence.txt proprietary
+ * @license    https://itea3.org/licence.txt proprietary
  *
- * @link       http://debranova.org
+ * @link       https://itea3.org
  */
 class RenderCalendarContactList extends AbstractPlugin
 {
@@ -49,7 +50,10 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        $calendarContacts = $calendarService->findCalendarContactsByCalendar($calendarService->getCalendar());
+        $calendarContacts = $calendarService->findCalendarContactsByCalendar(
+            $calendarService->getCalendar(),
+            CalendarContact::STATUS_NO_DECLINED
+        );
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
@@ -59,13 +63,10 @@ class RenderCalendarContactList extends AbstractPlugin
             /*
              * Use the NDA object to render the filename
              */
-            $contactListContent = $twig->render(
-                'calendar/pdf/calendar-contact',
-                [
-                    'calendarService'  => $calendarService,
-                    'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
-                ]
-            );
+            $contactListContent = $twig->render('calendar/pdf/calendar-contact', [
+                'calendarService'  => $calendarService,
+                'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
+            ]);
 
             $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
 
@@ -85,7 +86,7 @@ class RenderCalendarContactList extends AbstractPlugin
      */
     public function getModuleOptions()
     {
-        return $this->getServiceLocator()->get('calendar_module_options');
+        return $this->getServiceLocator()->get(ModuleOptions::class);
     }
 
     /**

@@ -5,7 +5,7 @@
  * @category    Calendar
  * @package     Config
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c] 2004-2014 ITEA Office (http://itea3.org]
+ * @copyright   Copyright (c] 2004-2015 ITEA Office (https://itea3.org]
  */
 namespace Calendar;
 
@@ -18,7 +18,8 @@ return [
                 'type'          => 'Literal',
                 'priority'      => 999,
                 'options'       => [
-                    'route' => '/assets/' . (defined("DEBRANOVA_HOST") ? DEBRANOVA_HOST : 'test'),
+                    'route' => '/assets/' . (defined("DEBRANOVA_HOST")
+                            ? DEBRANOVA_HOST : 'test'),
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [
@@ -65,7 +66,7 @@ return [
                                     'route'    => '/view/[:id].html',
                                     'defaults' => [
                                         'action'    => 'calendar',
-                                        'privilege' => 'view',
+                                        'privilege' => 'view-community',
                                     ],
                                 ],
                             ],
@@ -116,6 +117,16 @@ return [
                                     'defaults' => [
                                         'action'    => 'download-review-calendar',
                                         'privilege' => 'review-calendar',
+                                    ],
+                                ],
+                            ],
+                            'download-binder'         => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/download-binder/[:id].html',
+                                    'defaults' => [
+                                        'action'    => 'download-binder',
+                                        'privilege' => 'download-binder',
                                     ],
                                 ],
                             ],
@@ -201,7 +212,7 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes'  => [
-                            'overview' => [
+                            'overview'         => [
                                 'type'     => 'Segment',
                                 'priority' => 1000,
                                 'options'  => [
@@ -211,7 +222,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'calendar' => [
+                            'calendar'         => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/view/[:id].html',
@@ -221,16 +232,16 @@ return [
                                     ],
                                 ],
                             ],
-                            'new'      => [
-                                'type'    => 'Literal',
+                            'new'              => [
+                                'type'    => 'Segment',
                                 'options' => [
-                                    'route'    => '/new.html',
+                                    'route'    => '/new[/project-:project].html',
                                     'defaults' => [
                                         'action' => 'new',
                                     ],
                                 ],
                             ],
-                            'edit'     => [
+                            'edit'             => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/edit/[:id].html',
@@ -239,7 +250,34 @@ return [
                                     ],
                                 ],
                             ],
-                            'document' => [
+                            'select-attendees' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/select-attendees/[:id].html',
+                                    'defaults' => [
+                                        'action' => 'select-attendees',
+                                    ],
+                                ],
+                            ],
+                            'update-role'      => [
+                                'type'    => 'Literal',
+                                'options' => [
+                                    'route'    => '/update-role.json',
+                                    'defaults' => [
+                                        'action' => 'update-role',
+                                    ],
+                                ],
+                            ],
+                            'get-roles'        => [
+                                'type'    => 'Literal',
+                                'options' => [
+                                    'route'    => '/get-roles.json',
+                                    'defaults' => [
+                                        'action' => 'get-roles',
+                                    ],
+                                ],
+                            ],
+                            'document'         => [
                                 'type'          => 'Segment',
                                 'options'       => [
                                     'route'    => '/document',

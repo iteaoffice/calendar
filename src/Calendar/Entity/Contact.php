@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Entity;
@@ -22,8 +22,10 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  */
 class Contact extends EntityAbstract implements ResourceInterface
 {
+    const STATUS_ALL = 1;
+    const STATUS_NO_DECLINED = 2;
     /**
-     * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_contact_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -125,7 +127,7 @@ class Contact extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string) $this->role;
+        return (string)$this->role;
     }
 
     /**

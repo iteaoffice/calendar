@@ -1,11 +1,11 @@
 <?php
 /**
- * ARTEMIS-IA Office copyright message placeholder.
+ * ITEA Office copyright message placeholder.
  *
  * @category    Calendar
  *
- * @author      Andre Hebben <andre.hebben@artemis-ia.eu>
- * @copyright   Copyright (c) 2007-2014 ARTEMIS-IA Office (http://artemis-ia.eu)
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Options;

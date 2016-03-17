@@ -1,11 +1,11 @@
 <?php
 /**
- * Debranova copyright message placeholder.
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 Debranova
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Acl\Assertion;
@@ -25,15 +25,19 @@ class Calendar extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl $acl
-     * @param RoleInterface $role
+     * @param Acl               $acl
+     * @param RoleInterface     $role
      * @param ResourceInterface $resource
-     * @param string $privilege
+     * @param string            $privilege
      *
      * @return bool
      */
-    public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
-    {
+    public function assert(
+        Acl $acl,
+        RoleInterface $role = null,
+        ResourceInterface $resource = null,
+        $privilege = null
+    ) {
         $id = (int)$this->getRouteMatch()->getParam('id');
 
         if (is_null($privilege)) {
@@ -53,13 +57,18 @@ class Calendar extends AssertionAbstract
             $this->getCalendarService()->setCalendar($resource);
         }
 
+
         switch ($privilege) {
             case 'edit':
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'select-attendees':
-            case 'add-document':
-            case 'presence-list':
-                if ($this->getContactService()->hasPermit('edit', $resource)) {
+                /**
+                 * Stop this case when there is no project calendar
+                 */
+                if (is_null($resource->getProjectCalendar())) {
+                    return false;
+                }
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource)) {
                     return true;
                 }
 
@@ -67,7 +76,27 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit('edit', $resource->getProjectCalendar()->getProject())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())
+                    ) {
+                        return true;
+                    }
+                }
+
+                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+            case 'add-document':
+            case 'presence-list':
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource)) {
+                    return true;
+                }
+
+                /*
+                 * The project leader also has rights to invite users
+                 */
+                if (!is_null($resource->getProjectCalendar())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())
+                    ) {
                         return true;
                     }
                 }
@@ -77,6 +106,9 @@ class Calendar extends AssertionAbstract
                 return true;
             case 'overview-admin':
             case 'view-admin':
+            case 'edit-attendees-admin':
+            case 'set-roles-admin':
+            case 'new':
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'overview':
             case 'review-calendar':
@@ -85,11 +117,12 @@ class Calendar extends AssertionAbstract
                 return $this->hasContact();
             case 'view-community':
             case 'send-message':
+            case 'download-binder':
                 /*
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */
-                if ($this->getContactService()->hasPermit('view', $resource)) {
+                if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $resource)) {
                     return true;
                 }
 
@@ -97,7 +130,9 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->hasPermit('view', $resource->getProjectCalendar()->getProject())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'view', $resource->getProjectCalendar()->getProject())
+                    ) {
                         return true;
                     }
                 }
@@ -105,7 +140,7 @@ class Calendar extends AssertionAbstract
                 return $this->rolesHaveAccess($resource->getType()->getAccess());
 
             case 'view':
-                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
+                return $this->getCalendarService()->canViewCalendar($this->getContact());
 
         }
 

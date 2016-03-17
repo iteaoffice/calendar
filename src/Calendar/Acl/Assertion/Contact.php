@@ -1,11 +1,11 @@
 <?php
 /**
- * Debranova copyright message placeholder.
+ * ITEA Office copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 Debranova
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Acl\Assertion;
@@ -34,7 +34,7 @@ class Contact extends AssertionAbstract
      */
     public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $resource = null, $privilege = null)
     {
-        $id = (int) $this->getServiceLocator()->get("Application")->getMvcEvent()->getRequest()->getPost('id');
+        $id = (int)$this->getServiceLocator()->get("Application")->getMvcEvent()->getRequest()->getPost('id');
 
         if (is_null($privilege)) {
             $privilege = $this->getRouteMatch()->getParam('privilege');
@@ -50,7 +50,7 @@ class Contact extends AssertionAbstract
             case 'update-status':
                 if ($this->getCalendarService()->calendarHasContact(
                     $this->getCalendarService()->getCalendar(),
-                    $this->getContactService()->getContact()
+                    $this->getContact()
                 )
                 ) {
                     return true;

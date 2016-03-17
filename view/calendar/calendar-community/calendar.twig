@@ -1,6 +1,6 @@
 {% do headTitle().append(translate("txt-calendar")) %}
 {% do headTitle().append(calendarService.calendar.calendar) %}
-<h1>{{ calendarService.calendar }}</h1>
+<h1>{{ calendarService.calendar }} {{ calendarLink(calendarService.calendar,'view-admin','icon') }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
@@ -29,6 +29,8 @@
             <dt>{{ translate("txt-documents") }}</dt>
             <dd>{{ translate("txt-%s-documents")|format(calendarService.calendar.document.count()) }}</dd>
         </dl>
+
+
 
     </div>
     <div class="tab-pane" id="documents">
@@ -84,7 +86,7 @@
                         </tbody>
                     </table>
 
-                    {{ calendarLink(calendarService.calendar, 'download-calendar-document-binder', 'button') }}
+                    {{ calendarLink(calendarService.calendar, 'download-binder', 'button') }}
                 {% else %}
                     {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
                 {% endif %}

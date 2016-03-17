@@ -12,3 +12,6 @@ _("txt-calendar-explanation");
 _("txt-draft");
 _("txt-tentative");
 _("txt-location-explanation");
+
+_("txt-final-explanation");
+_("txt-on-homepage-explanation");

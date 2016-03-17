@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Entity;
@@ -24,7 +24,7 @@ use Zend\Form\Annotation;
 class Type
 {
     /**
-     * @ORM\Column(name="type_id", type="integer", nullable=false)
+     * @ORM\Column(name="type_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -76,8 +76,19 @@ class Type
      *            inverseJoinColumns={@ORM\JoinColumn(name="access_id", referencedColumnName="access_id")}
      * )
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
-     * @Annotation\Options({"target_class":"Admin\Entity\Access"})
-     * @Annotation\Attributes({"label":"txt-access"})
+     * @Annotation\Options({
+     *      "target_class":"Admin\Entity\Access",
+     *      "find_method":{
+     *          "name":"findBy",
+     *          "params": {
+     *              "criteria":{},
+     *              "orderBy":{
+     *                  "access":"ASC"}
+     *              }
+     *          }
+     *      }
+     * )
+     * @Annotation\Attributes({"label":"txt-access","help-block":"txt-access-help-block"})
      *
      * @var \Admin\Entity\Access[]
      */

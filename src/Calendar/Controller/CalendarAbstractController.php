@@ -5,42 +5,47 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2014 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Controller;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
+use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
-use Calendar\Service\CalendarServiceAwareInterface;
 use Calendar\Service\FormService;
-use Calendar\Service\FormServiceAwareInterface;
 use Contact\Service\ContactService;
-use Contact\Service\ContactServiceAwareInterface;
+use Contact\Service\SelectionService;
+use Doctrine\ORM\EntityManager;
 use General\Service\EmailService;
 use General\Service\GeneralService;
-use General\Service\GeneralServiceAwareInterface;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
-use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
 
 /**
  * @method      ZfcUserAuthentication zfcUserAuthentication()
  * @method      FlashMessenger flashMessenger()
- * @method      isAllowed isAllowed($resource, $action)
+ * @method      IsAllowed isAllowed($resource, $action)
  */
-abstract class CalendarAbstractController extends AbstractActionController implements
-    FormServiceAwareInterface,
-    ServiceLocatorAwareInterface,
-    ContactServiceAwareInterface,
-    CalendarServiceAwareInterface,
-    GeneralServiceAwareInterface
+abstract class CalendarAbstractController extends AbstractActionController
 {
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+    /**
+     * @var TwigRenderer
+     */
+    protected $renderer;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
     /**
      * @var FormService
      */
@@ -66,13 +71,13 @@ abstract class CalendarAbstractController extends AbstractActionController imple
      */
     protected $generalService;
     /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-    /**
      * @var EmailService
      */
     protected $emailService;
+    /**
+     * @var SelectionService
+     */
+    protected $selectionService;
 
     /**
      * @return \Calendar\Service\FormService
@@ -226,7 +231,7 @@ abstract class CalendarAbstractController extends AbstractActionController imple
         /*
          * @var Translate
          */
-        $translate = $this->getServiceLocator()->get('ViewHelperManager')->get('translate');
+        $translate = $this->getPluginManager()->getServiceLocator()->get('ViewHelperManager')->get('translate');
 
         return $translate($string);
     }
@@ -247,6 +252,86 @@ abstract class CalendarAbstractController extends AbstractActionController imple
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * @return SelectionService
+     */
+    public function getSelectionService()
+    {
+        return $this->selectionService;
+    }
+
+    /**
+     * @param SelectionService $selectionService
+     *
+     * @return CalendarAbstractController
+     */
+    public function setSelectionService(SelectionService $selectionService)
+    {
+        $this->selectionService = $selectionService;
+
+        return $this;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     *
+     * @return CalendarAbstractController
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        return $this;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     *
+     * @return CalendarAbstractController
+     */
+    public function setModuleOptions($moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
+    }
+
+    /**
+     * @param TwigRenderer $renderer
+     *
+     * @return CalendarAbstractController
+     */
+    public function setRenderer($renderer)
+    {
+        $this->renderer = $renderer;
 
         return $this;
     }

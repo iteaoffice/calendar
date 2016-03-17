@@ -30,7 +30,7 @@
             {% if calendarService.calendar.projectCalendar %}
                 {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
                 <dt>{{ translate("txt-project-name") }}</dt>
-                <dd>{{ projectLink(projectService,'view-community','name') }}</dd>
+                <dd>{{ projectLink(projectService,'view-admin','name') }} {{ projectLink(projectService,'view-community','icon') }}</dd>
             {% endif %}
             <dt>{{ translate("txt-location") }}</dt>
             <dd>{{ calendarService.calendar.location }}</dd>
@@ -40,11 +40,11 @@
             <dd>{{ translate(calendarService.calendar.getFinal(true)) }}</dd>
             <dt>{{ translate("txt-on-homepage") }}</dt>
             <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}
-                {{ translate("txt-sequence:-%s")|format(calendarService.calendar.sequence) }}
+                ({{ translate("txt-sequence:-%s")|format(calendarService.calendar.sequence) }})
             </dd>
             {% if calendarService.calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
-                <dd>{{ calendarService.calendar.description }}</dd>
+                <dd>{{ calendarService.calendar.description|raw }}</dd>
             {% endif %}
             {% if calendarService.calendar.imageUrl %}
                 <dt>{{ translate("txt-image-url") }}</dt>
@@ -81,6 +81,7 @@
                 <thead>
                 <tr>
                     <th>{{ translate("txt-document") }}</th>
+                    <th>{{ translate("txt-type") }}</th>
                     <th>{{ translate("txt-date") }}</th>
                     <th>{{ translate("txt-size") }}</th>
                 </tr>
@@ -91,6 +92,7 @@
                         <td>{{ calendarDocumentLink(document,'document-admin','name') }}
                             {{ calendarDocumentLink(document,'download','icon') }}
                         </td>
+                        <td>{{ contentTypeIcon(document.contentType) }} {{ document.contentType }}</td>
                         <td>{{ document.dateCreated|string_date }}</td>
                         <td>{{ document.size|parse_size }}</td>
                     </tr>
@@ -105,23 +107,16 @@
         <h4>{{ translate("txt-upload-new-calendar-documents") }}</h4>
 
         {% do form.prepare() %}
-        {% do form.setAttribute('class','form-inline') %}
-
         {{ form().openTag(form)|raw }}
 
-        <div class="form-group col-md-6">
-            {{ formlabel(form.get('document')) }}
-            {{ formelement(form.get('document')) }}
-        </div>
-        <div class="form-group col-md-6">
-            {{ formlabel(form.get('file')) }}
-            {{ formelement(form.get('file')) }}
-            {{ formelementerrors(form.get('file')) }}
-        </div>
+        {{ ztbformelement(form.get('document')) }}
+        {{ ztbformelement(form.get('file')) }}
 
-        <br>
-
-        {{ formelement(form.get('submit')) }}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ ztbformelement(form.get('submit')) }}
+            </div>
+        </div>
 
         {{ form().closeTag()|raw }}
 
@@ -130,13 +125,81 @@
 
         <h2>{{ translate("txt-calendar-attendees") }}</h2>
         {% if calendarService.calendar.calendarContact.count() > 0 %}
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>{{ translate("txt-name") }}</th>
+                    <th>{{ translate("txt-organisation") }}</th>
+                    <th>{{ translate("txt-role") }}</th>
+                    <th>{{ translate("txt-presence") }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for calendarContact in calendarService.calendar.calendarContact %}
+                    {% set contactService = contactServiceProxy(calendarContact.contact) %}
+                    <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
+                        <td>
+                            {% if zfcUserIdentity().getId() == contactService.contact.id %}
+                                <i class="fa fa-user"></i>
+                            {% endif %}
+                            {{ calendarContact.contact.displayName }}
+                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
+                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+                            </div>
+                        </td>
+                        <td>{{ contactService.parseOrganisation() }} ({{ contactService.parseCountry() }})</td>
+
+                        <td>
 
 
+                            <a id="calendarcontact_{{ calendarContact.id }}"
+                               href="#" class="role"
+                               data-type="select"
+                               data-source="{{ url('zfcadmin/calendar-manager/get-roles') }}"
+                               data-pk="{{ calendarContact.id }}"
+                               data-value="{{ calendarContact.role.id }}"
+                               data-url="{{ url('zfcadmin/calendar-manager/update-role') }}"
+                               data-title="{{ translate("txt-update-role") }}">{{ calendarContact.role }}</a>
+                        </td>
+                        <td>
+                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% if isAllowed(calendarContact,'update-status') %}
+                            <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                            {% else %}
+                            {{ calendarContact.status }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             {{ ztbalert().info(translate("txt-no-attandeed-defined-for-this-calendar-%s")|
             format(calendarService.calendar))|raw }}
         {% endif %}
 
 
+        {{ calendarLink(calenderService.calendar,'edit-attendees-admin','button') }}
+        {{ calendarLink(calenderService.calendar,'presence-list','button') }}
+        {{ calendarLink(calenderService.calendar,'select-attendees','button') }}
     </div>
 </div>
+
+
+<script type="text/javascript">
+    /**
+     * Calculate the sum per year
+     */
+    $(document).ready(function () {
+        //turn to inline mode
+        $.fn.editable.defaults.mode = 'popup';
+        $('.role').editable();
+    });
+</script>

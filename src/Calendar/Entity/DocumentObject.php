@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Entity;
@@ -23,7 +23,7 @@ use Zend\InputFilter\InputFilterInterface;
 class DocumentObject extends EntityAbstract
 {
     /**
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
+     * @ORM\Column(name="object_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *

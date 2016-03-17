@@ -5,28 +5,24 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2014 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Service;
 
 use Admin\Service\AdminService;
-use Admin\Service\AdminServiceAwareInterface;
 use BjyAuthorize\Service\Authorize;
-use Calendar\Acl\Assertion\AssertionAbstract;
 use Calendar\Entity;
 use Calendar\Entity\EntityAbstract;
+use Calendar\Options\ModuleOptions;
+use Contact\Service\ContactService;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * ServiceAbstract.
  */
-abstract class ServiceAbstract implements
-    ServiceLocatorAwareInterface,
-    ServiceInterface,
-    AdminServiceAwareInterface
+abstract class ServiceAbstract implements ServiceInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -45,9 +41,21 @@ abstract class ServiceAbstract implements
      */
     protected $serviceLocator;
     /**
-     * @var Options
+     * @var ContactService
      */
-    protected $options;
+    protected $contactService;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+    /**
+     * @var Authorize
+     */
+    protected $authorizeService;
+    /**
+     * @var Entity\Calendar
+     */
+    protected $calendar;
 
     /**
      * @param      $entity
@@ -96,10 +104,8 @@ abstract class ServiceAbstract implements
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
 
-        $this->getAdminService()->flushPermitsByEntityAndId(
-            $entity->get('underscore_full_entity_name'),
-            $entity->getId()
-        );
+        $this->getAdminService()
+            ->flushPermitsByEntityAndId($entity->get('underscore_full_entity_name'), $entity->getId());
 
         return $entity;
     }
@@ -145,73 +151,13 @@ abstract class ServiceAbstract implements
          */
         if (strpos($entity, '-') !== false) {
             $entity = explode('-', $entity);
-            $entity = $entity[0].ucfirst($entity[1]);
+            $entity = $entity[0] . ucfirst($entity[1]);
         }
 
-        return ucfirst(implode('', array_slice(explode('\\', __NAMESPACE__), 0, 1))).'\\'.'Entity'.'\\'.ucfirst(
-            $entity
-        );
+        return ucfirst(implode('', array_slice(explode('\\', __NAMESPACE__), 0, 1))) . '\\' . 'Entity' . '\\'
+        . ucfirst($entity);
     }
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return ServiceAbstract
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
-     * @return \Zend\ServiceManager\ServiceManager
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     */
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        if (null === $this->entityManager) {
-            $this->entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        }
-
-        return $this->entityManager;
-    }
-
-    /**
-     * @return AuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        if (null === $this->authenticationService) {
-            $this->authenticationService = $this->getServiceLocator()->get('zfcuser_auth_service');
-        }
-
-        return $this->authenticationService;
-    }
-
-    /**
-     * @return Authorize
-     */
-    public function getAuthorizeService()
-    {
-        return $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
-    }
 
     /**
      * @param EntityAbstract $entity
@@ -223,16 +169,50 @@ abstract class ServiceAbstract implements
          * @var AssertionAbstract
          */
         $assertion = $this->getServiceLocator()->get($assertion);
-        if (!$this->getAuthorizeService()->getAcl()->hasResource($entity)
-        ) {
+        if (!$this->getAuthorizeService()->getAcl()->hasResource($entity)) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
-            $this->getAuthorizeService()->getAcl()->allow(
-                [],
-                $entity,
-                [],
-                $assertion
-            );
+            $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
         }
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return ServiceAbstract
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        return $this;
+    }
+
+    /**
+     * @return AuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->authenticationService;
+    }
+
+    /**
+     * @param AuthenticationService $authenticationService
+     *
+     * @return ServiceAbstract
+     */
+    public function setAuthenticationService($authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+
+        return $this;
     }
 
     /**
@@ -248,9 +228,109 @@ abstract class ServiceAbstract implements
      *
      * @return ServiceAbstract
      */
-    public function setAdminService(AdminService $adminService)
+    public function setAdminService($adminService)
     {
         $this->adminService = $adminService;
+
+        return $this;
+    }
+
+    /**
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return ServiceAbstract
+     */
+    public function setServiceLocator($serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * @return ContactService
+     */
+    public function getContactService()
+    {
+        return $this->contactService;
+    }
+
+    /**
+     * @param ContactService $contactService
+     *
+     * @return ServiceAbstract
+     */
+    public function setContactService($contactService)
+    {
+        $this->contactService = $contactService;
+
+        return $this;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     *
+     * @return ServiceAbstract
+     */
+    public function setModuleOptions($moduleOptions)
+    {
+        $this->moduleOptions = $moduleOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return Entity\Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Entity\Calendar $calendar
+     *
+     * @return ServiceAbstract
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return Authorize
+     */
+    public function getAuthorizeService()
+    {
+        return $this->authorizeService;
+    }
+
+    /**
+     * @param Authorize $authorizeService
+     *
+     * @return ServiceAbstract
+     */
+    public function setAuthorizeService($authorizeService)
+    {
+        $this->authorizeService = $authorizeService;
 
         return $this;
     }

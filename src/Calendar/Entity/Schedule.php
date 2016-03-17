@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Entity;
@@ -23,7 +23,7 @@ use Zend\Form\Annotation;
 class Schedule
 {
     /**
-     * @ORM\Column(name="schedule_id", type="integer", nullable=false)
+     * @ORM\Column(name="schedule_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -68,43 +68,23 @@ class Schedule
     }
 
     /**
-     * @param \Calendar\Entity\Calendar $calendar
+     * @return int
      */
-    public function setCalendar($calendar)
+    public function getId()
     {
-        $this->calendar = $calendar;
+        return $this->id;
     }
 
     /**
-     * @return \Calendar\Entity\Calendar
+     * @param int $id
+     *
+     * @return Schedule
      */
-    public function getCalendar()
+    public function setId($id)
     {
-        return $this->calendar;
-    }
+        $this->id = $id;
 
-    /**
-     * @param \DateTime $dateEnd
-     */
-    public function setDateEnd($dateEnd)
-    {
-        $this->dateEnd = $dateEnd;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateEnd()
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * @param \DateTime $dateStart
-     */
-    public function setDateStart($dateStart)
-    {
-        $this->dateStart = $dateStart;
+        return $this;
     }
 
     /**
@@ -116,18 +96,74 @@ class Schedule
     }
 
     /**
-     * @param int $id
+     * @param \DateTime $dateStart
+     *
+     * @return Schedule
      */
-    public function setId($id)
+    public function setDateStart($dateStart)
     {
-        $this->id = $id;
+        $this->dateStart = $dateStart;
+
+        return $this;
     }
 
     /**
-     * @return int
+     * @return \DateTime
      */
-    public function getId()
+    public function getDateEnd()
     {
-        return $this->id;
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param \DateTime $dateEnd
+     *
+     * @return Schedule
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     *
+     * @return Schedule
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return ScheduleContact[]
+     */
+    public function getScheduleContact()
+    {
+        return $this->scheduleContact;
+    }
+
+    /**
+     * @param ScheduleContact[] $scheduleContact
+     *
+     * @return Schedule
+     */
+    public function setScheduleContact($scheduleContact)
+    {
+        $this->scheduleContact = $scheduleContact;
+
+        return $this;
     }
 }

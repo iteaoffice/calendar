@@ -6,11 +6,12 @@
  * @package    View
  * @subpackage Helper
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright  Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
+use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Content\Entity\Content;
 use Zend\Mvc\Router\Http\RouteMatch;
@@ -137,7 +138,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                     if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
-                        $this->setYear($this->getCalendarService()->getOptions()->getDefaultYear());
+                        $this->setYear($this->getModuleOptions()->getDefaultYear());
                     } else {
                         $this->setYear($param->getParameterId());
                     }
@@ -204,6 +205,14 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
     }
 
     /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->getServiceLocator()->get(ModuleOptions::class);
+    }
+
+    /**
      * @param $id
      *
      * @return CalendarService
@@ -256,12 +265,12 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_UPCOMING,
-                $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity()
+                $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity()
             )
             ->setMaxResults((int)$this->getLimit())
             ->getResult();
         return $this->getRenderer()->render(
-            $this->getCalendarService()->getOptions()->getCalendarUpcomingTemplate(),
+            $this->getModuleOptions()->getCalendarUpcomingTemplate(),
             ['calendarItems' => $calendarItems]
         );
     }
@@ -308,7 +317,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
                 CalendarService::WHICH_PAST,
-                $this->getServiceLocator()->get('zfcuser_auth_service')->getIdentity(),
+                $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity(),
                 $this->getYear(),
                 $this->getType()
             )
@@ -316,7 +325,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
             ->getResult();
 
         return $this->getRenderer()->render(
-            $this->getCalendarService()->getOptions()->getCalendarPastTemplate(),
+            $this->getModuleOptions()->getCalendarPastTemplate(),
             ['calendarItems' => $calendarItems]
         );
     }

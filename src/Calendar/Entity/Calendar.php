@@ -5,7 +5,7 @@
  * @category  Calendar
  * @package   Entity
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2014 ITEA Office (http://itea3.org)
+ * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
  */
 namespace Calendar\Entity;
 
@@ -67,7 +67,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
         self::ON_HOMEPAGE     => 'txt-on-homepage',
     ];
     /**
-     * @ORM\Column(name="calendar_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_id", length=10, type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()
@@ -449,7 +449,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
                 $factory->createInput(
                     [
                         'name'       => 'dateEnd',
-                        'required'   => true,
+                        'required'   => false,
                         'filters'    => [
                             ['name' => 'StripTags'],
                             ['name' => 'StringTrim'],
@@ -465,13 +465,13 @@ class Calendar extends EntityAbstract implements ResourceInterface
                                 'name'    => 'Callback',
                                 'options' => [
                                     'messages' => [
-                                        Callback::INVALID_VALUE => 'The end date should be greater than start date',
+                                        Callback::INVALID_VALUE => 'The end date cannot be smaller than start date',
                                     ],
                                     'callback' => function ($value, $context = []) {
                                         $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
                                         $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
-                                        return $dateEnd > $dateFrom;
+                                        return $dateEnd >= $dateFrom;
                                     },
                                 ],
                             ],
