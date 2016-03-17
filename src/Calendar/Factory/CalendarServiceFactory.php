@@ -15,6 +15,7 @@
 namespace Calendar\Factory;
 
 use Admin\Service\AdminService;
+use BjyAuthorize\Service\Authorize;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Contact\Service\ContactService;
@@ -43,9 +44,9 @@ class CalendarServiceFactory implements FactoryInterface
         $entityManager = $serviceLocator->get(EntityManager::class);
         $calendarService->setEntityManager($entityManager);
 
-        /** @var  $authorizeService */
-        //$authorizeService = $serviceLocator->get(Authorize::class);
-        //$calendarService->setAuthorizeService($authorizeService);
+        /** @var Authorize $authorizeService */
+        $authorizeService = $serviceLocator->get(Authorize::class);
+        $calendarService->setAuthorizeService($authorizeService);
 
         /** @var ContactService $contactService */
         $contactService = $serviceLocator->get(ContactService::class);

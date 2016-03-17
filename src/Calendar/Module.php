@@ -15,20 +15,13 @@ namespace Calendar;
 use Calendar\Controller\Plugin\RenderCalendarContactList;
 use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Calendar\Navigation;
-use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature;
-use Zend\Mvc\Application;
 use Zend\Mvc\Controller\PluginManager;
-use Zend\Mvc\MvcEvent;
 
 /**
  * @author
  */
-class Module implements
-    Feature\AutoloaderProviderInterface,
-    Feature\ServiceProviderInterface,
-    Feature\ConfigProviderInterface,
-    Feature\BootstrapListenerInterface
+class Module implements Feature\AutoloaderProviderInterface, Feature\ServiceProviderInterface, Feature\ConfigProviderInterface
 {
     public function getAutoloaderConfig()
     {
@@ -94,25 +87,5 @@ class Module implements
                 },
             ],
         ];
-    }
-
-    /**
-     * Listen to the bootstrap event.
-     *
-     * @param EventInterface $e
-     *
-     * @return array
-     */
-    public function onBootstrap(EventInterface $e)
-    {
-        /**
-         * @var $app Application
-         */
-        $app = $e->getParam('application');
-        $em = $app->getEventManager();
-        $em->attach(MvcEvent::EVENT_DISPATCH, function (MvcEvent $event) {
-            $event->getApplication()->getServiceManager()->get(Navigation\Service\CalendarNavigationService::class)
-                ->update();
-        });
     }
 }

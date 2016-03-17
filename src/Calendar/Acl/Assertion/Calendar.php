@@ -25,10 +25,10 @@ class Calendar extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl $acl
-     * @param RoleInterface $role
+     * @param Acl               $acl
+     * @param RoleInterface     $role
      * @param ResourceInterface $resource
-     * @param string $privilege
+     * @param string            $privilege
      *
      * @return bool
      */
@@ -57,7 +57,6 @@ class Calendar extends AssertionAbstract
             $this->getCalendarService()->setCalendar($resource);
         }
 
-      
 
         switch ($privilege) {
             case 'edit':
@@ -77,7 +76,9 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())
+                    ) {
                         return true;
                     }
                 }
@@ -93,7 +94,9 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'edit', $resource->getProjectCalendar()->getProject())
+                    ) {
                         return true;
                     }
                 }
@@ -127,7 +130,9 @@ class Calendar extends AssertionAbstract
                  * The project leader also has rights to invite users
                  */
                 if (!is_null($resource->getProjectCalendar())) {
-                    if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $resource->getProjectCalendar()->getProject())) {
+                    if ($this->getContactService()
+                        ->contactHasPermit($this->getContact(), 'view', $resource->getProjectCalendar()->getProject())
+                    ) {
                         return true;
                     }
                 }
@@ -135,7 +140,7 @@ class Calendar extends AssertionAbstract
                 return $this->rolesHaveAccess($resource->getType()->getAccess());
 
             case 'view':
-                return $this->getCalendarService()->canViewCalendar($this->getContactService()->getContact());
+                return $this->getCalendarService()->canViewCalendar($this->getContact());
 
         }
 

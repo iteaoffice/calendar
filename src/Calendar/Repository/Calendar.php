@@ -203,17 +203,18 @@ class Calendar extends EntityRepository
         $qb->select('c');
         $qb->from("Calendar\Entity\Calendar", 'c');
 
-        if (is_null($contact)) {
+        if ($contact->isEmpty()) {
             $contact = new Contact();
             $contact->setId(0);
             $access = new Access();
-            $access->setAccess(Access::ACCESS_PUBLIC);
+            $access->setAccess(strtolower(Access::ACCESS_PUBLIC));
             $contact->setAccess([$access]);
         }
 
         $qb = $this->filterForAccess($qb, $contact);
         $qb->andWhere('c = ?100');
         $qb->setParameter(100, $calendar);
+
 
         return !is_null($qb->getQuery()->getOneOrNullResult());
     }
@@ -232,13 +233,15 @@ class Calendar extends EntityRepository
         $subSelect->from('Calendar\Entity\Type', 'type');
         $subSelect->join('type.access', 'access');
         $subSelect->andWhere($qb->expr()
-            ->in('access.access', array_merge_recursive([Access::ACCESS_PUBLIC], $contact->getRoles())));
+            ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles())));
+
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
         $subSelectCalendarContact->select('calendar2');
         $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
         $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
         $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
+
         $qb->andWhere($qb->expr()->orX(
             $qb->expr()->in(
                 'c.type',

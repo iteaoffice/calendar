@@ -29,13 +29,12 @@ $config = [
     ],
     'service_manager' => [
         'factories'          => [
-            Service\CalendarService::class                      => Factory\CalendarServiceFactory::class,
-            Service\FormService::class                          => Factory\FormServiceFactory::class,
-            Options\ModuleOptions::class                        => Factory\ModuleOptionsFactory::class,
+            Service\CalendarService::class => Factory\CalendarServiceFactory::class,
+            Service\FormService::class     => Factory\FormServiceFactory::class,
+            Options\ModuleOptions::class   => Factory\ModuleOptionsFactory::class,
             //Acl\Assertion\Calendar::class,
             //Acl\Assertion\Contact::class,
             //Acl\Assertion\Document::class,
-            Navigation\Service\CalendarNavigationService::class => Navigation\Factory\CalendarNavigationServiceFactory::class,
         ],
         'invokables'         => [
             'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',

@@ -25,10 +25,10 @@ class Document extends AssertionAbstract
      * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl $acl
-     * @param RoleInterface $role
+     * @param Acl               $acl
+     * @param RoleInterface     $role
      * @param ResourceInterface $resource
-     * @param string $privilege
+     * @param string            $privilege
      *
      * @return bool
      */
@@ -65,10 +65,10 @@ class Document extends AssertionAbstract
         switch ($privilege) {
             case 'document-community':
             case 'download':
-                return $this->getCalendarService()
-                    ->canViewCalendar($this->getContactService()->getContact());
+                return $this->getCalendarService()->canViewCalendar($this->getContact());
             case 'edit-community':
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $resource->getCalendar())
+                if ($this->getContactService()
+                    ->contactHasPermit($this->getContact(), 'edit', $resource->getCalendar())
                 ) {
                     return true;
                 }
