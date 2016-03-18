@@ -9,7 +9,7 @@
          backupGlobals="false"
          syntaxCheck="true"
 >
-    <testsuite name="iteaoffice/calendar Test Suite">
+    <testsuite name="iteaoffice/calendar">
         <directory>./tests/CalendarTest</directory>
     </testsuite>
     <filter>

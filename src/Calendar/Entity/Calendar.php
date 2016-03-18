@@ -240,13 +240,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
     private $call;
 
     /**
-     * @ORM\OneToOne(targetEntity="Ambassador\Entity\Calendar", cascade={"persist","remove"}, mappedBy="calendar")
-     * @Annotation\Exclude()
-     * @var \Ambassador\Entity\Calendar
-     */
-    private $ambassadorCalendar;
-
-    /**
      * Class constructor
      */
     public function __construct()
@@ -538,22 +531,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function setCalendarContact($calendarContact)
     {
         $this->calendarContact = $calendarContact;
-    }
-
-    /**
-     * @return \Ambassador\Entity\Calendar[]|Collections\ArrayCollection
-     */
-    public function getAmbassadorCalendar()
-    {
-        return $this->ambassadorCalendar;
-    }
-
-    /**
-     * @param \Ambassador\Entity\Calendar[] $ambassadorCalendar
-     */
-    public function setAmbassadorCalendar($ambassadorCalendar)
-    {
-        $this->ambassadorCalendar = $ambassadorCalendar;
     }
 
     /**
