@@ -17,12 +17,6 @@ use Calendar\View\Helper;
 
 $config = [
     'controllers'     => [
-        'invokables'         => [
-            //Controller\CalendarController::class         ,
-            //Controller\CalendarCommunityController::class,
-            //Controller\CalendarManagerController::class  ,
-            //Controller\CalendarDocumentController::class ,
-        ],
         'abstract_factories' => [
             Controller\Factory\ControllerInvokableAbstractFactory::class,
         ]
@@ -32,9 +26,6 @@ $config = [
             Service\CalendarService::class => Factory\CalendarServiceFactory::class,
             Service\FormService::class     => Factory\FormServiceFactory::class,
             Options\ModuleOptions::class   => Factory\ModuleOptionsFactory::class,
-            //Acl\Assertion\Calendar::class,
-            //Acl\Assertion\Contact::class,
-            //Acl\Assertion\Document::class,
         ],
         'invokables'         => [
             'calendar_calendar_form_filter' => 'Calendar\Form\FilterCreateObject',
@@ -55,7 +46,7 @@ $config = [
         'driver'       => [
             'calendar_annotation_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'paths' => [__DIR__ . '/../src/Calendar/Entity/']
+                'paths' => [__DIR__ . '/../src/Entity/']
             ],
             'orm_default'                => [
                 'drivers' => [

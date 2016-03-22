@@ -30,8 +30,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Calendar\\": "src/Calendar/",
-      "CalendarTest\\": "tests/CalendarTest/"
+      "Calendar\\": "src/",
+      "CalendarTest\\": "tests/"
     }
   },
   "config": {

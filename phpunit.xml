@@ -1,4 +1,4 @@
-<phpunit bootstrap="tests/CalendarTest/Bootstrap.php"
+<phpunit bootstrap="tests/Bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -10,7 +10,7 @@
          syntaxCheck="true"
 >
     <testsuite name="iteaoffice/calendar">
-        <directory>./tests/CalendarTest</directory>
+        <directory>./tests</directory>
     </testsuite>
     <filter>
         <whitelist>
