@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1458667837">
-  <project timestamp="1458667837">
+<coverage generated="1458892080">
+  <project timestamp="1458892080">
     <package name="Calendar\Acl\Assertion">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/AssertionAbstract.php">
         <class name="AssertionAbstract" namespace="Calendar\Acl\Assertion" category="Calendar">
@@ -288,126 +288,129 @@
         <class name="CalendarAbstractController" namespace="Calendar\Controller">
           <metrics complexity="25" methods="25" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="113" coveredelements="0"/>
         </class>
-        <line num="85" type="method" name="getFormService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="86" type="stmt" count="0"/>
-        <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
-        <line num="95" type="method" name="setFormService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="96" type="stmt" count="0"/>
-        <line num="97" type="stmt" count="0"/>
-        <line num="99" type="stmt" count="0"/>
+        <line num="89" type="method" name="getFormService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="99" type="method" name="setFormService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="100" type="stmt" count="0"/>
-        <line num="105" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="115" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <line num="117" type="stmt" count="0"/>
-        <line num="119" type="stmt" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
+        <line num="109" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="119" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="120" type="stmt" count="0"/>
-        <line num="125" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="126" type="stmt" count="0"/>
-        <line num="127" type="stmt" count="0"/>
-        <line num="128" type="stmt" count="0"/>
-        <line num="135" type="method" name="setCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="136" type="stmt" count="0"/>
-        <line num="137" type="stmt" count="0"/>
-        <line num="139" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="0"/>
+        <line num="124" type="stmt" count="0"/>
+        <line num="129" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="131" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="139" type="method" name="setCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="140" type="stmt" count="0"/>
-        <line num="145" type="method" name="getGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="146" type="stmt" count="0"/>
-        <line num="147" type="stmt" count="0"/>
-        <line num="148" type="stmt" count="0"/>
-        <line num="155" type="method" name="setGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="156" type="stmt" count="0"/>
-        <line num="157" type="stmt" count="0"/>
-        <line num="159" type="stmt" count="0"/>
+        <line num="141" type="stmt" count="0"/>
+        <line num="143" type="stmt" count="0"/>
+        <line num="144" type="stmt" count="0"/>
+        <line num="149" type="method" name="getGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="159" type="method" name="setGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="160" type="stmt" count="0"/>
-        <line num="165" type="method" name="getWorkpackageService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="166" type="stmt" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
-        <line num="175" type="method" name="setWorkpackageService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="176" type="stmt" count="0"/>
-        <line num="177" type="stmt" count="0"/>
-        <line num="179" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="164" type="stmt" count="0"/>
+        <line num="169" type="method" name="getWorkpackageService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="170" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="172" type="stmt" count="0"/>
+        <line num="179" type="method" name="setWorkpackageService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="180" type="stmt" count="0"/>
-        <line num="185" type="method" name="getProjectService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="186" type="stmt" count="0"/>
-        <line num="187" type="stmt" count="0"/>
-        <line num="188" type="stmt" count="0"/>
-        <line num="195" type="method" name="setProjectService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="196" type="stmt" count="0"/>
-        <line num="197" type="stmt" count="0"/>
-        <line num="199" type="stmt" count="0"/>
+        <line num="181" type="stmt" count="0"/>
+        <line num="183" type="stmt" count="0"/>
+        <line num="184" type="stmt" count="0"/>
+        <line num="189" type="method" name="getProjectService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="190" type="stmt" count="0"/>
+        <line num="191" type="stmt" count="0"/>
+        <line num="192" type="stmt" count="0"/>
+        <line num="199" type="method" name="setProjectService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="200" type="stmt" count="0"/>
-        <line num="205" type="method" name="getEmailService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="206" type="stmt" count="0"/>
-        <line num="207" type="stmt" count="0"/>
-        <line num="208" type="stmt" count="0"/>
-        <line num="215" type="method" name="setEmailService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="216" type="stmt" count="0"/>
-        <line num="217" type="stmt" count="0"/>
-        <line num="219" type="stmt" count="0"/>
+        <line num="201" type="stmt" count="0"/>
+        <line num="203" type="stmt" count="0"/>
+        <line num="204" type="stmt" count="0"/>
+        <line num="209" type="method" name="getEmailService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="210" type="stmt" count="0"/>
+        <line num="211" type="stmt" count="0"/>
+        <line num="212" type="stmt" count="0"/>
+        <line num="219" type="method" name="setEmailService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="220" type="stmt" count="0"/>
-        <line num="229" type="method" name="translate" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="230" type="stmt" count="0"/>
+        <line num="221" type="stmt" count="0"/>
+        <line num="223" type="stmt" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="233" type="method" name="translate" visibility="protected" complexity="1" crap="2" count="0"/>
         <line num="234" type="stmt" count="0"/>
-        <line num="236" type="stmt" count="0"/>
-        <line num="237" type="stmt" count="0"/>
-        <line num="242" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="243" type="stmt" count="0"/>
-        <line num="244" type="stmt" count="0"/>
-        <line num="245" type="stmt" count="0"/>
-        <line num="252" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="253" type="stmt" count="0"/>
-        <line num="254" type="stmt" count="0"/>
-        <line num="256" type="stmt" count="0"/>
+        <line num="238" type="stmt" count="0"/>
+        <line num="240" type="stmt" count="0"/>
+        <line num="241" type="stmt" count="0"/>
+        <line num="246" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="247" type="stmt" count="0"/>
+        <line num="248" type="stmt" count="0"/>
+        <line num="249" type="stmt" count="0"/>
+        <line num="256" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="257" type="stmt" count="0"/>
-        <line num="262" type="method" name="getSelectionService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="263" type="stmt" count="0"/>
-        <line num="264" type="stmt" count="0"/>
-        <line num="265" type="stmt" count="0"/>
-        <line num="272" type="method" name="setSelectionService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="273" type="stmt" count="0"/>
-        <line num="274" type="stmt" count="0"/>
-        <line num="276" type="stmt" count="0"/>
+        <line num="258" type="stmt" count="0"/>
+        <line num="260" type="stmt" count="0"/>
+        <line num="261" type="stmt" count="0"/>
+        <line num="266" type="method" name="getSelectionService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="267" type="stmt" count="0"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="269" type="stmt" count="0"/>
+        <line num="276" type="method" name="setSelectionService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="277" type="stmt" count="0"/>
-        <line num="282" type="method" name="getEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="283" type="stmt" count="0"/>
-        <line num="284" type="stmt" count="0"/>
-        <line num="285" type="stmt" count="0"/>
-        <line num="292" type="method" name="setEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="293" type="stmt" count="0"/>
-        <line num="294" type="stmt" count="0"/>
-        <line num="296" type="stmt" count="0"/>
+        <line num="278" type="stmt" count="0"/>
+        <line num="280" type="stmt" count="0"/>
+        <line num="281" type="stmt" count="0"/>
+        <line num="286" type="method" name="getEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="287" type="stmt" count="0"/>
+        <line num="288" type="stmt" count="0"/>
+        <line num="289" type="stmt" count="0"/>
+        <line num="296" type="method" name="setEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="297" type="stmt" count="0"/>
-        <line num="302" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="303" type="stmt" count="0"/>
-        <line num="304" type="stmt" count="0"/>
-        <line num="305" type="stmt" count="0"/>
-        <line num="312" type="method" name="setModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="313" type="stmt" count="0"/>
-        <line num="314" type="stmt" count="0"/>
-        <line num="316" type="stmt" count="0"/>
+        <line num="298" type="stmt" count="0"/>
+        <line num="300" type="stmt" count="0"/>
+        <line num="301" type="stmt" count="0"/>
+        <line num="306" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="307" type="stmt" count="0"/>
+        <line num="308" type="stmt" count="0"/>
+        <line num="309" type="stmt" count="0"/>
+        <line num="316" type="method" name="setModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="317" type="stmt" count="0"/>
-        <line num="322" type="method" name="getRenderer" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="323" type="stmt" count="0"/>
-        <line num="324" type="stmt" count="0"/>
-        <line num="325" type="stmt" count="0"/>
-        <line num="332" type="method" name="setRenderer" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="333" type="stmt" count="0"/>
-        <line num="334" type="stmt" count="0"/>
-        <line num="336" type="stmt" count="0"/>
+        <line num="318" type="stmt" count="0"/>
+        <line num="320" type="stmt" count="0"/>
+        <line num="321" type="stmt" count="0"/>
+        <line num="326" type="method" name="getRenderer" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="327" type="stmt" count="0"/>
+        <line num="328" type="stmt" count="0"/>
+        <line num="329" type="stmt" count="0"/>
+        <line num="336" type="method" name="setRenderer" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="337" type="stmt" count="0"/>
-        <metrics loc="338" ncloc="186" classes="1" methods="25" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="113" coveredelements="0"/>
+        <line num="338" type="stmt" count="0"/>
+        <line num="340" type="stmt" count="0"/>
+        <line num="341" type="stmt" count="0"/>
+        <metrics loc="342" ncloc="188" classes="1" methods="25" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="0" elements="113" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Controller/CalendarCommunityController.php">
         <class name="CalendarCommunityController" namespace="Calendar\Controller">
           <metrics complexity="38" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="280" coveredstatements="0" elements="290" coveredelements="0"/>
         </class>
-        <line num="41" type="method" name="overviewAction" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="38" type="method" name="overviewAction" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
         <line num="44" type="stmt" count="0"/>
@@ -415,74 +418,74 @@
         <line num="46" type="stmt" count="0"/>
         <line num="47" type="stmt" count="0"/>
         <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
         <line num="50" type="stmt" count="0"/>
         <line num="51" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
         <line num="54" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
         <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="58" type="stmt" count="0"/>
-        <line num="59" type="stmt" count="0"/>
-        <line num="66" type="method" name="contactAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="63" type="method" name="contactAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
-        <line num="69" type="stmt" count="0"/>
         <line num="70" type="stmt" count="0"/>
         <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
         <line num="73" type="stmt" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="75" type="stmt" count="0"/>
-        <line num="76" type="stmt" count="0"/>
-        <line num="83" type="method" name="reviewCalendarAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="80" type="method" name="reviewCalendarAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
-        <line num="85" type="stmt" count="0"/>
         <line num="86" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
+        <line num="88" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
-        <line num="90" type="stmt" count="0"/>
-        <line num="91" type="stmt" count="0"/>
-        <line num="92" type="stmt" count="0"/>
-        <line num="99" type="method" name="downloadReviewCalendarAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="96" type="method" name="downloadReviewCalendarAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
         <line num="100" type="stmt" count="0"/>
-        <line num="101" type="stmt" count="0"/>
         <line num="102" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
         <line num="108" type="stmt" count="0"/>
         <line num="109" type="stmt" count="0"/>
         <line num="110" type="stmt" count="0"/>
-        <line num="111" type="stmt" count="0"/>
         <line num="112" type="stmt" count="0"/>
         <line num="113" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <line num="121" type="method" name="calendarAction" visibility="public" complexity="6" crap="42" count="0"/>
+        <line num="118" type="method" name="calendarAction" visibility="public" complexity="6" crap="42" count="0"/>
+        <line num="119" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="121" type="stmt" count="0"/>
         <line num="122" type="stmt" count="0"/>
         <line num="123" type="stmt" count="0"/>
-        <line num="124" type="stmt" count="0"/>
         <line num="125" type="stmt" count="0"/>
         <line num="126" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
         <line num="128" type="stmt" count="0"/>
         <line num="129" type="stmt" count="0"/>
         <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
-        <line num="132" type="stmt" count="0"/>
         <line num="133" type="stmt" count="0"/>
         <line num="134" type="stmt" count="0"/>
-        <line num="136" type="stmt" count="0"/>
+        <line num="135" type="stmt" count="0"/>
         <line num="137" type="stmt" count="0"/>
         <line num="138" type="stmt" count="0"/>
-        <line num="140" type="stmt" count="0"/>
-        <line num="141" type="stmt" count="0"/>
-        <line num="142" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="146" type="stmt" count="0"/>
+        <line num="147" type="stmt" count="0"/>
         <line num="148" type="stmt" count="0"/>
         <line num="149" type="stmt" count="0"/>
-        <line num="150" type="stmt" count="0"/>
-        <line num="151" type="stmt" count="0"/>
         <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="154" type="stmt" count="0"/>
         <line num="155" type="stmt" count="0"/>
         <line num="156" type="stmt" count="0"/>
         <line num="157" type="stmt" count="0"/>
@@ -493,73 +496,73 @@
         <line num="162" type="stmt" count="0"/>
         <line num="163" type="stmt" count="0"/>
         <line num="164" type="stmt" count="0"/>
-        <line num="165" type="stmt" count="0"/>
-        <line num="166" type="stmt" count="0"/>
-        <line num="167" type="stmt" count="0"/>
+        <line num="170" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="172" type="stmt" count="0"/>
         <line num="173" type="stmt" count="0"/>
-        <line num="174" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
-        <line num="176" type="stmt" count="0"/>
+        <line num="178" type="stmt" count="0"/>
+        <line num="180" type="stmt" count="0"/>
         <line num="181" type="stmt" count="0"/>
+        <line num="182" type="stmt" count="0"/>
         <line num="183" type="stmt" count="0"/>
         <line num="184" type="stmt" count="0"/>
         <line num="185" type="stmt" count="0"/>
-        <line num="186" type="stmt" count="0"/>
         <line num="187" type="stmt" count="0"/>
         <line num="188" type="stmt" count="0"/>
+        <line num="189" type="stmt" count="0"/>
         <line num="190" type="stmt" count="0"/>
         <line num="191" type="stmt" count="0"/>
         <line num="192" type="stmt" count="0"/>
         <line num="193" type="stmt" count="0"/>
-        <line num="194" type="stmt" count="0"/>
-        <line num="195" type="stmt" count="0"/>
-        <line num="196" type="stmt" count="0"/>
-        <line num="201" type="method" name="updateStatusAction" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="202" type="stmt" count="0"/>
-        <line num="203" type="stmt" count="0"/>
+        <line num="198" type="method" name="updateStatusAction" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="199" type="stmt" count="0"/>
+        <line num="200" type="stmt" count="0"/>
+        <line num="201" type="stmt" count="0"/>
         <line num="204" type="stmt" count="0"/>
+        <line num="206" type="stmt" count="0"/>
         <line num="207" type="stmt" count="0"/>
+        <line num="208" type="stmt" count="0"/>
         <line num="209" type="stmt" count="0"/>
         <line num="210" type="stmt" count="0"/>
-        <line num="211" type="stmt" count="0"/>
         <line num="212" type="stmt" count="0"/>
         <line num="213" type="stmt" count="0"/>
+        <line num="214" type="stmt" count="0"/>
         <line num="215" type="stmt" count="0"/>
-        <line num="216" type="stmt" count="0"/>
-        <line num="217" type="stmt" count="0"/>
-        <line num="218" type="stmt" count="0"/>
-        <line num="225" type="method" name="selectAttendeesAction" visibility="public" complexity="12" crap="156" count="0"/>
+        <line num="222" type="method" name="selectAttendeesAction" visibility="public" complexity="12" crap="156" count="0"/>
+        <line num="223" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
         <line num="226" type="stmt" count="0"/>
+        <line num="227" type="stmt" count="0"/>
         <line num="228" type="stmt" count="0"/>
-        <line num="229" type="stmt" count="0"/>
         <line num="230" type="stmt" count="0"/>
-        <line num="231" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="0"/>
         <line num="233" type="stmt" count="0"/>
+        <line num="234" type="stmt" count="0"/>
         <line num="235" type="stmt" count="0"/>
         <line num="236" type="stmt" count="0"/>
         <line num="237" type="stmt" count="0"/>
         <line num="238" type="stmt" count="0"/>
-        <line num="239" type="stmt" count="0"/>
         <line num="240" type="stmt" count="0"/>
         <line num="241" type="stmt" count="0"/>
         <line num="243" type="stmt" count="0"/>
         <line num="244" type="stmt" count="0"/>
+        <line num="245" type="stmt" count="0"/>
         <line num="246" type="stmt" count="0"/>
         <line num="247" type="stmt" count="0"/>
         <line num="248" type="stmt" count="0"/>
         <line num="249" type="stmt" count="0"/>
         <line num="250" type="stmt" count="0"/>
-        <line num="251" type="stmt" count="0"/>
         <line num="252" type="stmt" count="0"/>
         <line num="253" type="stmt" count="0"/>
         <line num="255" type="stmt" count="0"/>
         <line num="256" type="stmt" count="0"/>
         <line num="258" type="stmt" count="0"/>
         <line num="259" type="stmt" count="0"/>
-        <line num="261" type="stmt" count="0"/>
+        <line num="260" type="stmt" count="0"/>
         <line num="262" type="stmt" count="0"/>
-        <line num="263" type="stmt" count="0"/>
-        <line num="265" type="stmt" count="0"/>
+        <line num="267" type="stmt" count="0"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="269" type="stmt" count="0"/>
         <line num="270" type="stmt" count="0"/>
         <line num="271" type="stmt" count="0"/>
         <line num="272" type="stmt" count="0"/>
@@ -570,39 +573,39 @@
         <line num="277" type="stmt" count="0"/>
         <line num="278" type="stmt" count="0"/>
         <line num="279" type="stmt" count="0"/>
-        <line num="280" type="stmt" count="0"/>
-        <line num="281" type="stmt" count="0"/>
         <line num="282" type="stmt" count="0"/>
+        <line num="283" type="stmt" count="0"/>
+        <line num="284" type="stmt" count="0"/>
         <line num="285" type="stmt" count="0"/>
         <line num="286" type="stmt" count="0"/>
-        <line num="287" type="stmt" count="0"/>
         <line num="288" type="stmt" count="0"/>
-        <line num="289" type="stmt" count="0"/>
+        <line num="290" type="stmt" count="0"/>
         <line num="291" type="stmt" count="0"/>
+        <line num="292" type="stmt" count="0"/>
         <line num="293" type="stmt" count="0"/>
         <line num="294" type="stmt" count="0"/>
-        <line num="295" type="stmt" count="0"/>
         <line num="296" type="stmt" count="0"/>
         <line num="297" type="stmt" count="0"/>
+        <line num="298" type="stmt" count="0"/>
         <line num="299" type="stmt" count="0"/>
         <line num="300" type="stmt" count="0"/>
         <line num="301" type="stmt" count="0"/>
         <line num="302" type="stmt" count="0"/>
-        <line num="303" type="stmt" count="0"/>
         <line num="304" type="stmt" count="0"/>
         <line num="305" type="stmt" count="0"/>
+        <line num="306" type="stmt" count="0"/>
         <line num="307" type="stmt" count="0"/>
         <line num="308" type="stmt" count="0"/>
-        <line num="309" type="stmt" count="0"/>
-        <line num="310" type="stmt" count="0"/>
-        <line num="311" type="stmt" count="0"/>
-        <line num="316" type="method" name="presenceListAction" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="313" type="method" name="presenceListAction" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="314" type="stmt" count="0"/>
+        <line num="315" type="stmt" count="0"/>
+        <line num="316" type="stmt" count="0"/>
         <line num="317" type="stmt" count="0"/>
         <line num="318" type="stmt" count="0"/>
-        <line num="319" type="stmt" count="0"/>
         <line num="320" type="stmt" count="0"/>
-        <line num="321" type="stmt" count="0"/>
+        <line num="322" type="stmt" count="0"/>
         <line num="323" type="stmt" count="0"/>
+        <line num="324" type="stmt" count="0"/>
         <line num="325" type="stmt" count="0"/>
         <line num="326" type="stmt" count="0"/>
         <line num="327" type="stmt" count="0"/>
@@ -610,94 +613,91 @@
         <line num="329" type="stmt" count="0"/>
         <line num="330" type="stmt" count="0"/>
         <line num="331" type="stmt" count="0"/>
-        <line num="332" type="stmt" count="0"/>
         <line num="333" type="stmt" count="0"/>
         <line num="334" type="stmt" count="0"/>
-        <line num="336" type="stmt" count="0"/>
-        <line num="337" type="stmt" count="0"/>
-        <line num="344" type="method" name="sendMessageAction" visibility="public" complexity="6" crap="42" count="0"/>
+        <line num="341" type="method" name="sendMessageAction" visibility="public" complexity="6" crap="42" count="0"/>
+        <line num="342" type="stmt" count="0"/>
+        <line num="343" type="stmt" count="0"/>
+        <line num="344" type="stmt" count="0"/>
         <line num="345" type="stmt" count="0"/>
         <line num="346" type="stmt" count="0"/>
-        <line num="347" type="stmt" count="0"/>
         <line num="348" type="stmt" count="0"/>
-        <line num="349" type="stmt" count="0"/>
+        <line num="350" type="stmt" count="0"/>
         <line num="351" type="stmt" count="0"/>
         <line num="353" type="stmt" count="0"/>
         <line num="354" type="stmt" count="0"/>
         <line num="356" type="stmt" count="0"/>
         <line num="357" type="stmt" count="0"/>
+        <line num="358" type="stmt" count="0"/>
         <line num="359" type="stmt" count="0"/>
         <line num="360" type="stmt" count="0"/>
         <line num="361" type="stmt" count="0"/>
         <line num="362" type="stmt" count="0"/>
         <line num="363" type="stmt" count="0"/>
-        <line num="364" type="stmt" count="0"/>
-        <line num="365" type="stmt" count="0"/>
-        <line num="366" type="stmt" count="0"/>
-        <line num="370" type="stmt" count="0"/>
-        <line num="371" type="stmt" count="0"/>
-        <line num="372" type="stmt" count="0"/>
-        <line num="376" type="stmt" count="0"/>
+        <line num="367" type="stmt" count="0"/>
+        <line num="368" type="stmt" count="0"/>
+        <line num="369" type="stmt" count="0"/>
+        <line num="373" type="stmt" count="0"/>
+        <line num="374" type="stmt" count="0"/>
+        <line num="375" type="stmt" count="0"/>
         <line num="377" type="stmt" count="0"/>
         <line num="378" type="stmt" count="0"/>
+        <line num="379" type="stmt" count="0"/>
         <line num="380" type="stmt" count="0"/>
         <line num="381" type="stmt" count="0"/>
-        <line num="382" type="stmt" count="0"/>
         <line num="383" type="stmt" count="0"/>
         <line num="384" type="stmt" count="0"/>
         <line num="386" type="stmt" count="0"/>
-        <line num="387" type="stmt" count="0"/>
+        <line num="388" type="stmt" count="0"/>
         <line num="389" type="stmt" count="0"/>
+        <line num="390" type="stmt" count="0"/>
         <line num="391" type="stmt" count="0"/>
         <line num="392" type="stmt" count="0"/>
-        <line num="393" type="stmt" count="0"/>
         <line num="394" type="stmt" count="0"/>
         <line num="395" type="stmt" count="0"/>
+        <line num="396" type="stmt" count="0"/>
         <line num="397" type="stmt" count="0"/>
         <line num="398" type="stmt" count="0"/>
         <line num="399" type="stmt" count="0"/>
         <line num="400" type="stmt" count="0"/>
-        <line num="401" type="stmt" count="0"/>
         <line num="402" type="stmt" count="0"/>
         <line num="403" type="stmt" count="0"/>
+        <line num="404" type="stmt" count="0"/>
         <line num="405" type="stmt" count="0"/>
         <line num="406" type="stmt" count="0"/>
-        <line num="407" type="stmt" count="0"/>
-        <line num="408" type="stmt" count="0"/>
-        <line num="409" type="stmt" count="0"/>
-        <line num="414" type="method" name="downloadBinderAction" visibility="public" complexity="5" crap="30" count="0"/>
-        <line num="415" type="stmt" count="0"/>
+        <line num="411" type="method" name="downloadBinderAction" visibility="public" complexity="5" crap="30" count="0"/>
+        <line num="412" type="stmt" count="0"/>
+        <line num="413" type="stmt" count="0"/>
+        <line num="414" type="stmt" count="0"/>
         <line num="416" type="stmt" count="0"/>
-        <line num="417" type="stmt" count="0"/>
+        <line num="418" type="stmt" count="0"/>
         <line num="419" type="stmt" count="0"/>
-        <line num="421" type="stmt" count="0"/>
-        <line num="422" type="stmt" count="0"/>
+        <line num="420" type="stmt" count="0"/>
         <line num="423" type="stmt" count="0"/>
-        <line num="426" type="stmt" count="0"/>
-        <line num="431" type="stmt" count="0"/>
+        <line num="428" type="stmt" count="0"/>
+        <line num="429" type="stmt" count="0"/>
+        <line num="430" type="stmt" count="0"/>
         <line num="432" type="stmt" count="0"/>
         <line num="433" type="stmt" count="0"/>
         <line num="435" type="stmt" count="0"/>
         <line num="436" type="stmt" count="0"/>
+        <line num="437" type="stmt" count="0"/>
         <line num="438" type="stmt" count="0"/>
         <line num="439" type="stmt" count="0"/>
         <line num="440" type="stmt" count="0"/>
         <line num="441" type="stmt" count="0"/>
         <line num="442" type="stmt" count="0"/>
         <line num="443" type="stmt" count="0"/>
-        <line num="444" type="stmt" count="0"/>
         <line num="445" type="stmt" count="0"/>
         <line num="446" type="stmt" count="0"/>
+        <line num="447" type="stmt" count="0"/>
         <line num="448" type="stmt" count="0"/>
         <line num="449" type="stmt" count="0"/>
         <line num="450" type="stmt" count="0"/>
         <line num="451" type="stmt" count="0"/>
-        <line num="452" type="stmt" count="0"/>
         <line num="453" type="stmt" count="0"/>
         <line num="454" type="stmt" count="0"/>
-        <line num="456" type="stmt" count="0"/>
-        <line num="457" type="stmt" count="0"/>
-        <metrics loc="458" ncloc="375" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="280" coveredstatements="0" elements="290" coveredelements="0"/>
+        <metrics loc="455" ncloc="373" classes="1" methods="10" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="280" coveredstatements="0" elements="290" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Controller/CalendarController.php">
         <class name="CalendarController" namespace="Calendar\Controller">
@@ -1168,7 +1168,7 @@
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Controller/Plugin/RenderReviewCalendar.php">
         <class name="RenderReviewCalendar" namespace="Calendar\Controller\Plugin" category="Program">
-          <metrics complexity="6" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="0" elements="38" coveredelements="0"/>
+          <metrics complexity="6" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="35" coveredelements="0"/>
         </class>
         <line num="44" type="method" name="render" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="45" type="stmt" count="0"/>
@@ -1181,34 +1181,31 @@
         <line num="58" type="stmt" count="0"/>
         <line num="59" type="stmt" count="0"/>
         <line num="60" type="stmt" count="0"/>
-        <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
-        <line num="63" type="stmt" count="0"/>
+        <line num="64" type="stmt" count="0"/>
         <line num="65" type="stmt" count="0"/>
-        <line num="67" type="stmt" count="0"/>
-        <line num="68" type="stmt" count="0"/>
-        <line num="73" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="74" type="stmt" count="0"/>
-        <line num="75" type="stmt" count="0"/>
-        <line num="76" type="stmt" count="0"/>
-        <line num="81" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="82" type="stmt" count="0"/>
-        <line num="83" type="stmt" count="0"/>
-        <line num="84" type="stmt" count="0"/>
-        <line num="91" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="70" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="78" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="88" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
         <line num="92" type="stmt" count="0"/>
         <line num="93" type="stmt" count="0"/>
-        <line num="95" type="stmt" count="0"/>
-        <line num="96" type="stmt" count="0"/>
-        <line num="103" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="104" type="stmt" count="0"/>
-        <line num="105" type="stmt" count="0"/>
-        <line num="106" type="stmt" count="0"/>
-        <line num="113" type="method" name="getGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="114" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <metrics loc="117" ncloc="64" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="0" elements="38" coveredelements="0"/>
+        <line num="100" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="101" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="103" type="stmt" count="0"/>
+        <line num="110" type="method" name="getGeneralService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <metrics loc="114" ncloc="61" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="29" coveredstatements="0" elements="35" coveredelements="0"/>
       </file>
     </package>
     <package name="Calendar\Entity">
@@ -3249,10 +3246,48 @@
         <metrics loc="172" ncloc="92" classes="1" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="65" coveredstatements="0" elements="71" coveredelements="0"/>
       </file>
     </package>
+    <package name="Calendar\View\Factory">
+      <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/View/Factory/LinkInvokableFactory.php">
+        <class name="LinkInvokableFactory" namespace="Calendar\View\Factory">
+          <metrics complexity="9" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="30" coveredelements="0"/>
+        </class>
+        <line num="51" type="method" name="__construct" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="69" type="method" name="__invoke" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="72" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="105" type="method" name="createService" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
+        <line num="109" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="116" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
+        <line num="124" type="method" name="setCreationOptions" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="125" type="stmt" count="0"/>
+        <line num="126" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <metrics loc="128" ncloc="52" classes="1" methods="4" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="0" elements="30" coveredelements="0"/>
+      </file>
+    </package>
     <package name="Calendar\View\Helper">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/View/Helper/CalendarHandler.php">
         <class name="CalendarHandler" namespace="Calendar\View\Helper" fullPackage="Country" package="Country">
-          <metrics complexity="39" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="188" coveredstatements="0" elements="210" coveredelements="0"/>
+          <metrics complexity="39" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="165" coveredstatements="0" elements="187" coveredelements="0"/>
         </class>
         <line num="52" type="method" name="__invoke" visibility="public" complexity="7" crap="56" count="0"/>
         <line num="53" type="stmt" count="0"/>
@@ -3270,44 +3305,44 @@
         <line num="67" type="stmt" count="0"/>
         <line num="68" type="stmt" count="0"/>
         <line num="69" type="stmt" count="0"/>
-        <line num="70" type="stmt" count="0"/>
-        <line num="71" type="stmt" count="0"/>
-        <line num="72" type="stmt" count="0"/>
         <line num="73" type="stmt" count="0"/>
+        <line num="74" type="stmt" count="0"/>
+        <line num="75" type="stmt" count="0"/>
+        <line num="76" type="stmt" count="0"/>
         <line num="77" type="stmt" count="0"/>
-        <line num="78" type="stmt" count="0"/>
         <line num="79" type="stmt" count="0"/>
         <line num="80" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
-        <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
         <line num="84" type="stmt" count="0"/>
         <line num="85" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
         <line num="88" type="stmt" count="0"/>
         <line num="89" type="stmt" count="0"/>
+        <line num="90" type="stmt" count="0"/>
         <line num="91" type="stmt" count="0"/>
         <line num="92" type="stmt" count="0"/>
         <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
         <line num="95" type="stmt" count="0"/>
         <line num="96" type="stmt" count="0"/>
         <line num="97" type="stmt" count="0"/>
         <line num="98" type="stmt" count="0"/>
         <line num="99" type="stmt" count="0"/>
-        <line num="100" type="stmt" count="0"/>
-        <line num="101" type="stmt" count="0"/>
+        <line num="101" type="method" name="extractContentParam" visibility="public" complexity="11" crap="132" count="0"/>
         <line num="102" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
         <line num="104" type="stmt" count="0"/>
         <line num="105" type="stmt" count="0"/>
         <line num="106" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="109" type="method" name="extractContentParam" visibility="public" complexity="11" crap="132" count="0"/>
-        <line num="110" type="stmt" count="0"/>
+        <line num="108" type="stmt" count="0"/>
         <line num="112" type="stmt" count="0"/>
         <line num="113" type="stmt" count="0"/>
         <line num="114" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
         <line num="116" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
         <line num="120" type="stmt" count="0"/>
         <line num="121" type="stmt" count="0"/>
         <line num="122" type="stmt" count="0"/>
@@ -3316,7 +3351,6 @@
         <line num="125" type="stmt" count="0"/>
         <line num="126" type="stmt" count="0"/>
         <line num="127" type="stmt" count="0"/>
-        <line num="128" type="stmt" count="0"/>
         <line num="129" type="stmt" count="0"/>
         <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
@@ -3324,6 +3358,7 @@
         <line num="133" type="stmt" count="0"/>
         <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
         <line num="137" type="stmt" count="0"/>
         <line num="138" type="stmt" count="0"/>
         <line num="139" type="stmt" count="0"/>
@@ -3331,140 +3366,117 @@
         <line num="141" type="stmt" count="0"/>
         <line num="142" type="stmt" count="0"/>
         <line num="143" type="stmt" count="0"/>
-        <line num="144" type="stmt" count="0"/>
-        <line num="145" type="stmt" count="0"/>
-        <line num="146" type="stmt" count="0"/>
-        <line num="147" type="stmt" count="0"/>
-        <line num="148" type="stmt" count="0"/>
+        <line num="148" type="method" name="getRouteMatch" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="149" type="stmt" count="0"/>
         <line num="150" type="stmt" count="0"/>
         <line num="151" type="stmt" count="0"/>
-        <line num="156" type="method" name="getRouteMatch" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="157" type="stmt" count="0"/>
-        <line num="158" type="stmt" count="0"/>
+        <line num="158" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="159" type="stmt" count="0"/>
-        <line num="166" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="167" type="stmt" count="0"/>
-        <line num="168" type="stmt" count="0"/>
-        <line num="169" type="stmt" count="0"/>
-        <line num="178" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="179" type="stmt" count="0"/>
-        <line num="180" type="stmt" count="0"/>
-        <line num="182" type="stmt" count="0"/>
-        <line num="183" type="stmt" count="0"/>
-        <line num="192" type="method" name="setCalendarDocRef" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="193" type="stmt" count="0"/>
-        <line num="194" type="stmt" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="170" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="172" type="stmt" count="0"/>
+        <line num="174" type="stmt" count="0"/>
+        <line num="175" type="stmt" count="0"/>
+        <line num="184" type="method" name="setCalendarDocRef" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="185" type="stmt" count="0"/>
+        <line num="186" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <line num="189" type="stmt" count="0"/>
+        <line num="194" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="195" type="stmt" count="0"/>
         <line num="196" type="stmt" count="0"/>
         <line num="197" type="stmt" count="0"/>
-        <line num="202" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="202" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="203" type="stmt" count="0"/>
         <line num="204" type="stmt" count="0"/>
         <line num="205" type="stmt" count="0"/>
-        <line num="210" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="211" type="stmt" count="0"/>
-        <line num="212" type="stmt" count="0"/>
+        <line num="212" type="method" name="setCalendarId" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="213" type="stmt" count="0"/>
-        <line num="220" type="method" name="setCalendarId" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="221" type="stmt" count="0"/>
-        <line num="222" type="stmt" count="0"/>
+        <line num="214" type="stmt" count="0"/>
+        <line num="215" type="stmt" count="0"/>
+        <line num="222" type="method" name="translate" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="223" type="stmt" count="0"/>
-        <line num="230" type="method" name="translate" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="231" type="stmt" count="0"/>
-        <line num="232" type="stmt" count="0"/>
-        <line num="233" type="stmt" count="0"/>
-        <line num="242" type="method" name="parseCalendarItem" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
+        <line num="234" type="method" name="parseCalendarItem" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="235" type="stmt" count="0"/>
+        <line num="236" type="stmt" count="0"/>
+        <line num="237" type="stmt" count="0"/>
+        <line num="242" type="method" name="getRenderer" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="243" type="stmt" count="0"/>
         <line num="244" type="stmt" count="0"/>
         <line num="245" type="stmt" count="0"/>
-        <line num="246" type="stmt" count="0"/>
-        <line num="247" type="stmt" count="0"/>
-        <line num="248" type="stmt" count="0"/>
-        <line num="253" type="method" name="getRenderer" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="252" type="method" name="parseCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="253" type="stmt" count="0"/>
         <line num="254" type="stmt" count="0"/>
         <line num="255" type="stmt" count="0"/>
         <line num="256" type="stmt" count="0"/>
-        <line num="263" type="method" name="parseCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="257" type="stmt" count="0"/>
+        <line num="258" type="stmt" count="0"/>
+        <line num="260" type="stmt" count="0"/>
+        <line num="261" type="stmt" count="0"/>
+        <line num="262" type="stmt" count="0"/>
+        <line num="263" type="stmt" count="0"/>
         <line num="264" type="stmt" count="0"/>
-        <line num="265" type="stmt" count="0"/>
-        <line num="266" type="stmt" count="0"/>
-        <line num="267" type="stmt" count="0"/>
-        <line num="268" type="stmt" count="0"/>
-        <line num="269" type="stmt" count="0"/>
+        <line num="269" type="method" name="getType" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="270" type="stmt" count="0"/>
         <line num="271" type="stmt" count="0"/>
         <line num="272" type="stmt" count="0"/>
-        <line num="273" type="stmt" count="0"/>
-        <line num="274" type="stmt" count="0"/>
-        <line num="275" type="stmt" count="0"/>
-        <line num="276" type="stmt" count="0"/>
-        <line num="281" type="method" name="getType" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="282" type="stmt" count="0"/>
-        <line num="283" type="stmt" count="0"/>
-        <line num="284" type="stmt" count="0"/>
-        <line num="289" type="method" name="setType" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="290" type="stmt" count="0"/>
-        <line num="291" type="stmt" count="0"/>
-        <line num="292" type="stmt" count="0"/>
-        <line num="297" type="method" name="getLimit" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="298" type="stmt" count="0"/>
-        <line num="299" type="stmt" count="0"/>
-        <line num="300" type="stmt" count="0"/>
-        <line num="305" type="method" name="setLimit" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="277" type="method" name="setType" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="278" type="stmt" count="0"/>
+        <line num="279" type="stmt" count="0"/>
+        <line num="280" type="stmt" count="0"/>
+        <line num="285" type="method" name="getLimit" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="286" type="stmt" count="0"/>
+        <line num="287" type="stmt" count="0"/>
+        <line num="288" type="stmt" count="0"/>
+        <line num="293" type="method" name="setLimit" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="294" type="stmt" count="0"/>
+        <line num="295" type="stmt" count="0"/>
+        <line num="296" type="stmt" count="0"/>
+        <line num="303" type="method" name="parsePastCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="304" type="stmt" count="0"/>
+        <line num="305" type="stmt" count="0"/>
         <line num="306" type="stmt" count="0"/>
         <line num="307" type="stmt" count="0"/>
         <line num="308" type="stmt" count="0"/>
-        <line num="315" type="method" name="parsePastCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="309" type="stmt" count="0"/>
+        <line num="310" type="stmt" count="0"/>
+        <line num="312" type="stmt" count="0"/>
+        <line num="313" type="stmt" count="0"/>
+        <line num="314" type="stmt" count="0"/>
+        <line num="315" type="stmt" count="0"/>
         <line num="316" type="stmt" count="0"/>
-        <line num="317" type="stmt" count="0"/>
-        <line num="318" type="stmt" count="0"/>
-        <line num="319" type="stmt" count="0"/>
-        <line num="320" type="stmt" count="0"/>
-        <line num="321" type="stmt" count="0"/>
+        <line num="321" type="method" name="getYear" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="322" type="stmt" count="0"/>
         <line num="323" type="stmt" count="0"/>
         <line num="324" type="stmt" count="0"/>
-        <line num="325" type="stmt" count="0"/>
-        <line num="327" type="stmt" count="0"/>
-        <line num="328" type="stmt" count="0"/>
-        <line num="329" type="stmt" count="0"/>
+        <line num="329" type="method" name="setYear" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="330" type="stmt" count="0"/>
         <line num="331" type="stmt" count="0"/>
-        <line num="336" type="method" name="getYear" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="337" type="stmt" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="339" type="stmt" count="0"/>
-        <line num="344" type="method" name="setYear" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="332" type="stmt" count="0"/>
+        <line num="333" type="stmt" count="0"/>
+        <line num="334" type="stmt" count="0"/>
+        <line num="335" type="stmt" count="0"/>
+        <line num="336" type="stmt" count="0"/>
+        <line num="343" type="method" name="parseCalendarSmall" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="344" type="stmt" count="0"/>
         <line num="345" type="stmt" count="0"/>
         <line num="346" type="stmt" count="0"/>
-        <line num="347" type="stmt" count="0"/>
         <line num="348" type="stmt" count="0"/>
         <line num="349" type="stmt" count="0"/>
         <line num="350" type="stmt" count="0"/>
-        <line num="351" type="stmt" count="0"/>
-        <line num="358" type="method" name="parseCalendarSmall" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="359" type="stmt" count="0"/>
+        <line num="359" type="method" name="parseYearSelector" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="360" type="stmt" count="0"/>
-        <line num="361" type="stmt" count="0"/>
-        <line num="362" type="stmt" count="0"/>
-        <line num="363" type="stmt" count="0"/>
-        <line num="365" type="stmt" count="0"/>
+        <line num="364" type="stmt" count="0"/>
         <line num="366" type="stmt" count="0"/>
         <line num="367" type="stmt" count="0"/>
         <line num="368" type="stmt" count="0"/>
         <line num="369" type="stmt" count="0"/>
-        <line num="378" type="method" name="parseYearSelector" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="379" type="stmt" count="0"/>
-        <line num="383" type="stmt" count="0"/>
-        <line num="385" type="stmt" count="0"/>
-        <line num="386" type="stmt" count="0"/>
-        <line num="387" type="stmt" count="0"/>
-        <line num="388" type="stmt" count="0"/>
-        <line num="389" type="stmt" count="0"/>
-        <line num="390" type="stmt" count="0"/>
-        <line num="391" type="stmt" count="0"/>
-        <line num="392" type="stmt" count="0"/>
-        <metrics loc="393" ncloc="264" classes="1" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="188" coveredstatements="0" elements="210" coveredelements="0"/>
+        <line num="370" type="stmt" count="0"/>
+        <metrics loc="371" ncloc="241" classes="1" methods="22" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="165" coveredstatements="0" elements="187" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/View/Helper/CalendarLink.php">
         <class name="CalendarLink" namespace="Calendar\View\Helper" category="Calendar">
@@ -3704,11 +3716,12 @@
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/View/Helper/LinkAbstract.php">
         <class name="LinkAbstract" namespace="Calendar\View\Helper">
-          <metrics complexity="71" methods="35" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="230" coveredstatements="0" elements="265" coveredelements="0"/>
+          <metrics complexity="71" methods="35" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="222" coveredstatements="0" elements="257" coveredelements="0"/>
         </class>
-        <line num="98" type="method" name="createLink" visibility="public" complexity="3" crap="12" count="0"/>
-        <line num="99" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
+        <line num="97" type="method" name="createLink" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="98" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="106" type="stmt" count="0"/>
         <line num="107" type="stmt" count="0"/>
         <line num="108" type="stmt" count="0"/>
         <line num="109" type="stmt" count="0"/>
@@ -3717,8 +3730,8 @@
         <line num="112" type="stmt" count="0"/>
         <line num="113" type="stmt" count="0"/>
         <line num="114" type="stmt" count="0"/>
-        <line num="115" type="stmt" count="0"/>
         <line num="116" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
         <line num="118" type="stmt" count="0"/>
         <line num="119" type="stmt" count="0"/>
         <line num="120" type="stmt" count="0"/>
@@ -3726,14 +3739,14 @@
         <line num="122" type="stmt" count="0"/>
         <line num="123" type="stmt" count="0"/>
         <line num="124" type="stmt" count="0"/>
-        <line num="125" type="stmt" count="0"/>
-        <line num="126" type="stmt" count="0"/>
-        <line num="127" type="stmt" count="0"/>
-        <line num="132" type="method" name="parseAction" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="133" type="stmt" count="0"/>
-        <line num="134" type="stmt" count="0"/>
-        <line num="135" type="stmt" count="0"/>
-        <line num="140" type="method" name="parseShow" visibility="public" complexity="22" crap="506" count="0"/>
+        <line num="129" type="method" name="parseAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="130" type="stmt" count="0"/>
+        <line num="131" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="137" type="method" name="parseShow" visibility="public" complexity="22" crap="506" count="0"/>
+        <line num="138" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="0"/>
         <line num="141" type="stmt" count="0"/>
         <line num="142" type="stmt" count="0"/>
         <line num="143" type="stmt" count="0"/>
@@ -3782,9 +3795,9 @@
         <line num="186" type="stmt" count="0"/>
         <line num="187" type="stmt" count="0"/>
         <line num="188" type="stmt" count="0"/>
-        <line num="189" type="stmt" count="0"/>
-        <line num="190" type="stmt" count="0"/>
-        <line num="191" type="stmt" count="0"/>
+        <line num="193" type="stmt" count="0"/>
+        <line num="194" type="stmt" count="0"/>
+        <line num="195" type="stmt" count="0"/>
         <line num="196" type="stmt" count="0"/>
         <line num="197" type="stmt" count="0"/>
         <line num="198" type="stmt" count="0"/>
@@ -3795,66 +3808,66 @@
         <line num="203" type="stmt" count="0"/>
         <line num="204" type="stmt" count="0"/>
         <line num="205" type="stmt" count="0"/>
-        <line num="206" type="stmt" count="0"/>
-        <line num="207" type="stmt" count="0"/>
-        <line num="208" type="stmt" count="0"/>
-        <line num="213" type="method" name="getShow" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="214" type="stmt" count="0"/>
-        <line num="215" type="stmt" count="0"/>
-        <line num="216" type="stmt" count="0"/>
-        <line num="221" type="method" name="setShow" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="222" type="stmt" count="0"/>
-        <line num="223" type="stmt" count="0"/>
-        <line num="224" type="stmt" count="0"/>
-        <line num="229" type="method" name="getAction" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="230" type="stmt" count="0"/>
-        <line num="231" type="stmt" count="0"/>
-        <line num="232" type="stmt" count="0"/>
-        <line num="237" type="method" name="setAction" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="238" type="stmt" count="0"/>
-        <line num="239" type="stmt" count="0"/>
-        <line num="240" type="stmt" count="0"/>
-        <line num="247" type="method" name="addLinkContent" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="210" type="method" name="getShow" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="211" type="stmt" count="0"/>
+        <line num="212" type="stmt" count="0"/>
+        <line num="213" type="stmt" count="0"/>
+        <line num="218" type="method" name="setShow" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="219" type="stmt" count="0"/>
+        <line num="220" type="stmt" count="0"/>
+        <line num="221" type="stmt" count="0"/>
+        <line num="226" type="method" name="getAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="227" type="stmt" count="0"/>
+        <line num="228" type="stmt" count="0"/>
+        <line num="229" type="stmt" count="0"/>
+        <line num="234" type="method" name="setAction" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="235" type="stmt" count="0"/>
+        <line num="236" type="stmt" count="0"/>
+        <line num="237" type="stmt" count="0"/>
+        <line num="244" type="method" name="addLinkContent" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="245" type="stmt" count="0"/>
+        <line num="246" type="stmt" count="0"/>
+        <line num="247" type="stmt" count="0"/>
         <line num="248" type="stmt" count="0"/>
         <line num="249" type="stmt" count="0"/>
         <line num="250" type="stmt" count="0"/>
         <line num="251" type="stmt" count="0"/>
-        <line num="252" type="stmt" count="0"/>
         <line num="253" type="stmt" count="0"/>
         <line num="254" type="stmt" count="0"/>
-        <line num="256" type="stmt" count="0"/>
-        <line num="257" type="stmt" count="0"/>
-        <line num="262" type="method" name="getText" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="263" type="stmt" count="0"/>
-        <line num="264" type="stmt" count="0"/>
-        <line num="265" type="stmt" count="0"/>
-        <line num="270" type="method" name="setText" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="271" type="stmt" count="0"/>
-        <line num="272" type="stmt" count="0"/>
-        <line num="273" type="stmt" count="0"/>
-        <line num="280" type="method" name="addClasses" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="259" type="method" name="getText" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="260" type="stmt" count="0"/>
+        <line num="261" type="stmt" count="0"/>
+        <line num="262" type="stmt" count="0"/>
+        <line num="267" type="method" name="setText" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="269" type="stmt" count="0"/>
+        <line num="270" type="stmt" count="0"/>
+        <line num="277" type="method" name="addClasses" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="278" type="stmt" count="0"/>
+        <line num="279" type="stmt" count="0"/>
+        <line num="280" type="stmt" count="0"/>
         <line num="281" type="stmt" count="0"/>
         <line num="282" type="stmt" count="0"/>
         <line num="283" type="stmt" count="0"/>
         <line num="284" type="stmt" count="0"/>
-        <line num="285" type="stmt" count="0"/>
         <line num="286" type="stmt" count="0"/>
         <line num="287" type="stmt" count="0"/>
-        <line num="289" type="stmt" count="0"/>
-        <line num="290" type="stmt" count="0"/>
-        <line num="295" type="method" name="getAlternativeShow" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="296" type="stmt" count="0"/>
-        <line num="297" type="stmt" count="0"/>
-        <line num="298" type="stmt" count="0"/>
-        <line num="303" type="method" name="setAlternativeShow" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="304" type="stmt" count="0"/>
-        <line num="305" type="stmt" count="0"/>
-        <line num="306" type="stmt" count="0"/>
-        <line num="311" type="method" name="setShowOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="312" type="stmt" count="0"/>
-        <line num="313" type="stmt" count="0"/>
-        <line num="314" type="stmt" count="0"/>
-        <line num="323" type="method" name="hasAccess" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="292" type="method" name="getAlternativeShow" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="293" type="stmt" count="0"/>
+        <line num="294" type="stmt" count="0"/>
+        <line num="295" type="stmt" count="0"/>
+        <line num="300" type="method" name="setAlternativeShow" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="301" type="stmt" count="0"/>
+        <line num="302" type="stmt" count="0"/>
+        <line num="303" type="stmt" count="0"/>
+        <line num="308" type="method" name="setShowOptions" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="309" type="stmt" count="0"/>
+        <line num="310" type="stmt" count="0"/>
+        <line num="311" type="stmt" count="0"/>
+        <line num="320" type="method" name="hasAccess" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="321" type="stmt" count="0"/>
+        <line num="322" type="stmt" count="0"/>
+        <line num="323" type="stmt" count="0"/>
         <line num="324" type="stmt" count="0"/>
         <line num="325" type="stmt" count="0"/>
         <line num="326" type="stmt" count="0"/>
@@ -3863,117 +3876,108 @@
         <line num="329" type="stmt" count="0"/>
         <line num="330" type="stmt" count="0"/>
         <line num="331" type="stmt" count="0"/>
-        <line num="332" type="stmt" count="0"/>
         <line num="333" type="stmt" count="0"/>
         <line num="334" type="stmt" count="0"/>
-        <line num="335" type="stmt" count="0"/>
-        <line num="337" type="stmt" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="345" type="method" name="getAssertion" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="346" type="stmt" count="0"/>
-        <line num="347" type="stmt" count="0"/>
-        <line num="348" type="stmt" count="0"/>
-        <line num="355" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="356" type="stmt" count="0"/>
-        <line num="357" type="stmt" count="0"/>
-        <line num="358" type="stmt" count="0"/>
-        <line num="367" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="341" type="method" name="getAssertion" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="342" type="stmt" count="0"/>
+        <line num="343" type="stmt" count="0"/>
+        <line num="344" type="stmt" count="0"/>
+        <line num="351" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="352" type="stmt" count="0"/>
+        <line num="353" type="stmt" count="0"/>
+        <line num="354" type="stmt" count="0"/>
+        <line num="363" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="364" type="stmt" count="0"/>
+        <line num="365" type="stmt" count="0"/>
+        <line num="367" type="stmt" count="0"/>
         <line num="368" type="stmt" count="0"/>
-        <line num="369" type="stmt" count="0"/>
-        <line num="371" type="stmt" count="0"/>
-        <line num="372" type="stmt" count="0"/>
-        <line num="377" type="method" name="getAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="378" type="stmt" count="0"/>
-        <line num="379" type="stmt" count="0"/>
-        <line num="380" type="stmt" count="0"/>
-        <line num="381" type="stmt" count="0"/>
-        <line num="389" type="method" name="isAllowed" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="390" type="stmt" count="0"/>
-        <line num="394" type="stmt" count="0"/>
-        <line num="396" type="stmt" count="0"/>
-        <line num="397" type="stmt" count="0"/>
-        <line num="406" type="method" name="addRouterParam" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="373" type="method" name="getAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="374" type="stmt" count="0"/>
+        <line num="375" type="stmt" count="0"/>
+        <line num="376" type="stmt" count="0"/>
+        <line num="384" type="method" name="isAllowed" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="385" type="stmt" count="0"/>
+        <line num="389" type="stmt" count="0"/>
+        <line num="391" type="stmt" count="0"/>
+        <line num="392" type="stmt" count="0"/>
+        <line num="401" type="method" name="addRouterParam" visibility="public" complexity="4" crap="20" count="0"/>
+        <line num="402" type="stmt" count="0"/>
+        <line num="403" type="stmt" count="0"/>
+        <line num="404" type="stmt" count="0"/>
+        <line num="405" type="stmt" count="0"/>
+        <line num="406" type="stmt" count="0"/>
         <line num="407" type="stmt" count="0"/>
         <line num="408" type="stmt" count="0"/>
         <line num="409" type="stmt" count="0"/>
-        <line num="410" type="stmt" count="0"/>
-        <line num="411" type="stmt" count="0"/>
-        <line num="412" type="stmt" count="0"/>
-        <line num="413" type="stmt" count="0"/>
-        <line num="414" type="stmt" count="0"/>
+        <line num="414" type="method" name="getRouter" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="415" type="stmt" count="0"/>
         <line num="416" type="stmt" count="0"/>
         <line num="417" type="stmt" count="0"/>
-        <line num="422" type="method" name="getRouter" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="422" type="method" name="setRouter" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="423" type="stmt" count="0"/>
         <line num="424" type="stmt" count="0"/>
         <line num="425" type="stmt" count="0"/>
-        <line num="430" type="method" name="setRouter" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="430" type="method" name="getRouterParams" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="431" type="stmt" count="0"/>
         <line num="432" type="stmt" count="0"/>
         <line num="433" type="stmt" count="0"/>
-        <line num="438" type="method" name="getRouterParams" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="439" type="stmt" count="0"/>
-        <line num="440" type="stmt" count="0"/>
-        <line num="441" type="stmt" count="0"/>
-        <line num="449" type="method" name="getRouteMatch" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="450" type="stmt" count="0"/>
-        <line num="451" type="stmt" count="0"/>
-        <line num="452" type="stmt" count="0"/>
-        <line num="453" type="stmt" count="0"/>
+        <line num="441" type="method" name="getRouteMatch" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="442" type="stmt" count="0"/>
+        <line num="443" type="stmt" count="0"/>
+        <line num="444" type="stmt" count="0"/>
+        <line num="445" type="stmt" count="0"/>
+        <line num="447" type="stmt" count="0"/>
+        <line num="448" type="stmt" count="0"/>
+        <line num="453" type="method" name="setRouteMatch" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="454" type="stmt" count="0"/>
+        <line num="455" type="stmt" count="0"/>
         <line num="456" type="stmt" count="0"/>
-        <line num="457" type="stmt" count="0"/>
-        <line num="462" type="method" name="setRouteMatch" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="463" type="stmt" count="0"/>
+        <line num="463" type="method" name="translate" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="464" type="stmt" count="0"/>
         <line num="465" type="stmt" count="0"/>
-        <line num="472" type="method" name="translate" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="466" type="stmt" count="0"/>
+        <line num="471" type="method" name="getProject" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="472" type="stmt" count="0"/>
         <line num="473" type="stmt" count="0"/>
         <line num="474" type="stmt" count="0"/>
         <line num="475" type="stmt" count="0"/>
-        <line num="480" type="method" name="getProject" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="481" type="stmt" count="0"/>
-        <line num="482" type="stmt" count="0"/>
-        <line num="483" type="stmt" count="0"/>
-        <line num="484" type="stmt" count="0"/>
+        <line num="477" type="stmt" count="0"/>
+        <line num="478" type="stmt" count="0"/>
+        <line num="485" type="method" name="setProject" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="486" type="stmt" count="0"/>
         <line num="487" type="stmt" count="0"/>
-        <line num="494" type="method" name="setProject" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="495" type="stmt" count="0"/>
-        <line num="496" type="stmt" count="0"/>
+        <line num="489" type="stmt" count="0"/>
+        <line num="490" type="stmt" count="0"/>
+        <line num="496" type="method" name="getCalendar" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="497" type="stmt" count="0"/>
         <line num="498" type="stmt" count="0"/>
         <line num="499" type="stmt" count="0"/>
-        <line num="505" type="method" name="getCalendar" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="506" type="stmt" count="0"/>
-        <line num="507" type="stmt" count="0"/>
-        <line num="508" type="stmt" count="0"/>
+        <line num="500" type="stmt" count="0"/>
+        <line num="502" type="stmt" count="0"/>
+        <line num="503" type="stmt" count="0"/>
+        <line num="508" type="method" name="setCalendar" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="509" type="stmt" count="0"/>
+        <line num="510" type="stmt" count="0"/>
         <line num="511" type="stmt" count="0"/>
-        <line num="512" type="stmt" count="0"/>
-        <line num="517" type="method" name="setCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="516" type="method" name="getYear" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="517" type="stmt" count="0"/>
         <line num="518" type="stmt" count="0"/>
         <line num="519" type="stmt" count="0"/>
-        <line num="520" type="stmt" count="0"/>
-        <line num="525" type="method" name="getYear" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="524" type="method" name="setYear" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="525" type="stmt" count="0"/>
         <line num="526" type="stmt" count="0"/>
         <line num="527" type="stmt" count="0"/>
-        <line num="528" type="stmt" count="0"/>
-        <line num="533" type="method" name="setYear" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="532" type="method" name="getWhich" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="533" type="stmt" count="0"/>
         <line num="534" type="stmt" count="0"/>
         <line num="535" type="stmt" count="0"/>
-        <line num="536" type="stmt" count="0"/>
-        <line num="541" type="method" name="getWhich" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="540" type="method" name="setWhich" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="541" type="stmt" count="0"/>
         <line num="542" type="stmt" count="0"/>
         <line num="543" type="stmt" count="0"/>
-        <line num="544" type="stmt" count="0"/>
-        <line num="549" type="method" name="setWhich" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="550" type="stmt" count="0"/>
-        <line num="551" type="stmt" count="0"/>
-        <line num="552" type="stmt" count="0"/>
-        <metrics loc="553" ncloc="348" classes="1" methods="35" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="230" coveredstatements="0" elements="265" coveredelements="0"/>
+        <metrics loc="544" ncloc="339" classes="1" methods="35" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="222" coveredstatements="0" elements="257" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="52" loc="8781" ncloc="5366" classes="49" methods="412" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3228" coveredstatements="5" elements="3640" coveredelements="6"/>
+    <metrics files="53" loc="8876" ncloc="5383" classes="50" methods="416" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3220" coveredstatements="5" elements="3636" coveredelements="6"/>
   </project>
 </coverage>

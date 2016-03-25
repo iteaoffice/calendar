@@ -15,7 +15,6 @@ use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Content\Entity\Content;
 use Zend\Mvc\Router\Http\RouteMatch;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use ZfcTwig\View\HelperPluginManager;
@@ -23,9 +22,10 @@ use ZfcTwig\View\TwigRenderer;
 
 /**
  * Class CountryHandler
+ *
  * @package Country\View\Helper
  */
-class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInterface
+class CalendarHandler extends AbstractHelper
 {
     /**
      * @var HelperPluginManager
@@ -63,25 +63,17 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
                 $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
                 $this->serviceLocator->get('headtitle')->append((string)$this->getCalendarService()->getCalendar());
                 $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
-                $this->serviceLocator->get('headmeta')->setProperty(
-                    'og:title',
-                    $this->getCalendarService()->getCalendar()
-                );
-                $this->serviceLocator->get('headmeta')->setProperty(
-                    'og:description',
-                    $this->getCalendarService()->getCalendar()->getDescription()
-                );
+                $this->serviceLocator->get('headmeta')
+                    ->setProperty('og:title', $this->getCalendarService()->getCalendar());
+                $this->serviceLocator->get('headmeta')
+                    ->setProperty('og:description', $this->getCalendarService()->getCalendar()->getDescription());
                 /**
                  * @var $calendarLink CalendarLink
                  */
                 $calendarLink = $this->serviceLocator->get('calendarLink');
                 $this->serviceLocator->get('headmeta')->setProperty(
                     'og:url',
-                    $calendarLink(
-                        $this->getCalendarService()->getCalendar(),
-                        'view',
-                        'social'
-                    )
+                    $calendarLink($this->getCalendarService()->getCalendar(), 'view', 'social')
                 );
 
                 return $this->parseCalendarItem($this->getCalendarService()->getCalendar());
@@ -241,10 +233,7 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseCalendarItem(Calendar $calendar)
     {
-        return $this->getRenderer()->render(
-            'calendar/partial/entity/calendar',
-            ['calendar' => $calendar]
-        );
+        return $this->getRenderer()->render('calendar/partial/entity/calendar', ['calendar' => $calendar]);
     }
 
     /**
@@ -262,13 +251,12 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseCalendar()
     {
-        $calendarItems = $this->getCalendarService()
-            ->findCalendarItems(
-                CalendarService::WHICH_UPCOMING,
-                $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity()
-            )
-            ->setMaxResults((int)$this->getLimit())
-            ->getResult();
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            CalendarService::WHICH_UPCOMING,
+            $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity()
+        )
+            ->setMaxResults((int)$this->getLimit())->getResult();
+
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarUpcomingTemplate(),
             ['calendarItems' => $calendarItems]
@@ -314,15 +302,12 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parsePastCalendar()
     {
-        $calendarItems = $this->getCalendarService()
-            ->findCalendarItems(
-                CalendarService::WHICH_PAST,
-                $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity(),
-                $this->getYear(),
-                $this->getType()
-            )
-            ->setMaxResults((int)$this->getLimit())
-            ->getResult();
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            CalendarService::WHICH_PAST,
+            $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity(),
+            $this->getYear(),
+            $this->getType()
+        )->setMaxResults((int)$this->getLimit())->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarPastTemplate(),
@@ -357,15 +342,11 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
      */
     public function parseCalendarSmall()
     {
-        $calendarItems = $this->getCalendarService()
-            ->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults((int)$this->getLimit())
-            ->getResult();
+        $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
+            ->setMaxResults((int)$this->getLimit())->getResult();
 
-        return $this->getRenderer()->render(
-            'calendar/partial/list/calendar-small',
-            ['calendarItems' => $calendarItems]
-        );
+        return $this->getRenderer()
+            ->render('calendar/partial/list/calendar-small', ['calendarItems' => $calendarItems]);
     }
 
     /**
@@ -382,12 +363,9 @@ class CalendarHandler extends AbstractHelper implements ServiceLocatorAwareInter
          */
         $years = range(date("Y"), date("Y") - 2);
 
-        return $this->getRenderer()->render(
-            'calendar/partial/year-selector',
-            [
+        return $this->getRenderer()->render('calendar/partial/year-selector', [
                 'years'        => $years,
                 'selectedYear' => $year,
-            ]
-        );
+            ]);
     }
 }

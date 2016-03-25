@@ -24,4 +24,3 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
-    - php: 7.0

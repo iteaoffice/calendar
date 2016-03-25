@@ -24,6 +24,7 @@ return array(
     'Calendar\Service\ServiceInterface'                              => __DIR__ . '/src/Service/ServiceInterface.php',
     'Calendar\Service\CalendarService'                               => __DIR__ . '/src/Service/CalendarService.php',
     'Calendar\Service\ServiceAbstract'                               => __DIR__ . '/src/Service/ServiceAbstract.php',
+    'Calendar\View\Factory\LinkInvokableFactory'                     => __DIR__ . '/src/View/Factory/LinkInvokableFactory.php',
     'Calendar\View\Helper\CalendarServiceProxy'                      => __DIR__ . '/src/View/Helper/CalendarServiceProxy.php',
     'Calendar\View\Helper\LinkAbstract'                              => __DIR__ . '/src/View/Helper/LinkAbstract.php',
     'Calendar\View\Helper\DocumentLink'                              => __DIR__ . '/src/View/Helper/DocumentLink.php',

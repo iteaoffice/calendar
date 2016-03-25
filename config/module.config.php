@@ -13,7 +13,7 @@ use Calendar\Factory;
 use Calendar\Navigation;
 use Calendar\Options;
 use Calendar\Service;
-use Calendar\View\Helper;
+use Calendar\View;
 
 $config = [
     'controllers'     => [
@@ -38,8 +38,17 @@ $config = [
         'template_map' => include __DIR__ . '/../template_map.php',
     ],
     'view_helpers'    => [
-        'invokables' => [
-            'calendarDocumentLink' => Helper\DocumentLink::class,
+        'aliases'   => [
+            'calendarDocumentLink' => View\Helper\DocumentLink::class,
+            'calendarLink'         => View\Helper\CalendarLink::class,
+            'calendarHandler'      => View\Helper\CalendarHandler::class,
+            'calendarServiceProxy' => View\Helper\CalendarServiceProxy::class,
+        ],
+        'factories' => [
+            View\Helper\DocumentLink::class         => View\Factory\LinkInvokableFactory::class,
+            View\Helper\CalendarLink::class         => View\Factory\LinkInvokableFactory::class,
+            View\Helper\CalendarHandler::class      => View\Factory\LinkInvokableFactory::class,
+            View\Helper\CalendarServiceProxy::class => View\Factory\LinkInvokableFactory::class,
         ]
     ],
     'doctrine'        => [

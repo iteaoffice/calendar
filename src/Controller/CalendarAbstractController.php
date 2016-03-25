@@ -26,11 +26,15 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
+use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 
 /**
- * @method      ZfcUserAuthentication zfcUserAuthentication()
- * @method      FlashMessenger flashMessenger()
- * @method      IsAllowed isAllowed($resource, $action)
+ * @method ZfcUserAuthentication zfcUserAuthentication()
+ * @method FlashMessenger flashMessenger()
+ * @method IsAllowed isAllowed($resource, $action)
+ * @method RenderCalendarContactList renderCalendarContactList()
+ * @method RenderReviewCalendar renderReviewCalendar()
  */
 abstract class CalendarAbstractController extends AbstractActionController
 {

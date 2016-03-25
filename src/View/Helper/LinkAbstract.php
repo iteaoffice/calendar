@@ -17,7 +17,6 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\EntityAbstract;
 use Project\Entity\Project;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\ServerUrl;
@@ -27,7 +26,7 @@ use Zend\View\HelperPluginManager;
 /**
  * Class LinkAbstract.
  */
-abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwareInterface
+abstract class LinkAbstract extends AbstractHelper
 {
     /**
      * @var HelperPluginManager
@@ -110,8 +109,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
         $this->parseAction();
         $this->parseShow();
         if ('social' === $this->getShow()) {
-            return $serverUrl->__invoke() . $url($this->router,
-                $this->routerParams);
+            return $serverUrl->__invoke() . $url($this->router, $this->routerParams);
         }
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
@@ -120,8 +118,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
             $serverUrl() . $url($this->router, $this->routerParams),
             htmlentities($this->text),
             implode(' ', $this->classes),
-            in_array($this->getShow(), ['icon', 'button', 'alternativeShow'])
-            ? implode('', $this->linkContent)
+            in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
             : htmlentities(implode('', $this->linkContent))
         );
     }
@@ -327,8 +324,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
             && !$this->getAuthorizeService()->getAcl()->hasResource($entity)
         ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
-            $this->getAuthorizeService()->getAcl()
-                ->allow([], $entity, [], $assertion);
+            $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
         }
         if (!$this->isAllowed($entity, $action)) {
             return false;
@@ -376,8 +372,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
      */
     public function getAuthorizeService()
     {
-        return $this->getServiceLocator()
-            ->get('BjyAuthorize\Service\Authorize');
+        return $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
     }
 
     /**
@@ -406,10 +401,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function addRouterParam($key, $value, $allowNull = true)
     {
         if (!$allowNull && is_null($value)) {
-            throw new \InvalidArgumentException(sprintf(
-                "null is not allowed for %s",
-                $key
-            ));
+            throw new \InvalidArgumentException(sprintf("null is not allowed for %s", $key));
         }
         if (!is_null($value)) {
             $this->routerParams[$key] = $value;
@@ -449,8 +441,7 @@ abstract class LinkAbstract extends AbstractHelper implements ServiceLocatorAwar
     public function getRouteMatch()
     {
         if (is_null($this->routeMatch)) {
-            $this->routeMatch = $this->getServiceLocator()->get('application')
-                ->getMvcEvent()->getRouteMatch();
+            $this->routeMatch = $this->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
         }
 
         return $this->routeMatch;

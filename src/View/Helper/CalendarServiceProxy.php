@@ -12,17 +12,17 @@ namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
 use Calendar\Service\CalendarService;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
+use Zend\View\HelperPluginManager;
 
 /**
  * Class CalendarServiceProxy.
  */
-class CalendarServiceProxy extends AbstractHelper implements ServiceLocatorAwareInterface
+class CalendarServiceProxy extends AbstractHelper
 {
     /**
-     * @var ServiceLocatorInterface
+     * @var HelperPluginManager
      */
     protected $serviceLocator;
 
@@ -33,7 +33,7 @@ class CalendarServiceProxy extends AbstractHelper implements ServiceLocatorAware
      */
     public function __invoke(Calendar $calendar)
     {
-        $calendarService = clone $this->serviceLocator->getServiceLocator()->get(CalendarService::class);
+        $calendarService = $this->serviceLocator->getServiceLocator()->get(CalendarService::class);
 
         return $calendarService->setCalendar($calendar);
     }

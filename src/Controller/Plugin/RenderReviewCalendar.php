@@ -55,12 +55,9 @@ class RenderReviewCalendar extends AbstractPlugin
         /*
          * Use the NDA object to render the filename
          */
-        $contactListContent = $twig->render(
-            'calendar/pdf/review-calendar',
-            [
+        $contactListContent = $twig->render('calendar/pdf/review-calendar', [
                 'calendarItems' => $calendarItems,
-            ]
-        );
+            ]);
 
         $pdf->writeHTMLCell(0, 0, 12, 35, $contactListContent, 0, 0, 0, false);
 
@@ -72,7 +69,7 @@ class RenderReviewCalendar extends AbstractPlugin
      */
     public function getModuleOptions()
     {
-        return $this->getServiceLocator()->get('calendar_module_options');
+        return $this->getServiceLocator()->get(ModuleOptions::class);
     }
 
     /**

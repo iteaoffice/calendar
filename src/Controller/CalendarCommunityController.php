@@ -11,8 +11,6 @@
 namespace Calendar\Controller;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
-use Calendar\Controller\Plugin\RenderCalendarContactList;
-use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Calendar\Entity\Contact;
 use Calendar\Entity\ContactRole;
 use Calendar\Entity\ContactStatus;
@@ -30,8 +28,7 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
- * @method RenderCalendarContactList renderCalendarContactList()
- * @method RenderReviewCalendar renderReviewCalendar()
+ *
  */
 class CalendarCommunityController extends CalendarAbstractController
 {
