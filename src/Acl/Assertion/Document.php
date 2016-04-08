@@ -22,12 +22,12 @@ class Document extends AssertionAbstract
      * Returns true if and only if the assertion conditions are met.
      *
      * This method is passed the ACL, Role, Resource, and privilege to which the authorization query applies. If the
-     * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
+     * $role, $document, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
      * @param Acl               $acl
      * @param RoleInterface     $role
-     * @param ResourceInterface $resource
+     * @param ResourceInterface $document
      * @param string            $privilege
      *
      * @return bool
@@ -35,40 +35,31 @@ class Document extends AssertionAbstract
     public function assert(
         Acl $acl,
         RoleInterface $role = null,
-        ResourceInterface $resource = null,
+        ResourceInterface $document = null,
         $privilege = null
     ) {
-        if (!$resource instanceof DocumentEntity) {
-            /*
-             * We are coming via the router, so we need to build up the information via the  routeMatch
-             * The id and privilege are important
-             */
-            $documentId = (int)$this->getRouteMatch()->getParam('id');
-            $privilege = $this->getRouteMatch()->getParam('privilege');
-            /*
-             * Check if a Contact has access to a meeting. We need to build the meeting first
-             */
-            $resource = $this->getCalendarService()->findEntityById('Document', $documentId);
+        $this->setPrivilege($privilege);
+        $id = $this->getId();
+
+        if (!$document instanceof DocumentEntity) {
+            $document = $this->getCalendarService()->findEntityById(DocumentEntity::class, $id);
         }
 
 
         /*
          * No document was found, so return true because we do not now anything about the access
          */
-        if (is_null($resource)) {
+        if (is_null($document)) {
             return true;
         }
 
-        //Inject the calendar into the calendarService to have the access rights there
-        $this->getCalendarService()->setCalendar($resource->getCalendar());
-
-        switch ($privilege) {
+        switch ($this->getPrivilege()) {
             case 'document-community':
             case 'download':
-                return $this->getCalendarService()->canViewCalendar($this->getContact());
+                return $this->getCalendarService()->canViewCalendar($document->getCalendar(), $this->getContact());
             case 'edit-community':
                 if ($this->getContactService()
-                    ->contactHasPermit($this->getContact(), 'edit', $resource->getCalendar())
+                    ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
                 ) {
                     return true;
                 }
@@ -76,11 +67,11 @@ class Document extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($resource->getCalendar()->getProjectCalendar())) {
+                if (!is_null($document->getCalendar()->getProjectCalendar())) {
                     if ($this->getContactService()->contactHasPermit(
                         $this->getContact(),
                         'edit',
-                        $resource->getCalendar()->getProjectCalendar()->getProject()
+                        $document->getCalendar()->getProjectCalendar()->getProject()
                     )
                     ) {
                         return true;

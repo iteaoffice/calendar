@@ -28,29 +28,16 @@ class CalendarService extends ServiceAbstract
     const WHICH_PAST = 'past';
     const WHICH_REVIEWS = 'project-reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
-    /**
-     * @var Entity\Calendar
-     */
-    protected $calendar;
+
 
     /**
-     * @param int $id
+     * @param $id
      *
-     * @return CalendarService;
+     * @return null|Calendar
      */
-    public function setCalendarId($id)
+    public function findCalendarById($id)
     {
-        $this->setCalendar($this->findEntityById('Calendar', $id));
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        return is_null($this->calendar) || is_null($this->calendar->getId());
+        return $this->getEntityManager()->getRepository(Calendar::class)->find($id);
     }
 
     /**
@@ -60,20 +47,15 @@ class CalendarService extends ServiceAbstract
      */
     public function findCalendarByDocRef($docRef)
     {
-        $calendar = $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy([
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy([
             'docRef' => $docRef,
         ]);
-        if (is_null($calendar)) {
-            return null;
-        }
-
-        return $calendar;
     }
 
 
     /**
      * @param Calendar $calendar
-     * @param Contact $contact
+     * @param Contact  $contact
      *
      * @return bool
      */
@@ -88,7 +70,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param array $data
+     * @param array    $data
      * @param Calendar $calendar
      *
      * array (size=5)
@@ -104,14 +86,9 @@ class CalendarService extends ServiceAbstract
         //Update the contacts
         if (!empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
-                $contact = $this->getContactService()->findEntityById('contact', $contactId);
+                $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
 
-                $contactService = clone $this->getContactService();
-                $contactService->setContact($contact);
-
-                if (!$contactService->isEmpty()
-                    && !$this->calendarHasContact($calendar, $contact)
-                ) {
+                if (!is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -121,7 +98,7 @@ class CalendarService extends ServiceAbstract
                      *
                      * @var $role Entity\ContactRole
                      */
-                    $role = $this->findEntityById('contactRole', Entity\ContactRole::ROLE_ATTENDEE);
+                    $role = $this->findEntityById(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
                     $calendarContact->setRole($role);
 
                     /**
@@ -129,7 +106,10 @@ class CalendarService extends ServiceAbstract
                      *
                      * @var $status Entity\ContactStatus
                      */
-                    $status = $this->findEntityById('contactStatus', Entity\ContactStatus::STATUS_TENTATIVE);
+                    $status = $this->findEntityById(
+                        Entity\ContactStatus::class,
+                        Entity\ContactStatus::STATUS_TENTATIVE
+                    );
                     $calendarContact->setStatus($status);
 
                     $this->newEntity($calendarContact);
@@ -150,7 +130,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param  string $which
+     * @param  string  $which
      * @param  Contact $contact
      *
      * @return CalendarContact[]
@@ -164,7 +144,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param Contact $contact
+     * @param Contact  $contact
      * @param Calendar $calendar
      *
      * @return CalendarContact
@@ -179,7 +159,7 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param Calendar $calendar
-     * @param int $status
+     * @param int      $status
      *
      * @return CalendarContact[]
      */
@@ -192,18 +172,18 @@ class CalendarService extends ServiceAbstract
     /**
      * This function will return a boolean value to see if a contact can view the calendar
      *
-     * @param Contact $contact
+     * @param Calendar $calendar
+     * @param Contact  $contact
      *
      * @return bool
      */
-    public function canViewCalendar(Contact $contact = null)
+    public function canViewCalendar(Calendar $calendar, Contact $contact = null)
     {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)
-            ->canViewCalendar($this->getCalendar(), $contact);
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->canViewCalendar($calendar, $contact);
     }
 
     /**
-     * @param string $which
+     * @param string  $which
      * @param Contact $contact
      * @param integer $year
      * @param integer $type
@@ -221,7 +201,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param bool $onlyFinal
+     * @param bool    $onlyFinal
      * @param Project $project
      *
      * @return Calendar[]
@@ -268,7 +248,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return the news review meeting
      *
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -283,7 +263,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return the lastest review meeting
      *
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -304,8 +284,7 @@ class CalendarService extends ServiceAbstract
         CalendarContact $calendarContact,
         $status
     ) {
-        $calendarContact->setStatus($this->getEntityManager()
-            ->getReference($this->getFullEntityName('ContactStatus'), $status));
+        $calendarContact->setStatus($this->getEntityManager()->getReference(Entity\ContactStatus::class, $status));
         $this->updateEntity($calendarContact);
     }
 

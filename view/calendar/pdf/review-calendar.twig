@@ -18,14 +18,12 @@
     <tbody>
     {% for calendar in calendarItems %}
         <tr>
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            <td width="30">{{ projectLink(projectService,'view-community', 'number') }}</td>
+            <td width="30">{{ projectLink(calendar.projectCalendar.project,'view-community', 'number') }}</td>
             <td {% if 'final' in calendar.calendar %}style="background-color: #FF9900"{% endif %}>{{ calendarLink(calendar,'view-community', 'name') }}</td>
             <td width="25">{{ calendar.projectCalendar.project.call.shortName }}</td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
             <td>{{ calendar.location }}</td>
-            {% set contactService = contactServiceProxy(projectService.project.contact) %}
-            <td>{{ contactService.parseFullName }} ({{ contactService.parseOrganisation() }})</td>
+            <td>{{ calendar.projectCalendar.project.parseFullName }} ({{ calendar.projectCalendar.project.contactOrganisation.organisation }})</td>
             <td>{% for contact in calendar.calendarContact if contact.role.id == 6 %}{{ contact.contact.shortName }}{% endfor %}</td>
             <td>{% for contact in calendar.calendarContact if contact.role.id == 9 %}{{ contact.contact.shortName }}{% endfor %}</td>
             <td>{% for contact in calendar.calendarContact if contact.role.id == 7 %}{{ contact.contact.shortName }}

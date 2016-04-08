@@ -14,10 +14,6 @@ use Calendar\Entity\EntityAbstract;
 
 interface ServiceInterface
 {
-    /**
-     * @return string
-     */
-    public function getFullEntityName($entity);
 
     /**
      * @return EntityAbstract

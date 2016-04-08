@@ -4,7 +4,6 @@
 
 {% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
     <table class="table table-hover table-striped">
-        {% set calendarService = calendarServiceProxy(calendar) %}
         <thead>
         <tr>
             <th colspan="2">{{ calendarLink(calendar,'view','name') }}</th>

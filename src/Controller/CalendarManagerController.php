@@ -18,7 +18,6 @@ use Calendar\Entity\DocumentObject;
 use Calendar\Form\CalendarContacts;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Service\CalendarService;
-use Project\Service\ProjectService;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
@@ -98,9 +97,10 @@ class CalendarManagerController extends CalendarAbstractController
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel([
-            'which'       => $which,
-            'paginator'   => $paginator,
-            'whichValues' => $whichValues,
+            'which'           => $which,
+            'paginator'       => $paginator,
+            'whichValues'     => $whichValues,
+            'calendarService' => $this->getCalendarService(),
         ]);
     }
 
@@ -111,17 +111,17 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function newAction()
     {
-        $projectService = null;
+        $project = null;
         if (!is_null($this->params('project'))) {
-            $projectService = $this->getProjectService()->setProjectId($this->params('project'));
-            if ($projectService->isEmpty()) {
+            $project = $this->getProjectService()->findProjectById($this->params('project'));
+            if ($project->isEmpty()) {
                 return $this->notFoundAction();
             }
         }
 
         $calendar = new Calendar();
         $data = $this->getRequest()->getPost()->toArray();
-        $form = $this->getFormService()->prepare('calendar', $calendar, $data);
+        $form = $this->getFormService()->prepare($calendar, $calendar, $data);
         $form->remove('delete');
         if ($this->getRequest()->isPost()) {
             /*
@@ -139,12 +139,9 @@ class CalendarManagerController extends CalendarAbstractController
                 $calendar->setContact($this->zfcUserAuthentication()->getIdentity());
                 $calendar = $this->getCalendarService()->newEntity($calendar);
 
-                /**
-                 * @var ProjectService|null $projectService
-                 */
-                if (!is_null($projectService)) {
+                if (!is_null($project)) {
                     $projectCalendar = new \Project\Entity\Calendar\Calendar();
-                    $projectCalendar->setProject($projectService->getProject());
+                    $projectCalendar->setProject($project);
                     $projectCalendar->setCalendar($calendar);
                     $this->getProjectService()->updateEntity($projectCalendar);
                 }
@@ -160,8 +157,8 @@ class CalendarManagerController extends CalendarAbstractController
         }
 
         return new ViewModel([
-            'form'           => $form,
-            'projectService' => $projectService
+            'form'    => $form,
+            'project' => $project
         ]);
     }
 
@@ -172,29 +169,31 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function editAction()
     {
-        $calendarService = $this->getCalendarService()->setCalendarId($this->params('id'));
+        $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
+        if (is_null($calendar)) {
+            return $this->notFoundAction();
+        }
 
         $data = $this->getRequest()->getPost()->toArray();
 
-        $form = $this->getFormService()->prepare('calendar', $calendarService->getCalendar(), $data);
+        $form = $this->getFormService()->prepare('calendar', $calendar, $data);
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed
              */
             if (isset($data['cancel'])) {
-                return $this->redirect()
-                    ->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendarService->getCalendar()->getId()]);
+                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
             /*
              * Return when cancel is pressed
              */
             if (isset($data['delete'])) {
-                $this->getCalendarService()->removeEntity($calendarService->getCalendar());
+                $this->getCalendarService()->removeEntity($calendar);
 
                 $this->flashMessenger()->setNamespace('success')
                     ->addMessage(sprintf(
                         $this->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
-                        $calendarService->getCalendar()->getCalendar()
+                        $calendar->getCalendar()
                     ));
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/overview');
@@ -227,7 +226,10 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function selectAttendeesAction()
     {
-        $calendarService = $this->getCalendarService()->setCalendarId($this->params('id'));
+        $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
+        if (is_null($calendar)) {
+            return $this->notFoundAction();
+        }
 
         $data = array_merge($this->getRequest()->getPost()->toArray());
 
@@ -238,19 +240,19 @@ class CalendarManagerController extends CalendarAbstractController
 
         if ($this->getRequest()->isPost()) {
             if (isset($data['cancel'])) {
-                return $this->redirect()
-                    ->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendarService->getCalendar()->getId()]);
+                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
 
 
-            $this->getCalendarService()->updateCalendarContacts($calendarService->getCalendar(), $data);
+            $this->getCalendarService()->updateCalendarContacts($calendar, $data);
 
-            return $this->redirect()
-                ->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendarService->getCalendar()->getId()]);
+            return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
         }
 
         return new ViewModel([
-            'calendarService' => $calendarService,
+            'calendarService' => $this->getCalendarService(),
+            'contactService'  => $this->getContactService(),
+            'calendar'        => $calendar,
             'form'            => $form
         ]);
     }
@@ -262,18 +264,20 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function setRolesAction()
     {
-        $calendarService = $this->getCalendarService()->setCalendarId($this->params('id'));
+        $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
+        if (is_null($calendar)) {
+            return $this->notFoundAction();
+        }
 
         $data = $this->getRequest()->getPost()->toArray();
 
-        $form = $this->getFormService()->prepare('calendar', $calendarService->getCalendar(), $data);
+        $form = $this->getFormService()->prepare($calendar, $calendar, $data);
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed
              */
             if (isset($data['cancel'])) {
-                return $this->redirect()
-                    ->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendarService->getCalendar()->getId()]);
+                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
 
 
@@ -281,17 +285,18 @@ class CalendarManagerController extends CalendarAbstractController
                 $this->flashMessenger()->setNamespace('success')
                     ->addMessage(sprintf(
                         $this->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                        $calendarService->getCalendar()
+                        $calendar
                     ));
 
-                return $this->redirect()
-                    ->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendarService->getId()]);
+                return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
         }
 
         return new ViewModel([
             'form'            => $form,
-            'calendarService' => $calendarService
+            'calendarService' => $this->getCalendarService(),
+            'contactService'  => $this->getContactService(),
+            'calendar'        => $calendar,
         ]);
     }
 
@@ -300,7 +305,8 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function getRolesAction()
     {
-        $calendarRoles = $this->getCalendarService()->findAll('contactRole');
+        /** @var ContactRole[] $calendarRoles */
+        $calendarRoles = $this->getCalendarService()->findAll(ContactRole::class);
 
         $roles = [];
         /**
@@ -322,17 +328,17 @@ class CalendarManagerController extends CalendarAbstractController
         $roleId = $this->params()->fromPost('value');
 
         /**
-         * @var $calendarContact Contact
+         * @var Contact $calendarContact
          */
-        $calendarContact = $this->getCalendarService()->findEntityById('contact', $calendarContactId);
+        $calendarContact = $this->getCalendarService()->findEntityById(Contact::class, $calendarContactId);
 
         if (is_null($calendarContact)) {
             return $this->notFoundAction();
         }
         /**
-         * @var $role ContactRole
+         * @var ContactRole $role
          */
-        $role = $this->getCalendarService()->findEntityById('contactRole', $roleId);
+        $role = $this->getCalendarService()->findEntityById(ContactRole::class, $roleId);
 
         if (is_null($role)) {
             return $this->notFoundAction();
@@ -349,23 +355,24 @@ class CalendarManagerController extends CalendarAbstractController
      */
     public function calendarAction()
     {
-        $calendarService = $this->getCalendarService()->setCalendarId($this->params('id'));
-        if (is_null($calendarService->getCalendar()->getId())) {
+        $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
+        if (is_null($calendar)) {
             return $this->notFoundAction();
         }
+
         $data = array_merge($this->getRequest()->getPost()->toArray(), $this->getRequest()->getFiles()->toArray());
 
         $form = new CreateCalendarDocument($this->getEntityManager());
         $form->bind(new Document());
         //Add the missing form fields
-        $data['calendar'] = $calendarService->getCalendar()->getId();
+        $data['calendar'] = $calendar->getId();
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
             /**
              * @var $document Document
              */
             $document = $form->getData();
-            $document->setCalendar($calendarService->getCalendar());
+            $document->setCalendar($calendar);
             $document->setContact($this->zfcUserAuthentication()->getIdentity());
             /**
              * Add the file
@@ -388,7 +395,7 @@ class CalendarManagerController extends CalendarAbstractController
                 ->addInfoMessage(sprintf(
                     $this->translate("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
                     $document->getDocument(),
-                    $calendarService->getCalendar()->getCalendar()
+                    $calendar->getCalendar()
                 ));
 
             /*
@@ -396,12 +403,14 @@ class CalendarManagerController extends CalendarAbstractController
              */
 
             return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', [
-                'id' => $calendarService->getCalendar()->getId(),
+                'id' => $calendar->getId(),
             ]);
         }
 
         return new ViewModel([
-            'calendarService' => $calendarService,
+            'calendarService' => $this->getCalendarService(),
+            'contactService'  => $this->getContactService(),
+            'calendar'        => $calendar,
             'form'            => $form,
         ]);
     }

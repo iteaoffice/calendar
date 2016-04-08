@@ -47,7 +47,7 @@ class RenderReviewCalendar extends AbstractPlugin
 
         $pdf->setTemplate($this->getModuleOptions()->getReviewCalendarTemplate());
         $pdf->setPageOrientation('L');
-        $pdf->addPage();
+        $pdf->AddPage();
 
         $pdf->SetFontSize(8);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');

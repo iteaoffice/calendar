@@ -13,6 +13,7 @@
 
 namespace Calendar\Controller\Plugin;
 
+use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
@@ -38,22 +39,20 @@ class RenderCalendarContactList extends AbstractPlugin
     protected $serviceLocator;
 
     /**
-     * @param CalendarService $calendarService
+     * @param Calendar $calendar
      *
      * @return CalendarPdf
      */
-    public function render(CalendarService $calendarService)
+    public function render(Calendar $calendar)
     {
         $pdf = new CalendarPdf();
         $pdf->setTemplate($this->getModuleOptions()->getCalendarContactTemplate());
-        $pdf->addPage();
+        $pdf->AddPage();
         $pdf->SetFontSize(9);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
-        $calendarContacts = $calendarService->findCalendarContactsByCalendar(
-            $calendarService->getCalendar(),
-            CalendarContact::STATUS_NO_DECLINED
-        );
+        $calendarContacts = $this->getCalendarService()
+            ->findCalendarContactsByCalendar($calendar, CalendarContact::STATUS_NO_DECLINED);
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
@@ -64,7 +63,8 @@ class RenderCalendarContactList extends AbstractPlugin
              * Use the NDA object to render the filename
              */
             $contactListContent = $twig->render('calendar/pdf/calendar-contact', [
-                'calendarService'  => $calendarService,
+                'calendarService'  => $this->getCalendarService(),
+                'calendar'         => $calendar,
                 'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
             ]);
 
@@ -74,7 +74,7 @@ class RenderCalendarContactList extends AbstractPlugin
              * Don't add a new page on the last iteration
              */
             if ($i < $minAmountOfPages - 1) {
-                $pdf->addPage();
+                $pdf->AddPage();
             }
         }
 
@@ -117,5 +117,13 @@ class RenderCalendarContactList extends AbstractPlugin
     public function getGeneralService()
     {
         return $this->getServiceLocator()->get(GeneralService::class);
+    }
+
+    /**
+     * @return CalendarService
+     */
+    public function getCalendarService()
+    {
+        return $this->getServiceLocator()->get(CalendarService::class);
     }
 }

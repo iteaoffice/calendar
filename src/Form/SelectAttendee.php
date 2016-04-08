@@ -10,7 +10,7 @@
 
 namespace Calendar\Form;
 
-use Calendar\Service\CalendarService;
+use Calendar\Entity\Calendar;
 use Contact\Service\ContactService;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
@@ -21,10 +21,10 @@ use Zend\InputFilter\InputFilterProviderInterface;
 class SelectAttendee extends Form implements InputFilterProviderInterface
 {
     /**
-     * @param CalendarService $calendarService
-     * @param ContactService  $contactService
+     * @param Calendar       $calendar
+     * @param ContactService $contactService
      */
-    public function __construct(CalendarService $calendarService, ContactService $contactService)
+    public function __construct(Calendar $calendar, ContactService $contactService)
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
@@ -32,41 +32,35 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         $this->setAttribute('action', '');
 
         $contacts = [];
-        foreach ($contactService->findPossibleContactByCalendar($calendarService->getCalendar()) as $contact) {
+        foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
             $contacts[$contact->getId()] = $contact->getDisplayName();
         }
 
-        $this->add(
-            [
+        $this->add([
                 'type'    => 'Zend\Form\Element\MultiCheckbox',
                 'name'    => 'contact',
                 'options' => [
                     'value_options' => $contacts,
                     'label'         => _("txt-contact-name"),
                 ],
-            ]
-        );
+            ]);
 
-        $this->add(
-            [
+        $this->add([
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
                     'value' => _("txt-update"),
                 ],
-            ]
-        );
-        $this->add(
-            [
+            ]);
+        $this->add([
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => "btn btn-warning",
                     'value' => _("txt-cancel"),
                 ],
-            ]
-        );
+            ]);
     }
 
     /**

@@ -141,7 +141,7 @@ class CalendarLink extends LinkAbstract
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view':
-                $this->setRouter('route-' . $this->getCalendar()->get("underscore_full_entity_name"));
+                $this->setRouter('route-' . $this->getCalendar()->get("underscore_entity_name"));
                 $this->addRouterParam('calendar', $this->getCalendar()->getId());
                 $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
                 $this->setText(sprintf(

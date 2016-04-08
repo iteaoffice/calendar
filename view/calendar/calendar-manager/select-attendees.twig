@@ -1,7 +1,7 @@
 {% do headTitle().append(translate("txt-admin")) %}
-{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendarService.calendar)) %}
+{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+<h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
 {% do form.setAttribute('class','form-horizontal') %}
@@ -12,7 +12,7 @@
     <label class="col-sm-3 control-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarLink(calendarService.calendar, 'view-admin', 'name') }} {{ calendarLink(calendarService.calendar, 'edit', 'icon') }}</p>
+        <p class="form-control-static">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
     </div>
 </div>
 
@@ -250,7 +250,7 @@
     function init() {
         Calendar = new oCalendar('Calendar', 'incalendar');
         {
-            {% for calendarContact in calendarService.calendar.calendarContact %}
+            {% for calendarContact in calendar.calendarContact %}
             Calendar.Add(
                     "{{ calendarContact.contact.id }}",
                     "{{ calendarContact.contact.displayName }}",

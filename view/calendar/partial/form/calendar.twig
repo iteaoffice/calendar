@@ -10,20 +10,18 @@
 {{ form().openTag(form)|raw }}
 
 
-
-
-{% set calendar = form.get('calendar') %}
+{% set calendar = form.get('calender_entity_calendar') %}
 
 {{ ztbformelement(calendar.get('calendar')) }}
 {{ ztbformelement(calendar.get('type')) }}
 {{ ztbformelement(calendar.get('location')) }}
 
-{% if projectService %}
+{% if project %}
     <div class="form-group">
         <label class="col-sm-3 control-label">{{ translate("txt-project") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static">{{ projectService.parseFullName() }}</p></div>
+            <p class="form-control-static">{{ project.parseFullName() }}</p></div>
     </div>
 {% endif %}
 

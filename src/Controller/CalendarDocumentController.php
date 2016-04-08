@@ -11,6 +11,7 @@
 namespace Calendar\Controller;
 
 use Calendar\Entity\Document;
+use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
 use Zend\Validator\File\FilesSize;
 use Zend\View\Model\ViewModel;
@@ -27,11 +28,10 @@ class CalendarDocumentController extends CalendarAbstractController
      */
     public function downloadAction()
     {
-        set_time_limit(0);
         /**
-         * @var  Document $document
+         * @var Document $document
          */
-        $document = $this->getCalendarService()->findEntityById('Document', $this->params('id'));
+        $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
         if (is_null($document) || sizeof($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
@@ -56,7 +56,7 @@ class CalendarDocumentController extends CalendarAbstractController
      */
     public function documentAction()
     {
-        $document = $this->getCalendarService()->findEntityById('document', $this->params('id'));
+        $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
 
         if (is_null($document)) {
             return $this->notFoundAction();
@@ -71,7 +71,7 @@ class CalendarDocumentController extends CalendarAbstractController
     public function editAction()
     {
         /** @var Document $document */
-        $document = $this->getCalendarService()->findEntityById('document', $this->params('id'));
+        $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
         if (is_null($document)) {
             return $this->notFoundAction();
         }
@@ -121,8 +121,10 @@ class CalendarDocumentController extends CalendarAbstractController
                     $document->setSize($fileSizeValidator->size);
                     $document->setContentType($this->getGeneralService()
                         ->findContentTypeByContentTypeName($file['type']));
-                    /*
+                    /**
                      * Update the object
+                     *
+                     * @var DocumentObject $documentObject
                      */
                     $documentObject = $document->getObject()->first();
                     $documentObject->setObject(file_get_contents($file['tmp_name']));

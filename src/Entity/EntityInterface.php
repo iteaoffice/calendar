@@ -10,9 +10,16 @@
 
 namespace Calendar\Entity;
 
+/**
+ * Interface EntityInterface
+ *
+ * @package Calendar\Entity
+ */
 interface EntityInterface
 {
     public function __get($property);
 
     public function __set($property, $value);
+
+    public function getId();
 }

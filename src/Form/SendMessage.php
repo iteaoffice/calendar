@@ -10,62 +10,55 @@
 
 namespace Calendar\Form;
 
-use Calendar\Service\CalendarService;
-use Contact\Service\ContactService;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
+ * Class SendMessage
  *
+ * @package Calendar\Form
  */
 class SendMessage extends Form implements InputFilterProviderInterface
 {
     /**
-     * @param CalendarService $calendarService
-     * @param ContactService  $contactService
+     * SendMessage constructor.
      */
-    public function __construct(CalendarService $calendarService, ContactService $contactService)
+    public function __construct()
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('action', '');
 
-        $this->add(
-            [
-                'type'       => 'Zend\Form\Element\Textarea',
-                'name'       => 'message',
-                'options'    => [
-                    'label'      => _("txt-message"),
-                    'help-block' => _("txt-send-message-to-calendar-attendees"),
-                ],
-                'attributes' => [
-                    'rows'  => 20,
-                    'class' => 'form-control',
-                ],
-            ]
-        );
+        $this->add([
+            'type'       => 'Zend\Form\Element\Textarea',
+            'name'       => 'message',
+            'options'    => [
+                'label'      => _("txt-message"),
+                'help-block' => _("txt-send-message-to-calendar-attendees"),
+            ],
+            'attributes' => [
+                'rows'  => 20,
+                'class' => 'form-control',
+            ],
+        ]);
 
-        $this->add(
-            [
-                'type'       => 'Zend\Form\Element\Submit',
-                'name'       => 'submit',
-                'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-send"),
-                ],
-            ]
-        );
-        $this->add(
-            [
-                'type'       => 'Zend\Form\Element\Submit',
-                'name'       => 'cancel',
-                'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
-                ],
-            ]
-        );
+        $this->add([
+            'type'       => 'Zend\Form\Element\Submit',
+            'name'       => 'submit',
+            'attributes' => [
+                'class' => "btn btn-primary",
+                'value' => _("txt-send"),
+            ],
+        ]);
+        $this->add([
+            'type'       => 'Zend\Form\Element\Submit',
+            'name'       => 'cancel',
+            'attributes' => [
+                'class' => "btn btn-warning",
+                'value' => _("txt-cancel"),
+            ],
+        ]);
     }
 
     /**

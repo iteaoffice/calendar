@@ -1,7 +1,7 @@
 <h1 style="color: #00a651; font-size: 18px">{{ translate("txt-list-of-participants") }}
-    <br>{{ calendarService.calendar }}</h1>
-<h2 style="color: #808285; font-size: 14px">{{ calendarService.calendar.dateFrom|date('M. jS, Y ') }}
-    - {{ calendarService.calendar.location }}</h2>
+    <br>{{ calendar }}</h1>
+<h2 style="color: #808285; font-size: 14px">{{ calendar.dateFrom|date('M. jS, Y ') }}
+    - {{ calendar.location }}</h2>
 
 <p>&nbsp;<p>
 <table border="1" cellpadding="5">
@@ -17,9 +17,8 @@
     {% set extraLimit = 13 - calendarContacts|length %}
     {% for calendarContact in calendarContacts %}
         <tr>
-            {% set contactService = contactServiceProxy(calendarContact.contact) %}
             <td height="40" valign="middle">{{ calendarContact.contact.displayName }}</td>
-            <td valign="middle">{{ contactService.parseOrganisation() }}</td>
+            <td valign="middle">{{ calendarContact.contact.contactOrganisation.organisation }}</td>
             <td valign="middle">{{ calendarContact.role }}</td>
             <td valign="middle"></td>
         </tr>

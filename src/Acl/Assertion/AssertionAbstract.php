@@ -19,6 +19,7 @@ use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Doctrine\ORM\PersistentCollection;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -57,6 +58,10 @@ abstract class AssertionAbstract implements AssertionInterface
      */
     protected $calendarService;
     /**
+     * @var string
+     */
+    protected $privilege;
+    /**
      * @var array
      */
     protected $accessRoles = [];
@@ -67,6 +72,16 @@ abstract class AssertionAbstract implements AssertionInterface
     public function getRouteMatch()
     {
         return $this->getServiceLocator()->get("Application")->getMvcEvent()->getRouteMatch();
+    }
+
+    /**
+     * Proxy to the original request object to handle form.
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->getServiceLocator()->get('application')->getMvcEvent()->getRequest();
     }
 
     /**
@@ -137,6 +152,49 @@ abstract class AssertionAbstract implements AssertionInterface
         }
 
         return $this->accessRoles;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrivilege()
+    {
+        return $this->privilege;
+    }
+
+    /**
+     * @param string $privilege
+     *
+     * @return AssertionAbstract
+     */
+    public function setPrivilege($privilege)
+    {
+        /**
+         * When the privilege is_null (not given by the isAllowed helper), get it from the routeMatch
+         */
+        if (is_null($privilege)) {
+            $this->privilege = $this->getRouteMatch()
+                ->getParam('privilege', $this->getRouteMatch()->getParam('action'));
+        } else {
+            $this->privilege = $privilege;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId()
+    {
+        if (!is_null($id = $this->getRequest()->getPost('id'))) {
+            return $id;
+        }
+        if (is_null($this->getRouteMatch())) {
+            return null;
+        }
+
+        return $this->getRouteMatch()->getParam('id');
     }
 
     /**

@@ -11,6 +11,7 @@
 
 namespace Calendar\Form;
 
+use Contact\Entity\Selection;
 use Contact\Service\SelectionService;
 use Zend\Form\Form;
 
@@ -37,7 +38,8 @@ class CalendarContacts extends Form
         $this->setAttribute("onsubmit", "return storeChanges();");
 
         $selections = [];
-        foreach ($selectionService->findAll('selection') as $selection) {
+        /** @var Selection $selection */
+        foreach ($selectionService->findAll(Selection::class) as $selection) {
             $selections[$selection->getId()] = $selection->getSelection();
         }
 

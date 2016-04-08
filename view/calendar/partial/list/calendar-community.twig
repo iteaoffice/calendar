@@ -7,16 +7,14 @@
         <th>{{ translate("txt-location") }}</th>
         <th>{{ translate("txt-type") }}</th>
         <th>{{ translate("txt-documents") }}</th>
-        {%  if communityCalendarContactEnabled %}
+        {% if communityCalendarContactEnabled %}
             <th>{{ translate("txt-role") }}</th>
             <th>{{ translate("txt-presence") }}</th>
-        {%  endif %}
+        {% endif %}
     </tr>
     </thead>
     <tbody>
     {% for calendar in elements %}
-        {% set calendarService = calendarServiceProxy(calendar) %}
-
         {% if calendarService.calendarHasContact(calendar, zfcUserIdentity()) %}
             {% set calendarContact = calendarService.findCalendarContactByContactAndCalendar(zfcUserIdentity(), calendar) %}
         {% else %}
@@ -36,22 +34,22 @@
             <td>{{ calendar.location }}</td>
             <td>{{ calendar.type }}</td>
             <td>{{ calendar.document|length }}</td>
-            {%  if communityCalendarContactEnabled %}
-            <td>{{ calendarContact.role }}</td>
-            <td>
-                {% if calendarContact %}
-                    <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
-                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                       class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
-                    <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
-                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                       class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
-                    <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
-                       rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                       class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
-                {% endif %}
-            </td>
-            {%  endif  %}
+            {% if communityCalendarContactEnabled %}
+                <td>{{ calendarContact.role }}</td>
+                <td>
+                    {% if calendarContact %}
+                        <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                           class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                        <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                           class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                        <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                           rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                           class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                    {% endif %}
+                </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

@@ -38,15 +38,14 @@
     <tbody>
     {% for calendar in calendarItems %}
         <tr {% if 'final' in calendar.calendar %}class="success"{% endif %}>
-            {% set projectService = projectServiceProxy(calendar.projectCalendar.project) %}
-            <td>{{ projectLink(projectService,'view-community', 'number') }}</td>
+
+            <td>{{ projectLink(calendar.projectCalendar.project,'view-community', 'number') }}</td>
             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
             <td>{{ calendar.projectCalendar.project.call.shortName }}</td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
             <td>{{ calendar.location }}</td>
-            {% set contactService = contactServiceProxy(projectService.project.contact) %}
-            <td>{{ contactService.contact.shortName }}<br>
-                <small>({{ contactService.parseOrganisation() }})</small>
+            <td>{{ contact.shortName }}<br>
+                <small>({{ calendar.projectCalendar.project.contact.contactOrganisation.organisation }})</small>
             </td>
             <td>
                 {% for contact in calendar.calendarContact if contact.role.id == 6 %}
