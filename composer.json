@@ -8,8 +8,8 @@
   ],
   "repositories": [
     {
-      "type": "composer",
-      "url": "http://packages.itea3.eu"
+      "type": "vcs",
+      "url": "https://github.com/iteaoffice/main"
     }
   ],
   "homepage": "https://itea3.org",
