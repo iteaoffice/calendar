@@ -81,7 +81,6 @@ class Document extends AssertionAbstract
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'document-admin':
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
-
         }
 
         return false;

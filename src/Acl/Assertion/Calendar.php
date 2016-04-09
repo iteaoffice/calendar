@@ -129,7 +129,6 @@ class Calendar extends AssertionAbstract
 
             case 'view':
                 return $this->getCalendarService()->canViewCalendar($calendar, $this->getContact());
-
         }
 
         return false;

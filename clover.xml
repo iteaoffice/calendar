@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1460115086">
-  <project timestamp="1460115086">
+<coverage generated="1460194363">
+  <project timestamp="1460194363">
     <package name="Calendar\Acl\Assertion">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/AssertionAbstract.php">
         <class name="AssertionAbstract" namespace="Calendar\Acl\Assertion" category="Calendar">
-          <metrics complexity="31" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="98" coveredstatements="0" elements="117" coveredelements="0"/>
+          <metrics complexity="32" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="101" coveredstatements="0" elements="120" coveredelements="0"/>
         </class>
         <line num="72" type="method" name="getRouteMatch" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="73" type="stmt" count="0"/>
@@ -69,7 +69,7 @@
         <line num="180" type="stmt" count="0"/>
         <line num="182" type="stmt" count="0"/>
         <line num="183" type="stmt" count="0"/>
-        <line num="188" type="method" name="getId" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="188" type="method" name="getId" visibility="public" complexity="4" crap="20" count="0"/>
         <line num="189" type="stmt" count="0"/>
         <line num="190" type="stmt" count="0"/>
         <line num="191" type="stmt" count="0"/>
@@ -77,53 +77,56 @@
         <line num="193" type="stmt" count="0"/>
         <line num="194" type="stmt" count="0"/>
         <line num="195" type="stmt" count="0"/>
+        <line num="196" type="stmt" count="0"/>
         <line num="197" type="stmt" count="0"/>
         <line num="198" type="stmt" count="0"/>
-        <line num="203" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="204" type="stmt" count="0"/>
-        <line num="205" type="stmt" count="0"/>
-        <line num="206" type="stmt" count="0"/>
-        <line num="211" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="212" type="stmt" count="0"/>
-        <line num="213" type="stmt" count="0"/>
-        <line num="214" type="stmt" count="0"/>
-        <line num="219" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="220" type="stmt" count="0"/>
-        <line num="221" type="stmt" count="0"/>
-        <line num="222" type="stmt" count="0"/>
-        <line num="227" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="228" type="stmt" count="0"/>
-        <line num="229" type="stmt" count="0"/>
-        <line num="230" type="stmt" count="0"/>
-        <line num="235" type="method" name="getAdminService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="236" type="stmt" count="0"/>
-        <line num="237" type="stmt" count="0"/>
-        <line num="238" type="stmt" count="0"/>
-        <line num="243" type="method" name="setAdminService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="244" type="stmt" count="0"/>
-        <line num="245" type="stmt" count="0"/>
-        <line num="246" type="stmt" count="0"/>
-        <line num="251" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="252" type="stmt" count="0"/>
-        <line num="253" type="stmt" count="0"/>
-        <line num="254" type="stmt" count="0"/>
-        <line num="259" type="method" name="setCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="260" type="stmt" count="0"/>
-        <line num="261" type="stmt" count="0"/>
-        <line num="262" type="stmt" count="0"/>
-        <line num="267" type="method" name="getContact" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="268" type="stmt" count="0"/>
-        <line num="269" type="stmt" count="0"/>
-        <line num="270" type="stmt" count="0"/>
+        <line num="200" type="stmt" count="0"/>
+        <line num="201" type="stmt" count="0"/>
+        <line num="206" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="207" type="stmt" count="0"/>
+        <line num="208" type="stmt" count="0"/>
+        <line num="209" type="stmt" count="0"/>
+        <line num="214" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="215" type="stmt" count="0"/>
+        <line num="216" type="stmt" count="0"/>
+        <line num="217" type="stmt" count="0"/>
+        <line num="222" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="223" type="stmt" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
+        <line num="230" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="231" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="0"/>
+        <line num="233" type="stmt" count="0"/>
+        <line num="238" type="method" name="getAdminService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="239" type="stmt" count="0"/>
+        <line num="240" type="stmt" count="0"/>
+        <line num="241" type="stmt" count="0"/>
+        <line num="246" type="method" name="setAdminService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="247" type="stmt" count="0"/>
+        <line num="248" type="stmt" count="0"/>
+        <line num="249" type="stmt" count="0"/>
+        <line num="254" type="method" name="getCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="255" type="stmt" count="0"/>
+        <line num="256" type="stmt" count="0"/>
+        <line num="257" type="stmt" count="0"/>
+        <line num="262" type="method" name="setCalendarService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="263" type="stmt" count="0"/>
+        <line num="264" type="stmt" count="0"/>
+        <line num="265" type="stmt" count="0"/>
+        <line num="270" type="method" name="getContact" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="271" type="stmt" count="0"/>
+        <line num="272" type="stmt" count="0"/>
         <line num="273" type="stmt" count="0"/>
         <line num="274" type="stmt" count="0"/>
-        <line num="281" type="method" name="setContact" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="282" type="stmt" count="0"/>
-        <line num="283" type="stmt" count="0"/>
+        <line num="276" type="stmt" count="0"/>
+        <line num="277" type="stmt" count="0"/>
+        <line num="284" type="method" name="setContact" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="285" type="stmt" count="0"/>
         <line num="286" type="stmt" count="0"/>
-        <metrics loc="287" ncloc="169" classes="1" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="98" coveredstatements="0" elements="117" coveredelements="0"/>
+        <line num="288" type="stmt" count="0"/>
+        <line num="289" type="stmt" count="0"/>
+        <metrics loc="290" ncloc="172" classes="1" methods="19" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="101" coveredstatements="0" elements="120" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/Calendar.php">
         <class name="Calendar" namespace="Calendar\Acl\Assertion">
@@ -200,10 +203,10 @@
         <line num="128" type="stmt" count="0"/>
         <line num="130" type="stmt" count="0"/>
         <line num="131" type="stmt" count="0"/>
-        <line num="133" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
-        <line num="136" type="stmt" count="0"/>
-        <metrics loc="137" ncloc="99" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="73" coveredstatements="0" elements="74" coveredelements="0"/>
+        <metrics loc="136" ncloc="98" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="73" coveredstatements="0" elements="74" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/Contact.php">
         <class name="Contact" namespace="Calendar\Acl\Assertion">
@@ -268,10 +271,10 @@
         <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
         <line num="83" type="stmt" count="0"/>
-        <line num="85" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="86" type="stmt" count="0"/>
         <line num="87" type="stmt" count="0"/>
-        <line num="88" type="stmt" count="0"/>
-        <metrics loc="89" ncloc="61" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="0" elements="40" coveredelements="0"/>
+        <metrics loc="88" ncloc="60" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="39" coveredstatements="0" elements="40" coveredelements="0"/>
       </file>
     </package>
     <package name="Calendar\Acl\Factory">
@@ -3922,6 +3925,6 @@
         <metrics loc="544" ncloc="339" classes="1" methods="35" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="222" coveredstatements="0" elements="257" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="52" loc="8836" ncloc="5322" classes="49" methods="415" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3169" coveredstatements="5" elements="3584" coveredelements="6"/>
+    <metrics files="52" loc="8837" ncloc="5323" classes="49" methods="415" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3172" coveredstatements="5" elements="3587" coveredelements="6"/>
   </project>
 </coverage>

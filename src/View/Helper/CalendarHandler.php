@@ -75,7 +75,7 @@ class CalendarHandler extends AbstractHelper
                  */
                 $calendarLink = $this->serviceLocator->get('calendarLink');
                 $this->serviceLocator->get('headmeta')
-                    ->setProperty('og:url', $calendarLink($this->getCalendar()->getCalendar(), 'view', 'social'));
+                    ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
 
                 return $this->parseCalendarItem($this->getCalendar());
             case 'calendar':

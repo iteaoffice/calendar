@@ -19,6 +19,7 @@
     "zendframework/zendframework": "~2.5"
   },
   "require-dev": {
+    "iteaoffice/main": "dev-develop",
     "phpunit/phpunit": "@stable",
     "pdepend/pdepend": "@stable",
     "phpmd/phpmd": "@stable",

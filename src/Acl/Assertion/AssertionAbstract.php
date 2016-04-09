@@ -111,8 +111,10 @@ abstract class AssertionAbstract implements AssertionInterface
                 return true;
             }
             if ($this->hasContact()) {
-                if (in_array(strtolower($accessRole->getAccess()),
-                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact()))) {
+                if (in_array(
+                    strtolower($accessRole->getAccess()),
+                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact())
+                )) {
                     return true;
                 }
             }
@@ -190,6 +192,9 @@ abstract class AssertionAbstract implements AssertionInterface
         }
         if (is_null($this->getRouteMatch())) {
             return null;
+        }
+        if (!is_null($id = $this->getRouteMatch()->getParam('id'))) {
+            return (int)$id;
         }
 
         return null;
