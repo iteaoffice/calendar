@@ -1,6 +1,9 @@
 imports:
     - php
-build: false
+build:
+    environment:
+        php:
+            version: 5.6
 tools:
     php_changetracking: true
     php_sim: true
