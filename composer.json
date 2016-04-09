@@ -6,12 +6,6 @@
   "keywords": [
     "calendar"
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/iteaoffice/main"
-    }
-  ],
   "homepage": "https://itea3.org",
   "authors": [
     {
@@ -25,7 +19,6 @@
     "zendframework/zendframework": "~2.5"
   },
   "require-dev": {
-    "iteaoffice/main": "dev-develop",
     "phpunit/phpunit": "@stable",
     "pdepend/pdepend": "@stable",
     "phpmd/phpmd": "@stable",
