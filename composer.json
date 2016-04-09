@@ -6,6 +6,12 @@
   "keywords": [
     "calendar"
   ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packages.itea3.eu"
+    }
+  ],
   "homepage": "https://itea3.org",
   "authors": [
     {
