@@ -14,23 +14,15 @@ use Calendar\Entity\Calendar;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Content\Entity\Content;
-use Zend\Mvc\Router\Http\RouteMatch;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Helper\AbstractHelper;
-use ZfcTwig\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
 /**
- * Class CountryHandler
+ * Class CalendarHandler
  *
- * @package Country\View\Helper
+ * @package Calendar\View\Helper
  */
-class CalendarHandler extends AbstractHelper
+class CalendarHandler extends AbstractViewHelper
 {
-    /**
-     * @var HelperPluginManager
-     */
-    protected $serviceLocator;
     /**
      * @var int
      */
@@ -59,31 +51,33 @@ class CalendarHandler extends AbstractHelper
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
                 if (is_null($this->getCalendar())) {
-                    $this->getServiceLocator()->get("response")->setStatusCode(404);
+                    $this->getHelperPluginManager()->get('response')->setStatusCode(404);
 
                     return ("The selected calendar item cannot be found");
                 }
 
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
-                $this->serviceLocator->get('headtitle')->append((string)$this->getCalendar()->getCalendar());
-                $this->serviceLocator->get('headmeta')->setProperty('og:type', $this->translate("txt-calendar"));
-                $this->serviceLocator->get('headmeta')->setProperty('og:title', $this->getCalendar()->getCalendar());
-                $this->serviceLocator->get('headmeta')
+                $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
+                $this->getHelperPluginManager()->get('headtitle')->append((string)$this->getCalendar()->getCalendar());
+                $this->getHelperPluginManager()->get('headmeta')
+                    ->setProperty('og:type', $this->translate("txt-calendar"));
+                $this->getHelperPluginManager()->get('headmeta')
+                    ->setProperty('og:title', $this->getCalendar()->getCalendar());
+                $this->getHelperPluginManager()->get('headmeta')
                     ->setProperty('og:description', $this->getCalendar()->getDescription());
                 /**
                  * @var $calendarLink CalendarLink
                  */
-                $calendarLink = $this->serviceLocator->get('calendarLink');
-                $this->serviceLocator->get('headmeta')
+                $calendarLink = $this->getServiceManager()->get('calendarLink');
+                $this->getHelperPluginManager()->get('headmeta')
                     ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
 
                 return $this->parseCalendarItem($this->getCalendar());
             case 'calendar':
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-calendar"));
+                $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
 
                 return $this->parseCalendar($this->getLimit());
             case 'calendar_past':
-                $this->serviceLocator->get('headtitle')->append($this->translate("txt-past-events"));
+                $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-past-events"));
 
                 return $this->parsePastCalendar($this->getYear(), $this->getType(), $this->getLimit());
             case 'calendar_small':
@@ -147,38 +141,6 @@ class CalendarHandler extends AbstractHelper
     }
 
     /**
-     * @return RouteMatch
-     */
-    public function getRouteMatch()
-    {
-        return $this->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch();
-    }
-
-    /**
-     * Get the service locator.
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator->getServiceLocator();
-    }
-
-    /**
-     * Set the service locator.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return AbstractHelper
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
      * Set the newsService based on the DocRef
      *
      * @param $docRef
@@ -195,7 +157,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function getCalendarService()
     {
-        return $this->getServiceLocator()->get(CalendarService::class);
+        return $this->getServiceManager()->get(CalendarService::class);
     }
 
     /**
@@ -203,7 +165,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function getModuleOptions()
     {
-        return $this->getServiceLocator()->get(ModuleOptions::class);
+        return $this->getServiceManager()->get(ModuleOptions::class);
     }
 
     /**
@@ -214,16 +176,6 @@ class CalendarHandler extends AbstractHelper
     public function setCalendarById($id)
     {
         $this->setCalendar($this->getCalendarService()->findCalendarById($id));
-    }
-
-    /**
-     * @param $string
-     *
-     * @return string
-     */
-    public function translate($string)
-    {
-        return $this->serviceLocator->get('translate')->__invoke($string);
     }
 
     /**
@@ -243,7 +195,7 @@ class CalendarHandler extends AbstractHelper
      */
     public function getRenderer()
     {
-        return $this->getServiceLocator()->get('ZfcTwigRenderer');
+        return $this->getServiceManager()->get('ZfcTwigRenderer');
     }
 
     /**
@@ -255,7 +207,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             CalendarService::WHICH_UPCOMING,
-            $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity()
+            $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity()
         )->setMaxResults($limit)
             ->getResult();
 
@@ -308,7 +260,7 @@ class CalendarHandler extends AbstractHelper
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             CalendarService::WHICH_PAST,
-            $this->getServiceLocator()->get('Application\Authentication\Service')->getIdentity(),
+            $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
             $year,
             $type
         )

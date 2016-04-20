@@ -11,6 +11,8 @@
 namespace Calendar\Controller;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
+use Calendar\Controller\Plugin\RenderCalendarContactList;
+use Calendar\Controller\Plugin\RenderReviewCalendar;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
@@ -26,8 +28,6 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
-use Calendar\Controller\Plugin\RenderCalendarContactList;
-use Calendar\Controller\Plugin\RenderReviewCalendar;
 
 /**
  * @method ZfcUserAuthentication zfcUserAuthentication()

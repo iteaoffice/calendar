@@ -95,39 +95,39 @@ return [
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/overview',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/edit',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/calendar',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/new',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/select-attendees',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/update-role',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/get-roles',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/document/document',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
                 [
                     'route' => 'zfcadmin/calendar-manager/document/edit',
-                    'roles' => [strtolower(Access::ACCESS_OFFICE)]
+                    'roles' => [Access::ACCESS_OFFICE]
                 ],
             ],
         ],

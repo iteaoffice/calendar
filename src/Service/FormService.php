@@ -15,20 +15,21 @@
 
 namespace Calendar\Service;
 
+use Calendar\Entity\EntityAbstract;
 use Calendar\Form\CreateObject;
-use Calendar\Form\FilterCreateObject;
+use Calendar\InputFilter\ObjectFilter;
 use Zend\Form\Form;
 
 class FormService extends ServiceAbstract
 {
     /**
-     * @param null $className
-     * @param null $entity
-     * @param bool $bind
+     * @param string         $className
+     * @param EntityAbstract $entity
+     * @param bool           $bind
      *
      * @return Form
      */
-    public function getForm($className = null, $entity = null, $bind = true)
+    public function getForm($className = null, EntityAbstract $entity = null, $bind = true)
     {
         if (!is_null($className) && is_null($entity)) {
             $entity = new $className();
@@ -38,8 +39,8 @@ class FormService extends ServiceAbstract
             throw new \InvalidArgumentException("No entity created given");
         }
 
-        $formName = 'Calendar\\' . $entity->get('entity_name') . '\\Form';
-        $filterName = 'Calendar\\InputFilter\\' . $entity->get('entity_name');
+        $formName = 'Calendar\\Form\\' . $entity->get('entity_name') . 'Form';
+        $filterName = 'Calendar\\InputFilter\\' . $entity->get('entity_name') . 'Filter';
 
         /*
          * The filter and the form can dynamically be created by pulling the form from the serviceManager
@@ -52,7 +53,7 @@ class FormService extends ServiceAbstract
         }
 
         if (!$this->getServiceLocator()->has($filterName)) {
-            $filter = new FilterCreateObject();
+            $filter = new ObjectFilter();
         } else {
             $filter = $this->getServiceLocator()->get($filterName);
         }
@@ -66,9 +67,9 @@ class FormService extends ServiceAbstract
     }
 
     /**
-     * @param      $className
-     * @param null $entity
-     * @param      $data
+     * @param string         $className
+     * @param EntityAbstract $entity
+     * @param array          $data
      *
      * @return Form
      */
