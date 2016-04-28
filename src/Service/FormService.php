@@ -17,8 +17,8 @@ namespace Calendar\Service;
 
 use Calendar\Entity\EntityAbstract;
 use Calendar\Form\CreateObject;
-use Calendar\InputFilter\ObjectFilter;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class FormService extends ServiceAbstract
 {
@@ -35,7 +35,7 @@ class FormService extends ServiceAbstract
             $entity = new $className();
         }
 
-        if (!is_object($entity)) {
+        if (!$entity instanceof EntityAbstract) {
             throw new \InvalidArgumentException("No entity created given");
         }
 
@@ -52,13 +52,13 @@ class FormService extends ServiceAbstract
             $form = $this->getServiceLocator()->get($formName);
         }
 
-        if (!$this->getServiceLocator()->has($filterName)) {
-            $filter = new ObjectFilter();
-        } else {
+        if ($this->getServiceLocator()->has($filterName)) {
+            /** @var InputFilter $filter */
             $filter = $this->getServiceLocator()->get($filterName);
+            $form->setInputFilter($filter);
         }
 
-        $form->setInputFilter($filter);
+
         if ($bind) {
             $form->bind($entity);
         }

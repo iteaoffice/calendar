@@ -26,7 +26,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package Partner\Controller\Factory
  */
-class PluginFactory implements FactoryInterface
+final class PluginFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface|PluginManager     $container
@@ -38,7 +38,7 @@ class PluginFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var AbstractPlugin $plugin */
-        $plugin = new $requestedName();
+        $plugin = new $requestedName($options);
 
         if (method_exists($plugin, 'setServiceLocator')) {
             $plugin->setServiceLocator($container->getServiceLocator());

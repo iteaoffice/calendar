@@ -63,7 +63,7 @@ final class ViewHelperFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var AbstractViewHelper $viewHelper */
-        $viewHelper = new $requestedName();
+        $viewHelper = new $requestedName($options);
         $viewHelper->setServiceManager($container->getServiceLocator());
         $viewHelper->setHelperPluginManager($container);
 

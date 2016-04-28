@@ -15,25 +15,42 @@
 namespace Calendar\Factory;
 
 use Calendar\Options\ModuleOptions;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class ModuleOptionsFactory
  *
- * @package General\Factory
+ * @package Calendar\Factory
  */
-class ModuleOptionsFactory implements FactoryInterface
+final class ModuleOptionsFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * Create an instance of the requested class name.
+     *
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
      *
      * @return ModuleOptions
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('Config');
 
         return new ModuleOptions(isset($config['calendar_option']) ? $config['calendar_option'] : []);
+    }
+
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param string|null             $canonicalName
+     * @param string|null             $requestedName
+     *
+     * @return ModuleOptions
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator, $canonicalName = null, $requestedName = null)
+    {
+        return $this($serviceLocator, $requestedName);
     }
 }

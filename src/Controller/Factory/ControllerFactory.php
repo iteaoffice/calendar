@@ -14,8 +14,8 @@
  */
 namespace Calendar\Controller\Factory;
 
-use Calendar\Options\ModuleOptions;
 use Calendar\Controller\CalendarAbstractController;
+use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Service\ContactService;
@@ -36,11 +36,11 @@ use ZfcTwig\View\TwigRenderer;
  *
  * @package Project\Controller\Factory
  */
-class ControllerFactory implements FactoryInterface
+final class ControllerFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface|ControllerManager $container
-     * @param                                      $requestedName
+     * @param string                               $requestedName
      * @param array|null                           $options
      *
      * @return CalendarAbstractController
@@ -48,7 +48,7 @@ class ControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var CalendarAbstractController $controller */
-        $controller = new $requestedName();
+        $controller = new $requestedName($options);
         $serviceManager = $container->getServiceLocator();
 
         /** @var FormService $formService */

@@ -16,6 +16,7 @@ use Calendar\Entity;
 use Calendar\Entity\EntityAbstract;
 use Calendar\Options\ModuleOptions;
 use Contact\Service\ContactService;
+use Interop\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -204,7 +205,7 @@ abstract class ServiceAbstract implements ServiceInterface
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface|ContainerInterface $serviceLocator
      *
      * @return ServiceAbstract
      */

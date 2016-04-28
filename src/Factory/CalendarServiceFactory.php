@@ -20,6 +20,7 @@ use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -28,38 +29,55 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package Calendar\Factory
  */
-class CalendarServiceFactory implements FactoryInterface
+final class CalendarServiceFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * Create an instance of the requested class name.
+     *
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
      *
      * @return CalendarService
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $calendarService = new CalendarService();
-        $calendarService->setServiceLocator($serviceLocator);
+        /** @var CalendarService $calendarService */
+        $calendarService = new $requestedName($options);
+        $calendarService->setServiceLocator($container);
 
         /** @var EntityManager $entityManager */
-        $entityManager = $serviceLocator->get(EntityManager::class);
+        $entityManager = $container->get(EntityManager::class);
         $calendarService->setEntityManager($entityManager);
 
         /** @var Authorize $authorizeService */
-        $authorizeService = $serviceLocator->get(Authorize::class);
+        $authorizeService = $container->get(Authorize::class);
         $calendarService->setAuthorizeService($authorizeService);
 
         /** @var ContactService $contactService */
-        $contactService = $serviceLocator->get(ContactService::class);
+        $contactService = $container->get(ContactService::class);
         $calendarService->setContactService($contactService);
 
         /** @var AdminService $adminService */
-        $adminService = $serviceLocator->get(AdminService::class);
+        $adminService = $container->get(AdminService::class);
         $calendarService->setAdminService($adminService);
 
         /** @var ModuleOptions $moduleOptions */
-        $moduleOptions = $serviceLocator->get(ModuleOptions::class);
+        $moduleOptions = $container->get(ModuleOptions::class);
         $calendarService->setModuleOptions($moduleOptions);
 
         return $calendarService;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $container
+     * @param string|null             $canonicalName
+     * @param string|null             $requestedName
+     *
+     * @return CalendarService
+     */
+    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
+    {
+        return $this($container, $requestedName);
     }
 }

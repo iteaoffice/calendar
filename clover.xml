@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1461156124">
-  <project timestamp="1461156124">
+<coverage generated="1461851205">
+  <project timestamp="1461851205">
     <package name="Calendar\Acl\Assertion">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/AssertionAbstract.php">
         <class name="AssertionAbstract" namespace="Calendar\Acl\Assertion" category="Calendar">
@@ -2102,50 +2102,62 @@
     <package name="Calendar\Factory">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Factory/CalendarServiceFactory.php">
         <class name="CalendarServiceFactory" namespace="Calendar\Factory" fullPackage="Calendar" package="Calendar">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="0" elements="16" coveredelements="0"/>
+          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="20" coveredelements="0"/>
         </class>
-        <line num="38" type="method" name="createService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
-        <line num="41" type="stmt" count="0"/>
+        <line num="43" type="method" name="__invoke" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="44" type="stmt" count="0"/>
-        <line num="45" type="stmt" count="0"/>
-        <line num="48" type="stmt" count="0"/>
-        <line num="49" type="stmt" count="0"/>
-        <line num="52" type="stmt" count="0"/>
-        <line num="53" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
-        <line num="57" type="stmt" count="0"/>
-        <line num="60" type="stmt" count="0"/>
-        <line num="61" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
-        <line num="64" type="stmt" count="0"/>
-        <metrics loc="65" ncloc="37" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="0" elements="16" coveredelements="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="69" type="stmt" count="0"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="79" type="method" name="createService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="80" type="stmt" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <metrics loc="83" ncloc="43" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="0" elements="20" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Factory/FormServiceFactory.php">
         <class name="FormServiceFactory" namespace="Calendar\Factory" fullPackage="General" package="General">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="8" coveredelements="0"/>
+          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="0" elements="12" coveredelements="0"/>
         </class>
-        <line num="34" type="method" name="createService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="36" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
+        <line num="39" type="method" name="__invoke" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="40" type="stmt" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="58" type="method" name="createService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="59" type="stmt" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <metrics loc="62" ncloc="26" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="0" elements="12" coveredelements="0"/>
+      </file>
+      <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Factory/ModuleOptionsFactory.php">
+        <class name="ModuleOptionsFactory" namespace="Calendar\Factory" fullPackage="Calendar" package="Calendar">
+          <metrics complexity="3" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
+        </class>
+        <line num="38" type="method" name="__invoke" visibility="public" complexity="2" crap="6" count="0"/>
         <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
         <line num="43" type="stmt" count="0"/>
-        <metrics loc="44" ncloc="20" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="8" coveredelements="0"/>
-      </file>
-      <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Factory/ModuleOptionsFactory.php">
-        <class name="ModuleOptionsFactory" namespace="Calendar\Factory" fullPackage="General" package="General">
-          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
-        </class>
-        <line num="33" type="method" name="createService" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="34" type="stmt" count="0"/>
-        <line num="35" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <metrics loc="39" ncloc="16" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+        <line num="52" type="method" name="createService" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="54" type="stmt" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <metrics loc="56" ncloc="22" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="0" elements="9" coveredelements="0"/>
       </file>
     </package>
     <package name="Calendar\Form">
@@ -3012,7 +3024,7 @@
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Service/FormService.php">
         <class name="FormService" namespace="Calendar\Service">
-          <metrics complexity="8" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="0" elements="32" coveredelements="0"/>
+          <metrics complexity="8" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="0" elements="30" coveredelements="0"/>
         </class>
         <line num="32" type="method" name="getForm" visibility="public" complexity="7" crap="56" count="0"/>
         <line num="33" type="stmt" count="0"/>
@@ -3030,11 +3042,9 @@
         <line num="52" type="stmt" count="0"/>
         <line num="53" type="stmt" count="0"/>
         <line num="55" type="stmt" count="0"/>
-        <line num="56" type="stmt" count="0"/>
         <line num="57" type="stmt" count="0"/>
         <line num="58" type="stmt" count="0"/>
         <line num="59" type="stmt" count="0"/>
-        <line num="61" type="stmt" count="0"/>
         <line num="62" type="stmt" count="0"/>
         <line num="63" type="stmt" count="0"/>
         <line num="64" type="stmt" count="0"/>
@@ -3046,111 +3056,111 @@
         <line num="79" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
         <line num="82" type="stmt" count="0"/>
-        <metrics loc="83" ncloc="52" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="30" coveredstatements="0" elements="32" coveredelements="0"/>
+        <metrics loc="83" ncloc="51" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="0" elements="30" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Service/ServiceAbstract.php">
         <class name="ServiceAbstract" namespace="Calendar\Service">
           <metrics complexity="21" methods="20" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="0" elements="98" coveredelements="0"/>
         </class>
-        <line num="62" type="method" name="findAll" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="63" type="stmt" count="0"/>
+        <line num="63" type="method" name="findAll" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="64" type="stmt" count="0"/>
         <line num="65" type="stmt" count="0"/>
-        <line num="75" type="method" name="findEntityById" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="76" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="76" type="method" name="findEntityById" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="77" type="stmt" count="0"/>
         <line num="78" type="stmt" count="0"/>
-        <line num="85" type="method" name="newEntity" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="86" type="stmt" count="0"/>
+        <line num="79" type="stmt" count="0"/>
+        <line num="86" type="method" name="newEntity" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="87" type="stmt" count="0"/>
         <line num="88" type="stmt" count="0"/>
-        <line num="90" type="stmt" count="0"/>
+        <line num="89" type="stmt" count="0"/>
         <line num="91" type="stmt" count="0"/>
-        <line num="98" type="method" name="updateEntity" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="99" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="99" type="method" name="updateEntity" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="100" type="stmt" count="0"/>
         <line num="101" type="stmt" count="0"/>
-        <line num="103" type="stmt" count="0"/>
-        <line num="105" type="stmt" count="0"/>
+        <line num="102" type="stmt" count="0"/>
+        <line num="104" type="stmt" count="0"/>
         <line num="106" type="stmt" count="0"/>
-        <line num="113" type="method" name="removeEntity" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="114" type="stmt" count="0"/>
+        <line num="107" type="stmt" count="0"/>
+        <line num="114" type="method" name="removeEntity" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="115" type="stmt" count="0"/>
         <line num="116" type="stmt" count="0"/>
-        <line num="118" type="stmt" count="0"/>
+        <line num="117" type="stmt" count="0"/>
         <line num="119" type="stmt" count="0"/>
-        <line num="126" type="method" name="addResource" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="127" type="stmt" count="0"/>
-        <line num="131" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="127" type="method" name="addResource" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="128" type="stmt" count="0"/>
         <line num="132" type="stmt" count="0"/>
         <line num="133" type="stmt" count="0"/>
         <line num="134" type="stmt" count="0"/>
         <line num="135" type="stmt" count="0"/>
         <line num="136" type="stmt" count="0"/>
-        <line num="141" type="method" name="getEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="142" type="stmt" count="0"/>
+        <line num="137" type="stmt" count="0"/>
+        <line num="142" type="method" name="getEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="143" type="stmt" count="0"/>
         <line num="144" type="stmt" count="0"/>
-        <line num="151" type="method" name="setEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="152" type="stmt" count="0"/>
+        <line num="145" type="stmt" count="0"/>
+        <line num="152" type="method" name="setEntityManager" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="153" type="stmt" count="0"/>
-        <line num="155" type="stmt" count="0"/>
+        <line num="154" type="stmt" count="0"/>
         <line num="156" type="stmt" count="0"/>
-        <line num="161" type="method" name="getAuthenticationService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="162" type="stmt" count="0"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="162" type="method" name="getAuthenticationService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="163" type="stmt" count="0"/>
         <line num="164" type="stmt" count="0"/>
-        <line num="171" type="method" name="setAuthenticationService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="172" type="stmt" count="0"/>
+        <line num="165" type="stmt" count="0"/>
+        <line num="172" type="method" name="setAuthenticationService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="173" type="stmt" count="0"/>
-        <line num="175" type="stmt" count="0"/>
+        <line num="174" type="stmt" count="0"/>
         <line num="176" type="stmt" count="0"/>
-        <line num="181" type="method" name="getAdminService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="182" type="stmt" count="0"/>
+        <line num="177" type="stmt" count="0"/>
+        <line num="182" type="method" name="getAdminService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="183" type="stmt" count="0"/>
         <line num="184" type="stmt" count="0"/>
-        <line num="191" type="method" name="setAdminService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="192" type="stmt" count="0"/>
+        <line num="185" type="stmt" count="0"/>
+        <line num="192" type="method" name="setAdminService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="193" type="stmt" count="0"/>
-        <line num="195" type="stmt" count="0"/>
+        <line num="194" type="stmt" count="0"/>
         <line num="196" type="stmt" count="0"/>
-        <line num="201" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="202" type="stmt" count="0"/>
+        <line num="197" type="stmt" count="0"/>
+        <line num="202" type="method" name="getServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="203" type="stmt" count="0"/>
         <line num="204" type="stmt" count="0"/>
-        <line num="211" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="212" type="stmt" count="0"/>
+        <line num="205" type="stmt" count="0"/>
+        <line num="212" type="method" name="setServiceLocator" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="213" type="stmt" count="0"/>
-        <line num="215" type="stmt" count="0"/>
+        <line num="214" type="stmt" count="0"/>
         <line num="216" type="stmt" count="0"/>
-        <line num="221" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="222" type="stmt" count="0"/>
+        <line num="217" type="stmt" count="0"/>
+        <line num="222" type="method" name="getContactService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="223" type="stmt" count="0"/>
         <line num="224" type="stmt" count="0"/>
-        <line num="231" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="232" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
+        <line num="232" type="method" name="setContactService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="233" type="stmt" count="0"/>
-        <line num="235" type="stmt" count="0"/>
+        <line num="234" type="stmt" count="0"/>
         <line num="236" type="stmt" count="0"/>
-        <line num="241" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="242" type="stmt" count="0"/>
+        <line num="237" type="stmt" count="0"/>
+        <line num="242" type="method" name="getModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="243" type="stmt" count="0"/>
         <line num="244" type="stmt" count="0"/>
-        <line num="251" type="method" name="setModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="252" type="stmt" count="0"/>
+        <line num="245" type="stmt" count="0"/>
+        <line num="252" type="method" name="setModuleOptions" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="253" type="stmt" count="0"/>
-        <line num="255" type="stmt" count="0"/>
+        <line num="254" type="stmt" count="0"/>
         <line num="256" type="stmt" count="0"/>
-        <line num="261" type="method" name="getAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="262" type="stmt" count="0"/>
+        <line num="257" type="stmt" count="0"/>
+        <line num="262" type="method" name="getAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="263" type="stmt" count="0"/>
         <line num="264" type="stmt" count="0"/>
-        <line num="271" type="method" name="setAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="272" type="stmt" count="0"/>
+        <line num="265" type="stmt" count="0"/>
+        <line num="272" type="method" name="setAuthorizeService" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="273" type="stmt" count="0"/>
-        <line num="275" type="stmt" count="0"/>
+        <line num="274" type="stmt" count="0"/>
         <line num="276" type="stmt" count="0"/>
-        <metrics loc="277" ncloc="153" classes="1" methods="20" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="0" elements="98" coveredelements="0"/>
+        <line num="277" type="stmt" count="0"/>
+        <metrics loc="278" ncloc="154" classes="1" methods="20" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="78" coveredstatements="0" elements="98" coveredelements="0"/>
       </file>
     </package>
     <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Service/ServiceInterface.php">
@@ -3944,6 +3954,6 @@
         <metrics loc="485" ncloc="306" classes="1" methods="30" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="203" coveredstatements="0" elements="233" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="54" loc="8880" ncloc="5347" classes="51" methods="416" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3178" coveredstatements="5" elements="3594" coveredelements="6"/>
+    <metrics files="54" loc="8934" ncloc="5365" classes="51" methods="419" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3185" coveredstatements="5" elements="3604" coveredelements="6"/>
   </project>
 </coverage>

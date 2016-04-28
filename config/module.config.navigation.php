@@ -95,6 +95,7 @@ return [
             // And finally, here is where we define our page hierarchy
             'calendar' => [
                 'label' => _("txt-calendar-admin"),
+                'order' => 60,
                 'route' => 'zfcadmin/calendar-manager',
                 'pages' => [
                     'calendar'          => [

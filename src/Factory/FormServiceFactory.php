@@ -16,6 +16,7 @@ namespace Calendar\Factory;
 
 use Calendar\Service\FormService;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -24,21 +25,38 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  *
  * @package General\Factory
  */
-class FormServiceFactory implements FactoryInterface
+final class FormServiceFactory implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * Create an instance of the requested class name.
+     *
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param null|array         $options
      *
      * @return FormService
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $formService = new FormService();
-        $formService->setServiceLocator($serviceLocator);
+        /** @var FormService $formService */
+        $formService = new $requestedName($options);
+        $formService->setServiceLocator($container);
         /** @var EntityManager $entityManager */
-        $entityManager = $serviceLocator->get(EntityManager::class);
+        $entityManager = $container->get(EntityManager::class);
         $formService->setEntityManager($entityManager);
 
         return $formService;
+    }
+
+    /**
+     * @param ServiceLocatorInterface $container
+     * @param string|null             $canonicalName
+     * @param string|null             $requestedName
+     *
+     * @return FormService
+     */
+    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
+    {
+        return $this($container, $requestedName);
     }
 }
