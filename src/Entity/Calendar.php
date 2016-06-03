@@ -9,15 +9,12 @@
  */
 namespace Calendar\Entity;
 
+use Contact\Entity\Contact;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\Form\Annotation;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
-use Zend\Validator\Callback;
 
 /**
  * Calendar
@@ -52,20 +49,22 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @var array
      */
-    protected $finalTemplates = [
-        self::FINAL_DRAFT     => 'txt-draft',
-        self::FINAL_TENTATIVE => 'txt-tentative',
-        self::FINAL_FINAL     => 'txt-final',
-    ];
+    protected static $finalTemplates
+        = [
+            self::FINAL_DRAFT     => 'txt-draft',
+            self::FINAL_TENTATIVE => 'txt-tentative',
+            self::FINAL_FINAL     => 'txt-final',
+        ];
     /**
      * Textual versions of the on homepage
      *
      * @var array
      */
-    protected $onHomepageTemplates = [
-        self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
-        self::ON_HOMEPAGE     => 'txt-on-homepage',
-    ];
+    protected static $onHomepageTemplates
+        = [
+            self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
+            self::ON_HOMEPAGE     => 'txt-on-homepage',
+        ];
     /**
      * @ORM\Column(name="calendar_id", length=10, type="integer", nullable=false)
      * @ORM\Id
@@ -197,7 +196,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      * })
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Contact
+     * @var \Contact\Entity\Contact
      */
     private $contact;
     /**
@@ -300,197 +299,19 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource
-     *
-     * @return string
+     * @return array
      */
-    public function getResourceId()
+    public static function getFinalTemplates()
     {
-        return sprintf("%s:%s", __CLASS__, $this->id);
-    }
-
-    /**
-     * Set input filter
-     *
-     * @param InputFilterInterface $inputFilter
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Setting an inputFilter is currently not supported");
-    }
-
-    /**
-     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
-     */
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $this->inputFilter = new InputFilter();
-            $factory = new InputFactory();
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'calendar',
-                        'required' => true,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'location',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'dateFrom',
-                        'required'   => true,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            [
-                                'name'    => 'DateTime',
-                                'options' => [
-                                    'pattern' => 'yyyy-mm-dd HH:mm',
-                                ],
-                            ],
-                        ],
-                    ]
-                )
-            );
-
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'final',
-                        'required' => true,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'onHomepage',
-                        'required' => true,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'sequence',
-                        'required'   => false,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            ['name' => 'Int'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'url',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'imageUrl',
-                        'required' => false,
-                        'filters'  => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'     => 'call',
-                        'required' => false,
-                    ]
-                )
-            );
-            $this->inputFilter->add(
-                $factory->createInput(
-                    [
-                        'name'       => 'dateEnd',
-                        'required'   => false,
-                        'filters'    => [
-                            ['name' => 'StripTags'],
-                            ['name' => 'StringTrim'],
-                        ],
-                        'validators' => [
-                            [
-                                'name'    => 'DateTime',
-                                'options' => [
-                                    'pattern' => 'yyyy-mm-dd HH:mm',
-                                ],
-                            ],
-                            [
-                                'name'    => 'Callback',
-                                'options' => [
-                                    'messages' => [
-                                        Callback::INVALID_VALUE => 'The end date cannot be smaller than start date',
-                                    ],
-                                    'callback' => function ($value, $context = []) {
-                                        $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                                        $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
-
-                                        return $dateEnd >= $dateFrom;
-                                    },
-                                ],
-                            ],
-                        ],
-                    ]
-                )
-            );
-        }
-
-        return $this->inputFilter;
+        return self::$finalTemplates;
     }
 
     /**
      * @return array
      */
-    public function getFinalTemplates()
+    public static function getOnHomepageTemplates()
     {
-        return $this->finalTemplates;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOnHomepageTemplates()
-    {
-        return $this->onHomepageTemplates;
+        return self::$onHomepageTemplates;
     }
 
     /**
@@ -498,168 +319,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     public function __toString()
     {
-        return (string) $this->calendar;
+        return (string)$this->calendar;
     }
 
-    /**
-     * @return string
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param string $calendar
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-    }
-
-    /**
-     * @return \Calendar\Entity\Contact[]|Collections\ArrayCollection
-     */
-    public function getCalendarContact()
-    {
-        return $this->calendarContact;
-    }
-
-    /**
-     * @param \Calendar\Entity\Contact[] $calendarContact
-     */
-    public function setCalendarContact($calendarContact)
-    {
-        $this->calendarContact = $calendarContact;
-    }
-
-    /**
-     * @return \Calendar\Entity\Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * @param \Calendar\Entity\Contact $contact
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * @param \DateTime $dateCreated
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->dateCreated = $dateCreated;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateEnd()
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * @param \DateTime $dateEnd
-     */
-    public function setDateEnd($dateEnd)
-    {
-        $this->dateEnd = $dateEnd;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateFrom()
-    {
-        return $this->dateFrom;
-    }
-
-    /**
-     * @param \DateTime $dateFrom
-     */
-    public function setDateFrom($dateFrom)
-    {
-        $this->dateFrom = $dateFrom;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDatePlan()
-    {
-        return $this->datePlan;
-    }
-
-    /**
-     * @param \DateTime $datePlan
-     */
-    public function setDatePlan($datePlan)
-    {
-        $this->datePlan = $datePlan;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateUpdated()
-    {
-        return $this->dateUpdated;
-    }
-
-    /**
-     * @param \DateTime $dateUpdated
-     */
-    public function setDateUpdated($dateUpdated)
-    {
-        $this->dateUpdated = $dateUpdated;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return \Calendar\Entity\Document[]|Collections\ArrayCollection
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param \Calendar\Entity\Document[] $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
-    }
 
     /**
      * @param bool $textual
@@ -669,7 +331,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function getFinal($textual = false)
     {
         if ($textual) {
-            return $this->finalTemplates[$this->final];
+            return self::$finalTemplates[$this->final];
         }
 
         return $this->final;
@@ -684,150 +346,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImageUrl()
-    {
-        return $this->imageUrl;
-    }
-
-    /**
-     * @param string $imageUrl
-     */
-    public function setImageUrl($imageUrl)
-    {
-        $this->imageUrl = $imageUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
-     * @param string $location
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
-    }
-
-    /**
-     * @return \Calendar\Entity\Schedule[]|Collections\ArrayCollection
-     */
-    public function getSchedule()
-    {
-        return $this->schedule;
-    }
-
-    /**
-     * @param \Calendar\Entity\Schedule[] $schedule
-     */
-    public function setSchedule($schedule)
-    {
-        $this->schedule = $schedule;
-    }
-
-    /**
-     * @return \Calendar\Entity\Type
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param \Calendar\Entity\Type $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-    /**
-     * @return \Project\Entity\Calendar\Calendar
-     */
-    public function getProjectCalendar()
-    {
-        return $this->projectCalendar;
-    }
-
-    /**
-     * @param \Project\Entity\Calendar\Calendar $projectCalendar
-     */
-    public function setProjectCalendar($projectCalendar)
-    {
-        $this->projectCalendar = $projectCalendar;
-    }
-
-    /**
-     * @return \Program\Entity\Call\Call[]|Collections\ArrayCollection
-     */
-    public function getCall()
-    {
-        return $this->call;
-    }
-
-    /**
-     * @param \Program\Entity\Call\Call[] $call
-     */
-    public function setCall($call)
-    {
-        $this->call = $call;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocRef()
-    {
-        return $this->docRef;
-    }
-
-    /**
-     * @param string $docRef
-     */
-    public function setDocRef($docRef)
-    {
-        $this->docRef = $docRef;
-    }
-
-    /**
      * @param bool $textual
      *
      * @return int|string
@@ -835,7 +353,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function getOnHomepage($textual = false)
     {
         if ($textual) {
-            return $this->onHomepageTemplates[$this->onHomepage];
+            return self::$onHomepageTemplates[$this->onHomepage];
         }
 
         return $this->onHomepage;
@@ -852,6 +370,166 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return int
      */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Calendar
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param string $calendar
+     *
+     * @return Calendar
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string $location
+     *
+     * @return Calendar
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocRef()
+    {
+        return $this->docRef;
+    }
+
+    /**
+     * @param string $docRef
+     *
+     * @return Calendar
+     */
+    public function setDocRef($docRef)
+    {
+        $this->docRef = $docRef;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateFrom()
+    {
+        return $this->dateFrom;
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     *
+     * @return Calendar
+     */
+    public function setDateFrom($dateFrom)
+    {
+        $this->dateFrom = $dateFrom;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param \DateTime $dateEnd
+     *
+     * @return Calendar
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param \DateTime $dateCreated
+     *
+     * @return Calendar
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * @param \DateTime $dateUpdated
+     *
+     * @return Calendar
+     */
+    public function setDateUpdated($dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
     public function getSequence()
     {
         return $this->sequence;
@@ -859,9 +537,233 @@ class Calendar extends EntityAbstract implements ResourceInterface
 
     /**
      * @param int $sequence
+     *
+     * @return Calendar
      */
     public function setSequence($sequence)
     {
         $this->sequence = $sequence;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Calendar
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return Calendar
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDatePlan()
+    {
+        return $this->datePlan;
+    }
+
+    /**
+     * @param \DateTime $datePlan
+     *
+     * @return Calendar
+     */
+    public function setDatePlan($datePlan)
+    {
+        $this->datePlan = $datePlan;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl()
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string $imageUrl
+     *
+     * @return Calendar
+     */
+    public function setImageUrl($imageUrl)
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return Calendar
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param Contact $contact
+     *
+     * @return Calendar
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return Contact[]|Collections\ArrayCollection
+     */
+    public function getCalendarContact()
+    {
+        return $this->calendarContact;
+    }
+
+    /**
+     * @param Contact[]|Collections\ArrayCollection $calendarContact
+     *
+     * @return Calendar
+     */
+    public function setCalendarContact($calendarContact)
+    {
+        $this->calendarContact = $calendarContact;
+
+        return $this;
+    }
+
+    /**
+     * @return Document[]|Collections\ArrayCollection
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param Document[]|Collections\ArrayCollection $document
+     *
+     * @return Calendar
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
+     * @return Schedule[]|Collections\ArrayCollection
+     */
+    public function getSchedule()
+    {
+        return $this->schedule;
+    }
+
+    /**
+     * @param Schedule[]|Collections\ArrayCollection $schedule
+     *
+     * @return Calendar
+     */
+    public function setSchedule($schedule)
+    {
+        $this->schedule = $schedule;
+
+        return $this;
+    }
+
+    /**
+     * @return \Project\Entity\Calendar\Calendar
+     */
+    public function getProjectCalendar()
+    {
+        return $this->projectCalendar;
+    }
+
+    /**
+     * @param \Project\Entity\Calendar\Calendar $projectCalendar
+     *
+     * @return Calendar
+     */
+    public function setProjectCalendar($projectCalendar)
+    {
+        $this->projectCalendar = $projectCalendar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collections\ArrayCollection|\Program\Entity\Call\Call[]
+     */
+    public function getCall()
+    {
+        return $this->call;
+    }
+
+    /**
+     * @param Collections\ArrayCollection|\Program\Entity\Call\Call[] $call
+     *
+     * @return Calendar
+     */
+    public function setCall($call)
+    {
+        $this->call = $call;
+
+        return $this;
     }
 }

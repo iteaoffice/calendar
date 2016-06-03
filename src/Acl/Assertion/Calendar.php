@@ -39,10 +39,8 @@ class Calendar extends AssertionAbstract
         $privilege = null
     ) {
         $this->setPrivilege($privilege);
-        $id = $this->getId();
 
-
-        if (!$calendar instanceof CalendarEntity) {
+        if (!$calendar instanceof CalendarEntity && !is_null($id = $this->getId())) {
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
 

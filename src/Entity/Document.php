@@ -14,10 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use General\Entity\ContentType;
 use Zend\Form\Annotation;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\FileInput;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
@@ -120,71 +116,6 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource.
-     *
-     * @return string
-     */
-    public function getResourceId()
-    {
-        return sprintf("%s:%s", __CLASS__, $this->id);
-    }
-
-    /**
-     * Set input filter.
-     *
-     * @param InputFilterInterface $inputFilter
-     *
-     * @throws \Exception
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Setting an inputFilter is currently not supported");
-    }
-
-    /**
-     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
-     */
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-            $factory = new InputFactory();
-            $inputFilter->add($factory->createInput([
-                'name'       => 'document',
-                'required'   => false,
-                'filters'    => [
-                    ['name' => 'StripTags'],
-                    ['name' => 'StringTrim'],
-                ],
-                'validators' => [
-                    [
-                        'name'    => 'StringLength',
-                        'options' => [
-                            'encoding' => 'UTF-8',
-                            'min'      => 5,
-                            'max'      => 100,
-                        ],
-                    ],
-                ],
-            ]));
-            $inputFilter->add($factory->createInput([
-                'name'     => 'contact',
-                'required' => false,
-            ]));
-            $fileUpload = new FileInput('file');
-            $fileUpload->setRequired(true);
-            $fileUpload->getValidatorChain()->attachByName('File\Size', [
-                'min' => '10kB',
-                'max' => '8MB',
-            ]);
-            $inputFilter->add($fileUpload);
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
-    }
-
-    /**
      * Parse a filename.
      *
      * @return string
@@ -211,59 +142,23 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param \Calendar\Entity\Calendar $calendar
+     * @return int
      */
-    public function setCalendar($calendar)
+    public function getId()
     {
-        $this->calendar = $calendar;
+        return $this->id;
     }
 
     /**
-     * @return \Calendar\Entity\Calendar
+     * @param int $id
+     *
+     * @return Document
      */
-    public function getCalendar()
+    public function setId($id)
     {
-        return $this->calendar;
-    }
+        $this->id = $id;
 
-    /**
-     * @param \Contact\Entity\Contact $contact
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-    }
-
-    /**
-     * @return \Contact\Entity\Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * @param \General\Entity\ContentType $contentType
-     */
-    public function setContentType($contentType)
-    {
-        $this->contentType = $contentType;
-    }
-
-    /**
-     * @return \General\Entity\ContentType
-     */
-    public function getContentType()
-    {
-        return $this->contentType;
-    }
-
-    /**
-     * @param \DateTime $dateCreated
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->dateCreated = $dateCreated;
+        return $this;
     }
 
     /**
@@ -275,27 +170,15 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param \DateTime $dateUpdated
+     * @param \DateTime $dateCreated
+     *
+     * @return Document
      */
-    public function setDateUpdated($dateUpdated)
+    public function setDateCreated($dateCreated)
     {
-        $this->dateUpdated = $dateUpdated;
-    }
+        $this->dateCreated = $dateCreated;
 
-    /**
-     * @return \DateTime
-     */
-    public function getDateUpdated()
-    {
-        return $this->dateUpdated;
-    }
-
-    /**
-     * @param string $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
+        return $this;
     }
 
     /**
@@ -307,31 +190,119 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param int $id
+     * @param string $document
+     *
+     * @return Document
      */
-    public function setId($id)
+    public function setDocument($document)
     {
-        $this->id = $id;
+        $this->document = $document;
+
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getId()
+    public function getSize()
     {
-        return $this->id;
+        return $this->size;
     }
 
     /**
-     * @param mixed $object
+     * @param int $size
+     *
+     * @return Document
      */
-    public function setObject($object)
+    public function setSize($size)
     {
-        $this->object = $object;
+        $this->size = $size;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * @param \DateTime $dateUpdated
+     *
+     * @return Document
+     */
+    public function setDateUpdated($dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     *
+     * @return Document
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return \Contact\Entity\Contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param \Contact\Entity\Contact $contact
+     *
+     * @return Document
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param ContentType $contentType
+     *
+     * @return Document
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * @return DocumentObject
      */
     public function getObject()
     {
@@ -339,18 +310,14 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param mixed $size
+     * @param DocumentObject $object
+     *
+     * @return Document
      */
-    public function setSize($size)
+    public function setObject($object)
     {
-        $this->size = $size;
-    }
+        $this->object = $object;
 
-    /**
-     * @return mixed
-     */
-    public function getSize()
-    {
-        return $this->size;
+        return $this;
     }
 }

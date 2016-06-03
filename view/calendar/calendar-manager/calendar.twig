@@ -64,7 +64,7 @@
             {% endif %}
             <dt>{{ translate("txt-access") }}</dt>
             {% for access in calendar.type.access %}
-                <dd><code>{{ access }}</code></dd>
+                <dd>{{ accessLink(access,'view','name') }}</dd>
             {% endfor %}
         </dl>
 
@@ -124,7 +124,7 @@
 
         <h2>{{ translate("txt-calendar-attendees") }}</h2>
         {% if calendar.calendarContact.count() > 0 %}
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>

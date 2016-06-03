@@ -10,9 +10,12 @@
 use Calendar\Acl;
 use Calendar\Controller;
 use Calendar\Factory;
+use Calendar\InputFilter;
+use Calendar\Navigation;
 use Calendar\Options;
 use Calendar\Service;
 use Calendar\View;
+use Zend\Stdlib;
 
 $config = [
     'controllers'        => [
@@ -35,12 +38,16 @@ $config = [
     ],
     'service_manager'    => [
         'factories' => [
-            Service\CalendarService::class => Factory\CalendarServiceFactory::class,
-            Service\FormService::class     => Factory\FormServiceFactory::class,
-            Options\ModuleOptions::class   => Factory\ModuleOptionsFactory::class,
-            Acl\Assertion\Calendar::class  => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Contact::class   => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Document::class  => Acl\Factory\AssertionFactory::class,
+            Service\CalendarService::class            => Factory\CalendarServiceFactory::class,
+            Service\FormService::class                => Factory\FormServiceFactory::class,
+            Options\ModuleOptions::class              => Factory\ModuleOptionsFactory::class,
+            Acl\Assertion\Calendar::class             => Acl\Factory\AssertionFactory::class,
+            Acl\Assertion\Contact::class              => Acl\Factory\AssertionFactory::class,
+            Acl\Assertion\Document::class             => Acl\Factory\AssertionFactory::class,
+            InputFilter\CalendarFilter::class         => Factory\InputFilterFactory::class,
+            InputFilter\DocumentFilter::class         => Factory\InputFilterFactory::class,
+            Navigation\Invokable\CalendarLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
+            Navigation\Invokable\DocumentLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
         ],
     ],
     'view_manager'       => [
@@ -80,13 +87,8 @@ $config = [
         ],
     ]
 ];
-$configFiles = [
-    __DIR__ . '/module.config.routes.php',
-    __DIR__ . '/module.config.navigation.php',
-    __DIR__ . '/module.config.authorize.php',
-    __DIR__ . '/module.option.calendar.php',
-];
-foreach ($configFiles as $configFile) {
-    $config = Zend\Stdlib\ArrayUtils::merge($config, include $configFile);
+foreach (Stdlib\Glob::glob(__DIR__ . '/module.config.{,*}.php', Stdlib\Glob::GLOB_BRACE) as $file) {
+    $config = Stdlib\ArrayUtils::merge($config, include $file);
 }
+
 return $config;

@@ -51,7 +51,7 @@ class CalendarHandler extends AbstractViewHelper
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
                 if (is_null($this->getCalendar())) {
-                    $this->getHelperPluginManager()->get('response')->setStatusCode(404);
+                    $this->getServiceManager()->get('response')->setStatusCode(404);
 
                     return ("The selected calendar item cannot be found");
                 }
@@ -67,7 +67,7 @@ class CalendarHandler extends AbstractViewHelper
                 /**
                  * @var $calendarLink CalendarLink
                  */
-                $calendarLink = $this->getServiceManager()->get('calendarLink');
+                $calendarLink = $this->getHelperPluginManager()->get('calendarLink');
                 $this->getHelperPluginManager()->get('headmeta')
                     ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
 

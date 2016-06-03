@@ -13,7 +13,7 @@ return [
             // And finally, here is where we define our page hierarchy
             'calendar' => [
                 'label' => _("txt-calendar"),
-                'order' => 40,
+                'order' => 60,
                 'route' => 'community/calendar/overview',
                 'pages' => [
                     'community-calendar' => [

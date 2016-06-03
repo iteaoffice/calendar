@@ -79,15 +79,7 @@ class ContactStatus
      */
     public function __toString()
     {
-        return (string) $this->status;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        return (string)$this->status;
     }
 
     /**
@@ -99,27 +91,15 @@ class ContactStatus
     }
 
     /**
-     * @param string $image
+     * @param int $id
+     *
+     * @return ContactStatus
      */
-    public function setImage($image)
+    public function setId($id)
     {
-        $this->image = $image;
-    }
+        $this->id = $id;
 
-    /**
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param string $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
+        return $this;
     }
 
     /**
@@ -131,11 +111,35 @@ class ContactStatus
     }
 
     /**
-     * @param string $statusChange
+     * @param string $status
+     *
+     * @return ContactStatus
      */
-    public function setStatusChange($statusChange)
+    public function setStatus($status)
     {
-        $this->statusChange = $statusChange;
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     *
+     * @return ContactStatus
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
     }
 
     /**
@@ -147,15 +151,19 @@ class ContactStatus
     }
 
     /**
-     * @param \Calendar\Entity\Contact[] $calendarContact
+     * @param string $statusChange
+     *
+     * @return ContactStatus
      */
-    public function setCalendarContact($calendarContact)
+    public function setStatusChange($statusChange)
     {
-        $this->calendarContact = $calendarContact;
+        $this->statusChange = $statusChange;
+
+        return $this;
     }
 
     /**
-     * @return \Calendar\Entity\Contact[]
+     * @return Contact[]
      */
     public function getCalendarContact()
     {
@@ -163,18 +171,34 @@ class ContactStatus
     }
 
     /**
-     * @param \Calendar\Entity\ScheduleContact[] $scheduleContact
+     * @param Contact[] $calendarContact
+     *
+     * @return ContactStatus
      */
-    public function setScheduleContact($scheduleContact)
+    public function setCalendarContact($calendarContact)
     {
-        $this->scheduleContact = $scheduleContact;
+        $this->calendarContact = $calendarContact;
+
+        return $this;
     }
 
     /**
-     * @return \Calendar\Entity\ScheduleContact[]
+     * @return ScheduleContact[]
      */
     public function getScheduleContact()
     {
         return $this->scheduleContact;
+    }
+
+    /**
+     * @param ScheduleContact[] $scheduleContact
+     *
+     * @return ContactStatus
+     */
+    public function setScheduleContact($scheduleContact)
+    {
+        $this->scheduleContact = $scheduleContact;
+
+        return $this;
     }
 }

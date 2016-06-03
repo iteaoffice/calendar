@@ -60,31 +60,7 @@ class ContactRole
      */
     public function __toString()
     {
-        return (string) $this->role;
-    }
-
-    /**
-     * @param \Calendar\Entity\Contact[] $calendarContact
-     */
-    public function setCalendarContact($calendarContact)
-    {
-        $this->calendarContact = $calendarContact;
-    }
-
-    /**
-     * @return \Calendar\Entity\Contact[]
-     */
-    public function getCalendarContact()
-    {
-        return $this->calendarContact;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        return (string)$this->role;
     }
 
     /**
@@ -96,11 +72,15 @@ class ContactRole
     }
 
     /**
-     * @param string $role
+     * @param int $id
+     *
+     * @return ContactRole
      */
-    public function setRole($role)
+    public function setId($id)
     {
-        $this->role = $role;
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -109,5 +89,37 @@ class ContactRole
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return ContactRole
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Contact[]
+     */
+    public function getCalendarContact()
+    {
+        return $this->calendarContact;
+    }
+
+    /**
+     * @param Contact[] $calendarContact
+     *
+     * @return ContactRole
+     */
+    public function setCalendarContact($calendarContact)
+    {
+        $this->calendarContact = $calendarContact;
+
+        return $this;
     }
 }

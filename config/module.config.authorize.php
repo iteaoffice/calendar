@@ -14,16 +14,9 @@ use Calendar\Acl\Assertion\Document as DocumentAssertion;
 
 return [
     'bjyauthorize' => [
-        // resource providers provide a list of resources that will be tracked
-        // in the ACL. like roles, they can be hierarchical
-        'resource_providers' => [
-            'BjyAuthorize\Provider\Resource\Config' => [
-                'calendar' => [],
-            ],
-        ],
         /* Currently, only controller and route guards exist
          */
-        'guards'             => [
+        'guards' => [
             /* If this guard is specified here (i.e. it is enabled], it will block
              * access to all routes unless they are specified here.
              */
@@ -74,9 +67,8 @@ return [
                     'assertion' => ContactAssertion::class
                 ],
                 [
-                    'route'     => 'community/calendar/contact',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
-                    'assertion' => CalendarAssertion::class
+                    'route' => 'community/calendar/contact',
+                    'roles' => [strtolower(Access::ACCESS_USER)]
                 ],
                 [
                     'route'     => 'community/calendar/document/document',

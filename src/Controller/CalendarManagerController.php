@@ -175,8 +175,8 @@ class CalendarManagerController extends CalendarAbstractController
         }
 
         $data = $this->getRequest()->getPost()->toArray();
+        $form = $this->getFormService()->prepare($calendar, $calendar, $data);
 
-        $form = $this->getFormService()->prepare('calendar', $calendar, $data);
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed

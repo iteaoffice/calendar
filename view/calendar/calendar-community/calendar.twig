@@ -172,7 +172,7 @@
 
                     <h3>{{ translate("txt-progress-reports") }}</h3>
                     {% if calendar.projectCalendar.project.report.count() > 0 %}
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped table-condensed">
                             <thead>
                             <tr>
                                 <th>{{ translate("txt-report") }}</th>
@@ -202,7 +202,7 @@
 
                     <h3>{{ translate("txt-review-documents") }}</h3>
 
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped table-condensed">
                         <thead>
                         <tr>
                             <th>{{ translate("txt-report") }}</th>
@@ -238,7 +238,7 @@
 
                     <h3>{{ translate("txt-public-project-results") }}</h3>
 
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped table-condensed">
                         <thead>
                         <tr>
                             <th>{{ translate("txt-report") }}</th>
@@ -297,7 +297,7 @@
         {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendar) %}
 
         {% if calendarContacts|length > 0 %}
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>

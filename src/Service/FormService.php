@@ -58,6 +58,9 @@ class FormService extends ServiceAbstract
             $form->setInputFilter($filter);
         }
 
+        $form->setAttribute('role', 'form');
+        $form->setAttribute('action', '');
+        $form->setAttribute('class', 'form-horizontal');
 
         if ($bind) {
             $form->bind($entity);

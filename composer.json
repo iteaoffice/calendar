@@ -24,7 +24,7 @@
     "phpmd/phpmd": "@stable",
     "sebastian/phpcpd": "@stable",
     "squizlabs/php_codesniffer": "@stable",
-    "fabpot/php-cs-fixer": "@stable",
+    "friendsofphp/php-cs-fixer": "@stable",
     "jakub-onderka/php-parallel-lint": "@stable",
     "jakub-onderka/php-console-highlighter": "@stable"
   },

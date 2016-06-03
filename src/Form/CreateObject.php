@@ -45,7 +45,7 @@ class CreateObject extends Form
          * If not we will use the default ObjectFieldset
          */
 
-        $objectSpecificFieldset = $object->get('entity_fieldset_name');
+        $objectSpecificFieldset = __NAMESPACE__ . '\\' . $object->get('entity_name') . 'Fieldset';
 
         /**
          * Load a specific fieldSet when present

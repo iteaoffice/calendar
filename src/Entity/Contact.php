@@ -11,7 +11,6 @@
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilterInterface;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
@@ -93,81 +92,11 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * Returns the string identifier of the Resource.
-     *
-     * @return string
-     */
-    public function getResourceId()
-    {
-        return sprintf("%s:%s", __CLASS__, $this->id);
-    }
-
-    /**
-     * Set input filter.
-     *
-     * @param InputFilterInterface $inputFilter
-     *
-     * @throws \Exception
-     */
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception("Setting an inputFilter is currently not supported");
-    }
-
-    /**
-     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
-     */
-    public function getInputFilter()
-    {
-        return [];
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
         return (string)$this->role;
-    }
-
-    /**
-     * @param \Calendar\Entity\Calendar $calendar
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-    }
-
-    /**
-     * @return \Calendar\Entity\Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param \Contact\Entity\Contact $contact
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-    }
-
-    /**
-     * @return \Contact\Entity\Contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -179,15 +108,19 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param \Calendar\Entity\ContactRole $role
+     * @param int $id
+     *
+     * @return Contact
      */
-    public function setRole($role)
+    public function setId($id)
     {
-        $this->role = $role;
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * @return \Calendar\Entity\ContactRole
+     * @return ContactRole
      */
     public function getRole()
     {
@@ -195,18 +128,74 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param \Calendar\Entity\ContactStatus $status
+     * @param ContactRole $role
+     *
+     * @return Contact
      */
-    public function setStatus($status)
+    public function setRole($role)
     {
-        $this->status = $status;
+        $this->role = $role;
+
+        return $this;
     }
 
     /**
-     * @return \Calendar\Entity\ContactStatus
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     *
+     * @return Contact
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return ContactStatus
      */
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @param ContactStatus $status
+     *
+     * @return Contact
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return \Contact\Entity\Contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param \Contact\Entity\Contact $contact
+     *
+     * @return Contact
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
     }
 }

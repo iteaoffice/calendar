@@ -111,8 +111,8 @@ class Type
      */
     public function getCacheCssFileName()
     {
-        return __DIR__.'/../../../../../public'.DIRECTORY_SEPARATOR.'assets'.
-        DIRECTORY_SEPARATOR.DEBRANOVA_HOST.DIRECTORY_SEPARATOR.'css/calendar-type-color.css';
+        return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
+        . DEBRANOVA_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
     }
 
     /**
@@ -120,7 +120,7 @@ class Type
      */
     public function parseCssName()
     {
-        return 'calendar-type-'.$this->getId();
+        return 'calendar-type-' . $this->getId();
     }
 
     /**
@@ -137,95 +137,7 @@ class Type
      */
     public function __toString()
     {
-        return (string) $this->type;
-    }
-
-    /**
-     * @param \Admin\Entity\Access[] $access
-     */
-    public function setAccess($access)
-    {
-        $this->access = $access;
-    }
-
-    /**
-     * @return \Admin\Entity\Access[]
-     */
-    public function getAccess()
-    {
-        return $this->access;
-    }
-
-    /**
-     * @param int $autoPlan
-     */
-    public function setAutoPlan($autoPlan)
-    {
-        $this->autoPlan = $autoPlan;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAutoPlan()
-    {
-        return $this->autoPlan;
-    }
-
-    /**
-     * @param \Calendar\Entity\Calendar $calendar
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-    }
-
-    /**
-     * @return \Calendar\Entity\Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param string $color
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-    }
-
-    /**
-     * @return string
-     */
-    public function getColor()
-    {
-        return $this->color;
-    }
-
-    /**
-     * @param string $colorFont
-     */
-    public function setColorFont($colorFont)
-    {
-        $this->colorFont = $colorFont;
-    }
-
-    /**
-     * @return string
-     */
-    public function getColorFont()
-    {
-        return $this->colorFont;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        return (string)$this->type;
     }
 
     /**
@@ -237,11 +149,15 @@ class Type
     }
 
     /**
-     * @param string $type
+     * @param int $id
+     *
+     * @return Type
      */
-    public function setType($type)
+    public function setId($id)
     {
-        $this->type = $type;
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -253,11 +169,55 @@ class Type
     }
 
     /**
-     * @param string $url
+     * @param string $type
+     *
+     * @return Type
      */
-    public function setUrl($url)
+    public function setType($type)
     {
-        $this->url = $url;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     *
+     * @return Type
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColorFont()
+    {
+        return $this->colorFont;
+    }
+
+    /**
+     * @param string $colorFont
+     *
+     * @return Type
+     */
+    public function setColorFont($colorFont)
+    {
+        $this->colorFont = $colorFont;
+
+        return $this;
     }
 
     /**
@@ -266,5 +226,77 @@ class Type
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return Type
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAutoPlan()
+    {
+        return $this->autoPlan;
+    }
+
+    /**
+     * @param int $autoPlan
+     *
+     * @return Type
+     */
+    public function setAutoPlan($autoPlan)
+    {
+        $this->autoPlan = $autoPlan;
+
+        return $this;
+    }
+
+    /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     *
+     * @return Type
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * @return \Admin\Entity\Access[]
+     */
+    public function getAccess()
+    {
+        return $this->access;
+    }
+
+    /**
+     * @param \Admin\Entity\Access[] $access
+     *
+     * @return Type
+     */
+    public function setAccess($access)
+    {
+        $this->access = $access;
+
+        return $this;
     }
 }

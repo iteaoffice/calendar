@@ -70,14 +70,14 @@ final class CalendarServiceFactory implements FactoryInterface
     }
 
     /**
-     * @param ServiceLocatorInterface $container
+     * @param ServiceLocatorInterface $serviceLocator
      * @param string|null             $canonicalName
      * @param string|null             $requestedName
      *
      * @return CalendarService
      */
-    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
+    public function createService(ServiceLocatorInterface $serviceLocator, $canonicalName = null, $requestedName = null)
     {
-        return $this($container, $requestedName);
+        return $this($serviceLocator, $requestedName);
     }
 }
