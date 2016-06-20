@@ -14,14 +14,17 @@ use Calendar\Entity\Document;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  *
  */
-class CreateCalendarDocument extends Form
+class CreateCalendarDocument extends Form implements InputFilterProviderInterface
 {
     /**
-     * Class constructor.
+     * CreateCalendarDocument constructor.
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -33,6 +36,7 @@ class CreateCalendarDocument extends Form
         $this->setAttribute('action', '');
         $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('id', 'create-document');
+
         $this->add([
             'type'       => 'Zend\Form\Element\Text',
             'name'       => 'document',
@@ -78,5 +82,17 @@ class CreateCalendarDocument extends Form
                 'value' => _("txt-cancel"),
             ],
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getInputFilterSpecification()
+    {
+        return [
+            'file' => [
+                'required' => true,
+            ],
+        ];
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1464948850">
-  <project timestamp="1464948850">
+<coverage generated="1466437781">
+  <project timestamp="1466437781">
     <package name="Calendar\Acl\Assertion">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/AssertionAbstract.php">
         <class name="AssertionAbstract" namespace="Calendar\Acl\Assertion" category="Calendar">
@@ -2098,12 +2098,9 @@
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Form/CreateCalendarDocument.php">
         <class name="CreateCalendarDocument" namespace="Calendar\Form">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="0" elements="56" coveredelements="0"/>
+          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="62" coveredstatements="0" elements="64" coveredelements="0"/>
         </class>
-        <line num="26" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="27" type="stmt" count="0"/>
-        <line num="28" type="stmt" count="0"/>
-        <line num="29" type="stmt" count="0"/>
+        <line num="29" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
         <line num="30" type="stmt" count="0"/>
         <line num="31" type="stmt" count="0"/>
         <line num="32" type="stmt" count="0"/>
@@ -2113,7 +2110,6 @@
         <line num="36" type="stmt" count="0"/>
         <line num="37" type="stmt" count="0"/>
         <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
         <line num="40" type="stmt" count="0"/>
         <line num="41" type="stmt" count="0"/>
         <line num="42" type="stmt" count="0"/>
@@ -2156,7 +2152,19 @@
         <line num="79" type="stmt" count="0"/>
         <line num="80" type="stmt" count="0"/>
         <line num="81" type="stmt" count="0"/>
-        <metrics loc="82" ncloc="68" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="55" coveredstatements="0" elements="56" coveredelements="0"/>
+        <line num="82" type="stmt" count="0"/>
+        <line num="83" type="stmt" count="0"/>
+        <line num="84" type="stmt" count="0"/>
+        <line num="85" type="stmt" count="0"/>
+        <line num="90" type="method" name="getInputFilterSpecification" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="91" type="stmt" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="96" type="stmt" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <metrics loc="98" ncloc="80" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="62" coveredstatements="0" elements="64" coveredelements="0"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Form/CreateObject.php">
         <class name="CreateObject" namespace="Calendar\Form" category="Calendar">
@@ -3988,6 +3996,6 @@
         <metrics loc="485" ncloc="306" classes="1" methods="30" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="203" coveredstatements="0" elements="233" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="57" loc="9161" ncloc="5438" classes="54" methods="415" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3203" coveredstatements="5" elements="3618" coveredelements="6"/>
+    <metrics files="57" loc="9177" ncloc="5450" classes="54" methods="416" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3210" coveredstatements="5" elements="3626" coveredelements="6"/>
   </project>
 </coverage>
