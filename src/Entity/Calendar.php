@@ -9,7 +9,6 @@
  */
 namespace Calendar\Entity;
 
-use Contact\Entity\Contact;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -644,7 +643,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return Contact
+     * @return \Contact\Entity\Contact
      */
     public function getContact()
     {
@@ -652,7 +651,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param Contact $contact
+     * @param \Contact\Entity\Contact $contact
      *
      * @return Calendar
      */
@@ -664,7 +663,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return Contact[]|Collections\ArrayCollection
+     * @return \Contact\Entity\Contact[]|Collections\ArrayCollection
      */
     public function getCalendarContact()
     {
@@ -672,7 +671,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param Contact[]|Collections\ArrayCollection $calendarContact
+     * @param \Contact\Entity\Contact[]|Collections\ArrayCollection $calendarContact
      *
      * @return Calendar
      */
