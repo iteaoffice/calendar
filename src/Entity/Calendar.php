@@ -77,7 +77,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\Column(name="calendar", type="string", length=60, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar","help-block": "txt-calendar-explanation"})
-     * @Annotation\Required(true)
      * @var string
      */
     private $calendar;
@@ -100,7 +99,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
-     * @Annotation\Required(true)
      * @var \DateTime
      */
     private $dateFrom;
@@ -132,7 +130,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Attributes({"array":"finalTemplates"})
      * @Annotation\Attributes({"label":"txt-final"})
      * @Annotation\Options({"help-block":"txt-final-explanation"})
-     * @Annotation\Required(true)
      * @var integer
      */
     private $final;
@@ -142,7 +139,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @Annotation\Attributes({"array":"onHomepageTemplates"})
      * @Annotation\Attributes({"label":"txt-on-homepage"})
      * @Annotation\Options({"help-block":"txt-on-homepage-explanation"})
-     * @Annotation\Required(true)
      * @var integer
      */
     private $onHomepage;
@@ -186,7 +182,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * })
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-type-explanation"})
-     * @Annotation\Attributes({"label":"txt-calendar-type", "required":"true","help-block":"txt-type-explanation"})
+     * @Annotation\Attributes({"label":"txt-calendar-type", "help-block":"txt-type-explanation"})
      * @var \Calendar\Entity\Type
      */
     private $type;
@@ -244,9 +240,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
-        $this->document = new Collections\ArrayCollection();
-        $this->schedule = new Collections\ArrayCollection();
-        $this->call = new Collections\ArrayCollection();
+        $this->document        = new Collections\ArrayCollection();
+        $this->schedule        = new Collections\ArrayCollection();
+        $this->call            = new Collections\ArrayCollection();
     }
 
     /**

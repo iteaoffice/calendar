@@ -136,6 +136,7 @@ class CalendarManagerController extends CalendarAbstractController
                  * @var $calendar Calendar
                  */
                 $calendar = $form->getData();
+
                 $calendar->setContact($this->zfcUserAuthentication()->getIdentity());
                 $calendar = $this->getCalendarService()->newEntity($calendar);
 

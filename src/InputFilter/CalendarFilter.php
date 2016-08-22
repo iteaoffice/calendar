@@ -72,6 +72,22 @@ class CalendarFilter extends InputFilter
                 ],
             ],
         ]);
+        $inputFilter->add([
+            'name'       => 'dateEnd',
+            'required'   => true,
+            'filters'    => [
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'DateTime',
+                    'options' => [
+                        'pattern' => 'yyyy-mm-dd HH:mm',
+                    ],
+                ],
+            ],
+        ]);
 
         $inputFilter->add([
             'name'     => 'final',
