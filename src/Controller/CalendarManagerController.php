@@ -323,6 +323,9 @@ class CalendarManagerController extends CalendarAbstractController
         return new JsonModel($roles);
     }
 
+    /**
+     * @return array|JsonModel
+     */
     public function updateRoleAction()
     {
         $calendarContactId = $this->params()->fromPost('pk');

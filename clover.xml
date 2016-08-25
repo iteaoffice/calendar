@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1471858706">
-  <project timestamp="1471858706">
+<coverage generated="1472135072">
+  <project timestamp="1472135072">
     <package name="Calendar\Acl\Assertion">
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Acl/Assertion/AssertionAbstract.php">
         <class name="AssertionAbstract" namespace="Calendar\Acl\Assertion" category="Calendar">
@@ -1011,67 +1011,67 @@
         <line num="321" type="stmt" count="0"/>
         <line num="323" type="stmt" count="0"/>
         <line num="324" type="stmt" count="0"/>
-        <line num="326" type="method" name="updateRoleAction" visibility="public" complexity="3" crap="12" count="0"/>
-        <line num="327" type="stmt" count="0"/>
-        <line num="328" type="stmt" count="0"/>
-        <line num="329" type="stmt" count="0"/>
-        <line num="334" type="stmt" count="0"/>
-        <line num="336" type="stmt" count="0"/>
+        <line num="329" type="method" name="updateRoleAction" visibility="public" complexity="3" crap="12" count="0"/>
+        <line num="330" type="stmt" count="0"/>
+        <line num="331" type="stmt" count="0"/>
+        <line num="332" type="stmt" count="0"/>
         <line num="337" type="stmt" count="0"/>
-        <line num="338" type="stmt" count="0"/>
-        <line num="342" type="stmt" count="0"/>
-        <line num="344" type="stmt" count="0"/>
+        <line num="339" type="stmt" count="0"/>
+        <line num="340" type="stmt" count="0"/>
+        <line num="341" type="stmt" count="0"/>
         <line num="345" type="stmt" count="0"/>
-        <line num="346" type="stmt" count="0"/>
+        <line num="347" type="stmt" count="0"/>
         <line num="348" type="stmt" count="0"/>
         <line num="349" type="stmt" count="0"/>
         <line num="351" type="stmt" count="0"/>
         <line num="352" type="stmt" count="0"/>
-        <line num="357" type="method" name="calendarAction" visibility="public" complexity="5" crap="30" count="0"/>
-        <line num="358" type="stmt" count="0"/>
-        <line num="359" type="stmt" count="0"/>
-        <line num="360" type="stmt" count="0"/>
+        <line num="354" type="stmt" count="0"/>
+        <line num="355" type="stmt" count="0"/>
+        <line num="360" type="method" name="calendarAction" visibility="public" complexity="5" crap="30" count="0"/>
         <line num="361" type="stmt" count="0"/>
         <line num="362" type="stmt" count="0"/>
+        <line num="363" type="stmt" count="0"/>
         <line num="364" type="stmt" count="0"/>
-        <line num="366" type="stmt" count="0"/>
+        <line num="365" type="stmt" count="0"/>
         <line num="367" type="stmt" count="0"/>
         <line num="369" type="stmt" count="0"/>
         <line num="370" type="stmt" count="0"/>
-        <line num="371" type="stmt" count="0"/>
-        <line num="375" type="stmt" count="0"/>
-        <line num="376" type="stmt" count="0"/>
-        <line num="377" type="stmt" count="0"/>
-        <line num="381" type="stmt" count="0"/>
-        <line num="382" type="stmt" count="0"/>
-        <line num="383" type="stmt" count="0"/>
+        <line num="372" type="stmt" count="0"/>
+        <line num="373" type="stmt" count="0"/>
+        <line num="374" type="stmt" count="0"/>
+        <line num="378" type="stmt" count="0"/>
+        <line num="379" type="stmt" count="0"/>
+        <line num="380" type="stmt" count="0"/>
         <line num="384" type="stmt" count="0"/>
         <line num="385" type="stmt" count="0"/>
         <line num="386" type="stmt" count="0"/>
         <line num="387" type="stmt" count="0"/>
         <line num="388" type="stmt" count="0"/>
+        <line num="389" type="stmt" count="0"/>
         <line num="390" type="stmt" count="0"/>
         <line num="391" type="stmt" count="0"/>
-        <line num="392" type="stmt" count="0"/>
+        <line num="393" type="stmt" count="0"/>
         <line num="394" type="stmt" count="0"/>
         <line num="395" type="stmt" count="0"/>
-        <line num="396" type="stmt" count="0"/>
         <line num="397" type="stmt" count="0"/>
         <line num="398" type="stmt" count="0"/>
         <line num="399" type="stmt" count="0"/>
         <line num="400" type="stmt" count="0"/>
-        <line num="406" type="stmt" count="0"/>
-        <line num="407" type="stmt" count="0"/>
-        <line num="408" type="stmt" count="0"/>
+        <line num="401" type="stmt" count="0"/>
+        <line num="402" type="stmt" count="0"/>
+        <line num="403" type="stmt" count="0"/>
         <line num="409" type="stmt" count="0"/>
+        <line num="410" type="stmt" count="0"/>
         <line num="411" type="stmt" count="0"/>
         <line num="412" type="stmt" count="0"/>
-        <line num="413" type="stmt" count="0"/>
         <line num="414" type="stmt" count="0"/>
         <line num="415" type="stmt" count="0"/>
         <line num="416" type="stmt" count="0"/>
         <line num="417" type="stmt" count="0"/>
-        <metrics loc="418" ncloc="331" classes="1" methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="242" coveredstatements="0" elements="250" coveredelements="0"/>
+        <line num="418" type="stmt" count="0"/>
+        <line num="419" type="stmt" count="0"/>
+        <line num="420" type="stmt" count="0"/>
+        <metrics loc="421" ncloc="331" classes="1" methods="8" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="242" coveredstatements="0" elements="250" coveredelements="0"/>
       </file>
     </package>
     <package name="Calendar\Controller\Factory">
@@ -1258,148 +1258,148 @@
         <class name="Calendar" namespace="Calendar\Entity">
           <metrics complexity="56" methods="52" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="89" coveredstatements="5" elements="141" coveredelements="6"/>
         </class>
-        <line num="240" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="239" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="241" type="stmt" count="1"/>
         <line num="242" type="stmt" count="1"/>
         <line num="243" type="stmt" count="1"/>
         <line num="244" type="stmt" count="1"/>
         <line num="245" type="stmt" count="1"/>
-        <line num="246" type="stmt" count="1"/>
-        <line num="255" type="method" name="__get" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="257" type="stmt" count="0"/>
-        <line num="268" type="method" name="__set" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="254" type="method" name="__get" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="256" type="stmt" count="0"/>
+        <line num="267" type="method" name="__set" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="269" type="stmt" count="0"/>
         <line num="270" type="stmt" count="0"/>
-        <line num="271" type="stmt" count="0"/>
-        <line num="278" type="method" name="addCall" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="277" type="method" name="addCall" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="279" type="stmt" count="0"/>
         <line num="280" type="stmt" count="0"/>
         <line num="281" type="stmt" count="0"/>
         <line num="282" type="stmt" count="0"/>
-        <line num="283" type="stmt" count="0"/>
-        <line num="290" type="method" name="removeCall" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="289" type="method" name="removeCall" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="291" type="stmt" count="0"/>
         <line num="292" type="stmt" count="0"/>
         <line num="293" type="stmt" count="0"/>
         <line num="294" type="stmt" count="0"/>
-        <line num="295" type="stmt" count="0"/>
-        <line num="300" type="method" name="getFinalTemplates" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="302" type="stmt" count="0"/>
-        <line num="308" type="method" name="getOnHomepageTemplates" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="310" type="stmt" count="0"/>
-        <line num="316" type="method" name="__toString" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="318" type="stmt" count="0"/>
-        <line num="327" type="method" name="getFinal" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="299" type="method" name="getFinalTemplates" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="301" type="stmt" count="0"/>
+        <line num="307" type="method" name="getOnHomepageTemplates" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="309" type="stmt" count="0"/>
+        <line num="315" type="method" name="__toString" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="317" type="stmt" count="0"/>
+        <line num="326" type="method" name="getFinal" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="328" type="stmt" count="0"/>
         <line num="329" type="stmt" count="0"/>
-        <line num="330" type="stmt" count="0"/>
-        <line num="333" type="stmt" count="0"/>
-        <line num="339" type="method" name="setFinal" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="332" type="stmt" count="0"/>
+        <line num="338" type="method" name="setFinal" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="340" type="stmt" count="0"/>
         <line num="341" type="stmt" count="0"/>
-        <line num="342" type="stmt" count="0"/>
-        <line num="349" type="method" name="getOnHomepage" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="348" type="method" name="getOnHomepage" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="350" type="stmt" count="0"/>
         <line num="351" type="stmt" count="0"/>
-        <line num="352" type="stmt" count="0"/>
-        <line num="355" type="stmt" count="0"/>
-        <line num="361" type="method" name="setOnHomepage" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="354" type="stmt" count="0"/>
+        <line num="360" type="method" name="setOnHomepage" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="362" type="stmt" count="0"/>
         <line num="363" type="stmt" count="0"/>
-        <line num="364" type="stmt" count="0"/>
-        <line num="369" type="method" name="getId" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="371" type="stmt" count="0"/>
-        <line num="379" type="method" name="setId" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="381" type="stmt" count="0"/>
-        <line num="383" type="stmt" count="0"/>
-        <line num="389" type="method" name="getCalendar" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="391" type="stmt" count="0"/>
-        <line num="399" type="method" name="setCalendar" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="401" type="stmt" count="0"/>
-        <line num="403" type="stmt" count="0"/>
-        <line num="409" type="method" name="getLocation" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="411" type="stmt" count="0"/>
-        <line num="419" type="method" name="setLocation" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="421" type="stmt" count="0"/>
-        <line num="423" type="stmt" count="0"/>
-        <line num="429" type="method" name="getDocRef" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="431" type="stmt" count="0"/>
-        <line num="439" type="method" name="setDocRef" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="441" type="stmt" count="0"/>
-        <line num="443" type="stmt" count="0"/>
-        <line num="449" type="method" name="getDateFrom" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="451" type="stmt" count="0"/>
-        <line num="459" type="method" name="setDateFrom" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="461" type="stmt" count="0"/>
-        <line num="463" type="stmt" count="0"/>
-        <line num="469" type="method" name="getDateEnd" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="471" type="stmt" count="0"/>
-        <line num="479" type="method" name="setDateEnd" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="481" type="stmt" count="0"/>
-        <line num="483" type="stmt" count="0"/>
-        <line num="489" type="method" name="getDateCreated" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="491" type="stmt" count="0"/>
-        <line num="499" type="method" name="setDateCreated" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="501" type="stmt" count="0"/>
-        <line num="503" type="stmt" count="0"/>
-        <line num="509" type="method" name="getDateUpdated" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="511" type="stmt" count="0"/>
-        <line num="519" type="method" name="setDateUpdated" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="521" type="stmt" count="0"/>
-        <line num="523" type="stmt" count="0"/>
-        <line num="529" type="method" name="getSequence" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="531" type="stmt" count="0"/>
-        <line num="539" type="method" name="setSequence" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="541" type="stmt" count="0"/>
-        <line num="543" type="stmt" count="0"/>
-        <line num="549" type="method" name="getDescription" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="551" type="stmt" count="0"/>
-        <line num="559" type="method" name="setDescription" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="561" type="stmt" count="0"/>
-        <line num="563" type="stmt" count="0"/>
-        <line num="569" type="method" name="getUrl" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="571" type="stmt" count="0"/>
-        <line num="579" type="method" name="setUrl" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="581" type="stmt" count="0"/>
-        <line num="583" type="stmt" count="0"/>
-        <line num="589" type="method" name="getDatePlan" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="591" type="stmt" count="0"/>
-        <line num="599" type="method" name="setDatePlan" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="601" type="stmt" count="0"/>
-        <line num="603" type="stmt" count="0"/>
-        <line num="609" type="method" name="getImageUrl" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="611" type="stmt" count="0"/>
-        <line num="619" type="method" name="setImageUrl" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="621" type="stmt" count="0"/>
-        <line num="623" type="stmt" count="0"/>
-        <line num="629" type="method" name="getType" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="631" type="stmt" count="0"/>
-        <line num="639" type="method" name="setType" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="641" type="stmt" count="0"/>
-        <line num="643" type="stmt" count="0"/>
-        <line num="649" type="method" name="getContact" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="651" type="stmt" count="0"/>
-        <line num="659" type="method" name="setContact" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="661" type="stmt" count="0"/>
-        <line num="663" type="stmt" count="0"/>
-        <line num="669" type="method" name="getCalendarContact" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="671" type="stmt" count="0"/>
-        <line num="679" type="method" name="setCalendarContact" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="681" type="stmt" count="0"/>
-        <line num="683" type="stmt" count="0"/>
-        <line num="689" type="method" name="getDocument" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="691" type="stmt" count="0"/>
-        <line num="699" type="method" name="setDocument" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="701" type="stmt" count="0"/>
-        <line num="703" type="stmt" count="0"/>
-        <line num="709" type="method" name="getSchedule" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="711" type="stmt" count="0"/>
-        <line num="719" type="method" name="setSchedule" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="721" type="stmt" count="0"/>
-        <line num="723" type="stmt" count="0"/>
-        <line num="729" type="method" name="getProjectCalendar" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="731" type="stmt" count="0"/>
-        <line num="739" type="method" name="setProjectCalendar" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="741" type="stmt" count="0"/>
-        <line num="743" type="stmt" count="0"/>
-        <line num="749" type="method" name="getCall" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="751" type="stmt" count="0"/>
-        <line num="759" type="method" name="setCall" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="761" type="stmt" count="0"/>
-        <line num="763" type="stmt" count="0"/>
-        <metrics loc="765" ncloc="367" classes="1" methods="52" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="89" coveredstatements="5" elements="141" coveredelements="6"/>
+        <line num="368" type="method" name="getId" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="370" type="stmt" count="0"/>
+        <line num="378" type="method" name="setId" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="380" type="stmt" count="0"/>
+        <line num="382" type="stmt" count="0"/>
+        <line num="388" type="method" name="getCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="390" type="stmt" count="0"/>
+        <line num="398" type="method" name="setCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="400" type="stmt" count="0"/>
+        <line num="402" type="stmt" count="0"/>
+        <line num="408" type="method" name="getLocation" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="410" type="stmt" count="0"/>
+        <line num="418" type="method" name="setLocation" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="420" type="stmt" count="0"/>
+        <line num="422" type="stmt" count="0"/>
+        <line num="428" type="method" name="getDocRef" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="430" type="stmt" count="0"/>
+        <line num="438" type="method" name="setDocRef" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="440" type="stmt" count="0"/>
+        <line num="442" type="stmt" count="0"/>
+        <line num="448" type="method" name="getDateFrom" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="450" type="stmt" count="0"/>
+        <line num="458" type="method" name="setDateFrom" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="460" type="stmt" count="0"/>
+        <line num="462" type="stmt" count="0"/>
+        <line num="468" type="method" name="getDateEnd" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="470" type="stmt" count="0"/>
+        <line num="478" type="method" name="setDateEnd" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="480" type="stmt" count="0"/>
+        <line num="482" type="stmt" count="0"/>
+        <line num="488" type="method" name="getDateCreated" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="490" type="stmt" count="0"/>
+        <line num="498" type="method" name="setDateCreated" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="500" type="stmt" count="0"/>
+        <line num="502" type="stmt" count="0"/>
+        <line num="508" type="method" name="getDateUpdated" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="510" type="stmt" count="0"/>
+        <line num="518" type="method" name="setDateUpdated" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="520" type="stmt" count="0"/>
+        <line num="522" type="stmt" count="0"/>
+        <line num="528" type="method" name="getSequence" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="530" type="stmt" count="0"/>
+        <line num="538" type="method" name="setSequence" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="540" type="stmt" count="0"/>
+        <line num="542" type="stmt" count="0"/>
+        <line num="548" type="method" name="getDescription" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="550" type="stmt" count="0"/>
+        <line num="558" type="method" name="setDescription" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="560" type="stmt" count="0"/>
+        <line num="562" type="stmt" count="0"/>
+        <line num="568" type="method" name="getUrl" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="570" type="stmt" count="0"/>
+        <line num="578" type="method" name="setUrl" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="580" type="stmt" count="0"/>
+        <line num="582" type="stmt" count="0"/>
+        <line num="588" type="method" name="getDatePlan" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="590" type="stmt" count="0"/>
+        <line num="598" type="method" name="setDatePlan" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="600" type="stmt" count="0"/>
+        <line num="602" type="stmt" count="0"/>
+        <line num="608" type="method" name="getImageUrl" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="610" type="stmt" count="0"/>
+        <line num="618" type="method" name="setImageUrl" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="620" type="stmt" count="0"/>
+        <line num="622" type="stmt" count="0"/>
+        <line num="628" type="method" name="getType" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="630" type="stmt" count="0"/>
+        <line num="638" type="method" name="setType" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="640" type="stmt" count="0"/>
+        <line num="642" type="stmt" count="0"/>
+        <line num="648" type="method" name="getContact" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="650" type="stmt" count="0"/>
+        <line num="658" type="method" name="setContact" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="660" type="stmt" count="0"/>
+        <line num="662" type="stmt" count="0"/>
+        <line num="668" type="method" name="getCalendarContact" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="670" type="stmt" count="0"/>
+        <line num="678" type="method" name="setCalendarContact" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="680" type="stmt" count="0"/>
+        <line num="682" type="stmt" count="0"/>
+        <line num="688" type="method" name="getDocument" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="690" type="stmt" count="0"/>
+        <line num="698" type="method" name="setDocument" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="700" type="stmt" count="0"/>
+        <line num="702" type="stmt" count="0"/>
+        <line num="708" type="method" name="getSchedule" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="710" type="stmt" count="0"/>
+        <line num="718" type="method" name="setSchedule" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="720" type="stmt" count="0"/>
+        <line num="722" type="stmt" count="0"/>
+        <line num="728" type="method" name="getProjectCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="730" type="stmt" count="0"/>
+        <line num="738" type="method" name="setProjectCalendar" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="740" type="stmt" count="0"/>
+        <line num="742" type="stmt" count="0"/>
+        <line num="748" type="method" name="getCall" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="750" type="stmt" count="0"/>
+        <line num="758" type="method" name="setCall" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="760" type="stmt" count="0"/>
+        <line num="762" type="stmt" count="0"/>
+        <metrics loc="764" ncloc="366" classes="1" methods="52" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="89" coveredstatements="5" elements="141" coveredelements="6"/>
       </file>
       <file name="/var/www/dev1/vendor/iteaoffice/calendar/src/Entity/Contact.php">
         <class name="Contact" namespace="Calendar\Entity">
@@ -4012,6 +4012,6 @@
         <metrics loc="485" ncloc="306" classes="1" methods="30" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="203" coveredstatements="0" elements="233" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="57" loc="9190" ncloc="5467" classes="54" methods="416" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3226" coveredstatements="5" elements="3642" coveredelements="6"/>
+    <metrics files="57" loc="9192" ncloc="5466" classes="54" methods="416" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3226" coveredstatements="5" elements="3642" coveredelements="6"/>
   </project>
 </coverage>
