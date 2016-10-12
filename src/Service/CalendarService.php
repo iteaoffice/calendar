@@ -47,9 +47,11 @@ class CalendarService extends ServiceAbstract
      */
     public function findCalendarByDocRef($docRef)
     {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy([
-            'docRef' => $docRef,
-        ]);
+        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy(
+            [
+                'docRef' => $docRef,
+            ]
+        );
     }
 
 
@@ -61,12 +63,14 @@ class CalendarService extends ServiceAbstract
      */
     public function calendarHasContact(Calendar $calendar, Contact $contact)
     {
-        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy([
-            'calendar' => $calendar,
-            'contact'  => $contact,
-        ]);
+        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy(
+            [
+                'calendar' => $calendar,
+                'contact'  => $contact,
+            ]
+        );
 
-        return !is_null($calendarContact);
+        return ! is_null($calendarContact);
     }
 
     /**
@@ -84,11 +88,11 @@ class CalendarService extends ServiceAbstract
     public function updateCalendarContacts(Calendar $calendar, array $data)
     {
         //Update the contacts
-        if (!empty($data['added'])) {
+        if (! empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
                 $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
 
-                if (!is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
+                if (! is_null($contact) && ! $this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -118,7 +122,7 @@ class CalendarService extends ServiceAbstract
         }
 
         //Update the contacts
-        if (!empty($data['removed'])) {
+        if (! empty($data['removed'])) {
             foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
                     if ($calendarContact->getContact()->getId() === (int)$contactId) {
@@ -196,8 +200,10 @@ class CalendarService extends ServiceAbstract
         $year = null,
         $type = null
     ) {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)
-            ->findCalendarItems($which, true, $contact, $year, $type);
+        /** @var \Calendar\Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        return $repository->findCalendarItems($which, true, $contact, $year, $type);
     }
 
     /**
@@ -213,7 +219,7 @@ class CalendarService extends ServiceAbstract
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if (!$onlyFinal
+            if (! $onlyFinal
                 || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
@@ -221,7 +227,7 @@ class CalendarService extends ServiceAbstract
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (!$onlyFinal
+            if (! $onlyFinal
                 || $calendarItem->getFinal() === Calendar::FINAL_FINAL
             ) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {

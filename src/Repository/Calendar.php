@@ -41,6 +41,8 @@ class Calendar extends EntityRepository
         $qb = $this->_em->createQueryBuilder();
         $qb->select('c');
         $qb->from("Calendar\Entity\Calendar", 'c');
+
+
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
                 $qb->andWhere('c.dateEnd >= ?1');
@@ -51,6 +53,7 @@ class Calendar extends EntityRepository
                 break;
             case CalendarService::WHICH_PAST:
                 $qb->andWhere('c.dateEnd < ?1');
+
                 if (null !== $type) {
                     $qb->andWhere('c.type = ?9');
                     $qb->setParameter(9, $type);
@@ -99,7 +102,7 @@ class Calendar extends EntityRepository
             }
             $qb = $this->filterForAccess($qb, $contact);
         }
-        if (!is_null($year)) {
+        if (! is_null($year)) {
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
             $qb->andWhere('YEAR(c.dateEnd) = ?8');
@@ -216,7 +219,7 @@ class Calendar extends EntityRepository
         $qb->setParameter(100, $calendar);
 
 
-        return !is_null($qb->getQuery()->getOneOrNullResult());
+        return ! is_null($qb->getQuery()->getOneOrNullResult());
     }
 
     /**
@@ -232,8 +235,10 @@ class Calendar extends EntityRepository
         $subSelect->select('type');
         $subSelect->from('Calendar\Entity\Type', 'type');
         $subSelect->join('type.access', 'access');
-        $subSelect->andWhere($qb->expr()
-            ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles())));
+        $subSelect->andWhere(
+            $qb->expr()
+                ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
+        );
 
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
         $subSelectCalendarContact->select('calendar2');
@@ -242,13 +247,15 @@ class Calendar extends EntityRepository
         $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
         $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
 
-        $qb->andWhere($qb->expr()->orX(
-            $qb->expr()->in(
-                'c.type',
-                $subSelect->getDQL()
-            ),
-            $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
-        ));
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in(
+                    'c.type',
+                    $subSelect->getDQL()
+                ),
+                $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
+            )
+        );
 
         return $qb;
     }

@@ -55,16 +55,18 @@ class CalendarLink extends LinkAbstract
         /**
          * Set the non-standard options needed to give an other link value
          */
-        $this->setShowOptions([
-            'alternativeShow' => $this->getAlternativeShow(),
-            'text-which-tab'  => ucfirst($this->getWhich()),
-            'name'            => $this->getCalendar()->getCalendar(),
-        ]);
+        $this->setShowOptions(
+            [
+                'alternativeShow' => $this->getAlternativeShow(),
+                'text-which-tab'  => ucfirst($this->getWhich()),
+                'name'            => $this->getCalendar()->getCalendar(),
+            ]
+        );
 
         /*
          * Check the access to the object
          */
-        if (!$this->hasAccess($this->getCalendar(), CalendarAssertion::class, $this->getAction())) {
+        if (! $this->hasAccess($this->getCalendar(), CalendarAssertion::class, $this->getAction())) {
             return '';
         }
 
@@ -96,6 +98,10 @@ class CalendarLink extends LinkAbstract
                 switch ($this->getWhich()) {
                     case CalendarService::WHICH_UPCOMING:
                         $this->addRouterParam('docRef', 'upcoming-events');
+                        $this->setText($this->translate("txt-upcoming-events"));
+                        break;
+                    case CalendarService::WHICH_ON_HOMEPAGE:
+                        $this->addRouterParam('docRef', 'events');
                         $this->setText($this->translate("txt-upcoming-events"));
                         break;
                     case CalendarService::WHICH_PAST:
@@ -144,10 +150,12 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('route-' . $this->getCalendar()->get("underscore_entity_name"));
                 $this->addRouterParam('calendar', $this->getCalendar()->getId());
                 $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-item-%s"),
-                    $this->getCalendar()->getCalendar()
-                ));
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-view-calendar-item-%s"),
+                        $this->getCalendar()->getCalendar()
+                    )
+                );
                 break;
             case 'view-community':
                 $this->setRouter('community/calendar/calendar');

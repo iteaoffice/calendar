@@ -99,7 +99,7 @@ class CalendarHandler extends AbstractViewHelper
     public function extractContentParam(Content $content)
     {
         //Give default the docRef to the handler, this does not harm
-        if (!is_null($this->getRouteMatch()->getParam('docRef'))) {
+        if (! is_null($this->getRouteMatch()->getParam('docRef'))) {
             $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
         }
 
@@ -109,7 +109,7 @@ class CalendarHandler extends AbstractViewHelper
              */
             switch ($param->getParameter()->getParam()) {
                 case 'docRef':
-                    if (!is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    if (! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
                     }
                     break;
@@ -125,7 +125,7 @@ class CalendarHandler extends AbstractViewHelper
                     break;
 
                 case 'year':
-                    if (!is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    if (! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
                         $this->setYear($this->getModuleOptions()->getDefaultYear());
@@ -210,6 +210,7 @@ class CalendarHandler extends AbstractViewHelper
             $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity()
         )->setMaxResults($limit)
             ->getResult();
+
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarUpcomingTemplate(),
@@ -322,10 +323,13 @@ class CalendarHandler extends AbstractViewHelper
          */
         $years = range(date("Y"), date("Y") - 2);
 
-        return $this->getRenderer()->render('calendar/partial/year-selector', [
+        return $this->getRenderer()->render(
+            'calendar/partial/year-selector',
+            [
             'years'        => $years,
             'selectedYear' => $year,
-        ]);
+            ]
+        );
     }
 
     /**
