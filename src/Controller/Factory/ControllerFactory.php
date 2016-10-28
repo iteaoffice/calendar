@@ -27,8 +27,9 @@ use Interop\Container\ContainerInterface;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\ControllerManager;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
 /**
@@ -49,7 +50,7 @@ final class ControllerFactory implements FactoryInterface
     {
         /** @var CalendarAbstractController $controller */
         $controller = new $requestedName($options);
-        $serviceManager = $container->getServiceLocator();
+        $serviceManager = $container;
 
         /** @var FormService $formService */
         $formService = $serviceManager->get(FormService::class);
@@ -95,18 +96,10 @@ final class ControllerFactory implements FactoryInterface
         $selectionService = $serviceManager->get(SelectionService::class);
         $controller->setSelectionService($selectionService);
 
-        return $controller;
-    }
+        /** @var HelperPluginManager $viewHelperManager */
+        $viewHelperManager = $container->get('ViewHelperManager');
+        $controller->setViewHelperManager($viewHelperManager);
 
-    /**
-     * @param ServiceLocatorInterface $container
-     * @param string                  $canonicalName
-     * @param string                  $requestedName
-     *
-     * @return CalendarAbstractController
-     */
-    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
-    {
-        return $this($container, $requestedName);
+        return $controller;
     }
 }

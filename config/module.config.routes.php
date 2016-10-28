@@ -18,8 +18,8 @@ return [
                 'type'          => 'Literal',
                 'priority'      => 999,
                 'options'       => [
-                    'route' => '/assets/' . (defined("DEBRANOVA_HOST")
-                            ? DEBRANOVA_HOST : 'test'),
+                    'route' => '/assets/' . (defined("ITEAOFFICE_HOST")
+                            ? ITEAOFFICE_HOST : 'test'),
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [

@@ -12,6 +12,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="calendar">
+        <br>
         <dl class="dl-horizontal">
             {% if calendar.projectCalendar %}
                 <dt>{{ translate("txt-project") }}</dt>
@@ -321,7 +322,7 @@
                         <td>{{ calendarContact.contact.contactOrganisation.organisation }} ({{ calendarContact.contact.contactOrganisation.organisation.country }}) </td>
                         <td>{{ calendarContact.role }}</td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% do calendarService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"

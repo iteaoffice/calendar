@@ -22,6 +22,6 @@ return [
                     'serializer',
                 ]
             ],
-            'cache_key'     => 'contact-cache-' . (defined("DEBRANOVA_HOST") ? DEBRANOVA_HOST : 'test')
+            'cache_key'     => 'contact-cache-' . (defined("ITEAOFFICE_HOST") ? ITEAOFFICE_HOST : 'test')
         ]
 ];

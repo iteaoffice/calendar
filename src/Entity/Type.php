@@ -112,7 +112,7 @@ class Type
     public function getCacheCssFileName()
     {
         return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
-        . DEBRANOVA_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+        . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
     }
 
     /**
