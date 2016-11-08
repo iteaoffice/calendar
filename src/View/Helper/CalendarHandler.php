@@ -50,7 +50,6 @@ class CalendarHandler extends AbstractViewHelper
         $this->extractContentParam($content);
 
         switch ($content->getHandler()->getHandler()) {
-
             case 'calendar_item':
                 if (is_null($this->getCalendar())) {
                     $this->getServiceManager()->get('response')->setStatusCode(404);
@@ -105,7 +104,7 @@ class CalendarHandler extends AbstractViewHelper
     public function extractContentParam(Content $content)
     {
         //Give default the docRef to the handler, this does not harm
-        if ( ! is_null($this->getRouteMatch()->getParam('docRef'))) {
+        if (! is_null($this->getRouteMatch()->getParam('docRef'))) {
             $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
         }
 
@@ -115,7 +114,7 @@ class CalendarHandler extends AbstractViewHelper
              */
             switch ($param->getParameter()->getParam()) {
                 case 'docRef':
-                    if ( ! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    if (! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
                     }
                     break;
@@ -131,8 +130,7 @@ class CalendarHandler extends AbstractViewHelper
                     break;
 
                 case 'year':
-
-                    if ( ! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    if (! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
                         //$this->setYear($this->getModuleOptions()->getDefaultYear());
@@ -305,7 +303,6 @@ class CalendarHandler extends AbstractViewHelper
             $which,
             $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
             $year
-
         )
             ->setMaxResults($limit)->getResult();
 
