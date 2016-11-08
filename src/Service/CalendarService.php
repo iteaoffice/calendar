@@ -10,6 +10,7 @@
 namespace Calendar\Service;
 
 use Calendar\Entity;
+use Calendar\Repository;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Contact\Entity\Contact;
@@ -26,6 +27,7 @@ class CalendarService extends ServiceAbstract
     const WHICH_UPCOMING = 'upcoming';
     const WHICH_UPDATED = 'updated';
     const WHICH_PAST = 'past';
+    const WHICH_FINAL = 'final';
     const WHICH_REVIEWS = 'project-reviews';
     const WHICH_ON_HOMEPAGE = 'on-homepage';
 
@@ -88,11 +90,11 @@ class CalendarService extends ServiceAbstract
     public function updateCalendarContacts(Calendar $calendar, array $data)
     {
         //Update the contacts
-        if (! empty($data['added'])) {
+        if ( ! empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
                 $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
 
-                if (! is_null($contact) && ! $this->calendarHasContact($calendar, $contact)) {
+                if ( ! is_null($contact) && ! $this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -122,7 +124,7 @@ class CalendarService extends ServiceAbstract
         }
 
         //Update the contacts
-        if (! empty($data['removed'])) {
+        if ( ! empty($data['removed'])) {
             foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
                     if ($calendarContact->getContact()->getId() === (int)$contactId) {
@@ -219,7 +221,7 @@ class CalendarService extends ServiceAbstract
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if (! $onlyFinal
+            if ( ! $onlyFinal
                 || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
@@ -227,7 +229,7 @@ class CalendarService extends ServiceAbstract
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (! $onlyFinal
+            if ( ! $onlyFinal
                 || $calendarItem->getFinal() === Calendar::FINAL_FINAL
             ) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {
@@ -301,8 +303,26 @@ class CalendarService extends ServiceAbstract
      */
     public function findGeneralCalendarContactByCalendar(Calendar $calendar)
     {
-        return $this->getEntityManager()->getRepository(CalendarContact::class)
-            ->findGeneralCalendarContactByCalendar($calendar);
+        /** @var Repository\Contact $repository */
+        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+
+        return $repository->findGeneralCalendarContactByCalendar($calendar);
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function findMinAndMaxYear()
+    {
+        /** @var Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        $yearSpanResult    = $repository->findMinAndMaxYear();
+        $yearSpan          = new \stdClass();
+        $yearSpan->minYear = (int)$yearSpanResult['minYear'];
+        $yearSpan->maxYear = (int)$yearSpanResult['maxYear'];
+
+        return $yearSpan;
     }
 
     /**
@@ -315,6 +335,7 @@ class CalendarService extends ServiceAbstract
         return [
             self::WHICH_UPCOMING,
             self::WHICH_UPDATED,
+            self::WHICH_FINAL,
             self::WHICH_PAST,
             self::WHICH_REVIEWS,
         ];

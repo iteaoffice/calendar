@@ -1,8 +1,10 @@
-<h3>{{ translate("txt-year-selector") }}</h3>
-<ul class="nav nav-pills nav-stacked">
-    {% for year in years %}
-        <li {% if selectedYear == year %}class="active"{% endif %}>
-            {{ calendarLink(null, 'list', 'alternativeShow', constant("Calendar\\Service\\CalendarService::WHICH_PAST"), year, year) }}
-        </li>
-    {% endfor %}
-</ul>
+<div class="year-selector">
+    <h3>{{ translate("txt-year-selector") }}</h3>
+    <ul class="nav nav-stacked nav-pills nav-year-selector">
+        {% for year in years|reverse %}
+            <li {% if selectedYear == year %}class="active"{% endif %}>
+                {{ calendarLink(null, 'list', 'alternativeShow', constant("Calendar\\Service\\CalendarService::WHICH_ON_HOMEPAGE"), year, year) }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

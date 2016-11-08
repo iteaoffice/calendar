@@ -48,7 +48,9 @@ class CalendarHandler extends AbstractViewHelper
     public function __invoke(Content $content)
     {
         $this->extractContentParam($content);
+
         switch ($content->getHandler()->getHandler()) {
+
             case 'calendar_item':
                 if (is_null($this->getCalendar())) {
                     $this->getServiceManager()->get('response')->setStatusCode(404);
@@ -75,7 +77,11 @@ class CalendarHandler extends AbstractViewHelper
             case 'calendar':
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
 
-                return $this->parseCalendar($this->getLimit());
+                return $this->parseCalendar($this->getYear(), $this->getLimit());
+            case 'calendar_upcoming':
+                $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
+
+                return $this->parseUpcomingCalendar($this->getLimit());
             case 'calendar_past':
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-past-events"));
 
@@ -99,7 +105,7 @@ class CalendarHandler extends AbstractViewHelper
     public function extractContentParam(Content $content)
     {
         //Give default the docRef to the handler, this does not harm
-        if (! is_null($this->getRouteMatch()->getParam('docRef'))) {
+        if ( ! is_null($this->getRouteMatch()->getParam('docRef'))) {
             $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
         }
 
@@ -109,7 +115,7 @@ class CalendarHandler extends AbstractViewHelper
              */
             switch ($param->getParameter()->getParam()) {
                 case 'docRef':
-                    if (! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+                    if ( ! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
                     }
                     break;
@@ -125,10 +131,11 @@ class CalendarHandler extends AbstractViewHelper
                     break;
 
                 case 'year':
-                    if (! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
+
+                    if ( ! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
                         $this->setYear($year);
                     } elseif ('0' === $param->getParameterId()) {
-                        $this->setYear($this->getModuleOptions()->getDefaultYear());
+                        //$this->setYear($this->getModuleOptions()->getDefaultYear());
                     } else {
                         $this->setYear($param->getParameterId());
                     }
@@ -203,7 +210,7 @@ class CalendarHandler extends AbstractViewHelper
      *
      * @return null|string
      */
-    public function parseCalendar($limit)
+    public function parseUpcomingCalendar($limit)
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             CalendarService::WHICH_UPCOMING,
@@ -274,6 +281,40 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
+     * @param $year
+     * @param $type
+     * @param $limit
+     *
+     * @return null|string
+     */
+    public function parseCalendar($year, $limit)
+    {
+        $which = CalendarService::WHICH_FINAL;
+
+        if (is_null($year)) {
+            $which = CalendarService::WHICH_UPCOMING;
+        } else {
+            $limit = 999;
+        }
+
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            $which,
+            $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
+            $year
+
+        )
+            ->setMaxResults($limit)->getResult();
+
+        return $this->getRenderer()->render(
+            $this->getModuleOptions()->getCalendarPastTemplate(),
+            [
+                'calendarItems' => $calendarItems,
+                'which'         => $which,
+            ]
+        );
+    }
+
+    /**
      * @return int
      */
     public function getYear()
@@ -318,16 +359,15 @@ class CalendarHandler extends AbstractViewHelper
      */
     public function parseYearSelector($year)
     {
-        /**
-         * take the last three years for the calendar
-         */
-        $years = range(date("Y"), date("Y") - 2);
+        $yearSpan = $this->getCalendarService()->findMinAndMaxYear();
+
+        $years = range($yearSpan->minYear, $yearSpan->maxYear);
 
         return $this->getRenderer()->render(
             'calendar/partial/year-selector',
             [
-            'years'        => $years,
-            'selectedYear' => $year,
+                'years'        => $years,
+                'selectedYear' => $year,
             ]
         );
     }

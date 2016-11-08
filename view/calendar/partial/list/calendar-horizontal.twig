@@ -1,21 +1,16 @@
-<h1>{{ translate("txt-upcoming-events") }}</h1>
+{% if which is constant("Calendar\\Service\\CalendarService::WHICH_UPCOMING") %}
+    <h1>{{ translate("txt-upcoming-events") }}</h1>
+{% else %}
+    <h1>{{ translate("txt-events") }}</h1>
+{% endif %}
 
-<p class="lead">{{ translate("txt-upcoming-events-explanation") }}</p>
-
-<table class="table table-gray">
-    <thead>
-    <tr>
-        <th>{{ translate("txt-event") }}</th>
-        <th>{{ translate("txt-location") }}</th>
-        <th>{{ translate("txt-date") }}</th>
-    </tr>
-    </thead>
+<table class="table table-aeneas">
     <tbody>
     {% for calendar in calendarItems if 'public' in calendar.type.access.toArray() %}
         <tr>
+            <td><span class="date">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</span>
+                <br><span class="location">{{ calendar.location }}</span></td>
             <td><a target="_blank" href="{{ calendar.url }}">{{ calendar }}</a></td>
-            <td>{{ calendar.location }}</td>
-            <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
         </tr>
     {% endfor %}
     </tbody>
