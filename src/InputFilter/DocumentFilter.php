@@ -16,8 +16,6 @@
 namespace Calendar\InputFilter;
 
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Validator;
-use Partner\Entity\Affiliation;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
 
@@ -40,34 +38,41 @@ class DocumentFilter extends InputFilter
     {
         $inputFilter = new InputFilter();
 
-        $inputFilter->add([
-            'name'       => 'document',
-            'required'   => false,
-            'filters'    => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                [
-                    'name'    => 'StringLength',
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min'      => 5,
-                        'max'      => 100,
+        $inputFilter->add(
+            [
+                'name'       => 'document',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 5,
+                            'max'      => 100,
+                        ],
                     ],
                 ],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'     => 'contact',
-            'required' => false,
-        ]);
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'contact',
+                'required' => false,
+            ]
+        );
         $fileUpload = new FileInput('file');
         $fileUpload->setRequired(true);
-        $fileUpload->getValidatorChain()->attachByName('File\Size', [
+        $fileUpload->getValidatorChain()->attachByName(
+            'File\Size',
+            [
             'min' => '10kB',
             'max' => '8MB',
-        ]);
+            ]
+        );
         $inputFilter->add($fileUpload);
 
         $this->add($inputFilter, 'calendar_entity_document');

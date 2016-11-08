@@ -39,9 +39,14 @@ class DocumentLabel extends AbstractNavigationInvokable
             $document = $this->getEntities()->get(Document::class);
             $this->getEntities()->set(Calendar::class, $document->getCalendar());
 
-            $page->setParams(array_merge($page->getParams(), [
-                'id' => $document->getId(),
-            ]));
+            $page->setParams(
+                array_merge(
+                    $page->getParams(),
+                    [
+                    'id' => $document->getId(),
+                    ]
+                )
+            );
             $label = (string)$document;
         } else {
             $label = $this->translate('txt-nav-document');

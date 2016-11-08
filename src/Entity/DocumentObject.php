@@ -86,20 +86,12 @@ class DocumentObject extends EntityAbstract
      */
     public function getInputFilter()
     {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
+        if (! $this->inputFilter) {
+            $inputFilter       = new InputFilter();
             $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
-    }
-
-    /**
-     * @param \Calendar\Entity\Document $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
     }
 
     /**
@@ -111,11 +103,11 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * @param int $id
+     * @param \Calendar\Entity\Document $document
      */
-    public function setId($id)
+    public function setDocument($document)
     {
-        $this->id = $id;
+        $this->document = $document;
     }
 
     /**
@@ -127,11 +119,11 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * @param resource $object
+     * @param int $id
      */
-    public function setObject($object)
+    public function setId($id)
     {
-        $this->object = $object;
+        $this->id = $id;
     }
 
     /**
@@ -140,5 +132,13 @@ class DocumentObject extends EntityAbstract
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * @param resource $object
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
     }
 }

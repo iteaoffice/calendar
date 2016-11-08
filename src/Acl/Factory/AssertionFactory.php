@@ -21,7 +21,6 @@ use Contact\Service\ContactService;
 use Interop\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class AssertionFactory
@@ -64,17 +63,5 @@ final class AssertionFactory implements FactoryInterface
 
 
         return $assertion;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $container
-     * @param null                    $canonicalName
-     * @param                         $requestedName
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
-    {
-        return $this($container, $requestedName);
     }
 }

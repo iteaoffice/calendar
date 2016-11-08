@@ -330,6 +330,23 @@ abstract class CalendarAbstractController extends AbstractActionController
     }
 
     /**
+     * Proxy for the flash messenger helper to have the string translated earlier.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    protected function translate($string)
+    {
+        /*
+         * @var Translate
+         */
+        $translate = $this->getViewHelperManager()->get('translate');
+
+        return $translate($string);
+    }
+
+    /**
      * @return HelperPluginManager
      */
     public function getViewHelperManager(): HelperPluginManager
@@ -347,22 +364,5 @@ abstract class CalendarAbstractController extends AbstractActionController
         $this->viewHelperManager = $viewHelperManager;
 
         return $this;
-    }
-
-    /**
-     * Proxy for the flash messenger helper to have the string translated earlier.
-     *
-     * @param $string
-     *
-     * @return string
-     */
-    protected function translate($string)
-    {
-        /*
-         * @var Translate
-         */
-        $translate = $this->getViewHelperManager()->get('translate');
-
-        return $translate($string);
     }
 }

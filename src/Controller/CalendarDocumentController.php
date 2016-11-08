@@ -39,14 +39,16 @@ class CalendarDocumentController extends CalendarAbstractController
         /*
          * Due to the BLOB issue, we treat this as an array and we need to capture the first element
          */
-        $object = $document->getObject()->first()->getObject();
+        $object   = $document->getObject()->first()->getObject();
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $document->parseFileName() . '"')
-            ->addHeaderLine("Pragma: public")->addHeaderLine('Content-Type: ' . $document->getContentType()
-                    ->getContentType())->addHeaderLine('Content-Length: ' . $document->getSize());
+            ->addHeaderLine("Pragma: public")->addHeaderLine(
+                'Content-Type: ' . $document->getContentType()
+                    ->getContentType()
+            )->addHeaderLine('Content-Length: ' . $document->getSize());
 
         return $this->response;
     }
@@ -94,10 +96,12 @@ class CalendarDocumentController extends CalendarAbstractController
              */
             if (isset($data['delete'])) {
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(sprintf(
-                        $this->translate("txt-calendar-document-%s-successfully-removed"),
-                        $document->parseFileName()
-                    ));
+                    ->addMessage(
+                        sprintf(
+                            $this->translate("txt-calendar-document-%s-successfully-removed"),
+                            $document->parseFileName()
+                        )
+                    );
                 $this->getCalendarService()->removeEntity($document);
 
                 return $this->redirect()
@@ -110,17 +114,19 @@ class CalendarDocumentController extends CalendarAbstractController
             /*
              * Handle when
              */
-            if (!isset($data['cancel'])) {
+            if (! isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
-                if (!empty($file['name']) && $file['error'] === 0) {
+                if (! empty($file['name']) && $file['error'] === 0) {
                     /*
                      * Update the document
                      */
                     $fileSizeValidator = new FilesSize(PHP_INT_MAX);
                     $fileSizeValidator->isValid($file);
                     $document->setSize($fileSizeValidator->size);
-                    $document->setContentType($this->getGeneralService()
-                        ->findContentTypeByContentTypeName($file['type']));
+                    $document->setContentType(
+                        $this->getGeneralService()
+                            ->findContentTypeByContentTypeName($file['type'])
+                    );
                     /**
                      * Update the object
                      *
@@ -132,18 +138,22 @@ class CalendarDocumentController extends CalendarAbstractController
                 }
                 $this->getCalendarService()->updateEntity($document);
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(sprintf(
-                        $this->translate("txt-calendar-document-%s-successfully-updated"),
-                        $document->parseFileName()
-                    ));
+                    ->addMessage(
+                        sprintf(
+                            $this->translate("txt-calendar-document-%s-successfully-updated"),
+                            $document->parseFileName()
+                        )
+                    );
             }
 
             return $this->redirect()->toRoute('community/calendar/document/document', ['id' => $document->getId()]);
         }
 
-        return new ViewModel([
-            'document' => $document,
-            'form'     => $form,
-        ]);
+        return new ViewModel(
+            [
+                'document' => $document,
+                'form'     => $form,
+            ]
+        );
     }
 }

@@ -113,6 +113,44 @@ class Calendar extends EntityRepository
     }
 
     /**
+     * @param QueryBuilder $qb
+     * @param Contact      $contact
+     *
+     * @return QueryBuilder $qb
+     */
+    public function filterForAccess(QueryBuilder $qb, Contact $contact)
+    {
+        //Filter based on the type access type
+        $subSelect = $this->_em->createQueryBuilder();
+        $subSelect->select('type');
+        $subSelect->from('Calendar\Entity\Type', 'type');
+        $subSelect->join('type.access', 'access');
+        $subSelect->andWhere(
+            $qb->expr()
+                ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
+        );
+
+        $subSelectCalendarContact = $this->_em->createQueryBuilder();
+        $subSelectCalendarContact->select('calendar2');
+        $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
+        $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
+        $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
+        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in(
+                    'c.type',
+                    $subSelect->getDQL()
+                ),
+                $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
+            )
+        );
+
+        return $qb;
+    }
+
+    /**
      * @param Project $project
      *
      * @return Calendar|null
@@ -191,7 +229,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-
     /**
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
@@ -220,43 +257,5 @@ class Calendar extends EntityRepository
 
 
         return ! is_null($qb->getQuery()->getOneOrNullResult());
-    }
-
-    /**
-     * @param QueryBuilder $qb
-     * @param Contact      $contact
-     *
-     * @return QueryBuilder $qb
-     */
-    public function filterForAccess(QueryBuilder $qb, Contact $contact)
-    {
-        //Filter based on the type access type
-        $subSelect = $this->_em->createQueryBuilder();
-        $subSelect->select('type');
-        $subSelect->from('Calendar\Entity\Type', 'type');
-        $subSelect->join('type.access', 'access');
-        $subSelect->andWhere(
-            $qb->expr()
-                ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
-        );
-
-        $subSelectCalendarContact = $this->_em->createQueryBuilder();
-        $subSelectCalendarContact->select('calendar2');
-        $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
-        $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
-        $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
-        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
-
-        $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->in(
-                    'c.type',
-                    $subSelect->getDQL()
-                ),
-                $qb->expr()->in('c', $subSelectCalendarContact->getDQL())
-            )
-        );
-
-        return $qb;
     }
 }

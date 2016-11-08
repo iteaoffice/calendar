@@ -62,6 +62,16 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     protected $calendarPastTemplate = '';
 
     /**
+     * Enable the calendar contacts.
+     *
+     * @return boolean
+     */
+    public function getCommunityCalendarContactEnabled()
+    {
+        return $this->communityCalendarContactEnabled;
+    }
+
+    /**
      * Sets whether the review invitations should be enabled on the homepage of the community.
      *
      * @param $communityCalendarContactEnabled
@@ -73,16 +83,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
         $this->communityCalendarContactEnabled = $communityCalendarContactEnabled;
 
         return $this;
-    }
-
-    /**
-     * Enable the calendar contacts.
-     *
-     * @return boolean
-     */
-    public function getCommunityCalendarContactEnabled()
-    {
-        return $this->communityCalendarContactEnabled;
     }
 
     /**
@@ -149,6 +149,16 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     }
 
     /**
+     * Return template to use for Upcoming Event rendering
+     *
+     * @return string
+     */
+    public function getCalendarUpcomingTemplate()
+    {
+        return $this->calendarUpcomingTemplate;
+    }
+
+    /**
      * @param  string $calendarUpcomingTemplate
      *
      * @return $this
@@ -161,13 +171,13 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     }
 
     /**
-     * Return template to use for Upcoming Event rendering
+     * Return template to use for Past Event rendering
      *
      * @return string
      */
-    public function getCalendarUpcomingTemplate()
+    public function getCalendarPastTemplate()
     {
-        return $this->calendarUpcomingTemplate;
+        return $this->calendarPastTemplate;
     }
 
     /**
@@ -180,15 +190,5 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
         $this->calendarPastTemplate = $calendarPastTemplate;
 
         return $this;
-    }
-
-    /**
-     * Return template to use for Past Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarPastTemplate()
-    {
-        return $this->calendarPastTemplate;
     }
 }

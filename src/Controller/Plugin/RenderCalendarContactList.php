@@ -56,17 +56,20 @@ class RenderCalendarContactList extends AbstractPlugin
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
-        $minAmountOfPages = max(sizeof($paginatedContacts), 2);
+        $minAmountOfPages  = max(sizeof($paginatedContacts), 2);
 
         for ($i = 0; $i < $minAmountOfPages; $i++) {
             /*
              * Use the NDA object to render the filename
              */
-            $contactListContent = $twig->render('calendar/pdf/calendar-contact', [
+            $contactListContent = $twig->render(
+                'calendar/pdf/calendar-contact',
+                [
                 'calendarService'  => $this->getCalendarService(),
                 'calendar'         => $calendar,
                 'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
-            ]);
+                ]
+            );
 
             $pdf->writeHTMLCell(0, 0, 14, 42, $contactListContent);
 
@@ -110,6 +113,14 @@ class RenderCalendarContactList extends AbstractPlugin
     }
 
     /**
+     * @return CalendarService
+     */
+    public function getCalendarService()
+    {
+        return $this->getServiceLocator()->get(CalendarService::class);
+    }
+
+    /**
      * Gateway to the General Service.
      *
      * @return GeneralService
@@ -117,13 +128,5 @@ class RenderCalendarContactList extends AbstractPlugin
     public function getGeneralService()
     {
         return $this->getServiceLocator()->get(GeneralService::class);
-    }
-
-    /**
-     * @return CalendarService
-     */
-    public function getCalendarService()
-    {
-        return $this->getServiceLocator()->get(CalendarService::class);
     }
 }

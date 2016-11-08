@@ -101,9 +101,9 @@ abstract class LinkAbstract extends AbstractViewHelper
         /**
          * @var $serverUrl ServerUrl
          */
-        $serverUrl = $this->getHelperPluginManager()->get('serverUrl');
+        $serverUrl         = $this->getHelperPluginManager()->get('serverUrl');
         $this->linkContent = [];
-        $this->classes = [];
+        $this->classes     = [];
         $this->parseAction();
         $this->parseShow();
         if ('social' === $this->getShow()) {
@@ -195,7 +195,7 @@ abstract class LinkAbstract extends AbstractViewHelper
 
                 return;
             default:
-                if ( ! array_key_exists($this->getShow(), $this->showOptions)) {
+                if (! array_key_exists($this->getShow(), $this->showOptions)) {
                     throw new \InvalidArgumentException(
                         sprintf(
                             "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
@@ -248,7 +248,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addLinkContent($linkContent)
     {
-        if ( ! is_array($linkContent)) {
+        if (! is_array($linkContent)) {
             $linkContent = [$linkContent];
         }
         foreach ($linkContent as $content) {
@@ -281,7 +281,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addClasses($classes)
     {
-        if ( ! is_array($classes)) {
+        if (! is_array($classes)) {
             $classes = [$classes];
         }
         foreach ($classes as $class) {
@@ -325,13 +325,13 @@ abstract class LinkAbstract extends AbstractViewHelper
     public function hasAccess(EntityAbstract $entity, $assertion, $action)
     {
         $assertion = $this->getAssertion($assertion);
-        if ( ! is_null($entity)
+        if (! is_null($entity)
             && ! $this->getAuthorizeService()->getAcl()->hasResource($entity)
         ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
             $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
         }
-        if ( ! $this->isAllowed($entity, $action)) {
+        if (! $this->isAllowed($entity, $action)) {
             return false;
         }
 
@@ -381,10 +381,10 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addRouterParam($key, $value, $allowNull = true)
     {
-        if ( ! $allowNull && is_null($value)) {
+        if (! $allowNull && is_null($value)) {
             throw new \InvalidArgumentException(sprintf("null is not allowed for %s", $key));
         }
-        if ( ! is_null($value)) {
+        if (! is_null($value)) {
             $this->routerParams[$key] = $value;
         }
     }

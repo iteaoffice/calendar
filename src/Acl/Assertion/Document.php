@@ -41,7 +41,7 @@ class Document extends AssertionAbstract
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (!$document instanceof DocumentEntity) {
+        if (! $document instanceof DocumentEntity) {
             $document = $this->getCalendarService()->findEntityById(DocumentEntity::class, $id);
         }
 
@@ -67,7 +67,7 @@ class Document extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($document->getCalendar()->getProjectCalendar())) {
+                if (! is_null($document->getCalendar()->getProjectCalendar())) {
                     if ($this->getContactService()->contactHasPermit(
                         $this->getContact(),
                         'edit',

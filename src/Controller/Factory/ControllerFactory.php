@@ -28,7 +28,6 @@ use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
@@ -49,7 +48,7 @@ final class ControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var CalendarAbstractController $controller */
-        $controller = new $requestedName($options);
+        $controller     = new $requestedName($options);
         $serviceManager = $container;
 
         /** @var FormService $formService */

@@ -22,7 +22,6 @@ use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class CalendarServiceFactory
@@ -40,7 +39,7 @@ final class CalendarServiceFactory implements FactoryInterface
      *
      * @return CalendarService
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): CalendarService
     {
         /** @var CalendarService $calendarService */
         $calendarService = new $requestedName($options);
@@ -67,17 +66,5 @@ final class CalendarServiceFactory implements FactoryInterface
         $calendarService->setModuleOptions($moduleOptions);
 
         return $calendarService;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string|null             $canonicalName
-     * @param string|null             $requestedName
-     *
-     * @return CalendarService
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator, $canonicalName = null, $requestedName = null)
-    {
-        return $this($serviceLocator, $requestedName);
     }
 }

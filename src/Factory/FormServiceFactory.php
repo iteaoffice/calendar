@@ -18,7 +18,6 @@ use Calendar\Service\FormService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class FormServiceFactory
@@ -46,17 +45,5 @@ final class FormServiceFactory implements FactoryInterface
         $formService->setEntityManager($entityManager);
 
         return $formService;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $container
-     * @param string|null             $canonicalName
-     * @param string|null             $requestedName
-     *
-     * @return FormService
-     */
-    public function createService(ServiceLocatorInterface $container, $canonicalName = null, $requestedName = null)
-    {
-        return $this($container, $requestedName);
     }
 }

@@ -34,7 +34,7 @@ return [
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
             'community' => [
                 'child_routes' => [
@@ -120,7 +120,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'download-binder'         => [
+                            'download-binder'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/download-binder/[:id].html',
@@ -294,8 +294,8 @@ return [
                                             'route'    => '/[:id].html',
                                             'defaults' => [
                                                 'action' => 'document',
-                                            ]
-                                        ]
+                                            ],
+                                        ],
                                     ],
                                     'edit'     => [
                                         'type'    => 'Segment',
@@ -303,15 +303,15 @@ return [
                                             'route'    => '/edit/[:id].html',
                                             'defaults' => [
                                                 'action' => 'edit',
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ]
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

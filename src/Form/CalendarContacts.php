@@ -45,54 +45,64 @@ class CalendarContacts extends Form
 
         asort($selections);
 
-        $this->add([
-            'type'       => 'Zend\Form\Element\Select',
-            'name'       => 'selection',
-            'options'    => [
-                'inline'        => true,
-                'value_options' => $selections
-            ],
-            'attributes' => [
-                'id'    => 'selection',
-                'class' => 'form-control',
-            ],
-        ]);
+        $this->add(
+            [
+                'type'       => 'Zend\Form\Element\Select',
+                'name'       => 'selection',
+                'options'    => [
+                    'inline'        => true,
+                    'value_options' => $selections,
+                ],
+                'attributes' => [
+                    'id'    => 'selection',
+                    'class' => 'form-control',
+                ],
+            ]
+        );
 
 
-        $this->add([
-            'type'       => 'Zend\Form\Element\Hidden',
-            'name'       => 'added',
-            'attributes' => [
-                'id' => 'added',
-            ],
-        ]);
+        $this->add(
+            [
+                'type'       => 'Zend\Form\Element\Hidden',
+                'name'       => 'added',
+                'attributes' => [
+                    'id' => 'added',
+                ],
+            ]
+        );
 
-        $this->add([
-            'type'       => 'Zend\Form\Element\Hidden',
-            'name'       => 'removed',
-            'attributes' => [
-                'id' => 'removed',
-            ],
-        ]);
+        $this->add(
+            [
+                'type'       => 'Zend\Form\Element\Hidden',
+                'name'       => 'removed',
+                'attributes' => [
+                    'id' => 'removed',
+                ],
+            ]
+        );
 
-        $this->add([
-            'type'       => 'Zend\Form\Element\Submit',
-            'name'       => 'submit',
-            'attributes' => [
-                'id'    => 'submit',
-                'class' => 'btn btn-primary',
-                'value' => _('txt-submit'),
-            ],
-        ]);
+        $this->add(
+            [
+                'type'       => 'Zend\Form\Element\Submit',
+                'name'       => 'submit',
+                'attributes' => [
+                    'id'    => 'submit',
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-submit'),
+                ],
+            ]
+        );
 
-        $this->add([
-            'type'       => 'Zend\Form\Element\Submit',
-            'name'       => 'cancel',
-            'attributes' => [
-                'id'    => 'cancel',
-                'class' => 'btn btn-warning',
-                'value' => _('txt-cancel'),
-            ],
-        ]);
+        $this->add(
+            [
+                'type'       => 'Zend\Form\Element\Submit',
+                'name'       => 'cancel',
+                'attributes' => [
+                    'id'    => 'cancel',
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
+                ],
+            ]
+        );
     }
 }
