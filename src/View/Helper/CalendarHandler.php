@@ -186,6 +186,26 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
+     * @return Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     *
+     * @return CalendarHandler
+     */
+    public function setCalendar($calendar)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
      * Show the details of 1 calendar item
      *
      * @param Calendar $calendar
@@ -223,22 +243,6 @@ class CalendarHandler extends AbstractViewHelper
             $this->getModuleOptions()->getCalendarUpcomingTemplate(),
             ['calendarItems' => $calendarItems]
         );
-    }
-
-    /**
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param int $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
     }
 
     /**
@@ -335,6 +339,22 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
      * @param $limit
      *
      * @return null|string
@@ -370,25 +390,5 @@ class CalendarHandler extends AbstractViewHelper
                 'selectedYear' => $year,
             ]
         );
-    }
-
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param Calendar $calendar
-     *
-     * @return CalendarHandler
-     */
-    public function setCalendar($calendar)
-    {
-        $this->calendar = $calendar;
-
-        return $this;
     }
 }

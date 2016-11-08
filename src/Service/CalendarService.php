@@ -56,25 +56,6 @@ class CalendarService extends ServiceAbstract
         );
     }
 
-
-    /**
-     * @param Calendar $calendar
-     * @param Contact  $contact
-     *
-     * @return bool
-     */
-    public function calendarHasContact(Calendar $calendar, Contact $contact)
-    {
-        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy(
-            [
-                'calendar' => $calendar,
-                'contact'  => $contact,
-            ]
-        );
-
-        return ! is_null($calendarContact);
-    }
-
     /**
      * @param array    $data
      * @param Calendar $calendar
@@ -133,6 +114,24 @@ class CalendarService extends ServiceAbstract
                 }
             }
         }
+    }
+
+    /**
+     * @param Calendar $calendar
+     * @param Contact  $contact
+     *
+     * @return bool
+     */
+    public function calendarHasContact(Calendar $calendar, Contact $contact)
+    {
+        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy(
+            [
+                'calendar' => $calendar,
+                'contact'  => $contact,
+            ]
+        );
+
+        return ! is_null($calendarContact);
     }
 
     /**

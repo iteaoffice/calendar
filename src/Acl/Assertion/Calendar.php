@@ -40,7 +40,7 @@ class Calendar extends AssertionAbstract
     ) {
         $this->setPrivilege($privilege);
 
-        if (!$calendar instanceof CalendarEntity && !is_null($id = $this->getId())) {
+        if (! $calendar instanceof CalendarEntity && ! is_null($id = $this->getId())) {
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
 
@@ -61,7 +61,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (! is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit($this->getContact(), 'edit', $calendar->getProjectCalendar()->getProject())
                     ) {
@@ -79,7 +79,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (! is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit($this->getContact(), 'edit', $calendar->getProjectCalendar()->getProject())
                     ) {
@@ -115,7 +115,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (! is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit($this->getContact(), 'view', $calendar->getProjectCalendar()->getProject())
                     ) {

@@ -47,15 +47,17 @@ class DocumentLink extends LinkAbstract
         /**LiLik
          * Set the non-standard options needed to give an other link value
          */
-        $this->setShowOptions([
+        $this->setShowOptions(
+            [
 
                 'name' => $this->getDocument()->getDocument(),
-            ]);
+            ]
+        );
 
         /*
          * Check the access to the object
          */
-        if (!$this->hasAccess(
+        if (! $this->hasAccess(
             $this->getDocument(),
             CalendarDocumentAssertion::class,
             $this->getAction()
@@ -67,60 +69,6 @@ class DocumentLink extends LinkAbstract
         $this->addRouterParam('id', $this->getDocument()->getId());
 
         return $this->createLink();
-    }
-
-    /**
-     * Parse te action and fill the correct parameters.
-     */
-    public function parseAction()
-    {
-        switch ($this->getAction()) {
-            case 'document-community':
-                $this->setRouter('community/calendar/document/document');
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-document-%s"),
-                    $this->getDocument()->getDocument()
-                ));
-                break;
-            case 'edit-community':
-                $this->setRouter('community/calendar/document/edit');
-                $this->setText(sprintf(
-                    $this->translate("txt-edit-calendar-document-%s"),
-                    $this->getDocument()->getDocument()
-                ));
-                break;
-            case 'document-admin':
-                $this->setRouter('zfcadmin/calendar-manager/document/document');
-                $this->setText(sprintf(
-                    $this->translate("txt-view-calendar-document-%s"),
-                    $this->getDocument()->getDocument()
-                ));
-                break;
-            case 'edit':
-                $this->setRouter('zfcadmin/calendar-manager/document/edit');
-                $this->setText(sprintf(
-                    $this->translate("txt-edit-calendar-document-%s"),
-                    $this->getDocument()->getDocument()
-                ));
-                break;
-            case 'download':
-                $this->addRouterParam(
-                    'filename',
-                    $this->getDocument()->parseFileName()
-                );
-                $this->setRouter('community/calendar/document/download');
-                $this->setText(sprintf(
-                    $this->translate("txt-download-calendar-document-%s"),
-                    $this->getDocument()->getDocument()
-                ));
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf(
-                    "%s is an incorrect action for %s",
-                    $this->getAction(),
-                    __CLASS__
-                ));
-        }
     }
 
     /**
@@ -141,5 +89,71 @@ class DocumentLink extends LinkAbstract
     public function setDocument($document)
     {
         $this->document = $document;
+    }
+
+    /**
+     * Parse te action and fill the correct parameters.
+     */
+    public function parseAction()
+    {
+        switch ($this->getAction()) {
+            case 'document-community':
+                $this->setRouter('community/calendar/document/document');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-view-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
+                );
+                break;
+            case 'edit-community':
+                $this->setRouter('community/calendar/document/edit');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-edit-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
+                );
+                break;
+            case 'document-admin':
+                $this->setRouter('zfcadmin/calendar-manager/document/document');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-view-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
+                );
+                break;
+            case 'edit':
+                $this->setRouter('zfcadmin/calendar-manager/document/edit');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-edit-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
+                );
+                break;
+            case 'download':
+                $this->addRouterParam(
+                    'filename',
+                    $this->getDocument()->parseFileName()
+                );
+                $this->setRouter('community/calendar/document/download');
+                $this->setText(
+                    sprintf(
+                        $this->translate("txt-download-calendar-document-%s"),
+                        $this->getDocument()->getDocument()
+                    )
+                );
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        "%s is an incorrect action for %s",
+                        $this->getAction(),
+                        __CLASS__
+                    )
+                );
+        }
     }
 }

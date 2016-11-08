@@ -59,14 +59,16 @@ class ObjectFieldset extends Fieldset
             ) {
                 $element->setOptions(array_merge($element->getOptions(), ['object_manager' => $entityManager]));
             }
-            if ($element instanceof Radio && !$element instanceof EntityRadio) {
-                $attributes = $element->getAttributes();
+            if ($element instanceof Radio && ! $element instanceof EntityRadio) {
+                $attributes        = $element->getAttributes();
                 $valueOptionsArray = 'get' . ucfirst($attributes['array']);
 
-                $element->setOptions(array_merge(
-                    $element->getOptions(),
-                    ['value_options' => $object::$valueOptionsArray()]
-                ));
+                $element->setOptions(
+                    array_merge(
+                        $element->getOptions(),
+                        ['value_options' => $object::$valueOptionsArray()]
+                    )
+                );
             }
             //Add only when a type is provided
             if (array_key_exists('type', $element->getAttributes())) {

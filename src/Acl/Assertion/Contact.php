@@ -37,7 +37,7 @@ class Contact extends AssertionAbstract
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (!$contact instanceof ContactEntity) {
+        if (! $contact instanceof ContactEntity) {
             $contact = $this->getCalendarService()->findEntityById(ContactEntity::class, $id);
         }
 

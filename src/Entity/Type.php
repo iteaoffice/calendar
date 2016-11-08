@@ -95,6 +95,15 @@ class Type
     private $access;
 
     /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->calendar = new Collections\ArrayCollection();
+        $this->access   = new Collections\ArrayCollection();
+    }
+
+    /**
      * @ORM\PreUpdate
      */
     public function removeCachedCssFile()
@@ -112,7 +121,7 @@ class Type
     public function getCacheCssFileName()
     {
         return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
-        . DEBRANOVA_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+            . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
     }
 
     /**
@@ -121,23 +130,6 @@ class Type
     public function parseCssName()
     {
         return 'calendar-type-' . $this->getId();
-    }
-
-    /**
-     * Class constructor.
-     */
-    public function __construct()
-    {
-        $this->calendar = new Collections\ArrayCollection();
-        $this->access = new Collections\ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string)$this->type;
     }
 
     /**
@@ -158,6 +150,14 @@ class Type
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->type;
     }
 
     /**

@@ -36,31 +36,37 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
             $contacts[$contact->getId()] = $contact->getDisplayName();
         }
 
-        $this->add([
+        $this->add(
+            [
                 'type'    => 'Zend\Form\Element\MultiCheckbox',
                 'name'    => 'contact',
                 'options' => [
                     'value_options' => $contacts,
                     'label'         => _("txt-contact-name"),
                 ],
-            ]);
+            ]
+        );
 
-        $this->add([
+        $this->add(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
                     'value' => _("txt-update"),
                 ],
-            ]);
-        $this->add([
+            ]
+        );
+        $this->add(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => "btn btn-warning",
                     'value' => _("txt-cancel"),
                 ],
-            ]);
+            ]
+        );
     }
 
     /**

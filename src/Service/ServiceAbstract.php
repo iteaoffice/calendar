@@ -66,6 +66,26 @@ abstract class ServiceAbstract implements ServiceInterface
     }
 
     /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return ServiceAbstract
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        return $this;
+    }
+
+    /**
      * Find 1 entity based on the id.
      *
      * @param string $entity
@@ -107,76 +127,6 @@ abstract class ServiceAbstract implements ServiceInterface
     }
 
     /**
-     * @param Entity\EntityAbstract $entity
-     *
-     * @return bool
-     */
-    public function removeEntity(Entity\EntityAbstract $entity)
-    {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
-
-        return true;
-    }
-
-
-    /**
-     * @param EntityAbstract $entity
-     * @param                $assertion
-     */
-    public function addResource(EntityAbstract $entity, $assertion)
-    {
-        /*
-         * @var AssertionAbstract
-         */
-        $assertion = $this->getServiceLocator()->get($assertion);
-        if (!$this->getAuthorizeService()->getAcl()->hasResource($entity)) {
-            $this->getAuthorizeService()->getAcl()->addResource($entity);
-            $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
-        }
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     *
-     * @return ServiceAbstract
-     */
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-
-        return $this;
-    }
-
-    /**
-     * @return AuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        return $this->authenticationService;
-    }
-
-    /**
-     * @param AuthenticationService $authenticationService
-     *
-     * @return ServiceAbstract
-     */
-    public function setAuthenticationService($authenticationService)
-    {
-        $this->authenticationService = $authenticationService;
-
-        return $this;
-    }
-
-    /**
      * @return AdminService
      */
     public function getAdminService()
@@ -197,6 +147,35 @@ abstract class ServiceAbstract implements ServiceInterface
     }
 
     /**
+     * @param Entity\EntityAbstract $entity
+     *
+     * @return bool
+     */
+    public function removeEntity(Entity\EntityAbstract $entity)
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+
+        return true;
+    }
+
+    /**
+     * @param EntityAbstract $entity
+     * @param                $assertion
+     */
+    public function addResource(EntityAbstract $entity, $assertion)
+    {
+        /*
+         * @var AssertionAbstract
+         */
+        $assertion = $this->getServiceLocator()->get($assertion);
+        if (! $this->getAuthorizeService()->getAcl()->hasResource($entity)) {
+            $this->getAuthorizeService()->getAcl()->addResource($entity);
+            $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
+        }
+    }
+
+    /**
      * @return ServiceLocatorInterface
      */
     public function getServiceLocator()
@@ -212,6 +191,46 @@ abstract class ServiceAbstract implements ServiceInterface
     public function setServiceLocator($serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        return $this;
+    }
+
+    /**
+     * @return Authorize
+     */
+    public function getAuthorizeService()
+    {
+        return $this->authorizeService;
+    }
+
+    /**
+     * @param Authorize $authorizeService
+     *
+     * @return ServiceAbstract
+     */
+    public function setAuthorizeService($authorizeService)
+    {
+        $this->authorizeService = $authorizeService;
+
+        return $this;
+    }
+
+    /**
+     * @return AuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->authenticationService;
+    }
+
+    /**
+     * @param AuthenticationService $authenticationService
+     *
+     * @return ServiceAbstract
+     */
+    public function setAuthenticationService($authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
 
         return $this;
     }
@@ -252,26 +271,6 @@ abstract class ServiceAbstract implements ServiceInterface
     public function setModuleOptions($moduleOptions)
     {
         $this->moduleOptions = $moduleOptions;
-
-        return $this;
-    }
-
-    /**
-     * @return Authorize
-     */
-    public function getAuthorizeService()
-    {
-        return $this->authorizeService;
-    }
-
-    /**
-     * @param Authorize $authorizeService
-     *
-     * @return ServiceAbstract
-     */
-    public function setAuthorizeService($authorizeService)
-    {
-        $this->authorizeService = $authorizeService;
 
         return $this;
     }

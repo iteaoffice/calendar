@@ -25,11 +25,11 @@ return [
                                 'visible' => false,
                                 'params'  => [
                                     'entities'   => [
-                                        'id' => Calendar\Entity\Calendar::class
+                                        'id' => Calendar\Entity\Calendar::class,
                                     ],
                                     'invokables' => [
-                                        Calendar\Navigation\Invokable\CalendarLabel::class
-                                    ]
+                                        Calendar\Navigation\Invokable\CalendarLabel::class,
+                                    ],
                                 ],
                                 'pages'   => [
                                     'send-message'     => [
@@ -38,7 +38,7 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
                                     ],
@@ -48,7 +48,7 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
                                     ],
@@ -57,11 +57,11 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities'   => [
-                                                'id' => Calendar\Entity\Document::class
+                                                'id' => Calendar\Entity\Document::class,
                                             ],
                                             'invokables' => [
-                                                Calendar\Navigation\Invokable\DocumentLabel::class
-                                            ]
+                                                Calendar\Navigation\Invokable\DocumentLabel::class,
+                                            ],
                                         ],
                                         'pages'   => [
                                             'edit-document' => [
@@ -70,7 +70,7 @@ return [
                                                 'visible' => false,
                                                 'params'  => [
                                                     'entities' => [
-                                                        'id' => Calendar\Entity\Document::class
+                                                        'id' => Calendar\Entity\Document::class,
                                                     ],
                                                 ],
                                             ],
@@ -78,7 +78,7 @@ return [
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
                     ],
                     'review-calendar'    => [
                         'label' => _("txt-review-calendar"),
@@ -107,11 +107,11 @@ return [
                                 'visible' => false,
                                 'params'  => [
                                     'entities'   => [
-                                        'id' => Calendar\Entity\Calendar::class
+                                        'id' => Calendar\Entity\Calendar::class,
                                     ],
                                     'invokables' => [
-                                        Calendar\Navigation\Invokable\CalendarLabel::class
-                                    ]
+                                        Calendar\Navigation\Invokable\CalendarLabel::class,
+                                    ],
                                 ],
                                 'pages'   => [
                                     'edit-calendar' => [
@@ -120,13 +120,13 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
-                                    ]
-                                ]
-                            ]
-                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'new-calendar-item' => [
                         'label' => _("txt-add-calendar-item"),

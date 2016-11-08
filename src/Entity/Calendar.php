@@ -245,6 +245,22 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
+     * @return array
+     */
+    public static function getFinalTemplates()
+    {
+        return self::$finalTemplates;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getOnHomepageTemplates()
+    {
+        return self::$onHomepageTemplates;
+    }
+
+    /**
      * Magic Getter
      *
      * @param $property
@@ -291,22 +307,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
         foreach ($collection as $call) {
             $this->call->removeElement($call);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public static function getFinalTemplates()
-    {
-        return self::$finalTemplates;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getOnHomepageTemplates()
-    {
-        return self::$onHomepageTemplates;
     }
 
     /**

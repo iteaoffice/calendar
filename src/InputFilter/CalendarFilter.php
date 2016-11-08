@@ -16,8 +16,6 @@
 namespace Calendar\InputFilter;
 
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Validator;
-use Partner\Entity\Affiliation;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Callback;
 
@@ -40,124 +38,146 @@ class CalendarFilter extends InputFilter
     {
         $inputFilter = new InputFilter();
 
-        $inputFilter->add([
-            'name'     => 'calendar',
-            'required' => true,
-            'filters'  => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'     => 'location',
-            'required' => false,
-            'filters'  => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'       => 'dateFrom',
-            'required'   => true,
-            'filters'    => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                [
-                    'name'    => 'DateTime',
-                    'options' => [
-                        'pattern' => 'yyyy-mm-dd HH:mm',
-                    ],
+        $inputFilter->add(
+            [
+                'name'     => 'calendar',
+                'required' => true,
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
                 ],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'       => 'dateEnd',
-            'required'   => true,
-            'filters'    => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                [
-                    'name'    => 'DateTime',
-                    'options' => [
-                        'pattern' => 'yyyy-mm-dd HH:mm',
-                    ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'location',
+                'required' => false,
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
                 ],
-            ],
-        ]);
-
-        $inputFilter->add([
-            'name'     => 'final',
-            'required' => true,
-        ]);
-        $inputFilter->add([
-            'name'     => 'onHomepage',
-            'required' => true,
-        ]);
-        $inputFilter->add([
-            'name'       => 'sequence',
-            'required'   => false,
-            'filters'    => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                ['name' => 'Int'],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'     => 'url',
-            'required' => false,
-            'filters'  => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'     => 'imageUrl',
-            'required' => false,
-            'filters'  => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-        ]);
-        $inputFilter->add([
-            'name'     => 'call',
-            'required' => false,
-        ]);
-        $inputFilter->add([
-            'name'       => 'dateEnd',
-            'required'   => false,
-            'filters'    => [
-                ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
-            'validators' => [
-                [
-                    'name'    => 'DateTime',
-                    'options' => [
-                        'pattern' => 'yyyy-mm-dd HH:mm',
-                    ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'       => 'dateFrom',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
                 ],
-                [
-                    'name'    => 'Callback',
-                    'options' => [
-                        'messages' => [
-                            Callback::INVALID_VALUE => 'The end date cannot be smaller than start date',
+                'validators' => [
+                    [
+                        'name'    => 'DateTime',
+                        'options' => [
+                            'pattern' => 'yyyy-mm-dd HH:mm',
                         ],
-                        'callback' => function ($value, $context = []) {
-                            $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                            $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
-
-                            return $dateEnd >= $dateFrom;
-                        },
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'       => 'dateEnd',
+                'required'   => true,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'DateTime',
+                        'options' => [
+                            'pattern' => 'yyyy-mm-dd HH:mm',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $inputFilter->add(
+            [
+                'name'     => 'final',
+                'required' => true,
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'onHomepage',
+                'required' => true,
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'       => 'sequence',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    ['name' => 'Int'],
+                ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'url',
+                'required' => false,
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'imageUrl',
+                'required' => false,
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'call',
+                'required' => false,
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'       => 'dateEnd',
+                'required'   => false,
+                'filters'    => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'DateTime',
+                        'options' => [
+                            'pattern' => 'yyyy-mm-dd HH:mm',
+                        ],
+                    ],
+                    [
+                        'name'    => 'Callback',
+                        'options' => [
+                            'messages' => [
+                                Callback::INVALID_VALUE => 'The end date cannot be smaller than start date',
+                            ],
+                            'callback' => function ($value, $context = []) {
+                                $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
+                                $dateEnd  = \DateTime::createFromFormat('Y-m-d H:i', $value);
+
+                                return $dateEnd >= $dateFrom;
+                            },
+                        ],
+                    ],
+                ],
+            ]
+        );
 
         $this->add($inputFilter, 'calendar_entity_calendar');
     }

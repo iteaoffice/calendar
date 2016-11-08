@@ -134,6 +134,46 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param ContentType $contentType
+     *
+     * @return Document
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param string $document
+     *
+     * @return Document
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -177,26 +217,6 @@ class Document extends EntityAbstract implements ResourceInterface
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param string $document
-     *
-     * @return Document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
 
         return $this;
     }
@@ -277,26 +297,6 @@ class Document extends EntityAbstract implements ResourceInterface
     public function setContact($contact)
     {
         $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * @return ContentType
-     */
-    public function getContentType()
-    {
-        return $this->contentType;
-    }
-
-    /**
-     * @param ContentType $contentType
-     *
-     * @return Document
-     */
-    public function setContentType($contentType)
-    {
-        $this->contentType = $contentType;
 
         return $this;
     }

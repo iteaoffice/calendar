@@ -74,10 +74,19 @@ class Bootstrap
         static::$serviceManager = $serviceManager;
     }
 
-    public static function chroot()
+    protected static function findParentPath($path)
     {
-        $rootPath = dirname(static::findParentPath('module'));
-        chdir($rootPath);
+        $dir         = __DIR__;
+        $previousDir = '.';
+        while ( ! is_dir($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) {
+                return false;
+            }
+            $previousDir = $dir;
+        }
+
+        return $dir . '/' . $path;
     }
 
     protected static function initAutoloader()
@@ -88,33 +97,26 @@ class Bootstrap
             include $vendorPath . '/autoload.php';
         }
 
-        if (!class_exists('Zend\Loader\AutoloaderFactory')) {
+        if ( ! class_exists('Zend\Loader\AutoloaderFactory')) {
             throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install`');
         }
 
-        AutoloaderFactory::factory([
-            'Zend\Loader\StandardAutoloader' => [
-                'autoregister_zf' => true,
-                'namespaces'      => [
-                    __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+        AutoloaderFactory::factory(
+            [
+                'Zend\Loader\StandardAutoloader' => [
+                    'autoregister_zf' => true,
+                    'namespaces'      => [
+                        __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
-    protected static function findParentPath($path)
+    public static function chroot()
     {
-        $dir = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
-            $previousDir = $dir;
-        }
-
-        return $dir . '/' . $path;
+        $rootPath = dirname(static::findParentPath('module'));
+        chdir($rootPath);
     }
 }
 

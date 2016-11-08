@@ -58,24 +58,6 @@ abstract class AbstractViewHelper extends AbstractHelper
     }
 
     /**
-     * @return TwigRenderer
-     */
-    public function getRenderer()
-    {
-        return $this->getServiceManager()->get('ZfcTwigRenderer');
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    public function translate($string)
-    {
-        return $this->getHelperPluginManager()->get('translate')->__invoke($string);
-    }
-
-    /**
      * @return ContainerInterface
      */
     public function getServiceManager()
@@ -93,6 +75,24 @@ abstract class AbstractViewHelper extends AbstractHelper
         $this->serviceManager = $serviceManager;
 
         return $this;
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    public function getRenderer()
+    {
+        return $this->getServiceManager()->get('ZfcTwigRenderer');
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    public function translate($string)
+    {
+        return $this->getHelperPluginManager()->get('translate')->__invoke($string);
     }
 
     /**

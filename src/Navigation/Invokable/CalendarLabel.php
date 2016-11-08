@@ -38,9 +38,14 @@ class CalendarLabel extends AbstractNavigationInvokable
             $calendar = $this->getEntities()->get(Calendar::class);
 
 
-            $page->setParams(array_merge($page->getParams(), [
-                'id' => $calendar->getId(),
-            ]));
+            $page->setParams(
+                array_merge(
+                    $page->getParams(),
+                    [
+                    'id' => $calendar->getId(),
+                    ]
+                )
+            );
             $label = (string)$calendar;
         } else {
             $label = $this->translate('txt-nav-calendar');

@@ -24,7 +24,7 @@ $config = [
             Controller\CalendarController::class          => Controller\Factory\ControllerFactory::class,
             Controller\CalendarDocumentController::class  => Controller\Factory\ControllerFactory::class,
             Controller\CalendarManagerController::class   => Controller\Factory\ControllerFactory::class,
-        ]
+        ],
     ],
     'controller_plugins' => [
         'aliases'   => [
@@ -34,7 +34,7 @@ $config = [
         'factories' => [
             Controller\Plugin\RenderCalendarContactList::class => Controller\Factory\PluginFactory::class,
             Controller\Plugin\RenderReviewCalendar::class      => Controller\Factory\PluginFactory::class,
-        ]
+        ],
     ],
     'service_manager'    => [
         'factories' => [
@@ -63,29 +63,29 @@ $config = [
             View\Helper\DocumentLink::class    => View\Factory\ViewHelperFactory::class,
             View\Helper\CalendarLink::class    => View\Factory\ViewHelperFactory::class,
             View\Helper\CalendarHandler::class => View\Factory\ViewHelperFactory::class,
-        ]
+        ],
     ],
     'doctrine'           => [
         'driver'       => [
             'calendar_annotation_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'paths' => [__DIR__ . '/../src/Entity/']
+                'paths' => [__DIR__ . '/../src/Entity/'],
             ],
             'orm_default'                => [
                 'drivers' => [
                     'Calendar\Entity' => 'calendar_annotation_driver',
-                ]
-            ]
+                ],
+            ],
         ],
         'eventmanager' => [
             'orm_default' => [
                 'subscribers' => [
                     'Gedmo\Timestampable\TimestampableListener',
                     'Gedmo\Sluggable\SluggableListener',
-                ]
+                ],
             ],
         ],
-    ]
+    ],
 ];
 foreach (Stdlib\Glob::glob(__DIR__ . '/module.config.{,*}.php', Stdlib\Glob::GLOB_BRACE) as $file) {
     $config = Stdlib\ArrayUtils::merge($config, include $file);

@@ -26,6 +26,7 @@ use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
 
@@ -82,6 +83,10 @@ abstract class CalendarAbstractController extends AbstractActionController
      * @var SelectionService
      */
     protected $selectionService;
+    /**
+     * @var HelperPluginManager
+     */
+    protected $viewHelperManager;
 
     /**
      * @return \Calendar\Service\FormService
@@ -223,22 +228,6 @@ abstract class CalendarAbstractController extends AbstractActionController
         return $this;
     }
 
-    /**
-     * Proxy for the flash messenger helper to have the string translated earlier.
-     *
-     * @param $string
-     *
-     * @return string
-     */
-    protected function translate($string)
-    {
-        /*
-         * @var Translate
-         */
-        $translate = $this->getPluginManager()->getServiceLocator()->get('ViewHelperManager')->get('translate');
-
-        return $translate($string);
-    }
 
     /**
      * @return ServiceLocatorInterface
@@ -336,6 +325,43 @@ abstract class CalendarAbstractController extends AbstractActionController
     public function setRenderer($renderer)
     {
         $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**
+     * Proxy for the flash messenger helper to have the string translated earlier.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    protected function translate($string)
+    {
+        /*
+         * @var Translate
+         */
+        $translate = $this->getViewHelperManager()->get('translate');
+
+        return $translate($string);
+    }
+
+    /**
+     * @return HelperPluginManager
+     */
+    public function getViewHelperManager(): HelperPluginManager
+    {
+        return $this->viewHelperManager;
+    }
+
+    /**
+     * @param HelperPluginManager $viewHelperManager
+     *
+     * @return CalendarAbstractController
+     */
+    public function setViewHelperManager(HelperPluginManager $viewHelperManager): CalendarAbstractController
+    {
+        $this->viewHelperManager = $viewHelperManager;
 
         return $this;
     }

@@ -12,6 +12,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="calendar">
+        <br>
         <dl class="dl-horizontal">
             {% if calendar.projectCalendar %}
                 <dt>{{ translate("txt-project") }}</dt>
@@ -28,7 +29,6 @@
             <dt>{{ translate("txt-documents") }}</dt>
             <dd>{{ translate("txt-%s-documents")|format(calendar.document.count()) }}</dd>
         </dl>
-
 
 
     </div>
@@ -188,7 +188,8 @@
                                     <td>{{ report.contact.displayName }}
                                         <div class="pull-right"><a href="mailto:{{ report.contact.email }}"><i
                                                         class="fa fa-envelope-o"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
-                                        </div></td>
+                                        </div>
+                                    </td>
                                     <td>{{ report.dateCreated|string_date }}</td>
                                     <td>{{ report.item.count() }}</td>
                                 </tr>
@@ -223,7 +224,8 @@
                                 <td>{{ result.contact.displayName }}
                                     <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
                                                     class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div></td>
+                                    </div>
+                                </td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -259,7 +261,8 @@
                                 <td>{{ result.contact.displayName }}
                                     <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
                                                     class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div></td>
+                                    </div>
+                                </td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -317,11 +320,14 @@
                             {{ calendarContact.contact.displayName }}
                             <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
                                             class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
-                            </div></td>
-                        <td>{{ calendarContact.contact.contactOrganisation.organisation }} ({{ calendarContact.contact.contactOrganisation.organisation.country }}) </td>
+                            </div>
+                        </td>
+                        <td>{{ calendarContact.contact.contactOrganisation.organisation }}
+                            ({{ calendarContact.contact.contactOrganisation.organisation.country }})
+                        </td>
                         <td>{{ calendarContact.role }}</td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% do calendarService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"

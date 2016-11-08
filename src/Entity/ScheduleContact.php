@@ -57,14 +57,6 @@ class ScheduleContact
     private $contact;
 
     /**
-     * @param mixed $contact
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-    }
-
-    /**
      * @return mixed
      */
     public function getContact()
@@ -73,11 +65,11 @@ class ScheduleContact
     }
 
     /**
-     * @param int $id
+     * @param mixed $contact
      */
-    public function setId($id)
+    public function setContact($contact)
     {
-        $this->id = $id;
+        $this->contact = $contact;
     }
 
     /**
@@ -89,11 +81,11 @@ class ScheduleContact
     }
 
     /**
-     * @param \Calendar\Entity\Schedule $schedule
+     * @param int $id
      */
-    public function setSchedule($schedule)
+    public function setId($id)
     {
-        $this->schedule = $schedule;
+        $this->id = $id;
     }
 
     /**
@@ -105,11 +97,11 @@ class ScheduleContact
     }
 
     /**
-     * @param \Calendar\Entity\ContactStatus $status
+     * @param \Calendar\Entity\Schedule $schedule
      */
-    public function setStatus($status)
+    public function setSchedule($schedule)
     {
-        $this->status = $status;
+        $this->schedule = $schedule;
     }
 
     /**
@@ -118,5 +110,13 @@ class ScheduleContact
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @param \Calendar\Entity\ContactStatus $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 }
