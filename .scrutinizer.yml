@@ -3,7 +3,7 @@ imports:
 build:
     environment:
         php:
-            version: 5.6
+            version: 7.0.8
 tools:
     php_changetracking: true
     php_sim: true
@@ -13,4 +13,3 @@ tools:
     php_analyzer: true
     php_cs_fixer: true
     sensiolabs_security_checker: true
-    external_code_coverage: true
