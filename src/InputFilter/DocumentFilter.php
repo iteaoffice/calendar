@@ -18,6 +18,7 @@ namespace Calendar\InputFilter;
 use Doctrine\ORM\EntityManager;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
+use Zend\Validator\File\Size;
 
 /**
  * Jield webdev copyright message placeholder.
@@ -67,10 +68,10 @@ class DocumentFilter extends InputFilter
         $fileUpload = new FileInput('file');
         $fileUpload->setRequired(true);
         $fileUpload->getValidatorChain()->attachByName(
-            'File\Size',
+            Size::class,
             [
-            'min' => '10kB',
-            'max' => '8MB',
+                'min' => '10kB',
+                'max' => '8MB',
             ]
         );
         $inputFilter->add($fileUpload);
