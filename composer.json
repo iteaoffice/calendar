@@ -19,15 +19,15 @@
     "zendframework/zendframework": "~3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "@stable",
+    "phpunit/phpunit": "5.7.x",
+    "doctrine/doctrine-orm-module": "~1.1",
     "pdepend/pdepend": "@stable",
     "phpmd/phpmd": "@stable",
     "sebastian/phpcpd": "@stable",
     "squizlabs/php_codesniffer": "@stable",
     "friendsofphp/php-cs-fixer": "@stable",
     "jakub-onderka/php-parallel-lint": "@stable",
-    "jakub-onderka/php-console-highlighter": "@stable",
-    "doctrine/doctrine-orm-module": "~1.1"
+    "jakub-onderka/php-console-highlighter": "@stable"
   },
   "autoload": {
     "psr-4": {
