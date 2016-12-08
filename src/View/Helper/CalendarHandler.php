@@ -14,6 +14,7 @@ use Calendar\Entity\Calendar;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Content\Entity\Content;
+use Content\Entity\Param;
 use ZfcTwig\View\TwigRenderer;
 
 /**
@@ -54,23 +55,23 @@ class CalendarHandler extends AbstractViewHelper
                 if (is_null($this->getCalendar())) {
                     $this->getServiceManager()->get('response')->setStatusCode(404);
 
-                    return ("The selected calendar item cannot be found");
+                    return 'The selected calendar item cannot be found';
                 }
 
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
                 $this->getHelperPluginManager()->get('headtitle')->append((string)$this->getCalendar()->getCalendar());
                 $this->getHelperPluginManager()->get('headmeta')
-                    ->setProperty('og:type', $this->translate("txt-calendar"));
+                     ->setProperty('og:type', $this->translate("txt-calendar"));
                 $this->getHelperPluginManager()->get('headmeta')
-                    ->setProperty('og:title', $this->getCalendar()->getCalendar());
+                     ->setProperty('og:title', $this->getCalendar()->getCalendar());
                 $this->getHelperPluginManager()->get('headmeta')
-                    ->setProperty('og:description', $this->getCalendar()->getDescription());
+                     ->setProperty('og:description', $this->getCalendar()->getDescription());
                 /**
                  * @var $calendarLink CalendarLink
                  */
                 $calendarLink = $this->getHelperPluginManager()->get('calendarLink');
                 $this->getHelperPluginManager()->get('headmeta')
-                    ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
+                     ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
 
                 return $this->parseCalendarItem($this->getCalendar());
             case 'calendar':
@@ -80,7 +81,7 @@ class CalendarHandler extends AbstractViewHelper
             case 'calendar_upcoming':
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
 
-                return $this->parseUpcomingCalendar($this->getLimit());
+                return $this->parseUpcomingCalendar();
             case 'calendar_past':
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-past-events"));
 
@@ -103,46 +104,50 @@ class CalendarHandler extends AbstractViewHelper
      */
     public function extractContentParam(Content $content)
     {
-        //Give default the docRef to the handler, this does not harm
-        if (! is_null($this->getRouteMatch()->getParam('docRef'))) {
-            $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
-        }
-
-        foreach ($content->getContentParam() as $param) {
-            /**
-             * When the parameterId is 0 (so we want to get the article from the URL
-             */
-            switch ($param->getParameter()->getParam()) {
+        /**
+         * Go over the handler params and try to see if it is hardcoded or just set via the route
+         */
+        foreach ($content->getHandler()->getParam() as $parameter) {
+            switch ($parameter->getParam()) {
                 case 'docRef':
-                    if (! is_null($this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setCalendarByDocRef($this->getRouteMatch()->getParam('docRef'));
-                    }
+                    $this->setCalendarByDocRef($this->findParamValueFromContent($content, $parameter));
                     break;
                 case 'limit':
-                    if ('0' === $param->getParameterId()) {
-                        $this->setLimit(null);
-                    } else {
-                        $this->setLimit($param->getParameterId());
-                    }
+                    $this->setLimit($this->findParamValueFromContent($content, $parameter));
                     break;
                 case 'type':
-                    $this->setType($param->getParameterId());
+                    $this->setType($this->findParamValueFromContent($content, $parameter));
                     break;
-
                 case 'year':
-                    if (! is_null($year = $this->getRouteMatch()->getParam($param->getParameter()->getParam()))) {
-                        $this->setYear($year);
-                    } elseif ('0' === $param->getParameterId()) {
-                        //$this->setYear($this->getModuleOptions()->getDefaultYear());
-                    } else {
-                        $this->setYear($param->getParameterId());
-                    }
-                    break;
-                default:
-                    $this->setCalendarById($param->getParameterId());
+                    $this->setYear($this->findParamValueFromContent($content, $parameter));
                     break;
             }
         }
+    }
+
+    /**
+     * @param Content $content
+     * @param Param   $param
+     *
+     * @return null|string
+     */
+    private function findParamValueFromContent(Content $content, Param $param)
+    {
+
+        //Try first to see if the param can be found from the route (rule 1)
+        if (! is_null($this->getRouteMatch()->getParam($param->getParam()))) {
+            return $this->getRouteMatch()->getParam($param->getParam());
+        }
+
+        //If it cannot be found, try to find it from the docref (rule 2)
+        foreach ($content->getContentParam() as $contentParam) {
+            if ($contentParam->getParameter() === $param && ! empty($contentParam->getParameterId())) {
+                return $contentParam->getParameterId();
+            }
+        }
+
+        //If not found, take rule 3
+        return null;
     }
 
     /**
@@ -224,18 +229,12 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
-     * @param $limit
-     *
      * @return null|string
      */
-    public function parseUpcomingCalendar($limit)
+    public function parseUpcomingCalendar()
     {
-        $calendarItems = $this->getCalendarService()->findCalendarItems(
-            CalendarService::WHICH_UPCOMING,
-            $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity()
-        )->setMaxResults($limit)
-            ->getResult();
-
+        $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_UPCOMING, null)
+                              ->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarUpcomingTemplate(),
@@ -266,15 +265,14 @@ class CalendarHandler extends AbstractViewHelper
      *
      * @return null|string
      */
-    public function parsePastCalendar($year, $type, $limit)
+    public function parsePastCalendar($year, $type, $limit): string
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(
             CalendarService::WHICH_PAST,
-            $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
+            null,
             $year,
             $type
-        )
-            ->setMaxResults($limit)->getResult();
+        )->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarPastTemplate(),
@@ -284,7 +282,6 @@ class CalendarHandler extends AbstractViewHelper
 
     /**
      * @param $year
-     * @param $type
      * @param $limit
      *
      * @return null|string
@@ -304,7 +301,7 @@ class CalendarHandler extends AbstractViewHelper
             $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
             $year
         )
-            ->setMaxResults($limit)->getResult();
+                              ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarPastTemplate(),
@@ -359,7 +356,7 @@ class CalendarHandler extends AbstractViewHelper
     public function parseCalendarSmall($limit)
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-            ->setMaxResults($limit)->getResult();
+                              ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
             'calendar/partial/list/calendar-small',

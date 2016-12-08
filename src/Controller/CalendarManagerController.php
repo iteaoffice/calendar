@@ -91,9 +91,9 @@ class CalendarManagerController extends CalendarAbstractController
         ksort($calender);
 
         $paginator = new Paginator(new ArrayAdapter($calender));
-        $paginator->setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : PHP_INT_MAX);
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : PHP_INT_MAX);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator->getDefaultItemCountPerPage()));
+        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel(

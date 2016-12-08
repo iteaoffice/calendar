@@ -77,7 +77,7 @@ abstract class AssertionAbstract implements AssertionInterface
     public function rolesHaveAccess($access)
     {
         $accessRoles = $this->prepareAccessRoles($access);
-        if (sizeof($accessRoles) === 0) {
+        if (count($accessRoles) === 0) {
             return true;
         }
 

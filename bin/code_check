@@ -6,7 +6,7 @@ cd ..
 
 ./../../bin/parallel-lint ./src
 ./../../bin/twig-lint lint ./view
-./../../bin/php-cs-fixer fix -v ./src --level=psr2
+./../../bin/php-cs-fixer fix -v ./src
 ./../../bin/phpcbf --standard=PSR2 ./src --no-patch
 ./../../bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./src
 ./../../bin/phpunit

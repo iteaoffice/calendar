@@ -24,10 +24,11 @@ use Project\Entity\Project;
 class Calendar extends EntityRepository
 {
     /**
-     * @param         $which
-     * @param bool    $filterForAccess
-     * @param Contact $contact
-     * @param null    $year
+     * @param              $which
+     * @param bool         $filterForAccess
+     * @param Contact|null $contact
+     * @param null         $year
+     * @param null         $type
      *
      * @return \Doctrine\ORM\Query
      */
@@ -40,7 +41,7 @@ class Calendar extends EntityRepository
     ) {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
-        $qb->from("Calendar\Entity\Calendar", 'calendar_entity_calendar');
+        $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
 
         switch ($which) {
@@ -95,6 +96,7 @@ class Calendar extends EntityRepository
                 $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
                 break;
         }
+
         if ($filterForAccess) {
             /**
              * When no contact is given, simply return all the public calendar items
@@ -108,6 +110,7 @@ class Calendar extends EntityRepository
             }
             $qb = $this->filterForAccess($qb, $contact);
         }
+
         if (! is_null($year)) {
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
@@ -121,13 +124,13 @@ class Calendar extends EntityRepository
     /**
      * @param Project $project
      *
-     * @return Calendar|null
+     * @return Entity\Calendar|null
      */
     public function findLatestProjectCalendar(Project $project)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
-        $qb->from("Calendar\Entity\Calendar", 'calendar_entity_calendar');
+        $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
         $qb->join('calendar_entity_calendar.projectCalendar', 'pc');
         $qb->andWhere('pc.project = :project');
@@ -167,13 +170,13 @@ class Calendar extends EntityRepository
      * @param Project   $project
      * @param \DateTime $dateTime
      *
-     * @return Calendar|null
+     * @return Entity\Calendar|null
      */
     public function findNextProjectCalendar(Project $project, \DateTime $dateTime)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
-        $qb->from("Calendar\Entity\Calendar", 'calendar_entity_calendar');
+        $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
         $qb->join('calendar_entity_calendar.projectCalendar', 'pc');
         $qb->andWhere('pc.project = :project');
@@ -194,13 +197,13 @@ class Calendar extends EntityRepository
      * @param Project   $project
      * @param \DateTime $dateTime
      *
-     * @return Calendar|null
+     * @return Entity\Calendar|null
      */
     public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
-        $qb->from("Calendar\Entity\Calendar", 'calendar_entity_calendar');
+        $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
         $qb->join('calendar_entity_calendar.projectCalendar', 'pc');
         $qb->andWhere('pc.project = :project');
@@ -230,7 +233,7 @@ class Calendar extends EntityRepository
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
-        $qb->from("Calendar\Entity\Calendar", 'calendar_entity_calendar');
+        $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
         if ($contact->isEmpty()) {
             $contact = new Contact();
@@ -259,11 +262,11 @@ class Calendar extends EntityRepository
         //Filter based on the type access type
         $subSelect = $this->_em->createQueryBuilder();
         $subSelect->select('type');
-        $subSelect->from('Calendar\Entity\Type', 'type');
+        $subSelect->from(Entity\Type::class, 'type');
         $subSelect->join('type.access', 'access');
         $subSelect->andWhere(
             $qb->expr()
-                ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
+               ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
         );
 
         $subSelectCalendarContact = $this->_em->createQueryBuilder();

@@ -10,9 +10,9 @@
 namespace Calendar\Service;
 
 use Calendar\Entity;
-use Calendar\Repository;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
+use Calendar\Repository;
 use Contact\Entity\Contact;
 use Project\Entity\Project;
 
@@ -35,7 +35,7 @@ class CalendarService extends ServiceAbstract
     /**
      * @param $id
      *
-     * @return null|Calendar
+     * @return null|Calendar|object
      */
     public function findCalendarById($id)
     {
@@ -45,7 +45,7 @@ class CalendarService extends ServiceAbstract
     /**
      * @param $docRef
      *
-     * @return null|Entity\Calendar
+     * @return null|Entity\Calendar|object
      */
     public function findCalendarByDocRef($docRef)
     {
@@ -144,8 +144,10 @@ class CalendarService extends ServiceAbstract
         $which = self::WHICH_UPCOMING,
         Contact $contact = null
     ) {
-        return $this->getEntityManager()->getRepository(CalendarContact::class)
-            ->findCalendarContactByContact($which, $contact);
+        /** @var Repository\Contact $repository */
+        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+
+        return $repository->findCalendarContactByContact($which, $contact);
     }
 
     /**
@@ -158,8 +160,10 @@ class CalendarService extends ServiceAbstract
         Contact $contact,
         Calendar $calendar
     ) {
-        return $this->getEntityManager()->getRepository(CalendarContact::class)
-            ->findCalendarContactByContactAndCalendar($contact, $calendar);
+        /** @var Repository\Contact $repository */
+        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+
+        return $repository->findCalendarContactByContactAndCalendar($contact, $calendar);
     }
 
     /**
@@ -170,8 +174,10 @@ class CalendarService extends ServiceAbstract
      */
     public function findCalendarContactsByCalendar(Calendar $calendar, $status = CalendarContact::STATUS_ALL)
     {
-        return $this->getEntityManager()->getRepository(CalendarContact::class)
-            ->findCalendarContactsByCalendar($calendar, $status);
+        /** @var Repository\Contact $repository */
+        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+
+        return $repository->findCalendarContactsByCalendar($calendar, $status);
     }
 
     /**
@@ -184,7 +190,10 @@ class CalendarService extends ServiceAbstract
      */
     public function canViewCalendar(Calendar $calendar, Contact $contact = null)
     {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->canViewCalendar($calendar, $contact);
+        /** @var Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        return $repository->canViewCalendar($calendar, $contact);
     }
 
     /**
@@ -221,7 +230,7 @@ class CalendarService extends ServiceAbstract
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
             if (! $onlyFinal
-                || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
+                 || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
                     = $calendarItem->getCalendar();
@@ -229,7 +238,7 @@ class CalendarService extends ServiceAbstract
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
             if (! $onlyFinal
-                || $calendarItem->getFinal() === Calendar::FINAL_FINAL
+                 || $calendarItem->getFinal() === Calendar::FINAL_FINAL
             ) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {
                     $calendar[$calendarItem->getId()] = $calendarItem;
@@ -249,7 +258,10 @@ class CalendarService extends ServiceAbstract
      */
     public function findLatestProjectCalendar(Project $project)
     {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findLatestProjectCalendar($project);
+        /** @var \Calendar\Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        return $repository->findLatestProjectCalendar($project);
     }
 
     /**
@@ -264,7 +276,10 @@ class CalendarService extends ServiceAbstract
         Project $project,
         \DateTime $datetime
     ) {
-        return $this->getEntityManager()->getRepository(Calendar::class)->findNextProjectCalendar($project, $datetime);
+        /** @var \Calendar\Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        return $repository->findNextProjectCalendar($project, $datetime);
     }
 
     /**
@@ -279,8 +294,10 @@ class CalendarService extends ServiceAbstract
         Project $project,
         \DateTime $datetime
     ) {
-        return $this->getEntityManager()->getRepository(Calendar::class)
-            ->findPreviousProjectCalendar($project, $datetime);
+        /** @var \Calendar\Repository\Calendar $repository */
+        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+
+        return $repository->findPreviousProjectCalendar($project, $datetime);
     }
 
     /**
@@ -327,7 +344,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return an array of all which-values
      *
-     * @return string[]
+     * @return array
      */
     public function getWhichValues()
     {

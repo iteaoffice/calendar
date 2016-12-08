@@ -9,6 +9,7 @@ return array(
     'calendar/partial/list/calendar-thumb'         => __DIR__ . '//view/calendar/partial/list/calendar-thumb.twig',
     'calendar/partial/list/calendar'               => __DIR__ . '//view/calendar/partial/list/calendar.twig',
     'calendar/partial/list/calendar-past'          => __DIR__ . '//view/calendar/partial/list/calendar-past.twig',
+    'calendar/partial/list/calendar-upcoming'      => __DIR__ . '//view/calendar/partial/list/calendar-upcoming.twig',
     'calendar/partial/list/calendar-small'         => __DIR__ . '//view/calendar/partial/list/calendar-small.twig',
     'calendar/partial/list/calendar-horizontal'    => __DIR__ . '//view/calendar/partial/list/calendar-horizontal.twig',
     'calendar/partial/list/calendar-contact'       => __DIR__ . '//view/calendar/partial/list/calendar-contact.twig',

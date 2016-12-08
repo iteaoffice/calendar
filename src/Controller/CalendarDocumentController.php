@@ -32,7 +32,7 @@ class CalendarDocumentController extends CalendarAbstractController
          * @var Document $document
          */
         $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
-        if (is_null($document) || sizeof($document->getObject()) === 0) {
+        if (is_null($document) || count($document->getObject()) === 0) {
             return $this->notFoundAction();
         }
 

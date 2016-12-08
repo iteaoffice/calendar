@@ -44,9 +44,9 @@ class CalendarCommunityController extends CalendarAbstractController
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity());
         $paginator     = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
-        $paginator->setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 25);
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 25);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator->getDefaultItemCountPerPage()));
+        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
         $whichValues = $this->getCalendarService()->getWhichValues();
 
         return new ViewModel(

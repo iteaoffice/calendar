@@ -39,9 +39,6 @@
       "CalendarTest\\": "src/"
     }
   },
-  "config": {
-    "secure-http": false
-  },
   "extra": {
     "branch-alias": {
       "dev-master": "2.0-dev",

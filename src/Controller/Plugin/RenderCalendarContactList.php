@@ -56,7 +56,7 @@ class RenderCalendarContactList extends AbstractPlugin
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
-        $minAmountOfPages  = max(sizeof($paginatedContacts), 2);
+        $minAmountOfPages  = max(count($paginatedContacts), 2);
 
         for ($i = 0; $i < $minAmountOfPages; $i++) {
             /*
