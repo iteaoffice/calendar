@@ -5,7 +5,7 @@
  * @category  Calendar
  * @package   Repository
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (calendar_entity_calendar) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2004-2017 ITEA Office (https://itea3.org) (https://itea3.org)
  */
 namespace Calendar\Repository;
 
@@ -97,6 +97,7 @@ class Calendar extends EntityRepository
                 break;
         }
 
+
         if ($filterForAccess) {
             /**
              * When no contact is given, simply return all the public calendar items
@@ -119,6 +120,44 @@ class Calendar extends EntityRepository
         }
 
         return $qb->getQuery();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param Contact      $contact
+     *
+     * @return QueryBuilder $qb
+     */
+    public function filterForAccess(QueryBuilder $qb, Contact $contact)
+    {
+        //Filter based on the type access type
+        $subSelect = $this->_em->createQueryBuilder();
+        $subSelect->select('type');
+        $subSelect->from(Entity\Type::class, 'type');
+        $subSelect->join('type.access', 'access');
+        $subSelect->andWhere(
+            $qb->expr()
+               ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
+        );
+
+        $subSelectCalendarContact = $this->_em->createQueryBuilder();
+        $subSelectCalendarContact->select('calendar2');
+        $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
+        $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
+        $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
+        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in(
+                    'calendar_entity_calendar.type',
+                    $subSelect->getDQL()
+                ),
+                $qb->expr()->in('calendar_entity_calendar', $subSelectCalendarContact->getDQL())
+            )
+        );
+
+        return $qb;
     }
 
     /**
@@ -220,7 +259,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-
     /**
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
@@ -249,43 +287,5 @@ class Calendar extends EntityRepository
 
 
         return ! is_null($qb->getQuery()->getOneOrNullResult());
-    }
-
-    /**
-     * @param QueryBuilder $qb
-     * @param Contact      $contact
-     *
-     * @return QueryBuilder $qb
-     */
-    public function filterForAccess(QueryBuilder $qb, Contact $contact)
-    {
-        //Filter based on the type access type
-        $subSelect = $this->_em->createQueryBuilder();
-        $subSelect->select('type');
-        $subSelect->from(Entity\Type::class, 'type');
-        $subSelect->join('type.access', 'access');
-        $subSelect->andWhere(
-            $qb->expr()
-               ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
-        );
-
-        $subSelectCalendarContact = $this->_em->createQueryBuilder();
-        $subSelectCalendarContact->select('calendar2');
-        $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
-        $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
-        $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
-        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
-
-        $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->in(
-                    'calendar_entity_calendar.type',
-                    $subSelect->getDQL()
-                ),
-                $qb->expr()->in('calendar_entity_calendar', $subSelectCalendarContact->getDQL())
-            )
-        );
-
-        return $qb;
     }
 }

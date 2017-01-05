@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category   Program
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  2004-2015 ITEA Office
+ * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  * @license    https://itea3.org/license.txt proprietary
  *
  * @link       https://itea3.org
@@ -52,7 +52,7 @@ class RenderCalendarContactList extends AbstractPlugin
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
         $calendarContacts = $this->getCalendarService()
-            ->findCalendarContactsByCalendar($calendar, CalendarContact::STATUS_NO_DECLINED);
+                                 ->findCalendarContactsByCalendar($calendar, CalendarContact::STATUS_NO_DECLINED);
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
@@ -65,9 +65,9 @@ class RenderCalendarContactList extends AbstractPlugin
             $contactListContent = $twig->render(
                 'calendar/pdf/calendar-contact',
                 [
-                'calendarService'  => $this->getCalendarService(),
-                'calendar'         => $calendar,
-                'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
+                    'calendarService'  => $this->getCalendarService(),
+                    'calendar'         => $calendar,
+                    'calendarContacts' => isset($paginatedContacts[$i]) ? $paginatedContacts[$i] : [],
                 ]
             );
 

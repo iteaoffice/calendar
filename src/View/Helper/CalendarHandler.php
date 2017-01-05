@@ -6,7 +6,7 @@
  * @package    View
  * @subpackage Helper
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 namespace Calendar\View\Helper;
 
@@ -126,6 +126,26 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
+     * Set the newsService based on the DocRef
+     *
+     * @param $docRef
+     *
+     * @return Calendar
+     */
+    public function setCalendarByDocRef($docRef)
+    {
+        $this->setCalendar($this->getCalendarService()->findCalendarByDocRef($docRef));
+    }
+
+    /**
+     * @return CalendarService
+     */
+    public function getCalendarService()
+    {
+        return $this->getServiceManager()->get(CalendarService::class);
+    }
+
+    /**
      * @param Content $content
      * @param Param   $param
      *
@@ -148,44 +168,6 @@ class CalendarHandler extends AbstractViewHelper
 
         //If not found, take rule 3
         return null;
-    }
-
-    /**
-     * Set the newsService based on the DocRef
-     *
-     * @param $docRef
-     *
-     * @return Calendar
-     */
-    public function setCalendarByDocRef($docRef)
-    {
-        $this->setCalendar($this->getCalendarService()->findCalendarByDocRef($docRef));
-    }
-
-    /**
-     * @return CalendarService
-     */
-    public function getCalendarService()
-    {
-        return $this->getServiceManager()->get(CalendarService::class);
-    }
-
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->getServiceManager()->get(ModuleOptions::class);
-    }
-
-    /**
-     * @param $id
-     *
-     * @return CalendarService
-     */
-    public function setCalendarById($id)
-    {
-        $this->setCalendar($this->getCalendarService()->findCalendarById($id));
     }
 
     /**
@@ -229,58 +211,6 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
-     * @return null|string
-     */
-    public function parseUpcomingCalendar()
-    {
-        $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_UPCOMING, null)
-                              ->getResult();
-
-        return $this->getRenderer()->render(
-            $this->getModuleOptions()->getCalendarUpcomingTemplate(),
-            ['calendarItems' => $calendarItems]
-        );
-    }
-
-    /**
-     * @return int
-     */
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    /**
-     * @param int $limit
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-    }
-
-    /**
-     * @param $year
-     * @param $type
-     * @param $limit
-     *
-     * @return null|string
-     */
-    public function parsePastCalendar($year, $type, $limit): string
-    {
-        $calendarItems = $this->getCalendarService()->findCalendarItems(
-            CalendarService::WHICH_PAST,
-            null,
-            $year,
-            $type
-        )->setMaxResults($limit)->getResult();
-
-        return $this->getRenderer()->render(
-            $this->getModuleOptions()->getCalendarPastTemplate(),
-            ['calendarItems' => $calendarItems]
-        );
-    }
-
-    /**
      * @param $year
      * @param $limit
      *
@@ -313,6 +243,14 @@ class CalendarHandler extends AbstractViewHelper
     }
 
     /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions()
+    {
+        return $this->getServiceManager()->get(ModuleOptions::class);
+    }
+
+    /**
      * @return int
      */
     public function getYear()
@@ -330,6 +268,58 @@ class CalendarHandler extends AbstractViewHelper
         $this->year = $year;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function parseUpcomingCalendar()
+    {
+        $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_UPCOMING, null)
+                              ->getResult();
+
+        return $this->getRenderer()->render(
+            $this->getModuleOptions()->getCalendarUpcomingTemplate(),
+            ['calendarItems' => $calendarItems]
+        );
+    }
+
+    /**
+     * @param $year
+     * @param $type
+     * @param $limit
+     *
+     * @return null|string
+     */
+    public function parsePastCalendar($year, $type, $limit): string
+    {
+        $calendarItems = $this->getCalendarService()->findCalendarItems(
+            CalendarService::WHICH_PAST,
+            null,
+            $year,
+            $type
+        )->setMaxResults($limit)->getResult();
+
+        return $this->getRenderer()->render(
+            $this->getModuleOptions()->getCalendarPastTemplate(),
+            ['calendarItems' => $calendarItems]
+        );
     }
 
     /**
@@ -384,5 +374,15 @@ class CalendarHandler extends AbstractViewHelper
                 'selectedYear' => $year,
             ]
         );
+    }
+
+    /**
+     * @param $id
+     *
+     * @return CalendarService
+     */
+    public function setCalendarById($id)
+    {
+        $this->setCalendar($this->getCalendarService()->findCalendarById($id));
     }
 }

@@ -1,13 +1,13 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
- * PHP Version 5
+ * PHP Version 7
  *
  * @category    Project
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   2004-2016 ITEA Office
+ * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
  *
  * @link        http://github.com/iteaoffice/project for the canonical source repository
@@ -26,12 +26,12 @@ use Zend\Form\Element\Radio;
 use Zend\Form\Fieldset;
 
 /**
- * Jield webdev copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category    Affiliation
  *
- * @author      Johan van der Heide <info@jield.nl>
- * @copyright   Copyright (c) 2015-2016 Jield (http://jield.nl)
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 class ObjectFieldset extends Fieldset
 {

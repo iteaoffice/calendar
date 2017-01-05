@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Controller;
@@ -42,7 +42,7 @@ class CalendarCommunityController extends CalendarAbstractController
         $which         = $this->params('which', CalendarService::WHICH_UPCOMING);
         $page          = $this->params('page', 1);
         $calendarItems = $this->getCalendarService()
-            ->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity());
+                              ->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity());
         $paginator     = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
         $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 25);
         $paginator->setCurrentPageNumber($page);
@@ -87,8 +87,11 @@ class CalendarCommunityController extends CalendarAbstractController
     public function reviewCalendarAction()
     {
         $calendarItems = $this->getCalendarService()
-            ->findCalendarItems(CalendarService::WHICH_REVIEWS, $this->zfcUserAuthentication()->getIdentity())
-            ->getResult();
+                              ->findCalendarItems(
+                                  CalendarService::WHICH_REVIEWS,
+                                  $this->zfcUserAuthentication()->getIdentity()
+                              )
+                              ->getResult();
 
         return new ViewModel(
             [
@@ -105,17 +108,20 @@ class CalendarCommunityController extends CalendarAbstractController
     public function downloadReviewCalendarAction()
     {
         $calendarItems = $this->getCalendarService()
-            ->findCalendarItems(CalendarService::WHICH_REVIEWS, $this->zfcUserAuthentication()->getIdentity())
-            ->getResult();
+                              ->findCalendarItems(
+                                  CalendarService::WHICH_REVIEWS,
+                                  $this->zfcUserAuthentication()->getIdentity()
+                              )
+                              ->getResult();
 
         $reviewCalendar = $this->renderReviewCalendar()->render($calendarItems);
 
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
-            ->addHeaderLine('Content-Disposition', 'attachment; filename="review-calendar.pdf"')
-            ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
+                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
+                 ->addHeaderLine('Content-Disposition', 'attachment; filename="review-calendar.pdf"')
+                 ->addHeaderLine('Content-Type: application/pdf')
+                 ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
 
         return $response;
@@ -166,13 +172,13 @@ class CalendarCommunityController extends CalendarAbstractController
             $documentObject->setObject(file_get_contents($file['tmp_name']));
             $this->getCalendarService()->updateEntity($documentObject);
             $this->flashMessenger()
-                ->addInfoMessage(
-                    sprintf(
-                        $this->translate("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
-                        $document->getDocument(),
-                        $calendar->getCalendar()
-                    )
-                );
+                 ->addInfoMessage(
+                     sprintf(
+                         $this->translate("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
+                         $document->getDocument(),
+                         $calendar->getCalendar()
+                     )
+                 );
 
             /*
              * Document uploaded
@@ -181,7 +187,7 @@ class CalendarCommunityController extends CalendarAbstractController
             return $this->redirect()->toRoute(
                 'community/calendar/calendar',
                 [
-                'id' => $calendar->getId(),
+                    'id' => $calendar->getId(),
                 ]
             );
         }
@@ -194,7 +200,7 @@ class CalendarCommunityController extends CalendarAbstractController
         if ($calendar->getProjectCalendar()) {
             $results = $this->getProjectService()->findResultsByProjectAndContact(
                 $calendar->getProjectCalendar()
-                    ->getProject(),
+                         ->getProject(),
                 $this->zfcUserAuthentication()->getIdentity()
             );
         } else {
@@ -263,7 +269,11 @@ class CalendarCommunityController extends CalendarAbstractController
 
             if (isset($formValues['cancel'])) {
                 return $this->redirect()
-                    ->toRoute('community/calendar/calendar', ['id' => $calendar->getId()], ['fragment' => 'attendees']);
+                            ->toRoute(
+                                'community/calendar/calendar',
+                                ['id' => $calendar->getId()],
+                                ['fragment' => 'attendees']
+                            );
             }
 
             $calendarContacts = $calendar->getCalendarContact();
@@ -272,11 +282,11 @@ class CalendarCommunityController extends CalendarAbstractController
                 foreach ($formValues['contact'] as $contactId) {
                     //Try to find the object.
                     $calendarContact = $this->getCalendarService()
-                        ->findCalendarContactByContactAndCalendar(
-                            $this->getContactService()
-                                ->findContactById($contactId),
-                            $calendar
-                        );
+                                            ->findCalendarContactByContactAndCalendar(
+                                                $this->getContactService()
+                                                     ->findContactById($contactId),
+                                                $calendar
+                                            );
 
                     $calendarContacts->removeElement($calendarContact);
 
@@ -288,11 +298,11 @@ class CalendarCommunityController extends CalendarAbstractController
                         $calendarContact->setContact($this->getContactService()->findContactById($contactId));
                         /** @var ContactRole $role */
                         $role = $this->getCalendarService()
-                            ->findEntityById(ContactRole::class, ContactRole::ROLE_ATTENDEE);
+                                     ->findEntityById(ContactRole::class, ContactRole::ROLE_ATTENDEE);
                         $calendarContact->setRole($role);
                         /** @var ContactStatus $status */
                         $status = $this->getCalendarService()
-                            ->findEntityById(ContactStatus::class, ContactStatus::STATUS_TENTATIVE);
+                                       ->findEntityById(ContactStatus::class, ContactStatus::STATUS_TENTATIVE);
                         $calendarContact->setStatus($status);
                         $calendarContact->setCalendar($calendar);
                         $this->getCalendarService()->newEntity($calendarContact);
@@ -310,15 +320,19 @@ class CalendarCommunityController extends CalendarAbstractController
             $this->getCalendarService()->updateEntity($calendar);
 
             $this->flashMessenger()
-                ->addInfoMessage(
-                    sprintf(
-                        $this->translate("txt-calendar-attendees-for-%s-have-been-updated"),
-                        $calendar->getCalendar()
-                    )
-                );
+                 ->addInfoMessage(
+                     sprintf(
+                         $this->translate("txt-calendar-attendees-for-%s-have-been-updated"),
+                         $calendar->getCalendar()
+                     )
+                 );
 
             return $this->redirect()
-                ->toRoute('community/calendar/calendar', ['id' => $calendar->getId()], ['fragment' => 'attendees']);
+                        ->toRoute(
+                            'community/calendar/calendar',
+                            ['id' => $calendar->getId()],
+                            ['fragment' => 'attendees']
+                        );
         }
 
         return new ViewModel(
@@ -345,13 +359,13 @@ class CalendarCommunityController extends CalendarAbstractController
 
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
-            ->addHeaderLine(
-                'Content-Disposition',
-                'attachment; filename="presence-list-' . $calendar->getCalendar() . '.pdf"'
-            )
-            ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
+                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
+                 ->addHeaderLine(
+                     'Content-Disposition',
+                     'attachment; filename="presence-list-' . $calendar->getCalendar() . '.pdf"'
+                 )
+                 ->addHeaderLine('Content-Type: application/pdf')
+                 ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
         $response->setContent($presenceList->getPDFData());
 
         return $response;
@@ -379,7 +393,11 @@ class CalendarCommunityController extends CalendarAbstractController
 
             if (isset($formValues['cancel'])) {
                 return $this->redirect()
-                    ->toRoute('community/calendar/calendar', ['id' => $calendar->getId()], ['fragment' => 'attendees']);
+                            ->toRoute(
+                                'community/calendar/calendar',
+                                ['id' => $calendar->getId()],
+                                ['fragment' => 'attendees']
+                            );
             }
             /*
              * Send the email tot he office
@@ -408,15 +426,19 @@ class CalendarCommunityController extends CalendarAbstractController
             $this->getEmailService()->send();
 
             $this->flashMessenger()
-                ->addSuccessMessage(
-                    sprintf(
-                        $this->translate("txt-message-to-attendees-for-%s-has-been-sent"),
-                        $calendar->getCalendar()
-                    )
-                );
+                 ->addSuccessMessage(
+                     sprintf(
+                         $this->translate("txt-message-to-attendees-for-%s-has-been-sent"),
+                         $calendar->getCalendar()
+                     )
+                 );
 
             return $this->redirect()
-                ->toRoute('community/calendar/calendar', ['id' => $calendar->getId()], ['fragment' => 'attendees']);
+                        ->toRoute(
+                            'community/calendar/calendar',
+                            ['id' => $calendar->getId()],
+                            ['fragment' => 'attendees']
+                        );
         }
 
         return new ViewModel(
@@ -464,10 +486,10 @@ class CalendarCommunityController extends CalendarAbstractController
 
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-            ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
-            ->addHeaderLine("Pragma: public")->addHeaderLine('Content-Type: application/octet-stream')
-            ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+                 ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
+                 ->addHeaderLine("Pragma: public")->addHeaderLine('Content-Type: application/octet-stream')
+                 ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
         $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
 
         return $this->response;

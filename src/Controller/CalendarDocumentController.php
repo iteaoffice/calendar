@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Controller;
@@ -43,12 +43,12 @@ class CalendarDocumentController extends CalendarAbstractController
         $response = $this->getResponse();
         $response->setContent(stream_get_contents($object));
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
-            ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $document->parseFileName() . '"')
-            ->addHeaderLine("Pragma: public")->addHeaderLine(
-                'Content-Type: ' . $document->getContentType()
-                    ->getContentType()
-            )->addHeaderLine('Content-Length: ' . $document->getSize());
+                 ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
+                 ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $document->parseFileName() . '"')
+                 ->addHeaderLine("Pragma: public")->addHeaderLine(
+                     'Content-Type: ' . $document->getContentType()
+                                            ->getContentType()
+                 )->addHeaderLine('Content-Length: ' . $document->getSize());
 
         return $this->response;
     }
@@ -96,20 +96,20 @@ class CalendarDocumentController extends CalendarAbstractController
              */
             if (isset($data['delete'])) {
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-document-%s-successfully-removed"),
-                            $document->parseFileName()
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-document-%s-successfully-removed"),
+                             $document->parseFileName()
+                         )
+                     );
                 $this->getCalendarService()->removeEntity($document);
 
                 return $this->redirect()
-                    ->toRoute(
-                        'community/calendar/calendar',
-                        ['id' => $document->getCalendar()->getId()],
-                        ['fragment' => 'documents']
-                    );
+                            ->toRoute(
+                                'community/calendar/calendar',
+                                ['id' => $document->getCalendar()->getId()],
+                                ['fragment' => 'documents']
+                            );
             }
             /*
              * Handle when
@@ -125,7 +125,7 @@ class CalendarDocumentController extends CalendarAbstractController
                     $document->setSize($fileSizeValidator->size);
                     $document->setContentType(
                         $this->getGeneralService()
-                            ->findContentTypeByContentTypeName($file['type'])
+                             ->findContentTypeByContentTypeName($file['type'])
                     );
                     /**
                      * Update the object
@@ -138,12 +138,12 @@ class CalendarDocumentController extends CalendarAbstractController
                 }
                 $this->getCalendarService()->updateEntity($document);
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-document-%s-successfully-updated"),
-                            $document->parseFileName()
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-document-%s-successfully-updated"),
+                             $document->parseFileName()
+                         )
+                     );
             }
 
             return $this->redirect()->toRoute('community/calendar/document/document', ['id' => $document->getId()]);

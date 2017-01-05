@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Acl\Assertion;
@@ -59,7 +59,7 @@ class Document extends AssertionAbstract
                 return $this->getCalendarService()->canViewCalendar($document->getCalendar(), $this->getContact());
             case 'edit-community':
                 if ($this->getContactService()
-                    ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
+                         ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
                 ) {
                     return true;
                 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Repository;
@@ -139,7 +139,7 @@ class Contact extends EntityRepository
 
         //Remove all the contacts which are already in the project as associate or otherwise affected
         $findContactByProjectIdQueryBuilder = $this->_em->getRepository('Contact\Entity\Contact')
-            ->findContactByProjectIdQueryBuilder();
+                                                        ->findContactByProjectIdQueryBuilder();
         $qb->andWhere($qb->expr()->notIn('cc.contact', $findContactByProjectIdQueryBuilder->getDQL()));
 
         $qb->setParameter(1, $calendar->getProjectCalendar()->getProject()->getId());

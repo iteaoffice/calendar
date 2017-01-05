@@ -1,12 +1,12 @@
 <?php
 
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category   Calendar
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2014 ITEA Office (https://itea3.org)
+ * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\View\Helper;
@@ -326,7 +326,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     {
         $assertion = $this->getAssertion($assertion);
         if (! is_null($entity)
-            && ! $this->getAuthorizeService()->getAcl()->hasResource($entity)
+             && ! $this->getAuthorizeService()->getAcl()->hasResource($entity)
         ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
             $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);

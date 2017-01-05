@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA Office copyright message placeholder.
+ * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar\Controller;
@@ -40,7 +40,7 @@ class CalendarManagerController extends CalendarAbstractController
         $page          = $this->params('page', 1);
         $birthDays     = $this->getContactService()->findContactsWithDateOfBirth();
         $calendarItems = $this->getCalendarService()
-            ->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity())->getResult();
+                              ->findCalendarItems($which, $this->zfcUserAuthentication()->getIdentity())->getResult();
         $calender      = [];
 
         $today = new \DateTime();
@@ -150,12 +150,12 @@ class CalendarManagerController extends CalendarAbstractController
                 }
 
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-item-%s-has-been-created-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-item-%s-has-been-created-successfully"),
+                             $calendar->getCalendar()
+                         )
+                     );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
@@ -198,12 +198,12 @@ class CalendarManagerController extends CalendarAbstractController
                 $this->getCalendarService()->removeEntity($calendar);
 
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
+                             $calendar->getCalendar()
+                         )
+                     );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/overview');
             }
@@ -216,12 +216,12 @@ class CalendarManagerController extends CalendarAbstractController
                 $calendar->setContact($this->zfcUserAuthentication()->getIdentity());
                 $calendar = $this->getCalendarService()->newEntity($calendar);
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                             $calendar->getCalendar()
+                         )
+                     );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
@@ -296,12 +296,12 @@ class CalendarManagerController extends CalendarAbstractController
 
             if ($form->isValid()) {
                 $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                            $calendar
-                        )
-                    );
+                     ->addMessage(
+                         sprintf(
+                             $this->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                             $calendar
+                         )
+                     );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar-manager/calendar', ['id' => $calendar->getId()]);
             }
@@ -412,13 +412,13 @@ class CalendarManagerController extends CalendarAbstractController
 
             $this->getCalendarService()->updateEntity($documentObject);
             $this->flashMessenger()
-                ->addInfoMessage(
-                    sprintf(
-                        $this->translate("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
-                        $document->getDocument(),
-                        $calendar->getCalendar()
-                    )
-                );
+                 ->addInfoMessage(
+                     sprintf(
+                         $this->translate("txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"),
+                         $document->getDocument(),
+                         $calendar->getCalendar()
+                     )
+                 );
 
             /*
              * Document uploaded
@@ -427,7 +427,7 @@ class CalendarManagerController extends CalendarAbstractController
             return $this->redirect()->toRoute(
                 'zfcadmin/calendar-manager/calendar',
                 [
-                'id' => $calendar->getId(),
+                    'id' => $calendar->getId(),
                 ]
             );
         }
