@@ -24,7 +24,7 @@ class ContactRole
 {
     const ROLE_ATTENDEE = 1;
     /**
-     * @ORM\Column(name="role_id", length=10, type="integer", nullable=false)
+     * @ORM\Column(name="role_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *

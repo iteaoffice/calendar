@@ -25,7 +25,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
 class Document extends EntityAbstract implements ResourceInterface
 {
     /**
-     * @ORM\Column(name="document_id", length=10, type="integer", nullable=false)
+     * @ORM\Column(name="document_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -46,7 +46,7 @@ class Document extends EntityAbstract implements ResourceInterface
      */
     private $document;
     /**
-     * @ORM\Column(name="size", length=10, type="integer", nullable=true)
+     * @ORM\Column(name="size", type="integer", nullable=true)
      *
      * @var integer
      */
