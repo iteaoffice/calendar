@@ -128,7 +128,7 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return ViewModel
+     * @return array|\Zend\Http\Response|ViewModel
      */
     public function calendarAction()
     {

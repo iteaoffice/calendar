@@ -39,7 +39,7 @@ class CalendarHandler extends AbstractViewHelper
     /**
      * @var int
      */
-    protected $limit = 5;
+    protected $limit = 25;
 
     /**
      * @param Content $content

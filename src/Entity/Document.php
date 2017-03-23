@@ -10,6 +10,7 @@
 
 namespace Calendar\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use General\Entity\ContentType;
@@ -88,7 +89,7 @@ class Document extends EntityAbstract implements ResourceInterface
      * fetch="EXTRA_LAZY")
      * @Annotation\Exclude()
      *
-     * @var \Calendar\Entity\DocumentObject
+     * @var \Calendar\Entity\DocumentObject[]|ArrayCollection
      */
     private $object;
 
@@ -116,20 +117,29 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
+     * @param $property
+     * @return bool
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
+    }
+
+    /**
      * Parse a filename.
      *
      * @return string
      */
-    public function parseFileName()
+    public function parseFileName(): string
     {
         /**
          * When we don't know the extension, leave out the dot at the end of the to prevent that the document
          * is not in the zip
          */
         if ($this->getContentType()->getId() !== ContentType::TYPE_UNKNOWN) {
-            return sprintf("%s.%s", $this->getDocument(), $this->getContentType()->getExtension());
+            return sprintf('%s.%s', $this->getDocument(), $this->getContentType()->getExtension());
         } else {
-            return sprintf("%s", $this->getDocument());
+            return sprintf('%s', $this->getDocument());
         }
     }
 
@@ -176,7 +186,7 @@ class Document extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->getDocument();
     }
@@ -302,7 +312,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return DocumentObject
+     * @return DocumentObject[]|ArrayCollection
      */
     public function getObject()
     {
@@ -310,7 +320,7 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @param DocumentObject $object
+     * @param DocumentObject[]|ArrayCollection $object
      *
      * @return Document
      */

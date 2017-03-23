@@ -91,32 +91,18 @@
                 {% endif %}
 
                 {% if isAllowed(calendar, 'add-document') %}
-                    <hr>
-                    <h4>{{ translate("txt-upload-new-document") }}</h4>
-
                     {% do form.prepare() %}
-                    {% do form.setAttribute('class','form-inline') %}
+                    {% do form.setAttribute('class','form-horizontal') %}
 
                     {{ form().openTag(form)|raw }}
+                    {{ ztbformelement(form.get('document')) }}
+                    {{ ztbformelement(form.get('file')) }}
 
-                    <div class="form-group col-md-6">
-                        {{ formlabel(form.get('document')) }}
-                        {{ formelement(form.get('document')) }}
-                        {{ formelementerrors(form.get('document')) }}
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            {{ ztbformelement(form.get('submit')) }}
+                        </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        {{ formlabel(form.get('file')) }}
-                        {{ formelement(form.get('file')) }}
-                        {{ formelementerrors(form.get('file')) }}
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="file">&nbsp;</label>
-                        {{ ztbformelement(form.get('submit')) }}
-                    </div>
-
-                    <br>
-
-
 
                     {{ form().closeTag()|raw }}
                 {% endif %}

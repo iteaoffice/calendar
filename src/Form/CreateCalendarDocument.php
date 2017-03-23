@@ -29,7 +29,7 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
-        $document         = new Document();
+        $document = new Document();
         $doctrineHydrator = new DoctrineHydrator($entityManager);
         $this->setHydrator($doctrineHydrator)->setObject($document);
         $this->setAttribute('method', 'post');
@@ -58,7 +58,7 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'options' => [
                     "label"      => "txt-file",
                     'class'      => 'form-control',
-                    "help-block" => _("txt-file-requirements"),
+                    "help-block" => _("txt-calendar-document-file-help-block"),
                 ],
             ]
         );
@@ -68,7 +68,7 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
-                    'value' => _("txt-update"),
+                    'value' => _("txt-upload-document"),
                 ],
             ]
         );
@@ -97,7 +97,7 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
     /**
      * @return array
      */
-    public function getInputFilterSpecification()
+    public function getInputFilterSpecification(): array
     {
         return [
             'file' => [

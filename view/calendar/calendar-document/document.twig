@@ -1,3 +1,6 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-document-%s")|format(document)) %}
+
 <h1>{{ translate("txt-document-%s")|format(document) }}</h1>
 
 <dl class="dl-horizontal">
