@@ -1,18 +1,17 @@
 {% do headTitle().append(translate("txt-calendar")) %}
 {% do headTitle().append(translate("txt-edit-attendees-of-calendar-item")) %}
-<h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+<h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
 
 {{ form().openTag(form)|raw }}
 
-{% if calendarService.calendar.projectCalendar %}
-    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+{% if calendar.projectCalendar %}
     <div class="form-group">
         <label class="col-sm-3 control-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static">{{ projectLink(projectService,'view-community', 'name') }}</p>
+            <p class="form-control-static">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
         </div>
     </div>
 {% endif %}
@@ -21,12 +20,12 @@
     <label class="col-sm-3 control-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarService.calendar }}</p>
+        <p class="form-control-static">{{ calendar }}</p>
     </div>
 </div>
 
 <h3>{{ translate("txt-project-reviewers") }}</h3>
-<table class="table table-hover table-striped">
+<table class="table table-hover table-striped table-condensed">
     <thead>
     <tr>
         <th>{{ translate("txt-reviewer") }}</th>
@@ -36,13 +35,12 @@
     </tr>
     </thead>
     <tbody>
-    {% for calendarContact in calendarService.findGeneralCalendarContactByCalendar(calendarService.calendar) %}
-        {% set contactService = contactServiceProxy(calendarContact.contact) %}
+    {% for calendarContact in calendarService.findGeneralCalendarContactByCalendar(calendar) %}
         <tr>
-            <td>{{ contactService.parseFullname() }}</td>
+            <td>{{ calendarContact.contact.parseFullname() }}</td>
             <td>{{ calendarContact.role }}</td>
-            <td>{{ contactService.parseOrganisation() }}</td>
-            <td>{{ contactService.parseCountry() }}</td>
+            <td>{{ contactService.parseOrganisation(calendarContact.contact) }}</td>
+            <td>{{ contactService.parseCountry(calendarContact.contact) }}</td>
         </tr>
     {% endfor %}
     </tbody>

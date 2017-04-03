@@ -5,7 +5,7 @@
  * @category    Calendar
  * @package     Config
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2015 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 return [
     'navigation' => [
@@ -13,7 +13,7 @@ return [
             // And finally, here is where we define our page hierarchy
             'calendar' => [
                 'label' => _("txt-calendar"),
-                'order' => 40,
+                'order' => 60,
                 'route' => 'community/calendar/overview',
                 'pages' => [
                     'community-calendar' => [
@@ -25,11 +25,11 @@ return [
                                 'visible' => false,
                                 'params'  => [
                                     'entities'   => [
-                                        'id' => Calendar\Entity\Calendar::class
+                                        'id' => Calendar\Entity\Calendar::class,
                                     ],
                                     'invokables' => [
-                                        Calendar\Navigation\Invokable\CalendarLabel::class
-                                    ]
+                                        Calendar\Navigation\Invokable\CalendarLabel::class,
+                                    ],
                                 ],
                                 'pages'   => [
                                     'send-message'     => [
@@ -38,7 +38,7 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
                                     ],
@@ -48,7 +48,7 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
                                     ],
@@ -57,11 +57,11 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities'   => [
-                                                'id' => Calendar\Entity\Document::class
+                                                'id' => Calendar\Entity\Document::class,
                                             ],
                                             'invokables' => [
-                                                Calendar\Navigation\Invokable\DocumentLabel::class
-                                            ]
+                                                Calendar\Navigation\Invokable\DocumentLabel::class,
+                                            ],
                                         ],
                                         'pages'   => [
                                             'edit-document' => [
@@ -70,7 +70,7 @@ return [
                                                 'visible' => false,
                                                 'params'  => [
                                                     'entities' => [
-                                                        'id' => Calendar\Entity\Document::class
+                                                        'id' => Calendar\Entity\Document::class,
                                                     ],
                                                 ],
                                             ],
@@ -78,7 +78,7 @@ return [
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
                     ],
                     'review-calendar'    => [
                         'label' => _("txt-review-calendar"),
@@ -95,6 +95,7 @@ return [
             // And finally, here is where we define our page hierarchy
             'calendar' => [
                 'label' => _("txt-calendar-admin"),
+                'order' => 60,
                 'route' => 'zfcadmin/calendar-manager',
                 'pages' => [
                     'calendar'          => [
@@ -106,11 +107,11 @@ return [
                                 'visible' => false,
                                 'params'  => [
                                     'entities'   => [
-                                        'id' => Calendar\Entity\Calendar::class
+                                        'id' => Calendar\Entity\Calendar::class,
                                     ],
                                     'invokables' => [
-                                        Calendar\Navigation\Invokable\CalendarLabel::class
-                                    ]
+                                        Calendar\Navigation\Invokable\CalendarLabel::class,
+                                    ],
                                 ],
                                 'pages'   => [
                                     'edit-calendar' => [
@@ -119,13 +120,13 @@ return [
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class
+                                                'id' => Calendar\Entity\Calendar::class,
                                             ],
                                         ],
-                                    ]
-                                ]
-                            ]
-                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'new-calendar-item' => [
                         'label' => _("txt-add-calendar-item"),

@@ -1,6 +1,6 @@
 {% do headTitle().append(translate("txt-calendar")) %}
-{% do headTitle().append(calendarService.calendar.calendar) %}
-<h1>{{ calendarService.calendar }} {{ calendarLink(calendarService.calendar,'view-admin','icon') }}</h1>
+{% do headTitle().append(calendar.calendar) %}
+<h1>{{ calendar }} {{ calendarLink(calendar,'view-admin','icon') }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
@@ -12,24 +12,23 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="calendar">
+        <br>
         <dl class="dl-horizontal">
-            {% if calendarService.calendar.projectCalendar %}
-                {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+            {% if calendar.projectCalendar %}
                 <dt>{{ translate("txt-project") }}</dt>
-                <dd>{{ projectLink(projectService,'view-community','name') }}</dd>
+                <dd>{{ projectLink(calendar.projectCalendar.project,'view-community','name') }}</dd>
             {% endif %}
             <dt>{{ translate("txt-date") }}</dt>
-            <dd>{{ calendarService.calendar.dateFrom|from_to_date(calendarService.calendar.dateEnd) }}</dd>
+            <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
             <dt>{{ translate("txt-type") }}</dt>
-            <dd>{{ calendarService.calendar.type }}</dd>
+            <dd>{{ calendar.type }}</dd>
             <dt>{{ translate("txt-location") }}</dt>
-            <dd>{{ calendarService.calendar.location }}</dd>
+            <dd>{{ calendar.location }}</dd>
             <dt>{{ translate("txt-description") }}</dt>
-            <dd>{{ calendarService.calendar.description|default("-")|raw }}</dd>
+            <dd>{{ calendar.description|default("-")|raw }}</dd>
             <dt>{{ translate("txt-documents") }}</dt>
-            <dd>{{ translate("txt-%s-documents")|format(calendarService.calendar.document.count()) }}</dd>
+            <dd>{{ translate("txt-%s-documents")|format(calendar.document.count()) }}</dd>
         </dl>
-
 
 
     </div>
@@ -40,7 +39,7 @@
         <ul class="nav nav-pills nav-nos-menu">
             <li class="active"><a href="#total-calendar-documents"
                                   data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
-            {% if calendarService.calendar.projectCalendar %}
+            {% if calendar.projectCalendar %}
                 <li><a href="#version-documents"
                        data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
                 <li><a href="#reporting"
@@ -60,7 +59,7 @@
 
                 <h3>{{ translate("txt-calendar-documents") }}</h3>
 
-                {% if calendarService.calendar.document.count() > 0 %}
+                {% if calendar.document.count() > 0 %}
                     <table class="table table-striped table-hover">
                         <thead>
                         <tr>
@@ -71,7 +70,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for document in calendarService.calendar.document %}
+                        {% for document in calendar.document %}
                             <tr>
                                 <td>
                                     {{ contentTypeIcon(document.contentType) }}&nbsp;
@@ -86,49 +85,33 @@
                         </tbody>
                     </table>
 
-                    {{ calendarLink(calendarService.calendar, 'download-binder', 'button') }}
+                    {{ calendarLink(calendar, 'download-binder', 'button') }}
                 {% else %}
                     {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
                 {% endif %}
 
-                {% if isAllowed(calendarService.calendar, 'add-document') %}
-                    <hr>
-                    <h4>{{ translate("txt-upload-new-document") }}</h4>
-
+                {% if isAllowed(calendar, 'add-document') %}
                     {% do form.prepare() %}
-                    {% do form.setAttribute('class','form-inline') %}
+                    {% do form.setAttribute('class','form-horizontal') %}
 
                     {{ form().openTag(form)|raw }}
+                    {{ ztbformelement(form.get('document')) }}
+                    {{ ztbformelement(form.get('file')) }}
 
-                    <div class="form-group col-md-6">
-                        {{ formlabel(form.get('document')) }}
-                        {{ formelement(form.get('document')) }}
-                        {{ formelementerrors(form.get('document')) }}
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            {{ ztbformelement(form.get('submit')) }}
+                        </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        {{ formlabel(form.get('file')) }}
-                        {{ formelement(form.get('file')) }}
-                        {{ formelementerrors(form.get('file')) }}
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="file">&nbsp;</label>
-                        {{ ztbformelement(form.get('submit')) }}
-                    </div>
-
-                    <br>
-
-
 
                     {{ form().closeTag()|raw }}
                 {% endif %}
             </div>
 
-            {% if calendarService.calendar.projectCalendar %}
+            {% if calendar.projectCalendar %}
                 <div class="tab-pane" id="version-documents">
 
-                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
-                    {% set version = projectService.getLatestProjectVersion() %}
-                    {% set versionService = versionServiceProxy(version) %}
+                    {% set version = projectService.getLatestProjectVersion(calendar.projectCalendar.project) %}
 
                     <h3>{{ translate("txt-version-documents") }}</h3>
 
@@ -164,7 +147,7 @@
                             </tbody>
                         </table>
 
-                        {{ versionLink(versionService,'download-version-document-binder','button') }}
+                        {{ versionLink(version,'download-version-document-binder','button') }}
                     {% else %}
                         {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
                     {% endif %}
@@ -174,12 +157,8 @@
                 <div class="tab-pane" id="reporting">
 
                     <h3>{{ translate("txt-progress-reports") }}</h3>
-
-                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
-
-                    {% if projectService.project.report.count() > 0 %}
-
-                        <table class="table table-hover table-striped">
+                    {% if calendar.projectCalendar.project.report.count() > 0 %}
+                        <table class="table table-hover table-striped table-condensed">
                             <thead>
                             <tr>
                                 <th>{{ translate("txt-report") }}</th>
@@ -189,13 +168,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for report in projectService.project.report %}
+                            {% for report in calendar.projectCalendar.project.report %}
                                 <tr>
                                     <td>{{ reportLink(report,'report-community', 'name') }} {{ reportLink(report,'download', 'icon') }}</td>
                                     <td>{{ report.contact.displayName }}
                                         <div class="pull-right"><a href="mailto:{{ report.contact.email }}"><i
                                                         class="fa fa-envelope-o"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
-                                        </div></td>
+                                        </div>
+                                    </td>
                                     <td>{{ report.dateCreated|string_date }}</td>
                                     <td>{{ report.item.count() }}</td>
                                 </tr>
@@ -209,7 +189,7 @@
 
                     <h3>{{ translate("txt-review-documents") }}</h3>
 
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped table-condensed">
                         <thead>
                         <tr>
                             <th>{{ translate("txt-report") }}</th>
@@ -230,7 +210,8 @@
                                 <td>{{ result.contact.displayName }}
                                     <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
                                                     class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div></td>
+                                    </div>
+                                </td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -245,10 +226,7 @@
 
                     <h3>{{ translate("txt-public-project-results") }}</h3>
 
-                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
-
-
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped table-condensed">
                         <thead>
                         <tr>
                             <th>{{ translate("txt-report") }}</th>
@@ -269,7 +247,8 @@
                                 <td>{{ result.contact.displayName }}
                                     <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
                                                     class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div></td>
+                                    </div>
+                                </td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
                                 <td></td>
@@ -280,9 +259,7 @@
 
                     <h3>{{ translate("txt-public-deliverables") }}</h3>
 
-                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
-
-                    {% include 'project/partial/list/workpackage-document' with {'documents':projectService.findPublicWorkpackageDocuments()} %}
+                    {% include 'project/partial/list/workpackage-document' with {'documents':projectService.findPublicWorkpackageDocuments(calendar.projectCalendar.project)} %}
 
                 </div>
 
@@ -290,15 +267,13 @@
 
                     <h3>{{ translate("txt-workpackage-deliverables") }}</h3>
 
-                    {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
-
-                    {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(projectService.project) if workpackage.document.count() > 0 %}
+                    {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(calendar.projectCalendar.project) if workpackage.document.count() > 0 %}
                         <h4 class="home">{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
                         {% include 'project/partial/list/workpackage-document' with {'documents':workpackage.document} %}
                         <hr>
                     {% endfor %}
 
-                    {{ projectLink(projectService, 'download-workpackage-document-binder', 'button') }}
+                    {{ projectLink(calendar.projectCalendar.project, 'download-workpackage-document-binder', 'button') }}
                 </div>
             {% endif %}
 
@@ -308,10 +283,10 @@
     </div>
     <div class="tab-pane" id="attendees">
 
-        {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendarService.calendar) %}
+        {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendar) %}
 
         {% if calendarContacts|length > 0 %}
-            <table class="table table-hover table-striped">
+            <table class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>
@@ -322,20 +297,23 @@
                 </thead>
                 <tbody>
                 {% for calendarContact in calendarContacts %}
-                    {% set contactService = contactServiceProxy(calendarContact.contact) %}
-                    <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
+
+                    <tr {% if zfcUserIdentity().getId() == calendarContact.contact.contact.id %}class="success"{% endif %}>
                         <td>
-                            {% if zfcUserIdentity().getId() == contactService.contact.id %}
+                            {% if zfcUserIdentity().getId() == calendarContact.contact.contact.id %}
                                 <i class="fa fa-user"></i>
                             {% endif %}
                             {{ calendarContact.contact.displayName }}
                             <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
                                             class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
-                            </div></td>
-                        <td>{{ contactService.parseOrganisation() }} ({{ contactService.parseCountry() }}) </td>
+                            </div>
+                        </td>
+                        <td>{{ calendarContact.contact.contactOrganisation.organisation }}
+                            ({{ calendarContact.contact.contactOrganisation.organisation.country }})
+                        </td>
                         <td>{{ calendarContact.role }}</td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% do calendarService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
@@ -357,10 +335,10 @@
             {{ ztbalert().info(translate("txt-no-attendees-selected"))|raw }}
         {% endif %}
 
-        {{ calendarLink(calendarService.calendar,'select-attendees', 'button') }}
+        {{ calendarLink(calendar,'select-attendees', 'button') }}
         {% if calendarContacts|length > 0 %}
-            {{ calendarLink(calendarService.calendar,'send-message', 'button') }}
-            {{ calendarLink(calendarService.calendar,'presence-list', 'button') }}
+            {{ calendarLink(calendar,'send-message', 'button') }}
+            {{ calendarLink(calendar,'presence-list', 'button') }}
         {% endif %}
     </div>
 </div>

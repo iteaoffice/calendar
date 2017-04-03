@@ -1,5 +1,6 @@
 iteaoffice\calendar
 ==================
 
-master branch: 2.0-dev
-develop branch: 2.1-dev
+master branch: 3.0.x-dev
+develop branch: 3.1-dev
+

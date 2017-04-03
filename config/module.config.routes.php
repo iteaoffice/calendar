@@ -5,7 +5,7 @@
  * @category    Calendar
  * @package     Config
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c] 2004-2015 ITEA Office (https://itea3.org]
+ * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 namespace Calendar;
 
@@ -18,8 +18,8 @@ return [
                 'type'          => 'Literal',
                 'priority'      => 999,
                 'options'       => [
-                    'route' => '/assets/' . (defined("DEBRANOVA_HOST")
-                            ? DEBRANOVA_HOST : 'test'),
+                    'route' => '/assets/' . (defined("ITEAOFFICE_HOST")
+                            ? ITEAOFFICE_HOST : 'test'),
                 ],
                 'may_terminate' => true,
                 'child_routes'  => [
@@ -34,7 +34,7 @@ return [
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
             'community' => [
                 'child_routes' => [
@@ -120,7 +120,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'download-binder'         => [
+                            'download-binder'          => [
                                 'type'    => 'Segment',
                                 'options' => [
                                     'route'    => '/download-binder/[:id].html',
@@ -294,8 +294,8 @@ return [
                                             'route'    => '/[:id].html',
                                             'defaults' => [
                                                 'action' => 'document',
-                                            ]
-                                        ]
+                                            ],
+                                        ],
                                     ],
                                     'edit'     => [
                                         'type'    => 'Segment',
@@ -303,15 +303,15 @@ return [
                                             'route'    => '/edit/[:id].html',
                                             'defaults' => [
                                                 'action' => 'edit',
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ]
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

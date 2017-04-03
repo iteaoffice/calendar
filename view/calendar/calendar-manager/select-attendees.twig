@@ -1,7 +1,7 @@
 {% do headTitle().append(translate("txt-admin")) %}
-{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendarService.calendar)) %}
+{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+<h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
 {% do form.setAttribute('class','form-horizontal') %}
@@ -12,7 +12,7 @@
     <label class="col-sm-3 control-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarLink(calendarService.calendar, 'view-admin', 'name') }} {{ calendarLink(calendarService.calendar, 'edit', 'icon') }}</p>
+        <p class="form-control-static">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
     </div>
 </div>
 
@@ -39,11 +39,12 @@
         <div class="input-group">
             {{ formelement(form.get('selection'),"%s%s%s") }}
             <span class="input-group-btn">
-        <input type="button" class="btn btn-primary" onclick="selectionSearch(document.getElementById('selection').value)"
+        <input type="button" class="btn btn-primary"
+               onclick="selectionSearch(document.getElementById('selection').value)"
                value="GET">
       </span>
         </div>
-<br>
+        <br>
         <div class="input-group">
             <input type="text" id="searchstring" class="form-control">
             <span class="input-group-btn">
@@ -127,12 +128,12 @@
                     item = this.items[i];
 
                     out += '<tr class="' + (item.selected ? 'success' : '') + (item.removed ? 'danger' : '') + '" ' +
-                            '    id="item' + i + '" ' +
-                            '    onclick="' + this.oName + '.Select(' + i + ')" ' +
-                            '    >' +
-                            '<td>' + (item.added ? '*' : '') + item.displayName + '</td>' +
-                            '<td>' + item.org + '</td>' +
-                            '</tr>';
+                        '    id="item' + i + '" ' +
+                        '    onclick="' + this.oName + '.Select(' + i + ')" ' +
+                        '    >' +
+                        '<td>' + (item.added ? '*' : '') + item.displayName + '</td>' +
+                        '<td>' + item.org + '</td>' +
+                        '</tr>';
                 }
             }
             document.getElementById(this.RenderBox).innerHTML = out;
@@ -250,12 +251,12 @@
     function init() {
         Calendar = new oCalendar('Calendar', 'incalendar');
         {
-            {% for calendarContact in calendarService.calendar.calendarContact %}
+            {% for calendarContact in calendar.calendarContact %}
             Calendar.Add(
-                    "{{ calendarContact.contact.id }}",
-                    "{{ calendarContact.contact.displayName }}",
-                    "{{ calendarContact.contact.email }}",
-                    "{{ calendarContact.contact.contactOrganisation.organisation }}", false, false
+                "{{ calendarContact.contact.id }}",
+                "{{ calendarContact.contact.displayName }}",
+                "{{ calendarContact.contact.email }}",
+                "{{ calendarContact.contact.contactOrganisation.organisation }}", false, false
             );
             {% endfor %}
         }
@@ -299,10 +300,10 @@
                 Contacts.items.length = 0;
                 for (var i = 0; i < result.length; i++) {
                     Contacts.Add(
-                            result[i].id,
-                            result[i].name,
-                            result[i].email,
-                            result[i].organisation
+                        result[i].id,
+                        result[i].name,
+                        result[i].email,
+                        result[i].organisation
                     );
                 }
                 Contacts.Render();
@@ -327,10 +328,10 @@
                 Contacts.items.length = 0;
                 for (var i = 0; i < result.length; i++) {
                     Contacts.Add(
-                            result[i].id,
-                            result[i].name,
-                            result[i].email,
-                            result[i].organisation
+                        result[i].id,
+                        result[i].name,
+                        result[i].email,
+                        result[i].organisation
                     );
                 }
                 Contacts.Render();

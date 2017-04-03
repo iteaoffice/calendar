@@ -32,8 +32,7 @@
             {% for date, calendarItems in paginator.getCurrentItems() %}
                 {% for calendar in calendarItems %}
                     {% if calendar.calendar %}
-                        {% set calendarService = calendarServiceProxy(calendar.calendar) %}
-                        {% set calendarHasContact = calendarService.calendarHasContact(calendarService.calendar, zfcUserIdentity()) %}
+                        {% set calendarHasContact = calendarService.calendarHasContact(calendar.calendar, zfcUserIdentity()) %}
                         <tr {% if calendarHasContact %}class="active"{% endif %}>
                             <td>
                                 {% if calendarHasContact %}<i class="fa fa-user"></i>{% endif %}

@@ -2,11 +2,17 @@
   "name": "iteaoffice/calendar",
   "type": "library",
   "license": "proprietary",
-  "description": "General code for Calendar items",
+  "description": "Code to manage calendar",
   "keywords": [
     "calendar"
   ],
   "homepage": "https://itea3.org",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packages.itea3.eu"
+    }
+  ],
   "authors": [
     {
       "name": "Johan van der Heide",
@@ -15,32 +21,26 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": ">=5.6",
-    "zendframework/zendframework": "~2.5"
+    "php": "^7.1",
+    "zendframework/zendframework": "~3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "@stable",
-    "pdepend/pdepend": "@stable",
-    "phpmd/phpmd": "@stable",
-    "sebastian/phpcpd": "@stable",
-    "squizlabs/php_codesniffer": "@stable",
-    "fabpot/php-cs-fixer": "@stable",
-    "jakub-onderka/php-parallel-lint": "@stable",
-    "jakub-onderka/php-console-highlighter": "@stable"
+    "iteaoffice/testing": "^1.0"
   },
   "autoload": {
     "psr-4": {
-      "Calendar\\": "src/Calendar/",
-      "CalendarTest\\": "tests/CalendarTest/"
+      "Calendar\\": "src/"
     }
   },
-  "config": {
-    "secure-http": false
+  "autoload-dev": {
+    "psr-4": {
+      "CalendarTest\\": "tests/"
+    }
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev",
-      "dev-develop": "2.1-dev"
+      "dev-master": "3.0.x-dev",
+      "dev-develop": "3.1.x-dev"
     }
   }
 }

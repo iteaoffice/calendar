@@ -1,5 +1,4 @@
-<phpunit bootstrap="tests/CalendarTest/Bootstrap.php"
-         colors="true"
+<phpunit colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
@@ -9,8 +8,8 @@
          backupGlobals="false"
          syntaxCheck="true"
 >
-    <testsuite name="iteaoffice/calendar Test Suite">
-        <directory>./tests/CalendarTest</directory>
+    <testsuite name="iteaoffice/calendar">
+        <directory>./tests</directory>
     </testsuite>
     <filter>
         <whitelist>
@@ -18,7 +17,6 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="./clover.xml"/>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
     </logging>
 </phpunit>

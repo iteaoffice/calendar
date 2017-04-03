@@ -1,7 +1,7 @@
 {% do headTitle().append(translate("txt-admin")) %}
-{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendarService.calendar)) %}
+{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1>{{ translate("txt-calendar-item-%s")|format(calendarService.calendar) }}</h1>
+<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }}</h1>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
@@ -18,64 +18,63 @@
 
         <dl class="dl-horizontal">
             <dt>{{ translate("txt-calendar-name") }}</dt>
-            <dd>{{ calendarLink(calendarService.calendar,'view-community', 'name') }}</dd>
+            <dd>{{ calendarLink(calendar,'view-community', 'name') }}</dd>
             <dt>{{ translate("txt-date") }}</dt>
-            <dd>{{ calendarService.calendar.dateFrom|from_to_date(calendarService.calendar.dateEnd) }}</dd>
+            <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
             <dt>{{ translate("txt-date-from") }}</dt>
-            <dd>{{ calendarService.calendar.dateFrom|date }}</dd>
+            <dd>{{ calendar.dateFrom|date }}</dd>
             <dt>{{ translate("txt-date-end") }}</dt>
-            <dd>{{ calendarService.calendar.dateEnd|date }}</dd>
+            <dd>{{ calendar.dateEnd|date }}</dd>
             <dt>{{ translate("txt-calendar-type") }}</dt>
-            <dd>{{ calendarService.calendar.type }}</dd>
-            {% if calendarService.calendar.projectCalendar %}
-                {% set projectService = projectServiceProxy(calendarService.calendar.projectCalendar.project) %}
+            <dd>{{ calendar.type }}</dd>
+            {% if calendar.projectCalendar %}
                 <dt>{{ translate("txt-project-name") }}</dt>
-                <dd>{{ projectLink(projectService,'view-admin','name') }} {{ projectLink(projectService,'view-community','icon') }}</dd>
+                <dd>{{ projectLink(project,'view-admin','name') }} {{ projectLink(calendar.projectCalendar.project,'view-community','icon') }}</dd>
             {% endif %}
             <dt>{{ translate("txt-location") }}</dt>
-            <dd>{{ calendarService.calendar.location }}</dd>
+            <dd>{{ calendar.location }}</dd>
             <dt>{{ translate("txt-docref") }}</dt>
-            <dd>{{ calendarService.calendar.docRef }}</dd>
+            <dd>{{ calendar.docRef }}</dd>
             <dt>{{ translate("txt-state") }}</dt>
-            <dd>{{ translate(calendarService.calendar.getFinal(true)) }}</dd>
+            <dd>{{ translate(calendar.getFinal(true)) }}</dd>
             <dt>{{ translate("txt-on-homepage") }}</dt>
-            <dd>{{ translate(calendarService.calendar.getOnHomepage(true)) }}
-                ({{ translate("txt-sequence:-%s")|format(calendarService.calendar.sequence) }})
+            <dd>{{ translate(calendar.getOnHomepage(true)) }}
+                ({{ translate("txt-sequence:-%s")|format(calendar.sequence) }})
             </dd>
-            {% if calendarService.calendar.description %}
+            {% if calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
-                <dd>{{ calendarService.calendar.description|raw }}</dd>
+                <dd>{{ calendar.description|raw }}</dd>
             {% endif %}
-            {% if calendarService.calendar.imageUrl %}
+            {% if calendar.imageUrl %}
                 <dt>{{ translate("txt-image-url") }}</dt>
-                <dd>{{ calendarService.calendar.imageUrl }}</dd>
+                <dd>{{ calendar.imageUrl }}</dd>
             {% endif %}
-            {% if calendarService.calendar.url %}
+            {% if calendar.url %}
                 <dt>{{ translate("txt-url") }}</dt>
-                <dd><a href="{{ calendarService.calendar.url }}">{{ calendarService.calendar.url }}</a></dd>
+                <dd><a href="{{ calendar.url }}">{{ calendar.url }}</a></dd>
             {% endif %}
-            {% if calendarService.calendar.dateCreated %}
+            {% if calendar.dateCreated %}
                 <dt>{{ translate("txt-date-created") }}</dt>
-                <dd>{{ calendarService.calendar.dateCreated|string_date }}
-                    {{ translate("txt-by-%s")|format(calendarService.calendar.contact.displayName()) }}</dd>
+                <dd>{{ calendar.dateCreated|string_date }}
+                    {{ translate("txt-by-%s")|format(calendar.contact.displayName()) }}</dd>
             {% endif %}
-            {% if calendarService.calendar.lastUpdate %}
+            {% if calendar.lastUpdate %}
                 <dt>{{ translate("txt-last-update") }}</dt>
                 <dd>{{ calendarService.lastUpdate|string_date }}</dd>
             {% endif %}
             <dt>{{ translate("txt-access") }}</dt>
-            {% for access in calendarService.calendar.type.access %}
-                <dd><code>{{ access }}</code></dd>
+            {% for access in calendar.type.access %}
+                <dd>{{ accessLink(access,'view','name') }}</dd>
             {% endfor %}
         </dl>
 
-        {{ calendarLink(calendarService.calendar,'edit', 'button') }}
+        {{ calendarLink(calendar,'edit', 'button') }}
 
     </div>
     <div class="tab-pane" id="document">
 
         <h2>{{ translate("txt-calendar-documents") }}</h2>
-        {% if calendarService.calendar.document.count() > 0 %}
+        {% if calendar.document.count() > 0 %}
 
             <table class="table table table-hover table-striped">
                 <thead>
@@ -87,7 +86,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for document in calendarService.calendar.document %}
+                {% for document in calendar.document %}
                     <tr>
                         <td>{{ calendarDocumentLink(document,'document-admin','name') }}
                             {{ calendarDocumentLink(document,'download','icon') }}
@@ -101,7 +100,7 @@
             </table>
         {% else %}
             {{ ztbalert().info(translate("txt-no-documents-uploaded-for-this-calendar-%s")|
-            format(calendarService.calendar))|raw }}
+            format(calendar))|raw }}
         {% endif %}
 
         <h4>{{ translate("txt-upload-new-calendar-documents") }}</h4>
@@ -124,8 +123,8 @@
     <div class="tab-pane" id="attendee">
 
         <h2>{{ translate("txt-calendar-attendees") }}</h2>
-        {% if calendarService.calendar.calendarContact.count() > 0 %}
-            <table class="table table-hover table-striped">
+        {% if calendar.calendarContact.count() > 0 %}
+            <table class="table table-hover table-striped table-condensed">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>
@@ -135,11 +134,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for calendarContact in calendarService.calendar.calendarContact %}
-                    {% set contactService = contactServiceProxy(calendarContact.contact) %}
-                    <tr {% if zfcUserIdentity().getId() == contactService.contact.id %}class="success"{% endif %}>
+                {% for calendarContact in calendar.calendarContact %}
+                    <tr {% if zfcUserIdentity().getId() == contact.id %}class="success"{% endif %}>
                         <td>
-                            {% if zfcUserIdentity().getId() == contactService.contact.id %}
+                            {% if zfcUserIdentity().getId() == contact.id %}
                                 <i class="fa fa-user"></i>
                             {% endif %}
                             {{ calendarContact.contact.displayName }}
@@ -147,7 +145,9 @@
                                             class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
                             </div>
                         </td>
-                        <td>{{ contactService.parseOrganisation() }} ({{ contactService.parseCountry() }})</td>
+                        <td>{{ contactService.parseOrganisation(calendarContact.contact) }}
+                            ({{ contactService.parseCountry(calendarContact.contact) }})
+                        </td>
 
                         <td>
 
@@ -162,7 +162,7 @@
                                data-title="{{ translate("txt-update-role") }}">{{ calendarContact.role }}</a>
                         </td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'Calendar\Acl\Assertion\Contact') %}
+                            {% do calendarService.addResource(calendarContact,'Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
@@ -182,7 +182,7 @@
             </table>
         {% else %}
             {{ ztbalert().info(translate("txt-no-attandeed-defined-for-this-calendar-%s")|
-            format(calendarService.calendar))|raw }}
+            format(calendar))|raw }}
         {% endif %}
 
 

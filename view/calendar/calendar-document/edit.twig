@@ -1,3 +1,6 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-edit-document-%s")|format(document)) %}
+
 <h1>{{ translate("txt-edit-calendar-document") }}</h1>
 
 <p class="lead">{{ translate("txt-edit-calendar-document-%s-explanation")|format(document) }}</p>
@@ -26,8 +29,6 @@
 </div>
 
 {{ ztbformelement(form.get('file')) }}
-
-
 
 
 <div class="form-group">
