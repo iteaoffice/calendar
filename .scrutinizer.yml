@@ -3,7 +3,14 @@ imports:
 build:
     environment:
         php:
-            version: 7.0.8
+            version: 7.1
+    tests:
+        override:
+            -
+               command: ./vendor/bin/phpunit --coverage-clover=coverage
+               coverage:
+                   file: coverage
+                   format: php-clover
 tools:
     php_changetracking: true
     php_sim: true
