@@ -18,5 +18,5 @@ final class Version
     /**
      * Zend Framework version identification - see compareVersion().
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.0-DEV';
 }
