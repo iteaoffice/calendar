@@ -16,7 +16,7 @@ use BjyAuthorize\Service\Authorize;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\EntityAbstract;
 use Project\Entity\Project;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\Http\RouteMatch;
 use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
 use Zend\View\HelperPluginManager;

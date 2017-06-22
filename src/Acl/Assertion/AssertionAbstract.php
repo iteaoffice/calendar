@@ -21,7 +21,7 @@ use Contact\Service\ContactService;
 use Doctrine\ORM\PersistentCollection;
 use Interop\Container\ContainerInterface;
 use Zend\Http\PhpEnvironment\Request;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\Http\RouteMatch;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

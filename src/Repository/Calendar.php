@@ -238,7 +238,7 @@ class Calendar extends EntityRepository
      *
      * @return Entity\Calendar|null
      */
-    public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime)
+    public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');

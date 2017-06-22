@@ -11,8 +11,6 @@
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
 
 /**
  * CalendarDocumentObject.
@@ -70,60 +68,31 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * Set input filter.
-     *
-     * @param InputFilterInterface $inputFilter
-     *
-     * @throws \Exception
+     * @param $property
+     * @return bool
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function __isset($property)
     {
-        throw new \Exception("Setting an inputFilter is currently not supported");
-    }
-
-    /**
-     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
-     */
-    public function getInputFilter()
-    {
-        if (! $this->inputFilter) {
-            $inputFilter       = new InputFilter();
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
-    }
-
-    /**
-     * @return \Calendar\Entity\Document
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param \Calendar\Entity\Document $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
+        return isset($this->$property);
     }
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     * @return DocumentObject
      */
-    public function setId($id)
+    public function setId(int $id): DocumentObject
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -135,10 +104,32 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * @param resource $object
+     * @param string $object
+     * @return DocumentObject
      */
-    public function setObject($object)
+    public function setObject($object): DocumentObject
     {
         $this->object = $object;
+
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function getDocument(): ?Document
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param Document $document
+     * @return DocumentObject
+     */
+    public function setDocument(Document $document): DocumentObject
+    {
+        $this->document = $document;
+
+        return $this;
     }
 }

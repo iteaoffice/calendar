@@ -14,6 +14,7 @@ use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
 use Zend\Validator\File\FilesSize;
+use Zend\Validator\File\MimeType;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -22,7 +23,7 @@ use Zend\View\Model\ViewModel;
 class CalendarDocumentController extends CalendarAbstractController
 {
     /**
-     * @return array|\Zend\Stdlib\ResponseInterface
+     * @return \Zend\Stdlib\ResponseInterface|ViewModel
      */
     public function downloadAction()
     {
@@ -127,10 +128,11 @@ class CalendarDocumentController extends CalendarAbstractController
                     $fileSizeValidator = new FilesSize(PHP_INT_MAX);
                     $fileSizeValidator->isValid($file);
                     $document->setSize($fileSizeValidator->size);
-                    $document->setContentType(
-                        $this->getGeneralService()
-                            ->findContentTypeByContentTypeName($file['type'])
-                    );
+
+                    $fileTypeValidator = new MimeType();
+                    $fileTypeValidator->isValid($file);
+                    $document->setContentType($this->getGeneralService()->findContentTypeByContentTypeName($fileTypeValidator->type));
+
                     /**
                      * Update the object
                      *
