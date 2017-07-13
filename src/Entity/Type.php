@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -100,7 +102,7 @@ class Type
     public function __construct()
     {
         $this->calendar = new Collections\ArrayCollection();
-        $this->access   = new Collections\ArrayCollection();
+        $this->access = new Collections\ArrayCollection();
     }
 
     /**
@@ -121,7 +123,7 @@ class Type
     public function getCacheCssFileName()
     {
         return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
-               . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+            . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
     }
 
     /**

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
@@ -22,6 +24,7 @@ use Calendar\Form\SendMessage;
 use Calendar\Service\CalendarService;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
+use Zend\Http\Response;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
@@ -102,9 +105,7 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar.
-     *
-     * @return ViewModel
+     * @return \Zend\Stdlib\ResponseInterface
      */
     public function downloadReviewCalendarAction()
     {
@@ -259,7 +260,7 @@ class CalendarCommunityController extends CalendarAbstractController
             return $this->notFoundAction();
         }
 
-        $data = array_merge_recursive($this->getRequest()->getPost()->toArray());
+        $data = $this->getRequest()->getPost()->toArray();
 
         $form = new SelectAttendee($calendar, $this->getContactService());
         $formValues = [];
@@ -351,7 +352,7 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return \Zend\Stdlib\ResponseInterface
+     * @return \Zend\Stdlib\ResponseInterface|ViewModel
      */
     public function presenceListAction()
     {
@@ -379,7 +380,7 @@ class CalendarCommunityController extends CalendarAbstractController
     /**
      * Special action which produces an HTML version of the review calendar.
      *
-     * @return ViewModel
+     * @return ViewModel|Response
      */
     public function sendMessageAction()
     {
@@ -388,9 +389,9 @@ class CalendarCommunityController extends CalendarAbstractController
             return $this->notFoundAction();
         }
 
-        $data = array_merge_recursive($this->getRequest()->getPost()->toArray());
+        $data = $this->getRequest()->getPost()->toArray();
 
-        $form = new SendMessage($calendar, $this->getContactService());
+        $form = new SendMessage();
         $form->setData($data);
 
         if ($this->getRequest()->isPost() && $form->isValid()) {

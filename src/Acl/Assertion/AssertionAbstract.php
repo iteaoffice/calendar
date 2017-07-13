@@ -11,6 +11,8 @@
  * @link       https://itea3.org
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -21,20 +23,13 @@ use Contact\Service\ContactService;
 use Doctrine\ORM\PersistentCollection;
 use Interop\Container\ContainerInterface;
 use Zend\Http\PhpEnvironment\Request;
-use Zend\Router\Http\RouteMatch;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
+use Zend\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Create a link to an document.
- *
- * @category   Calendar
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
- * @license    https://itea3.org/license.txt proprietary
- *
- * @link       https://itea3.org
+ * Class AssertionAbstract
+ * @package Calendar\Acl\Assertion
  */
 abstract class AssertionAbstract implements AssertionInterface
 {
@@ -74,7 +69,7 @@ abstract class AssertionAbstract implements AssertionInterface
      *
      * @return boolean
      */
-    public function rolesHaveAccess($access)
+    public function rolesHaveAccess($access): bool
     {
         $accessRoles = $this->prepareAccessRoles($access);
         if (count($accessRoles) === 0) {
@@ -85,13 +80,13 @@ abstract class AssertionAbstract implements AssertionInterface
             if (strtolower($accessRole->getAccess()) === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
             }
-            if ($this->hasContact()) {
-                if (in_array(
+            if ($this->hasContact() &&
+                in_array(
                     strtolower($accessRole->getAccess()),
-                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact())
+                    $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact()),
+                    true
                 )) {
-                    return true;
-                }
+                return true;
             }
         }
 
@@ -100,12 +95,11 @@ abstract class AssertionAbstract implements AssertionInterface
 
     /**
      * @param $access
-     *
-     * @return Access[]
+     * @return iterable|Access[]
      */
-    protected function prepareAccessRoles($access)
+    protected function prepareAccessRoles($access): iterable
     {
-        if (! $access instanceof PersistentCollection) {
+        if (!$access instanceof PersistentCollection) {
             /*
              * We only have a string, so we need to lookup the role
              */
@@ -120,7 +114,7 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return AdminService
      */
-    public function getAdminService()
+    public function getAdminService(): AdminService
     {
         return $this->adminService;
     }
@@ -136,15 +130,15 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return bool
      */
-    public function hasContact()
+    public function hasContact(): bool
     {
-        return ! $this->getContact()->isEmpty();
+        return !$this->getContact()->isEmpty();
     }
 
     /**
      * @return Contact
      */
-    public function getContact()
+    public function getContact(): Contact
     {
         if (is_null($this->contact)) {
             $this->contact = new Contact();
@@ -158,7 +152,7 @@ abstract class AssertionAbstract implements AssertionInterface
      *
      * @return AssertionAbstract
      */
-    public function setContact($contact)
+    public function setContact($contact): AssertionAbstract
     {
         $this->contact = $contact;
 
@@ -168,7 +162,7 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return array
      */
-    public function getAccessRoles()
+    public function getAccessRoles(): array
     {
         if (empty($this->accessRoles) && $this->hasContact()) {
             $this->accessRoles = $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact());
@@ -197,7 +191,7 @@ abstract class AssertionAbstract implements AssertionInterface
          */
         if (is_null($privilege) && $this->hasRouteMatch()) {
             $this->privilege = $this->getRouteMatch()
-                                    ->getParam('privilege', $this->getRouteMatch()->getParam('action'));
+                ->getParam('privilege', $this->getRouteMatch()->getParam('action'));
         } else {
             $this->privilege = $privilege;
         }
@@ -208,29 +202,29 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return bool
      */
-    public function hasRouteMatch()
+    public function hasRouteMatch(): bool
     {
-        return ! is_null($this->getRouteMatch());
+        return !is_null($this->getRouteMatch());
     }
 
     /**
      * @return RouteMatch
      */
-    public function getRouteMatch()
+    public function getRouteMatch(): RouteMatch
     {
         return $this->getServiceLocator()->get("Application")->getMvcEvent()->getRouteMatch();
     }
 
     /**
-     * @return ServiceLocatorInterface
+     * @return ContainerInterface
      */
-    public function getServiceLocator()
+    public function getServiceLocator(): ContainerInterface
     {
         return $this->serviceLocator;
     }
 
     /**
-     * @param ServiceLocatorInterface|ContainerInterface $serviceLocator
+     * @param ContainerInterface $serviceLocator
      */
     public function setServiceLocator($serviceLocator)
     {
@@ -240,15 +234,15 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return int|null
      */
-    public function getId()
+    public function getId():?int
     {
-        if (! is_null($id = $this->getRequest()->getPost('id'))) {
+        if (!is_null($id = $this->getRequest()->getPost('id'))) {
             return (int)$id;
         }
         if (is_null($this->getRouteMatch())) {
             return null;
         }
-        if (! is_null($id = $this->getRouteMatch()->getParam('id'))) {
+        if (!is_null($id = $this->getRouteMatch()->getParam('id'))) {
             return (int)$id;
         }
 
@@ -268,7 +262,7 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return ContactService
      */
-    public function getContactService()
+    public function getContactService(): ContactService
     {
         return $this->contactService;
     }
@@ -284,7 +278,7 @@ abstract class AssertionAbstract implements AssertionInterface
     /**
      * @return CalendarService
      */
-    public function getCalendarService()
+    public function getCalendarService(): CalendarService
     {
         return $this->calendarService;
     }

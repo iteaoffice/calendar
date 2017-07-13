@@ -13,6 +13,8 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Calendar\Entity\EntityAbstract;
@@ -32,7 +34,7 @@ class CreateObject extends Form
     /**
      * CreateObject constructor.
      *
-     * @param EntityManager  $entityManager
+     * @param EntityManager $entityManager
      * @param EntityAbstract $object
      */
     public function __construct(EntityManager $entityManager, EntityAbstract $object)

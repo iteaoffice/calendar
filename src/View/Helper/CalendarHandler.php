@@ -8,6 +8,8 @@
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use Calendar\Entity\Calendar;
@@ -61,17 +63,17 @@ class CalendarHandler extends AbstractViewHelper
                 $this->getHelperPluginManager()->get('headtitle')->append($this->translate("txt-calendar"));
                 $this->getHelperPluginManager()->get('headtitle')->append((string)$this->getCalendar()->getCalendar());
                 $this->getHelperPluginManager()->get('headmeta')
-                     ->setProperty('og:type', $this->translate("txt-calendar"));
+                    ->setProperty('og:type', $this->translate("txt-calendar"));
                 $this->getHelperPluginManager()->get('headmeta')
-                     ->setProperty('og:title', $this->getCalendar()->getCalendar());
+                    ->setProperty('og:title', $this->getCalendar()->getCalendar());
                 $this->getHelperPluginManager()->get('headmeta')
-                     ->setProperty('og:description', $this->getCalendar()->getDescription());
+                    ->setProperty('og:description', $this->getCalendar()->getDescription());
                 /**
                  * @var $calendarLink CalendarLink
                  */
                 $calendarLink = $this->getHelperPluginManager()->get('calendarLink');
                 $this->getHelperPluginManager()->get('headmeta')
-                     ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
+                    ->setProperty('og:url', $calendarLink($this->getCalendar(), 'view', 'social'));
 
                 return $this->parseCalendarItem($this->getCalendar());
             case 'calendar':
@@ -147,7 +149,7 @@ class CalendarHandler extends AbstractViewHelper
 
     /**
      * @param Content $content
-     * @param Param   $param
+     * @param Param $param
      *
      * @return null|string
      */
@@ -155,13 +157,13 @@ class CalendarHandler extends AbstractViewHelper
     {
 
         //Try first to see if the param can be found from the route (rule 1)
-        if (! is_null($this->getRouteMatch()->getParam($param->getParam()))) {
+        if (!is_null($this->getRouteMatch()->getParam($param->getParam()))) {
             return $this->getRouteMatch()->getParam($param->getParam());
         }
 
         //If it cannot be found, try to find it from the docref (rule 2)
         foreach ($content->getContentParam() as $contentParam) {
-            if ($contentParam->getParameter() === $param && ! empty($contentParam->getParameterId())) {
+            if ($contentParam->getParameter() === $param && !empty($contentParam->getParameterId())) {
                 return $contentParam->getParameterId();
             }
         }
@@ -231,7 +233,7 @@ class CalendarHandler extends AbstractViewHelper
             $this->getServiceManager()->get('Application\Authentication\Service')->getIdentity(),
             $year
         )
-                              ->setMaxResults($limit)->getResult();
+            ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarPastTemplate(),
@@ -292,7 +294,7 @@ class CalendarHandler extends AbstractViewHelper
     public function parseUpcomingCalendar()
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_UPCOMING, null)
-                              ->getResult();
+            ->getResult();
 
         return $this->getRenderer()->render(
             $this->getModuleOptions()->getCalendarUpcomingTemplate(),
@@ -346,7 +348,7 @@ class CalendarHandler extends AbstractViewHelper
     public function parseCalendarSmall($limit)
     {
         $calendarItems = $this->getCalendarService()->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)
-                              ->setMaxResults($limit)->getResult();
+            ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
             'calendar/partial/list/calendar-small',

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -25,10 +27,10 @@ class Document extends AssertionAbstract
      * $role, $document, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $document
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
@@ -41,7 +43,7 @@ class Document extends AssertionAbstract
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (! $document instanceof DocumentEntity) {
+        if (!$document instanceof DocumentEntity) {
             $document = $this->getCalendarService()->findEntityById(DocumentEntity::class, $id);
         }
 
@@ -59,7 +61,7 @@ class Document extends AssertionAbstract
                 return $this->getCalendarService()->canViewCalendar($document->getCalendar(), $this->getContact());
             case 'edit-community':
                 if ($this->getContactService()
-                         ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
+                    ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
                 ) {
                     return true;
                 }
@@ -67,7 +69,7 @@ class Document extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (! is_null($document->getCalendar()->getProjectCalendar())) {
+                if (!is_null($document->getCalendar()->getProjectCalendar())) {
                     if ($this->getContactService()->contactHasPermit(
                         $this->getContact(),
                         'edit',

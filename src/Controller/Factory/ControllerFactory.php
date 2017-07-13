@@ -12,6 +12,8 @@
  *
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
+declare(strict_types=1);
+
 namespace Calendar\Controller\Factory;
 
 use Calendar\Controller\CalendarAbstractController;
@@ -40,15 +42,15 @@ final class ControllerFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface|ControllerManager $container
-     * @param string                               $requestedName
-     * @param array|null                           $options
+     * @param string $requestedName
+     * @param array|null $options
      *
      * @return CalendarAbstractController
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var CalendarAbstractController $controller */
-        $controller     = new $requestedName($options);
+        $controller = new $requestedName($options);
         $serviceManager = $container;
 
         /** @var FormService $formService */

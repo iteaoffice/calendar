@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller;
 
 use Calendar\Entity\Type;
@@ -23,7 +25,7 @@ class CalendarController extends CalendarAbstractController
     public function calendarTypeColorCssAction()
     {
         $calendarTypes = $this->getCalendarService()->findAll(Type::class);
-        $calendarType  = new Type();
+        $calendarType = new Type();
         $cacheFileName = $calendarType->getCacheCssFileName();
 
         $css = $this->getRenderer()->render(

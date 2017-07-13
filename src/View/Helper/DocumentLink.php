@@ -9,6 +9,8 @@
  * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
@@ -28,8 +30,8 @@ class DocumentLink extends LinkAbstract
 
     /**
      * @param Entity\Document $document
-     * @param string          $action
-     * @param string          $show
+     * @param string $action
+     * @param string $show
      *
      * @return string
      *
@@ -57,7 +59,7 @@ class DocumentLink extends LinkAbstract
         /*
          * Check the access to the object
          */
-        if (! $this->hasAccess(
+        if (!$this->hasAccess(
             $this->getDocument(),
             CalendarDocumentAssertion::class,
             $this->getAction()
@@ -94,7 +96,7 @@ class DocumentLink extends LinkAbstract
     /**
      * Parse te action and fill the correct parameters.
      */
-    public function parseAction()
+    public function parseAction(): void
     {
         switch ($this->getAction()) {
             case 'document-community':

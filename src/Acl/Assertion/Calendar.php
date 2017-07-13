@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -25,10 +27,10 @@ class Calendar extends AssertionAbstract
      * $role, $calendar, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $calendar
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
@@ -40,7 +42,7 @@ class Calendar extends AssertionAbstract
     ) {
         $this->setPrivilege($privilege);
 
-        if (! $calendar instanceof CalendarEntity && ! is_null($id = $this->getId())) {
+        if (!$calendar instanceof CalendarEntity && !is_null($id = $this->getId())) {
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
 
@@ -61,13 +63,13 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (! is_null($calendar->getProjectCalendar())) {
+                if (!is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'edit',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
+                        ->contactHasPermit(
+                            $this->getContact(),
+                            'edit',
+                            $calendar->getProjectCalendar()->getProject()
+                        )
                     ) {
                         return true;
                     }
@@ -83,13 +85,13 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (! is_null($calendar->getProjectCalendar())) {
+                if (!is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'edit',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
+                        ->contactHasPermit(
+                            $this->getContact(),
+                            'edit',
+                            $calendar->getProjectCalendar()->getProject()
+                        )
                     ) {
                         return true;
                     }
@@ -123,13 +125,13 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (! is_null($calendar->getProjectCalendar())) {
+                if (!is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'view',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
+                        ->contactHasPermit(
+                            $this->getContact(),
+                            'view',
+                            $calendar->getProjectCalendar()->getProject()
+                        )
                     ) {
                         return true;
                     }

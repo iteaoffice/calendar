@@ -11,6 +11,8 @@
  * @link       https://itea3.org
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;

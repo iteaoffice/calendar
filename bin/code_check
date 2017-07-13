@@ -7,6 +7,6 @@ cd ..
 ./../../bin/parallel-lint ./src
 
 ./../../bin/php-cs-fixer fix -v ./src
-./../../bin/phpcbf --standard=PSR2 ./src --no-patch
+./../../bin/phpcbf --standard=PSR2 ./src
 ./../../bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./src
 ./../../bin/phpunit

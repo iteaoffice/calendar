@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Service;
 
 use Admin\Service\AdminService;
@@ -169,7 +171,7 @@ abstract class ServiceAbstract implements ServiceInterface
          * @var AssertionAbstract
          */
         $assertion = $this->getServiceLocator()->get($assertion);
-        if (! $this->getAuthorizeService()->getAcl()->hasResource($entity)) {
+        if (!$this->getAuthorizeService()->getAcl()->hasResource($entity)) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
             $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
         }

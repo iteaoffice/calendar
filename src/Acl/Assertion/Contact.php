@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -25,10 +27,10 @@ class Contact extends AssertionAbstract
      * $role, $contact, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
+     * @param Acl $acl
+     * @param RoleInterface $role
      * @param ResourceInterface $contact
-     * @param string            $privilege
+     * @param string $privilege
      *
      * @return bool
      */
@@ -37,7 +39,7 @@ class Contact extends AssertionAbstract
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (! $contact instanceof ContactEntity) {
+        if (!$contact instanceof ContactEntity) {
             $contact = $this->getCalendarService()->findEntityById(ContactEntity::class, $id);
         }
 

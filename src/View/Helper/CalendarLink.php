@@ -9,6 +9,8 @@
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
@@ -25,12 +27,12 @@ class CalendarLink extends LinkAbstract
 {
     /**
      * @param Calendar $calendar
-     * @param string   $action
-     * @param string   $show
-     * @param string   $which
-     * @param null     $alternativeShow
-     * @param null     $year
-     * @param Project  $project
+     * @param string $action
+     * @param string $show
+     * @param string $which
+     * @param null $alternativeShow
+     * @param null $year
+     * @param Project $project
      *
      * @return string
      *
@@ -66,7 +68,7 @@ class CalendarLink extends LinkAbstract
         /*
          * Check the access to the object
          */
-        if (! $this->hasAccess($this->getCalendar(), CalendarAssertion::class, $this->getAction())) {
+        if (!$this->hasAccess($this->getCalendar(), CalendarAssertion::class, $this->getAction())) {
             return '';
         }
 
@@ -83,7 +85,7 @@ class CalendarLink extends LinkAbstract
     /**
      * Parse te action and fill the correct parameters.
      */
-    public function parseAction()
+    public function parseAction(): void
     {
         switch ($this->getAction()) {
             case 'edit':

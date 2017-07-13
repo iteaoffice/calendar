@@ -13,6 +13,8 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Navigation\Factory;
 
 use Admin\Navigation\Invokable\AbstractNavigationInvokable;
@@ -28,13 +30,16 @@ final class NavigationInvokableFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param string $requestedName
+     * @param array|null $options
      *
      * @return AbstractNavigationInvokable
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
+        array $options = null
+    ): AbstractNavigationInvokable {
         /** @var $invokable AbstractNavigationInvokable */
         return new $requestedName($container, $options);
     }

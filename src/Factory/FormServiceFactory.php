@@ -12,6 +12,8 @@
  *
  * @link        http://github.com/iteaoffice/main for the canonical source repository
  */
+declare(strict_types=1);
+
 namespace Calendar\Factory;
 
 use Calendar\Service\FormService;
@@ -30,8 +32,8 @@ final class FormServiceFactory implements FactoryInterface
      * Create an instance of the requested class name.
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
+     * @param string $requestedName
+     * @param null|array $options
      *
      * @return FormService
      */

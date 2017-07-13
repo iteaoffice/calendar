@@ -13,6 +13,8 @@
  *
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
+declare(strict_types=1);
+
 namespace Calendar\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
@@ -28,9 +30,9 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 final class PluginFactory implements FactoryInterface
 {
     /**
-     * @param ContainerInterface|PluginManager     $container
+     * @param ContainerInterface|PluginManager $container
      * @param                                      $requestedName
-     * @param array|null                           $options
+     * @param array|null $options
      *
      * @return AbstractPlugin
      */

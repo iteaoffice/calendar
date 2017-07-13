@@ -7,6 +7,8 @@
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+declare(strict_types=1);
+
 namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
@@ -239,9 +241,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
-        $this->document        = new Collections\ArrayCollection();
-        $this->schedule        = new Collections\ArrayCollection();
-        $this->call            = new Collections\ArrayCollection();
+        $this->document = new Collections\ArrayCollection();
+        $this->schedule = new Collections\ArrayCollection();
+        $this->call = new Collections\ArrayCollection();
     }
 
     /**

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller;
 
 use Calendar\Entity\Calendar;
@@ -237,7 +239,7 @@ class CalendarManagerController extends CalendarAbstractController
             return $this->notFoundAction();
         }
 
-        $data = array_merge($this->getRequest()->getPost()->toArray());
+        $data = $this->getRequest()->getPost()->toArray();
 
 
         $form = new CalendarContacts($this->getSelectionService());

@@ -7,6 +7,8 @@
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+declare(strict_types=1);
+
 namespace Calendar\Service;
 
 use Calendar\Entity;
@@ -37,7 +39,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return null|Calendar|object
      */
-    public function findCalendarById($id)
+    public function findCalendarById($id): ?Calendar
     {
         return $this->getEntityManager()->getRepository(Calendar::class)->find($id);
     }
@@ -47,7 +49,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return null|Entity\Calendar|object
      */
-    public function findCalendarByDocRef($docRef)
+    public function findCalendarByDocRef($docRef): ?Calendar
     {
         return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy(
             [
@@ -57,7 +59,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param array    $data
+     * @param array $data
      * @param Calendar $calendar
      *
      * array (size=5)
@@ -68,14 +70,14 @@ class CalendarService extends ServiceAbstract
      *
      *
      */
-    public function updateCalendarContacts(Calendar $calendar, array $data)
+    public function updateCalendarContacts(Calendar $calendar, array $data): void
     {
         //Update the contacts
-        if (! empty($data['added'])) {
+        if (!empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
                 $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
 
-                if (! is_null($contact) && ! $this->calendarHasContact($calendar, $contact)) {
+                if (!is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -105,7 +107,7 @@ class CalendarService extends ServiceAbstract
         }
 
         //Update the contacts
-        if (! empty($data['removed'])) {
+        if (!empty($data['removed'])) {
             foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
                     if ($calendarContact->getContact()->getId() === (int)$contactId) {
@@ -118,11 +120,11 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param Calendar $calendar
-     * @param Contact  $contact
+     * @param Contact $contact
      *
      * @return bool
      */
-    public function calendarHasContact(Calendar $calendar, Contact $contact)
+    public function calendarHasContact(Calendar $calendar, Contact $contact): bool
     {
         $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy(
             [
@@ -131,11 +133,11 @@ class CalendarService extends ServiceAbstract
             ]
         );
 
-        return ! is_null($calendarContact);
+        return !is_null($calendarContact);
     }
 
     /**
-     * @param  string  $which
+     * @param  string $which
      * @param  Contact $contact
      *
      * @return CalendarContact[]
@@ -151,7 +153,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param Contact  $contact
+     * @param Contact $contact
      * @param Calendar $calendar
      *
      * @return CalendarContact
@@ -168,7 +170,7 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param Calendar $calendar
-     * @param int      $status
+     * @param int $status
      *
      * @return CalendarContact[]
      */
@@ -184,7 +186,7 @@ class CalendarService extends ServiceAbstract
      * This function will return a boolean value to see if a contact can view the calendar
      *
      * @param Calendar $calendar
-     * @param Contact  $contact
+     * @param Contact $contact
      *
      * @return bool
      */
@@ -197,7 +199,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param string  $which
+     * @param string $which
      * @param Contact $contact
      * @param integer $year
      * @param integer $type
@@ -217,7 +219,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param bool    $onlyFinal
+     * @param bool $onlyFinal
      * @param Project $project
      *
      * @return Calendar[]
@@ -229,16 +231,16 @@ class CalendarService extends ServiceAbstract
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if (! $onlyFinal
-                 || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
+            if (!$onlyFinal
+                || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
                     = $calendarItem->getCalendar();
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (! $onlyFinal
-                 || $calendarItem->getFinal() === Calendar::FINAL_FINAL
+            if (!$onlyFinal
+                || $calendarItem->getFinal() === Calendar::FINAL_FINAL
             ) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {
                     $calendar[$calendarItem->getId()] = $calendarItem;
@@ -267,7 +269,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return the news review meeting
      *
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -285,7 +287,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return the lastest review meeting
      *
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -333,8 +335,8 @@ class CalendarService extends ServiceAbstract
         /** @var Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
 
-        $yearSpanResult    = $repository->findMinAndMaxYear();
-        $yearSpan          = new \stdClass();
+        $yearSpanResult = $repository->findMinAndMaxYear();
+        $yearSpan = new \stdClass();
         $yearSpan->minYear = (int)$yearSpanResult['minYear'];
         $yearSpan->maxYear = (int)$yearSpanResult['maxYear'];
 

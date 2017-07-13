@@ -11,6 +11,8 @@
  * @link       https://itea3.org
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Entity\Calendar;
@@ -52,11 +54,11 @@ class RenderCalendarContactList extends AbstractPlugin
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
         $calendarContacts = $this->getCalendarService()
-                                 ->findCalendarContactsByCalendar($calendar, CalendarContact::STATUS_NO_DECLINED);
+            ->findCalendarContactsByCalendar($calendar, CalendarContact::STATUS_NO_DECLINED);
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
-        $minAmountOfPages  = max(count($paginatedContacts), 2);
+        $minAmountOfPages = max(count($paginatedContacts), 2);
 
         for ($i = 0; $i < $minAmountOfPages; $i++) {
             /*

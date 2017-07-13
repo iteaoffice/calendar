@@ -7,6 +7,8 @@
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2004-2017 ITEA Office (https://itea3.org) (https://itea3.org)
  */
+declare(strict_types=1);
+
 namespace Calendar\Repository;
 
 use Admin\Entity\Access;
@@ -14,6 +16,7 @@ use Calendar\Entity;
 use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Project\Entity\Project;
 
@@ -25,12 +28,12 @@ class Calendar extends EntityRepository
 {
     /**
      * @param              $which
-     * @param bool         $filterForAccess
+     * @param bool $filterForAccess
      * @param Contact|null $contact
-     * @param null         $year
-     * @param null         $type
+     * @param null $year
+     * @param null $type
      *
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function findCalendarItems(
         $which,
@@ -38,7 +41,7 @@ class Calendar extends EntityRepository
         Contact $contact = null,
         $year = null,
         $type = null
-    ) {
+    ): Query {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
         $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
@@ -112,7 +115,7 @@ class Calendar extends EntityRepository
             $qb = $this->filterForAccess($qb, $contact);
         }
 
-        if (! is_null($year)) {
+        if (!is_null($year)) {
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
             $qb->andWhere('YEAR(calendar_entity_calendar.dateEnd) = ?8');
@@ -124,7 +127,7 @@ class Calendar extends EntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param Contact      $contact
+     * @param Contact $contact
      *
      * @return QueryBuilder $qb
      */
@@ -137,7 +140,7 @@ class Calendar extends EntityRepository
         $subSelect->join('type.access', 'access');
         $subSelect->andWhere(
             $qb->expr()
-               ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
+                ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
         );
 
         $subSelectCalendarContact = $this->_em->createQueryBuilder();
@@ -206,7 +209,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $dateTime
      *
      * @return Entity\Calendar|null
@@ -233,7 +236,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project   $project
+     * @param Project $project
      * @param \DateTime $dateTime
      *
      * @return Entity\Calendar|null
@@ -263,7 +266,7 @@ class Calendar extends EntityRepository
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
      * @param Entity\Calendar $calendar
-     * @param Contact         $contact
+     * @param Contact $contact
      *
      * @return bool
      */
@@ -286,6 +289,6 @@ class Calendar extends EntityRepository
         $qb->setParameter(100, $calendar);
 
 
-        return ! is_null($qb->getQuery()->getOneOrNullResult());
+        return !is_null($qb->getQuery()->getOneOrNullResult());
     }
 }

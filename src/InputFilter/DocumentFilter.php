@@ -13,29 +13,24 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\InputFilter;
 
-use Doctrine\ORM\EntityManager;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\File\Size;
 
 /**
- * ITEA Office all rights reserved
- *
- * @category    DocumentFilter
- *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * Class DocumentFilter
+ * @package Calendar\InputFilter
  */
 class DocumentFilter extends InputFilter
 {
     /**
-     * PartnerFilter constructor.
-     *
-     * @param EntityManager $entityManager
+     * DocumentFilter constructor.
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct()
     {
         $inputFilter = new InputFilter();
 

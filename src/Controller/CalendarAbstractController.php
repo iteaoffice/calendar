@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
@@ -25,7 +27,6 @@ use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
@@ -89,19 +90,92 @@ abstract class CalendarAbstractController extends AbstractActionController
     protected $viewHelperManager;
 
     /**
-     * @return \Calendar\Service\FormService
+     * Proxy for the flash messenger helper to have the string translated earlier.
+     *
+     * @param $string
+     *
+     * @return string
      */
-    public function getFormService()
+    protected function translate($string): string
+    {
+        /*
+         * @var Translate
+         */
+        $translate = $this->getViewHelperManager()->get('translate');
+
+        return $translate($string);
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager(): EntityManager
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     * @return CalendarAbstractController
+     */
+    public function setEntityManager(EntityManager $entityManager): CalendarAbstractController
+    {
+        $this->entityManager = $entityManager;
+
+        return $this;
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    public function getRenderer(): TwigRenderer
+    {
+        return $this->renderer;
+    }
+
+    /**
+     * @param TwigRenderer $renderer
+     * @return CalendarAbstractController
+     */
+    public function setRenderer(TwigRenderer $renderer): CalendarAbstractController
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    public function getModuleOptions(): ModuleOptions
+    {
+        return $this->moduleOptions;
+    }
+
+    /**
+     * @param ModuleOptions $moduleOptions
+     * @return CalendarAbstractController
+     */
+    public function setModuleOptions(ModuleOptions $moduleOptions): CalendarAbstractController
+    {
+        $this->moduleOptions = $moduleOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return FormService
+     */
+    public function getFormService(): FormService
     {
         return $this->formService;
     }
 
     /**
-     * @param $formService
-     *
+     * @param FormService $formService
      * @return CalendarAbstractController
      */
-    public function setFormService($formService)
+    public function setFormService(FormService $formService): CalendarAbstractController
     {
         $this->formService = $formService;
 
@@ -111,17 +185,16 @@ abstract class CalendarAbstractController extends AbstractActionController
     /**
      * @return ContactService
      */
-    public function getContactService()
+    public function getContactService(): ContactService
     {
         return $this->contactService;
     }
 
     /**
-     * @param $contactService
-     *
+     * @param ContactService $contactService
      * @return CalendarAbstractController
      */
-    public function setContactService(ContactService $contactService)
+    public function setContactService(ContactService $contactService): CalendarAbstractController
     {
         $this->contactService = $contactService;
 
@@ -129,19 +202,56 @@ abstract class CalendarAbstractController extends AbstractActionController
     }
 
     /**
+     * @return ProjectService
+     */
+    public function getProjectService(): ProjectService
+    {
+        return $this->projectService;
+    }
+
+    /**
+     * @param ProjectService $projectService
+     * @return CalendarAbstractController
+     */
+    public function setProjectService(ProjectService $projectService): CalendarAbstractController
+    {
+        $this->projectService = $projectService;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkpackageService
+     */
+    public function getWorkpackageService(): WorkpackageService
+    {
+        return $this->workpackageService;
+    }
+
+    /**
+     * @param WorkpackageService $workpackageService
+     * @return CalendarAbstractController
+     */
+    public function setWorkpackageService(WorkpackageService $workpackageService): CalendarAbstractController
+    {
+        $this->workpackageService = $workpackageService;
+
+        return $this;
+    }
+
+    /**
      * @return CalendarService
      */
-    public function getCalendarService()
+    public function getCalendarService(): CalendarService
     {
         return $this->calendarService;
     }
 
     /**
-     * @param $calendarService
-     *
+     * @param CalendarService $calendarService
      * @return CalendarAbstractController
      */
-    public function setCalendarService(CalendarService $calendarService)
+    public function setCalendarService(CalendarService $calendarService): CalendarAbstractController
     {
         $this->calendarService = $calendarService;
 
@@ -151,17 +261,16 @@ abstract class CalendarAbstractController extends AbstractActionController
     /**
      * @return GeneralService
      */
-    public function getGeneralService()
+    public function getGeneralService(): GeneralService
     {
         return $this->generalService;
     }
 
     /**
-     * @param $generalService
-     *
+     * @param GeneralService $generalService
      * @return CalendarAbstractController
      */
-    public function setGeneralService(GeneralService $generalService)
+    public function setGeneralService(GeneralService $generalService): CalendarAbstractController
     {
         $this->generalService = $generalService;
 
@@ -169,82 +278,20 @@ abstract class CalendarAbstractController extends AbstractActionController
     }
 
     /**
-     * @return WorkpackageService
-     */
-    public function getWorkpackageService()
-    {
-        return $this->workpackageService;
-    }
-
-    /**
-     * @param WorkpackageService $workpackageService
-     *
-     * @return CalendarAbstractController
-     */
-    public function setWorkpackageService(WorkpackageService $workpackageService)
-    {
-        $this->workpackageService = $workpackageService;
-
-        return $this;
-    }
-
-    /**
-     * @return ProjectService
-     */
-    public function getProjectService()
-    {
-        return $this->projectService;
-    }
-
-    /**
-     * @param ProjectService $projectService
-     *
-     * @return CalendarAbstractController
-     */
-    public function setProjectService(ProjectService $projectService)
-    {
-        $this->projectService = $projectService;
-
-        return $this;
-    }
-
-    /**
      * @return EmailService
      */
-    public function getEmailService()
+    public function getEmailService(): EmailService
     {
         return $this->emailService;
     }
 
     /**
      * @param EmailService $emailService
-     *
      * @return CalendarAbstractController
      */
-    public function setEmailService(EmailService $emailService)
+    public function setEmailService(EmailService $emailService): CalendarAbstractController
     {
         $this->emailService = $emailService;
-
-        return $this;
-    }
-
-
-    /**
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return CalendarAbstractController
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
 
         return $this;
     }
@@ -252,98 +299,20 @@ abstract class CalendarAbstractController extends AbstractActionController
     /**
      * @return SelectionService
      */
-    public function getSelectionService()
+    public function getSelectionService(): SelectionService
     {
         return $this->selectionService;
     }
 
     /**
      * @param SelectionService $selectionService
-     *
      * @return CalendarAbstractController
      */
-    public function setSelectionService(SelectionService $selectionService)
+    public function setSelectionService(SelectionService $selectionService): CalendarAbstractController
     {
         $this->selectionService = $selectionService;
 
         return $this;
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
-     * @param EntityManager $entityManager
-     *
-     * @return CalendarAbstractController
-     */
-    public function setEntityManager($entityManager)
-    {
-        $this->entityManager = $entityManager;
-
-        return $this;
-    }
-
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->moduleOptions;
-    }
-
-    /**
-     * @param ModuleOptions $moduleOptions
-     *
-     * @return CalendarAbstractController
-     */
-    public function setModuleOptions($moduleOptions)
-    {
-        $this->moduleOptions = $moduleOptions;
-
-        return $this;
-    }
-
-    /**
-     * @return TwigRenderer
-     */
-    public function getRenderer()
-    {
-        return $this->renderer;
-    }
-
-    /**
-     * @param TwigRenderer $renderer
-     *
-     * @return CalendarAbstractController
-     */
-    public function setRenderer($renderer)
-    {
-        $this->renderer = $renderer;
-
-        return $this;
-    }
-
-    /**
-     * Proxy for the flash messenger helper to have the string translated earlier.
-     *
-     * @param $string
-     *
-     * @return string
-     */
-    protected function translate($string)
-    {
-        /*
-         * @var Translate
-         */
-        $translate = $this->getViewHelperManager()->get('translate');
-
-        return $translate($string);
     }
 
     /**
@@ -356,7 +325,6 @@ abstract class CalendarAbstractController extends AbstractActionController
 
     /**
      * @param HelperPluginManager $viewHelperManager
-     *
      * @return CalendarAbstractController
      */
     public function setViewHelperManager(HelperPluginManager $viewHelperManager): CalendarAbstractController

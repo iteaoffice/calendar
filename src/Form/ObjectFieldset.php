@@ -13,6 +13,8 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Calendar\Entity;
@@ -36,7 +38,7 @@ use Zend\Form\Fieldset;
 class ObjectFieldset extends Fieldset
 {
     /**
-     * @param EntityManager         $entityManager
+     * @param EntityManager $entityManager
      * @param Entity\EntityAbstract $object
      */
     public function __construct(EntityManager $entityManager, Entity\EntityAbstract $object)
@@ -59,8 +61,8 @@ class ObjectFieldset extends Fieldset
             ) {
                 $element->setOptions(array_merge($element->getOptions(), ['object_manager' => $entityManager]));
             }
-            if ($element instanceof Radio && ! $element instanceof EntityRadio) {
-                $attributes        = $element->getAttributes();
+            if ($element instanceof Radio && !$element instanceof EntityRadio) {
+                $attributes = $element->getAttributes();
                 $valueOptionsArray = 'get' . ucfirst($attributes['array']);
 
                 $element->setOptions(
