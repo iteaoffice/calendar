@@ -54,16 +54,13 @@ class CalendarLink extends LinkAbstract
         $this->setYear($year);
         $this->setProject($project);
         $this->setAlternativeShow($alternativeShow);
-        /**
-         * Set the non-standard options needed to give an other link value
-         */
-        $this->setShowOptions(
-            [
-                'alternativeShow' => $this->getAlternativeShow(),
-                'text-which-tab'  => ucfirst($this->getWhich()),
-                'name'            => $this->getCalendar()->getCalendar(),
-            ]
-        );
+
+        // Set the non-standard options needed to give an other link value
+        $this->setShowOptions([
+            'alternativeShow' => $this->getAlternativeShow(),
+            'text-which-tab'  => (is_string($this->getWhich()) ? ucfirst($this->getWhich()) : null),
+            'name'            => $this->getCalendar()->getCalendar(),
+        ]);
 
         /*
          * Check the access to the object
