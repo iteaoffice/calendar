@@ -191,7 +191,7 @@ class Calendar extends EntityRepository
     /**
      * @return array
      */
-    public function findMinAndMaxYear()
+    public function findMinAndMaxYear(): array
     {
         $emConfig = $this->getEntityManager()->getConfiguration();
         $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
@@ -214,7 +214,7 @@ class Calendar extends EntityRepository
      *
      * @return Entity\Calendar|null
      */
-    public function findNextProjectCalendar(Project $project, \DateTime $dateTime)
+    public function findNextProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
@@ -270,7 +270,7 @@ class Calendar extends EntityRepository
      *
      * @return bool
      */
-    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact = null)
+    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact): bool
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');

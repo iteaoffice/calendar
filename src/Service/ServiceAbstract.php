@@ -190,7 +190,7 @@ abstract class ServiceAbstract implements ServiceInterface
      *
      * @return ServiceAbstract
      */
-    public function setServiceLocator($serviceLocator)
+    public function setServiceLocator($serviceLocator): ServiceAbstract
     {
         $this->serviceLocator = $serviceLocator;
 
@@ -200,7 +200,7 @@ abstract class ServiceAbstract implements ServiceInterface
     /**
      * @return Authorize
      */
-    public function getAuthorizeService()
+    public function getAuthorizeService(): Authorize
     {
         return $this->authorizeService;
     }
@@ -210,7 +210,7 @@ abstract class ServiceAbstract implements ServiceInterface
      *
      * @return ServiceAbstract
      */
-    public function setAuthorizeService($authorizeService)
+    public function setAuthorizeService($authorizeService): ServiceAbstract
     {
         $this->authorizeService = $authorizeService;
 
@@ -220,7 +220,7 @@ abstract class ServiceAbstract implements ServiceInterface
     /**
      * @return AuthenticationService
      */
-    public function getAuthenticationService()
+    public function getAuthenticationService(): AuthenticationService
     {
         return $this->authenticationService;
     }
@@ -230,7 +230,7 @@ abstract class ServiceAbstract implements ServiceInterface
      *
      * @return ServiceAbstract
      */
-    public function setAuthenticationService($authenticationService)
+    public function setAuthenticationService($authenticationService): ServiceAbstract
     {
         $this->authenticationService = $authenticationService;
 
@@ -240,7 +240,7 @@ abstract class ServiceAbstract implements ServiceInterface
     /**
      * @return ContactService
      */
-    public function getContactService()
+    public function getContactService(): ContactService
     {
         return $this->contactService;
     }
@@ -250,7 +250,7 @@ abstract class ServiceAbstract implements ServiceInterface
      *
      * @return ServiceAbstract
      */
-    public function setContactService($contactService)
+    public function setContactService($contactService): ServiceAbstract
     {
         $this->contactService = $contactService;
 
@@ -260,7 +260,7 @@ abstract class ServiceAbstract implements ServiceInterface
     /**
      * @return ModuleOptions
      */
-    public function getModuleOptions()
+    public function getModuleOptions(): ModuleOptions
     {
         return $this->moduleOptions;
     }
@@ -270,7 +270,7 @@ abstract class ServiceAbstract implements ServiceInterface
      *
      * @return ServiceAbstract
      */
-    public function setModuleOptions($moduleOptions)
+    public function setModuleOptions($moduleOptions): ServiceAbstract
     {
         $this->moduleOptions = $moduleOptions;
 

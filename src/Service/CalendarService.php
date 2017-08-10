@@ -145,7 +145,7 @@ class CalendarService extends ServiceAbstract
     public function findCalendarContactByContact(
         $which = self::WHICH_UPCOMING,
         Contact $contact = null
-    ) {
+    ): array {
         /** @var Repository\Contact $repository */
         $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
 
@@ -161,7 +161,7 @@ class CalendarService extends ServiceAbstract
     public function findCalendarContactByContactAndCalendar(
         Contact $contact,
         Calendar $calendar
-    ) {
+    ):?CalendarContact {
         /** @var Repository\Contact $repository */
         $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
 
@@ -174,7 +174,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return CalendarContact[]
      */
-    public function findCalendarContactsByCalendar(Calendar $calendar, $status = CalendarContact::STATUS_ALL)
+    public function findCalendarContactsByCalendar(Calendar $calendar, $status = CalendarContact::STATUS_ALL): array
     {
         /** @var Repository\Contact $repository */
         $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
@@ -190,7 +190,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return bool
      */
-    public function canViewCalendar(Calendar $calendar, Contact $contact = null)
+    public function canViewCalendar(Calendar $calendar, Contact $contact): bool
     {
         /** @var Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);

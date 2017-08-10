@@ -114,9 +114,19 @@ return [
                                     ],
                                 ],
                                 'pages'   => [
-                                    'edit-calendar' => [
+                                    'edit-calendar'    => [
                                         'label'   => _("txt-edit-calendar"),
                                         'route'   => 'zfcadmin/calendar-manager/edit',
+                                        'visible' => false,
+                                        'params'  => [
+                                            'entities' => [
+                                                'id' => Calendar\Entity\Calendar::class,
+                                            ],
+                                        ],
+                                    ],
+                                    'select-attendees' => [
+                                        'label'   => _("txt-nav-calendar-select-attendees"),
+                                        'route'   => 'zfcadmin/calendar-manager/select-attendees',
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [

@@ -69,7 +69,7 @@ class CalendarManagerController extends CalendarAbstractController
                 'item' => sprintf(
                     $this->translate("Birthday of %s (%s)"),
                     $birthDay->getDisplayName(),
-                    $birthDay->getDateOfBirth()->format("Y")
+                    $birthDay->getDateOfBirth()->format('Y')
                 ),
                 'date' => $birthDayDate,
             ];

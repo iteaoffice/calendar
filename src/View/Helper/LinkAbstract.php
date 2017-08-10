@@ -140,6 +140,7 @@ abstract class LinkAbstract extends AbstractViewHelper
             case 'icon':
             case 'button':
                 switch ($this->getAction()) {
+                    case 'new':
                     case 'new-community':
                         $this->addLinkContent('<i class="fa fa-plus"></i>');
                         break;
@@ -283,10 +284,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addClasses($classes)
     {
-        if (!is_array($classes)) {
-            $classes = [$classes];
-        }
-        foreach ($classes as $class) {
+        foreach ((array) $classes as $class) {
             $this->classes[] = $class;
         }
 
@@ -310,7 +308,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param string $showOptions
+     * @param array $showOptions
      */
     public function setShowOptions($showOptions)
     {

@@ -46,7 +46,7 @@ class CalendarLink extends LinkAbstract
         $alternativeShow = null,
         $year = null,
         Project $project = null
-    ) {
+    ): string {
         $this->setCalendar($calendar);
         $this->setAction($action);
         $this->setShow($show);
