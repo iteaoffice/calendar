@@ -24,14 +24,8 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Create a link to an project.
- *
- * @category   Program
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    https://itea3.org/licence.txt proprietary
- *
- * @link       https://itea3.org
+ * Class RenderCalendarContactList
+ * @package Calendar\Controller\Plugin
  */
 class RenderCalendarContactList extends AbstractPlugin
 {

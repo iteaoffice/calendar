@@ -68,7 +68,7 @@ abstract class AbstractViewHelper extends AbstractHelper
     }
 
     /**
-     * @param ContainerInterface|ServiceLocatorInterface $serviceManager
+     * @param ContainerInterface $serviceManager
      *
      * @return AbstractViewHelper
      */
