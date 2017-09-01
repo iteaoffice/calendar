@@ -15,17 +15,13 @@ declare(strict_types=1);
 
 namespace Calendar\Controller\Plugin;
 
+use setasign\Fpdi\TcpdfFpdi;
+
 /**
- * Create a link to an project.
- *
- * @category   Calendar
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    https://itea3.org/licence.txt proprietary
- *
- * @link       https://itea3.org
+ * Class CalendarPdf
+ * @package Calendar\Controller\Plugin
  */
-class CalendarPdf extends \FPDI
+class CalendarPdf extends TcpdfFpdi
 {
     /**
      * "Remembers" the template id of the imported page.
