@@ -25,6 +25,9 @@ use Zend\Form\Annotation;
 class ContactRole
 {
     const ROLE_ATTENDEE = 1;
+    const ROLE_STG_REVIEWER = 7;
+    const ROLE_STG_SPARE_REVIEWER = 8;
+    
     /**
      * @ORM\Column(name="role_id", type="integer", nullable=false)
      * @ORM\Id
