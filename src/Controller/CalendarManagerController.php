@@ -37,7 +37,7 @@ class CalendarManagerController extends CalendarAbstractController
      *
      * @return ViewModel
      */
-    public function overviewAction()
+    public function overviewAction(): ViewModel
     {
         $which = $this->getEvent()->getRouteMatch()->getParam('which', CalendarService::WHICH_UPCOMING);
         $page = $this->params('page', 1);
@@ -111,6 +111,7 @@ class CalendarManagerController extends CalendarAbstractController
 
     /**
      * @return \Zend\Http\Response|ViewModel
+     * @throws \Exception
      */
     public function newAction()
     {
@@ -180,7 +181,15 @@ class CalendarManagerController extends CalendarAbstractController
             return $this->notFoundAction();
         }
 
-        $data = $this->getRequest()->getPost()->toArray();
+        $data = array_merge(
+            [
+                'calendar_entity_calendar' => [
+                    'image' => !is_null($calendar->getImage()) ? $calendar->getImage()->getId() : null
+                ]
+            ],
+            $this->getRequest()->getPost()->toArray()
+        );
+
         $form = $this->getFormService()->prepare($calendar, $calendar, $data);
 
         if ($this->getRequest()->isPost()) {

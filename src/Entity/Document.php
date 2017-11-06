@@ -138,11 +138,19 @@ class Document extends EntityAbstract implements ResourceInterface
          * When we don't know the extension, leave out the dot at the end of the to prevent that the document
          * is not in the zip
          */
-        if ($this->getContentType()->getId() !== ContentType::TYPE_UNKNOWN) {
-            return sprintf('%s.%s', $this->getDocument(), $this->getContentType()->getExtension());
-        } else {
+        if ($this->getContentType()->getId() === ContentType::TYPE_UNKNOWN) {
             return sprintf('%s', $this->getDocument());
         }
+
+        if (strpos($this->getDocument(), $this->getContentType()->getExtension()) !== false) {
+            return sprintf('%s', $this->getDocument());
+        }
+
+        return sprintf(
+            '%s.%s',
+            $this->getDocument(),
+            $this->getContentType()->getExtension()
+        );
     }
 
     /**

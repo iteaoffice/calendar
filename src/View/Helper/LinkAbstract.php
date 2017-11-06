@@ -90,11 +90,10 @@ abstract class LinkAbstract extends AbstractViewHelper
     protected $project;
 
     /**
-     * This function produces the link in the end.
-     *
      * @return string
+     * @throws \Exception
      */
-    public function createLink()
+    public function createLink(): string
     {
         /**
          * @var $url Url
@@ -105,11 +104,11 @@ abstract class LinkAbstract extends AbstractViewHelper
          */
         $serverUrl = $this->getHelperPluginManager()->get('serverUrl');
         $this->linkContent = [];
-        $this->classes = [];
+
         $this->parseAction();
         $this->parseShow();
         if ('social' === $this->getShow()) {
-            return $serverUrl->__invoke() . $url($this->router, $this->routerParams);
+            return $serverUrl() . $url($this->router, $this->routerParams);
         }
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
@@ -134,7 +133,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     /**
      * @throws \Exception
      */
-    public function parseShow()
+    public function parseShow(): void
     {
         switch ($this->getShow()) {
             case 'icon':

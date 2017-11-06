@@ -238,8 +238,8 @@ class Calendar extends EntityRepository
     /**
      * @param Project $project
      * @param \DateTime $dateTime
-     *
      * @return Entity\Calendar|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
     {

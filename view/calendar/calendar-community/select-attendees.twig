@@ -1,14 +1,14 @@
 {% do headTitle().append(translate("txt-calendar")) %}
 {% do headTitle().append(translate("txt-edit-attendees-of-calendar-item")) %}
-<h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendar) }}</h1>
+<h1 class="display-4">{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
 
 {{ form().openTag(form)|raw }}
 
 {% if calendar.projectCalendar %}
-    <div class="form-group">
-        <label class="col-sm-3 control-label">{{ translate("txt-project-name") }}</label>
+    <div class="form-group row">
+        <label class="col-md-3 form-control-label control-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
             <p class="form-control-static">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
@@ -16,8 +16,8 @@
     </div>
 {% endif %}
 
-<div class="form-group">
-    <label class="col-sm-3 control-label">{{ translate("txt-name") }}</label>
+<div class="form-group row">
+    <label class="col-md-3 form-control-label control-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
         <p class="form-control-static">{{ calendar }}</p>
@@ -25,7 +25,7 @@
 </div>
 
 <h3>{{ translate("txt-project-reviewers") }}</h3>
-<table class="table table-hover table-striped table-condensed">
+<table class="table table-hover table-striped table-condensed table-sm">
     <thead>
     <tr>
         <th>{{ translate("txt-reviewer") }}</th>
@@ -50,8 +50,8 @@
 
 <hr>
 
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+<div class="form-group row">
+    <div class="offset-md-3 col-sm-offset-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {{ ztbformelement(form.get('cancel')) }}
     </div>

@@ -26,17 +26,15 @@ use Project\Entity\Project;
 class CalendarLink extends LinkAbstract
 {
     /**
-     * @param Calendar $calendar
+     * @param Calendar|null $calendar
      * @param string $action
      * @param string $show
      * @param string $which
      * @param null $alternativeShow
      * @param null $year
-     * @param Project $project
-     *
+     * @param Project|null $project
+     * @param null $classes
      * @return string
-     *
-     * @throws \Exception
      */
     public function __invoke(
         Calendar $calendar = null,
@@ -45,8 +43,11 @@ class CalendarLink extends LinkAbstract
         $which = CalendarService::WHICH_UPCOMING,
         $alternativeShow = null,
         $year = null,
-        Project $project = null
+        Project $project = null,
+        $classes = null
     ): string {
+        $this->classes = [];
+
         $this->setCalendar($calendar);
         $this->setAction($action);
         $this->setShow($show);
@@ -55,10 +56,12 @@ class CalendarLink extends LinkAbstract
         $this->setProject($project);
         $this->setAlternativeShow($alternativeShow);
 
+        $this->addClasses($classes);
+
         // Set the non-standard options needed to give an other link value
         $this->setShowOptions([
             'alternativeShow' => $this->getAlternativeShow(),
-            'text-which-tab'  => (is_string($this->getWhich()) ? ucfirst($this->getWhich()) : null),
+            'text-which-tab'  => ucfirst((string) $this->getWhich()),
             'name'            => $this->getCalendar()->getCalendar(),
         ]);
 

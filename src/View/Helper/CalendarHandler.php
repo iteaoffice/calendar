@@ -199,7 +199,7 @@ class CalendarHandler extends AbstractViewHelper
      *
      * @return string
      */
-    public function parseCalendarItem(Calendar $calendar)
+    public function parseCalendarItem(Calendar $calendar): string
     {
         return $this->getRenderer()->render('calendar/partial/entity/calendar', ['calendar' => $calendar]);
     }
@@ -207,7 +207,7 @@ class CalendarHandler extends AbstractViewHelper
     /**
      * @return TwigRenderer
      */
-    public function getRenderer()
+    public function getRenderer(): TwigRenderer
     {
         return $this->getServiceManager()->get('ZfcTwigRenderer');
     }
@@ -247,7 +247,7 @@ class CalendarHandler extends AbstractViewHelper
     /**
      * @return ModuleOptions
      */
-    public function getModuleOptions()
+    public function getModuleOptions(): ModuleOptions
     {
         return $this->getServiceManager()->get(ModuleOptions::class);
     }

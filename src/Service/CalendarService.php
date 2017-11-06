@@ -285,17 +285,15 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * Return the lastest review meeting
-     *
      * @param Project $project
      * @param \DateTime $datetime
-     *
      * @return Calendar|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findPreviousProjectCalendar(
         Project $project,
         \DateTime $datetime
-    ) {
+    ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
 
