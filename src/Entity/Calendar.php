@@ -29,23 +29,23 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * Constant for final = -1 (draft)
      */
-    const FINAL_DRAFT = -1;
+    public const FINAL_DRAFT = -1;
     /**
      * Constant for final = 1 (final)
      */
-    const FINAL_FINAL = 1;
+    public const FINAL_FINAL = 1;
     /**
      * Constant for final = 0 (tentative)
      */
-    const FINAL_TENTATIVE = 0;
+    public const FINAL_TENTATIVE = 0;
     /**
      * Constant for not on homepage = 0 (not on homepage)
      */
-    const NOT_ON_HOMEPAGE = 0;
+    public const NOT_ON_HOMEPAGE = 0;
     /**
      * Constant for on homepage = 1 (on homepage)
      */
-    const ON_HOMEPAGE = 1;
+    public const ON_HOMEPAGE = 1;
     /**
      * Textual versions of the final
      *

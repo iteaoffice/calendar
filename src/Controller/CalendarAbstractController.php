@@ -26,7 +26,7 @@ use General\Service\GeneralService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Controller\Plugin\FlashMessenger;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;

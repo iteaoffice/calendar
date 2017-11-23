@@ -54,7 +54,7 @@ class CalendarHandler extends AbstractViewHelper
 
         switch ($content->getHandler()->getHandler()) {
             case 'calendar_item':
-                if (is_null($this->getCalendar())) {
+                if (\is_null($this->getCalendar())) {
                     $this->getServiceManager()->get('response')->setStatusCode(404);
 
                     return 'The selected calendar item cannot be found';
@@ -157,7 +157,7 @@ class CalendarHandler extends AbstractViewHelper
     {
 
         //Try first to see if the param can be found from the route (rule 1)
-        if (!is_null($this->getRouteMatch()->getParam($param->getParam()))) {
+        if (!\is_null($this->getRouteMatch()->getParam($param->getParam()))) {
             return $this->getRouteMatch()->getParam($param->getParam());
         }
 
@@ -222,7 +222,7 @@ class CalendarHandler extends AbstractViewHelper
     {
         $which = CalendarService::WHICH_FINAL;
 
-        if (is_null($year)) {
+        if (\is_null($year)) {
             $which = CalendarService::WHICH_UPCOMING;
         } else {
             $limit = 999;

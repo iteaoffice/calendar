@@ -116,7 +116,7 @@ class CalendarManagerController extends CalendarAbstractController
     public function newAction()
     {
         $project = null;
-        if (!is_null($this->params('project'))) {
+        if (!\is_null($this->params('project'))) {
             $project = $this->getProjectService()->findProjectById($this->params('project'));
             if ($project->isEmpty()) {
                 return $this->notFoundAction();
@@ -144,7 +144,7 @@ class CalendarManagerController extends CalendarAbstractController
                 $calendar->setContact($this->zfcUserAuthentication()->getIdentity());
                 $calendar = $this->getCalendarService()->newEntity($calendar);
 
-                if (!is_null($project)) {
+                if (!\is_null($project)) {
                     $projectCalendar = new \Project\Entity\Calendar\Calendar();
                     $projectCalendar->setProject($project);
                     $projectCalendar->setCalendar($calendar);
@@ -177,14 +177,14 @@ class CalendarManagerController extends CalendarAbstractController
     public function editAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
         $data = array_merge(
             [
                 'calendar_entity_calendar' => [
-                    'image' => !is_null($calendar->getImage()) ? $calendar->getImage()->getId() : null
+                    'image' => !\is_null($calendar->getImage()) ? $calendar->getImage()->getId() : null
                 ]
             ],
             $this->getRequest()->getPost()->toArray()
@@ -244,7 +244,7 @@ class CalendarManagerController extends CalendarAbstractController
     public function selectAttendeesAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -282,7 +282,7 @@ class CalendarManagerController extends CalendarAbstractController
     public function setRolesAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -356,7 +356,7 @@ class CalendarManagerController extends CalendarAbstractController
          */
         $calendarContact = $this->getCalendarService()->findEntityById(Contact::class, $calendarContactId);
 
-        if (is_null($calendarContact)) {
+        if (\is_null($calendarContact)) {
             return $this->notFoundAction();
         }
         /**
@@ -364,7 +364,7 @@ class CalendarManagerController extends CalendarAbstractController
          */
         $role = $this->getCalendarService()->findEntityById(ContactRole::class, $roleId);
 
-        if (is_null($role)) {
+        if (\is_null($role)) {
             return $this->notFoundAction();
         }
 
@@ -380,7 +380,7 @@ class CalendarManagerController extends CalendarAbstractController
     public function calendarAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 

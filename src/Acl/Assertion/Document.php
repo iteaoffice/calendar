@@ -51,7 +51,7 @@ class Document extends AssertionAbstract
         /*
          * No document was found, so return true because we do not now anything about the access
          */
-        if (is_null($document)) {
+        if (\is_null($document)) {
             return true;
         }
 
@@ -69,7 +69,7 @@ class Document extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($document->getCalendar()->getProjectCalendar())) {
+                if (!\is_null($document->getCalendar()->getProjectCalendar())) {
                     if ($this->getContactService()->contactHasPermit(
                         $this->getContact(),
                         'edit',

@@ -37,7 +37,7 @@ class CalendarPdf extends TcpdfFpdi
      */
     public function header()
     {
-        if (is_null($this->_tplIdx)) {
+        if (\is_null($this->_tplIdx)) {
             if (!file_exists($this->template)) {
                 throw new \InvalidArgumentException(sprintf("Template %s cannot be found", $this->template));
             }

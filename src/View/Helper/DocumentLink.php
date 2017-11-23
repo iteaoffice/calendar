@@ -78,7 +78,7 @@ class DocumentLink extends LinkAbstract
      */
     public function getDocument()
     {
-        if (is_null($this->document)) {
+        if (\is_null($this->document)) {
             $this->document = new Entity\Document();
         }
 

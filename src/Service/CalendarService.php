@@ -26,12 +26,12 @@ class CalendarService extends ServiceAbstract
     /**
      * Constant to determine which affiliations must be taken from the database
      */
-    const WHICH_UPCOMING = 'upcoming';
-    const WHICH_UPDATED = 'updated';
-    const WHICH_PAST = 'past';
-    const WHICH_FINAL = 'final';
-    const WHICH_REVIEWS = 'project-reviews';
-    const WHICH_ON_HOMEPAGE = 'on-homepage';
+    public const WHICH_UPCOMING = 'upcoming';
+    public const WHICH_UPDATED = 'updated';
+    public const WHICH_PAST = 'past';
+    public const WHICH_FINAL = 'final';
+    public const WHICH_REVIEWS = 'project-reviews';
+    public const WHICH_ON_HOMEPAGE = 'on-homepage';
 
 
     /**
@@ -77,7 +77,7 @@ class CalendarService extends ServiceAbstract
             foreach (explode(',', $data['added']) as $contactId) {
                 $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
 
-                if (!is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
+                if (!\is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -133,7 +133,7 @@ class CalendarService extends ServiceAbstract
             ]
         );
 
-        return !is_null($calendarContact);
+        return !\is_null($calendarContact);
     }
 
     /**
@@ -161,7 +161,7 @@ class CalendarService extends ServiceAbstract
     public function findCalendarContactByContactAndCalendar(
         Contact $contact,
         Calendar $calendar
-    ):?CalendarContact {
+    ): ?CalendarContact {
         /** @var Repository\Contact $repository */
         $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
 
@@ -302,13 +302,17 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param CalendarContact $calendarContact
-     * @param                 $status
+     * @param string $status
+     * @throws \Doctrine\ORM\ORMException
      */
     public function updateContactStatus(
         CalendarContact $calendarContact,
-        $status
-    ) {
-        $calendarContact->setStatus($this->getEntityManager()->getReference(Entity\ContactStatus::class, $status));
+        string $status
+    ): void {
+        /** @var Entity\ContactStatus $contactStatus */
+        $contactStatus = $this->getEntityManager()->getReference(Entity\ContactStatus::class, $status);
+
+        $calendarContact->setStatus($contactStatus);
         $this->updateEntity($calendarContact);
     }
 

@@ -24,9 +24,9 @@ use Zend\Form\Annotation;
  */
 class ContactStatus
 {
-    const STATUS_TENTATIVE = 1;
-    const STATUS_ACCEPT = 2;
-    const STATUS_DECLINE = 3;
+    public const STATUS_TENTATIVE = 1;
+    public const STATUS_ACCEPT = 2;
+    public const STATUS_DECLINE = 3;
     /**
      * @ORM\Column(name="status_id", type="integer", nullable=false)
      * @ORM\Id

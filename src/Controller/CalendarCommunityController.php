@@ -135,7 +135,7 @@ class CalendarCommunityController extends CalendarAbstractController
     public function calendarAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -236,7 +236,7 @@ class CalendarCommunityController extends CalendarAbstractController
         /** @var Contact $calendarContact */
         $calendarContact = $this->getCalendarService()->findEntityById(Contact::class, $calendarContactId);
 
-        if (is_null($calendarContact)) {
+        if (\is_null($calendarContact)) {
             return new JsonModel(['result' => 'error']);
         }
         $this->getCalendarService()->updateContactStatus($calendarContact, $statusId);
@@ -256,7 +256,7 @@ class CalendarCommunityController extends CalendarAbstractController
     public function selectAttendeesAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -299,7 +299,7 @@ class CalendarCommunityController extends CalendarAbstractController
                     /*
                      * Save a new one.
                      */
-                    if (is_null($calendarContact)) {
+                    if (\is_null($calendarContact)) {
                         $calendarContact = new Contact();
                         $calendarContact->setContact($this->getContactService()->findContactById($contactId));
                         /** @var ContactRole $role */
@@ -357,7 +357,7 @@ class CalendarCommunityController extends CalendarAbstractController
     public function presenceListAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -385,7 +385,7 @@ class CalendarCommunityController extends CalendarAbstractController
     public function sendMessageAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 
@@ -464,7 +464,7 @@ class CalendarCommunityController extends CalendarAbstractController
         set_time_limit(0);
 
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (is_null($calendar)) {
+        if (\is_null($calendar)) {
             return $this->notFoundAction();
         }
 

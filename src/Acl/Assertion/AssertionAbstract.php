@@ -72,7 +72,7 @@ abstract class AssertionAbstract implements AssertionInterface
     public function rolesHaveAccess($access): bool
     {
         $accessRoles = $this->prepareAccessRoles($access);
-        if (count($accessRoles) === 0) {
+        if (\count($accessRoles) === 0) {
             return true;
         }
 
@@ -81,7 +81,7 @@ abstract class AssertionAbstract implements AssertionInterface
                 return true;
             }
             if ($this->hasContact() &&
-                in_array(
+                \in_array(
                     strtolower($accessRole->getAccess()),
                     $this->getAdminService()->findAccessRolesByContactAsArray($this->getContact()),
                     true
@@ -140,7 +140,7 @@ abstract class AssertionAbstract implements AssertionInterface
      */
     public function getContact(): Contact
     {
-        if (is_null($this->contact)) {
+        if (\is_null($this->contact)) {
             $this->contact = new Contact();
         }
 
@@ -189,7 +189,7 @@ abstract class AssertionAbstract implements AssertionInterface
         /**
          * When the privilege is_null (not given by the isAllowed helper), get it from the routeMatch
          */
-        if (is_null($privilege) && $this->hasRouteMatch()) {
+        if (\is_null($privilege) && $this->hasRouteMatch()) {
             $this->privilege = $this->getRouteMatch()
                 ->getParam('privilege', $this->getRouteMatch()->getParam('action'));
         } else {
@@ -204,7 +204,7 @@ abstract class AssertionAbstract implements AssertionInterface
      */
     public function hasRouteMatch(): bool
     {
-        return !is_null($this->getRouteMatch());
+        return !\is_null($this->getRouteMatch());
     }
 
     /**
@@ -236,13 +236,13 @@ abstract class AssertionAbstract implements AssertionInterface
      */
     public function getId():?int
     {
-        if (!is_null($id = $this->getRequest()->getPost('id'))) {
+        if (!\is_null($id = $this->getRequest()->getPost('id'))) {
             return (int)$id;
         }
-        if (is_null($this->getRouteMatch())) {
+        if (\is_null($this->getRouteMatch())) {
             return null;
         }
-        if (!is_null($id = $this->getRouteMatch()->getParam('id'))) {
+        if (!\is_null($id = $this->getRouteMatch()->getParam('id'))) {
             return (int)$id;
         }
 

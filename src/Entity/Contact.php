@@ -23,8 +23,8 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  */
 class Contact extends EntityAbstract implements ResourceInterface
 {
-    const STATUS_ALL = 1;
-    const STATUS_NO_DECLINED = 2;
+    public const STATUS_ALL = 1;
+    public const STATUS_NO_DECLINED = 2;
     /**
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
      * @ORM\Id

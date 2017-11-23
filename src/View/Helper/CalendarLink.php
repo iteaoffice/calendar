@@ -173,7 +173,7 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'new':
                 $this->setRouter('zfcadmin/calendar-manager/new');
-                if (is_null($this->getProject())) {
+                if (\is_null($this->getProject())) {
                     $this->setText(sprintf($this->translate("txt-add-calendar-item")));
                 } else {
                     $this->setText(sprintf($this->translate("txt-review-meeting-for-%s"), $this->getProject()));

@@ -48,7 +48,7 @@ class FormService extends ServiceAbstract
      */
     public function getForm($className = null, EntityAbstract $entity = null, bool $bind = true): Form
     {
-        if (!is_null($className) && is_null($entity)) {
+        if (!\is_null($className) && \is_null($entity)) {
             $entity = new $className();
         }
 

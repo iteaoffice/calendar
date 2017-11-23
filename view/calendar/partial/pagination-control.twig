@@ -55,12 +55,12 @@
     {% endif %}
 
     {% if paginator.currentPageNumber < paginator.pageRange %}
-        <li>
+        <li class="page-item">
             {{ paginationLink((paginator.currentPageNumber + 1), translate("txt-next")) }}
         </li>
     {% endif %}
 
-    <!--<li>
-        {#{ paginationLink('all', translate("txt-all")) }#}
-    </li>-->
+    <li class="page-item">
+        {{ paginationLink('all', translate("txt-all")) }}
+    </li>
 </ul>

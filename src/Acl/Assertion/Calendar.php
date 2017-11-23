@@ -42,7 +42,7 @@ class Calendar extends AssertionAbstract
     ) {
         $this->setPrivilege($privilege);
 
-        if (!$calendar instanceof CalendarEntity && !is_null($id = $this->getId())) {
+        if (!$calendar instanceof CalendarEntity && !\is_null($id = $this->getId())) {
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
 
@@ -53,7 +53,7 @@ class Calendar extends AssertionAbstract
                 /**
                  * Stop this case when there is no project calendar
                  */
-                if (is_null($calendar->getProjectCalendar())) {
+                if (\is_null($calendar->getProjectCalendar())) {
                     return false;
                 }
                 if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
@@ -63,7 +63,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (!\is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit(
                             $this->getContact(),
@@ -85,7 +85,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (!\is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit(
                             $this->getContact(),
@@ -125,7 +125,7 @@ class Calendar extends AssertionAbstract
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (!is_null($calendar->getProjectCalendar())) {
+                if (!\is_null($calendar->getProjectCalendar())) {
                     if ($this->getContactService()
                         ->contactHasPermit(
                             $this->getContact(),

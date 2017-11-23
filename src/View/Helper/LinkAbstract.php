@@ -117,7 +117,7 @@ abstract class LinkAbstract extends AbstractViewHelper
             $serverUrl() . $url($this->router, $this->routerParams),
             htmlentities((string) $this->text),
             implode(' ', $this->classes),
-            in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
+            \in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
                 : htmlentities(implode('', $this->linkContent))
         );
     }
@@ -183,7 +183,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                 $this->addLinkContent($this->getText());
                 break;
             case 'paginator':
-                if (is_null($this->getAlternativeShow())) {
+                if (\is_null($this->getAlternativeShow())) {
                     throw new \InvalidArgumentException(
                         sprintf("this->alternativeShow cannot be null for a paginator link")
                     );
@@ -324,7 +324,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     public function hasAccess(EntityAbstract $entity, $assertion, $action)
     {
         $assertion = $this->getAssertion($assertion);
-        if (!is_null($entity)
+        if (!\is_null($entity)
             && !$this->getAuthorizeService()->getAcl()->hasResource($entity)
         ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
@@ -380,10 +380,10 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addRouterParam($key, $value, $allowNull = true)
     {
-        if (!$allowNull && is_null($value)) {
+        if (!$allowNull && \is_null($value)) {
             throw new \InvalidArgumentException(sprintf("null is not allowed for %s", $key));
         }
-        if (!is_null($value)) {
+        if (!\is_null($value)) {
             $this->routerParams[$key] = $value;
         }
     }
@@ -417,7 +417,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function getProject()
     {
-        if (is_null($this->project)) {
+        if (\is_null($this->project)) {
             $this->project = new Project();
         }
 
@@ -442,7 +442,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function getCalendar()
     {
-        if (is_null($this->calendar)) {
+        if (\is_null($this->calendar)) {
             $this->calendar = new Calendar();
         }
 
