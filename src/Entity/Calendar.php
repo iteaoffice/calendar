@@ -345,7 +345,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return int|string
      */
-    public function getFinal($textual = false)
+    public function getFinal(bool $textual = false)
     {
         if ($textual) {
             return self::$finalTemplates[$this->final];
@@ -367,7 +367,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return int|string
      */
-    public function getOnHomepage($textual = false)
+    public function getOnHomepage(bool $textual = false)
     {
         if ($textual) {
             return self::$onHomepageTemplates[$this->onHomepage];

@@ -149,48 +149,4 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 
         return $this;
     }
-
-    /**
-     * Return template to use for Upcoming Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarUpcomingTemplate()
-    {
-        return $this->calendarUpcomingTemplate;
-    }
-
-    /**
-     * @param  string $calendarUpcomingTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
-    {
-        $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return template to use for Past Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarPastTemplate()
-    {
-        return $this->calendarPastTemplate;
-    }
-
-    /**
-     * @param $calendarPastTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarPastTemplate($calendarPastTemplate)
-    {
-        $this->calendarPastTemplate = $calendarPastTemplate;
-
-        return $this;
-    }
 }

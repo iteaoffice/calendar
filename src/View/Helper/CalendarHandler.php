@@ -236,20 +236,12 @@ class CalendarHandler extends AbstractViewHelper
             ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
-            $this->getModuleOptions()->getCalendarPastTemplate(),
+            'cms/calendar/calendar-past',
             [
                 'calendarItems' => $calendarItems,
                 'which'         => $which,
             ]
         );
-    }
-
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions(): ModuleOptions
-    {
-        return $this->getServiceManager()->get(ModuleOptions::class);
     }
 
     /**
@@ -297,7 +289,7 @@ class CalendarHandler extends AbstractViewHelper
             ->getResult();
 
         return $this->getRenderer()->render(
-            $this->getModuleOptions()->getCalendarUpcomingTemplate(),
+            'cms/calendar/calendar-upcoming',
             ['calendarItems' => $calendarItems]
         );
     }
@@ -319,7 +311,7 @@ class CalendarHandler extends AbstractViewHelper
         )->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
-            $this->getModuleOptions()->getCalendarPastTemplate(),
+            'cms/calendar/calendar-past',
             ['calendarItems' => $calendarItems]
         );
     }
@@ -351,7 +343,7 @@ class CalendarHandler extends AbstractViewHelper
             ->setMaxResults($limit)->getResult();
 
         return $this->getRenderer()->render(
-            'calendar/partial/list/calendar-small',
+            'cms/calendar/calendar-small',
             ['calendarItems' => $calendarItems, 'calendarService' => $this->getCalendarService()]
         );
     }

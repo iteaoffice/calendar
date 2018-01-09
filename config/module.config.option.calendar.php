@@ -14,8 +14,6 @@ $options = [
     'calendar_contact_template'          => __DIR__ . '/../../../../styles/itea/template/pdf/itea-template.pdf',
     'review_calendar_template'           => __DIR__
                                             . '/../../../../styles/itea/template/pdf/review-calendar-template.pdf',
-    'calendar_past_template'             => 'calendar/partial/list/calendar-past',
-    'calendar_upcoming_template'         => 'calendar/partial/list/calendar-upcoming',
 ];
 /**
  * You do not need to edit below this line
