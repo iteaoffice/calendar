@@ -58,6 +58,14 @@ class Document extends AssertionAbstract
         switch ($this->getPrivilege()) {
             case 'document-community':
             case 'download':
+                if ($this->getContactService()->contactHasPermit(
+                    $this->getContact(),
+                    'view',
+                    $document->getCalendar()
+                )) {
+                    return true;
+                }
+
                 return $this->getCalendarService()->canViewCalendar($document->getCalendar(), $this->getContact());
             case 'edit-community':
                 if ($this->getContactService()

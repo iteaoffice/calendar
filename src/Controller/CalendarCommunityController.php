@@ -41,7 +41,7 @@ class CalendarCommunityController extends CalendarAbstractController
     /**
      * @return ViewModel
      */
-    public function overviewAction()
+    public function overviewAction(): ViewModel
     {
         $which = $this->params('which', CalendarService::WHICH_UPCOMING);
         $page = $this->params('page', 1);
@@ -65,11 +65,9 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * Controller which gives an overview of upcoming invites.
-     *
      * @return ViewModel
      */
-    public function contactAction()
+    public function contactAction(): ViewModel
     {
         $calendarContacts = $this->getCalendarService()->findCalendarContactByContact(
             CalendarService::WHICH_UPCOMING,
@@ -84,11 +82,9 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar.
-     *
      * @return ViewModel
      */
-    public function reviewCalendarAction()
+    public function reviewCalendarAction(): ViewModel
     {
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
@@ -122,7 +118,7 @@ class CalendarCommunityController extends CalendarAbstractController
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
             ->addHeaderLine('Content-Disposition', 'attachment; filename="review-calendar.pdf"')
-            ->addHeaderLine('Content-Type: application/pdf')
+            ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
             ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
 
@@ -130,7 +126,7 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return array|\Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function calendarAction()
     {

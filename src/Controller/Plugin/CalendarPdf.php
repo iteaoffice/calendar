@@ -46,6 +46,7 @@ class CalendarPdf extends TcpdfFpdi
         }
         $this->SetTopMargin(35);
         $this->useTemplate($this->_tplIdx, 0, 0);
+
         //        $this->SetFont('freesans', 'N', 15);
         $this->SetTextColor(0);
         $this->SetXY(15, 5);

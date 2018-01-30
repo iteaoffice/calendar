@@ -1,0 +1,22 @@
+imports:
+    - php
+build:
+    environment:
+        php:
+            version: 7.1
+    tests:
+        override:
+            - php-scrutinizer-run --enable-security-analysis
+            -
+               command: ./vendor/bin/phpunit --coverage-clover=coverage
+               coverage:
+                   file: coverage
+                   format: php-clover
+tools:
+    php_changetracking: true
+    php_sim: true
+    php_pdepend: true
+    php_mess_detector: true
+    php_analyzer: true
+    php_cs_fixer: true
+    sensiolabs_security_checker: true

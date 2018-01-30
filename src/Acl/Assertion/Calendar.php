@@ -43,6 +43,7 @@ class Calendar extends AssertionAbstract
         $this->setPrivilege($privilege);
 
         if (!$calendar instanceof CalendarEntity && !\is_null($id = $this->getId())) {
+            /** @var CalendarEntity $calendar */
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
 
@@ -53,26 +54,12 @@ class Calendar extends AssertionAbstract
                 /**
                  * Stop this case when there is no project calendar
                  */
-                if (\is_null($calendar->getProjectCalendar())) {
+                if (null === $calendar->getProjectCalendar()) {
                     return false;
                 }
+
                 if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
                     return true;
-                }
-
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (!\is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                        ->contactHasPermit(
-                            $this->getContact(),
-                            'edit',
-                            $calendar->getProjectCalendar()->getProject()
-                        )
-                    ) {
-                        return true;
-                    }
                 }
 
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
@@ -80,21 +67,6 @@ class Calendar extends AssertionAbstract
             case 'presence-list':
                 if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
                     return true;
-                }
-
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (!\is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                        ->contactHasPermit(
-                            $this->getContact(),
-                            'edit',
-                            $calendar->getProjectCalendar()->getProject()
-                        )
-                    ) {
-                        return true;
-                    }
                 }
 
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
@@ -120,21 +92,6 @@ class Calendar extends AssertionAbstract
                  */
                 if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $calendar)) {
                     return true;
-                }
-
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (!\is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                        ->contactHasPermit(
-                            $this->getContact(),
-                            'view',
-                            $calendar->getProjectCalendar()->getProject()
-                        )
-                    ) {
-                        return true;
-                    }
                 }
 
                 return $this->rolesHaveAccess($calendar->getType()->getAccess());

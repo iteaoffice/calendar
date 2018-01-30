@@ -35,7 +35,12 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
 
         $contacts = [];
         foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
-            $contacts[$contact->getId()] = $contact->getDisplayName();
+            $contacts[$contact->getId()] = sprintf(
+                "%s (%s, %s)",
+                $contact->getDisplayName(),
+                $contact->getContactOrganisation()->getOrganisation(),
+                $contact->getContactOrganisation()->getOrganisation()->getCountry()
+            );
         }
 
         $this->add(

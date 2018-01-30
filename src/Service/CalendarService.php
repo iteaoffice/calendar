@@ -200,10 +200,9 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param string $which
-     * @param Contact $contact
-     * @param integer $year
-     * @param integer $type
-     *
+     * @param Contact|null $contact
+     * @param null $year
+     * @param null $type
      * @return \Doctrine\ORM\Query
      */
     public function findCalendarItems(
@@ -211,11 +210,25 @@ class CalendarService extends ServiceAbstract
         Contact $contact = null,
         $year = null,
         $type = null
-    ) {
+    ): \Doctrine\ORM\Query {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
 
-        return $repository->findCalendarItems($which, true, $contact, $year, $type);
+        $limitQueryBuilder = null;
+        if (null !== $contact) {
+            /*
+             * Grab the limiting query-builder from the AdminService
+             */
+            $limitQueryBuilder = $this->getAdminService()
+                ->parseWherePermit(
+                    'calendar_entity_calendar',
+                    'view',
+                    $contact
+                );
+        }
+
+
+        return $repository->findCalendarItems($which, true, $contact, $year, $type, $limitQueryBuilder);
     }
 
     /**
@@ -224,7 +237,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return Calendar[]
      */
-    public function findCalendarByProject(Project $project, $onlyFinal = true)
+    public function findCalendarByProject(Project $project, $onlyFinal = true): array
     {
         $calendar = [];
         /**
@@ -258,7 +271,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return Calendar|null
      */
-    public function findLatestProjectCalendar(Project $project)
+    public function findLatestProjectCalendar(Project $project): ?Calendar
     {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
@@ -277,7 +290,7 @@ class CalendarService extends ServiceAbstract
     public function findNextProjectCalendar(
         Project $project,
         \DateTime $datetime
-    ) {
+    ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
 
@@ -332,7 +345,7 @@ class CalendarService extends ServiceAbstract
     /**
      * @return \stdClass
      */
-    public function findMinAndMaxYear()
+    public function findMinAndMaxYear(): \stdClass
     {
         /** @var Repository\Calendar $repository */
         $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
@@ -350,7 +363,7 @@ class CalendarService extends ServiceAbstract
      *
      * @return array
      */
-    public function getWhichValues()
+    public function getWhichValues(): array
     {
         return [
             self::WHICH_UPCOMING,

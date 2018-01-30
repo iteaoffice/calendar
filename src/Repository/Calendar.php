@@ -27,12 +27,12 @@ use Project\Entity\Project;
 class Calendar extends EntityRepository
 {
     /**
-     * @param              $which
+     * @param $which
      * @param bool $filterForAccess
      * @param Contact|null $contact
      * @param null $year
      * @param null $type
-     *
+     * @param QueryBuilder|null $limitQueryBuilder
      * @return Query
      */
     public function findCalendarItems(
@@ -40,7 +40,8 @@ class Calendar extends EntityRepository
         $filterForAccess = true,
         Contact $contact = null,
         $year = null,
-        $type = null
+        $type = null,
+        ?QueryBuilder $limitQueryBuilder = null
     ): Query {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
@@ -71,9 +72,10 @@ class Calendar extends EntityRepository
                 $qb->setParameter(1, new \DateTime());
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+
                 $projectCalendarSubSelect = $this->_em->createQueryBuilder();
                 $projectCalendarSubSelect->select('calendar.id');
-                $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
+                $projectCalendarSubSelect->from(\Project\Entity\Calendar\Calendar::class, 'projectCalendar');
                 $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
                 $qb->andWhere($qb->expr()->in('calendar_entity_calendar.id', $projectCalendarSubSelect->getDQL()));
                 break;
@@ -105,14 +107,14 @@ class Calendar extends EntityRepository
             /**
              * When no contact is given, simply return all the public calendar items
              */
-            if (\is_null($contact)) {
+            if (null === $contact) {
                 $contact = new Contact();
                 $contact->setId(0);
                 $access = new Access();
                 $access->setAccess(Access::ACCESS_PUBLIC);
                 $contact->setAccess([$access]);
             }
-            $qb = $this->filterForAccess($qb, $contact);
+            $qb = $this->filterForAccess($qb, $contact, $limitQueryBuilder);
         }
 
         if (!\is_null($year)) {
@@ -128,10 +130,10 @@ class Calendar extends EntityRepository
     /**
      * @param QueryBuilder $qb
      * @param Contact $contact
-     *
-     * @return QueryBuilder $qb
+     * @param QueryBuilder|null $limitQueryBuilder
+     * @return QueryBuilder
      */
-    public function filterForAccess(QueryBuilder $qb, Contact $contact)
+    public function filterForAccess(QueryBuilder $qb, Contact $contact, ?QueryBuilder $limitQueryBuilder = null): QueryBuilder
     {
         //Filter based on the type access type
         $subSelect = $this->_em->createQueryBuilder();
@@ -143,22 +145,24 @@ class Calendar extends EntityRepository
                 ->in('access.access', array_merge([strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles()))
         );
 
-        $subSelectCalendarContact = $this->_em->createQueryBuilder();
-        $subSelectCalendarContact->select('calendar2');
-        $subSelectCalendarContact->from('Calendar\Entity\Calendar', 'calendar2');
-        $subSelectCalendarContact->join('calendar2.calendarContact', 'calenderContact2');
-        $subSelectCalendarContact->join('calenderContact2.contact', 'contact2');
-        $subSelectCalendarContact->andWhere('contact2.id = ' . $contact);
-
-        $qb->andWhere(
-            $qb->expr()->orX(
-                $qb->expr()->in(
-                    'calendar_entity_calendar.type',
-                    $subSelect->getDQL()
-                ),
-                $qb->expr()->in('calendar_entity_calendar', $subSelectCalendarContact->getDQL())
-            )
-        );
+        /**
+         * When the permit gives no result, do nothing
+         */
+        if (null === $limitQueryBuilder) {
+            $qb->andWhere(
+                $qb->expr()->in('calendar_entity_calendar.type', $subSelect->getDQL())
+            );
+        } else {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in(
+                        'calendar_entity_calendar.type',
+                        $subSelect->getDQL()
+                    ),
+                    $qb->expr()->in('calendar_entity_calendar', $limitQueryBuilder->getDQL())
+                )
+            );
+        }
 
         return $qb;
     }
@@ -168,7 +172,7 @@ class Calendar extends EntityRepository
      *
      * @return Entity\Calendar|null
      */
-    public function findLatestProjectCalendar(Project $project)
+    public function findLatestProjectCalendar(Project $project): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
