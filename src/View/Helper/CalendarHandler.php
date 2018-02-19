@@ -222,7 +222,7 @@ class CalendarHandler extends AbstractViewHelper
     {
         $which = CalendarService::WHICH_FINAL;
 
-        if (\is_null($year)) {
+        if (null === $year) {
             $which = CalendarService::WHICH_UPCOMING;
         } else {
             $limit = 999;

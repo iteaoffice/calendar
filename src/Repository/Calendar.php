@@ -117,7 +117,7 @@ class Calendar extends EntityRepository
             $qb = $this->filterForAccess($qb, $contact, $limitQueryBuilder);
         }
 
-        if (!\is_null($year)) {
+        if (null !== $year) {
             $emConfig = $this->getEntityManager()->getConfiguration();
             $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
             $qb->andWhere('YEAR(calendar_entity_calendar.dateEnd) = ?8');
