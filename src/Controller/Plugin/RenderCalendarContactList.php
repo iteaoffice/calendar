@@ -44,9 +44,7 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf = new CalendarPdf();
         $pdf->setTemplate($this->getModuleOptions()->getCalendarContactTemplate());
         $pdf->AddPage();
-        $pdf->SetFontSize(9);
-        $pdf->SetFont('freesans', '', 12);
-
+        $pdf->SetFont('freesans', '', 10);
         $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
 
         $calendarContacts = $this->getCalendarService()
