@@ -51,7 +51,7 @@ class Document extends AssertionAbstract
         /*
          * No document was found, so return true because we do not now anything about the access
          */
-        if (\is_null($document)) {
+        if (null === $document) {
             return true;
         }
 

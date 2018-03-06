@@ -61,7 +61,7 @@ class CalendarDocumentController extends CalendarAbstractController
     {
         $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
 
-        if (\is_null($document)) {
+        if (null === $document) {
             return $this->notFoundAction();
         }
 
@@ -75,7 +75,7 @@ class CalendarDocumentController extends CalendarAbstractController
     {
         /** @var Document $document */
         $document = $this->getCalendarService()->findEntityById(Document::class, $this->params('id'));
-        if (\is_null($document)) {
+        if (null === $document) {
             return $this->notFoundAction();
         }
 
