@@ -104,23 +104,42 @@ class Contact extends EntityRepository
 
     /**
      * @param Entity\Calendar $calendar
-     * @param int $status
+     * @param int             $status
+     * @param string          $order
      *
-     * @return Entity\Contact[]|array
+     * @return array
      */
-    public function findCalendarContactsByCalendar(Entity\Calendar $calendar, $status): array
+    public function findCalendarContactsByCalendar(Entity\Calendar $calendar, int $status, string $order): array
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_contact');
         $qb->from(Entity\Contact::class, 'calendar_entity_contact');
-        $qb->join("calendar_entity_contact.contact", 'contact');
+        $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
         $qb->andWhere('calendar_entity_contact.calendar = ?11');
         $qb->setParameter(11, $calendar);
-        $qb->addOrderBy('contact.lastName', 'ASC');
+
+        switch ($order)
+        {
+            case 'lastname':
+                $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+                break;
+
+            case 'organisation':
+
+                $qb->leftJoin('contact_entity_contact.contactOrganisation','contact_entity_contact_organisation');
+                $qb->leftJoin('contact_entity_contact_organisation.organisation','organisation_entity_organisation');
+
+                $qb->addOrderBy('organisation_entity_organisation.organisation', 'ASC');
+                $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+                break;
+        }
+
+
+
 
         if ($status === Entity\Contact::STATUS_NO_DECLINED) {
-            $qb->join("calendar_entity_contact.status", 'status');
+            $qb->join('calendar_entity_contact.status', 'status');
             $qb->andWhere('status.id <> :status');
             $qb->setParameter('status', Entity\ContactStatus::STATUS_DECLINE);
         }

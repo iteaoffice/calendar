@@ -115,7 +115,7 @@ abstract class LinkAbstract extends AbstractViewHelper
         return sprintf(
             $uri,
             $serverUrl() . $url($this->router, $this->routerParams),
-            htmlentities((string) $this->text),
+            htmlentities((string)$this->text),
             implode(' ', $this->classes),
             \in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
                 : htmlentities(implode('', $this->linkContent))
@@ -159,6 +159,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                         $this->addLinkContent('<i class="fa fa-download"></i>');
                         break;
                     case 'presence-list':
+                    case 'signature-list':
                         $this->addLinkContent('<i class="fa fa-file-pdf-o"></i>');
                         break;
                     case 'send-message':
@@ -283,7 +284,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addClasses($classes)
     {
-        foreach ((array) $classes as $class) {
+        foreach ((array)$classes as $class) {
             $this->classes[] = $class;
         }
 
@@ -316,8 +317,8 @@ abstract class LinkAbstract extends AbstractViewHelper
 
     /**
      * @param EntityAbstract $entity
-     * @param string $assertion
-     * @param string $action
+     * @param string         $assertion
+     * @param string         $action
      *
      * @return bool
      */
@@ -357,7 +358,7 @@ abstract class LinkAbstract extends AbstractViewHelper
 
     /**
      * @param null|EntityAbstract $resource
-     * @param string $privilege
+     * @param string              $privilege
      *
      * @return bool
      */
@@ -376,7 +377,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      *
      * @param string $key
      * @param        $value
-     * @param bool $allowNull
+     * @param bool   $allowNull
      */
     public function addRouterParam($key, $value, $allowNull = true)
     {

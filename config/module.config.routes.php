@@ -7,6 +7,7 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+
 namespace Calendar;
 
 use Calendar\Controller;
@@ -97,6 +98,16 @@ return [
                                     'defaults' => [
                                         'action'    => 'presence-list',
                                         'privilege' => 'presence-list',
+                                    ],
+                                ],
+                            ],
+                            'signature-list'           => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/signature-list/[:id].pdf',
+                                    'defaults' => [
+                                        'action'    => 'signature-list',
+                                        'privilege' => 'signature-list',
                                     ],
                                 ],
                             ],

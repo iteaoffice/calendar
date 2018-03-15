@@ -27,10 +27,10 @@ class Calendar extends AssertionAbstract
      * $role, $calendar, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl $acl
-     * @param RoleInterface $role
-     * @param ResourceInterface $calendar
-     * @param string $privilege
+     * @param Acl                                      $acl
+     * @param RoleInterface                            $role
+     * @param ResourceInterface|CalendarEntity|\object $calendar
+     * @param string                                   $privilege
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class Calendar extends AssertionAbstract
     ) {
         $this->setPrivilege($privilege);
 
-        if (!$calendar instanceof CalendarEntity && !\is_null($id = $this->getId())) {
+        if (!$calendar instanceof CalendarEntity && null !== ($id = $this->getId())) {
             /** @var CalendarEntity $calendar */
             $calendar = $this->getCalendarService()->findCalendarById($id);
         }
@@ -65,6 +65,7 @@ class Calendar extends AssertionAbstract
                 return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
             case 'add-document':
             case 'presence-list':
+            case 'signature-list':
                 if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
                     return true;
                 }

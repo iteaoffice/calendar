@@ -101,9 +101,9 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return \Zend\Stdlib\ResponseInterface
+     * @return Response
      */
-    public function downloadReviewCalendarAction()
+    public function downloadReviewCalendarAction(): Response
     {
         $calendarItems = $this->getCalendarService()
             ->findCalendarItems(
@@ -114,12 +114,13 @@ class CalendarCommunityController extends CalendarAbstractController
 
         $reviewCalendar = $this->renderReviewCalendar()->render($calendarItems);
 
+        /** @var Response $response */
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
             ->addHeaderLine('Content-Disposition', 'attachment; filename="review-calendar.pdf"')
             ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
-            ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
+            ->addHeaderLine('Content-Length', \strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
 
         return $response;
@@ -131,7 +132,7 @@ class CalendarCommunityController extends CalendarAbstractController
     public function calendarAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (\is_null($calendar)) {
+        if (null === $calendar) {
             return $this->notFoundAction();
         }
 
@@ -162,7 +163,9 @@ class CalendarCommunityController extends CalendarAbstractController
 
             $fileTypeValidator = new MimeType();
             $fileTypeValidator->isValid($file);
-            $document->setContentType($this->getGeneralService()->findContentTypeByContentTypeName($fileTypeValidator->type));
+            $document->setContentType(
+                $this->getGeneralService()->findContentTypeByContentTypeName($fileTypeValidator->type)
+            );
 
 
             /** If no name is given, take the name of the file */
@@ -199,14 +202,13 @@ class CalendarCommunityController extends CalendarAbstractController
          */
         $this->getCalendarService()->addResource($calendar, CalendarAssertion::class);
 
+        $results = null;
         if ($calendar->getProjectCalendar()) {
             $results = $this->getProjectService()->findResultsByProjectAndContact(
                 $calendar->getProjectCalendar()
                     ->getProject(),
                 $this->zfcUserAuthentication()->getIdentity()
             );
-        } else {
-            $results = null;
         }
 
         return new ViewModel(
@@ -222,9 +224,10 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return \Zend\View\Model\JsonModel
+     * @return JsonModel
+     * @throws \Doctrine\ORM\ORMException
      */
-    public function updateStatusAction()
+    public function updateStatusAction(): JsonModel
     {
         $calendarContactId = $this->getEvent()->getRequest()->getPost()->get('id');
         $statusId = $this->getEvent()->getRequest()->getPost()->get('status');
@@ -232,7 +235,7 @@ class CalendarCommunityController extends CalendarAbstractController
         /** @var Contact $calendarContact */
         $calendarContact = $this->getCalendarService()->findEntityById(Contact::class, $calendarContactId);
 
-        if (\is_null($calendarContact)) {
+        if (null === $calendarContact) {
             return new JsonModel(['result' => 'error']);
         }
         $this->getCalendarService()->updateContactStatus($calendarContact, $statusId);
@@ -245,14 +248,12 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * Special action which produces an HTML version of the review calendar.
-     *
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function selectAttendeesAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (\is_null($calendar)) {
+        if (null === $calendar) {
             return $this->notFoundAction();
         }
 
@@ -295,7 +296,7 @@ class CalendarCommunityController extends CalendarAbstractController
                     /*
                      * Save a new one.
                      */
-                    if (\is_null($calendarContact)) {
+                    if (null === $calendarContact) {
                         $calendarContact = new Contact();
                         $calendarContact->setContact($this->getContactService()->findContactById($contactId));
                         /** @var ContactRole $role */
@@ -348,18 +349,56 @@ class CalendarCommunityController extends CalendarAbstractController
     }
 
     /**
-     * @return \Zend\Stdlib\ResponseInterface|ViewModel
+     * @return Response
      */
-    public function presenceListAction()
+    public function presenceListAction(): Response
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (\is_null($calendar)) {
-            return $this->notFoundAction();
+
+        /** @var Response $response */
+        $response = $this->getResponse();
+
+        if (null === $calendar) {
+            $response->setStatusCode(Response::STATUS_CODE_404);
+
+            return $response;
         }
 
-        $presenceList = $this->renderCalendarContactList()->render($calendar);
+        $presenceList = $this->renderCalendarContactList()->renderPresenceList($calendar);
 
+
+        $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+            ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
+            ->addHeaderLine(
+                'Content-Disposition',
+                'attachment; filename="presence-list-' . $calendar->getCalendar() . '.pdf"'
+            )
+            ->addHeaderLine('Content-Type: application/pdf')
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
+        $response->setContent($presenceList->getPDFData());
+
+        return $response;
+    }
+
+    /**
+     * @return Response
+     */
+    public function signatureListAction(): Response
+    {
+        $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
+
+        /** @var Response $response */
         $response = $this->getResponse();
+
+        if (null === $calendar) {
+            $response->setStatusCode(Response::STATUS_CODE_404);
+
+            return $response;
+        }
+
+        $presenceList = $this->renderCalendarContactList()->renderSignatureList($calendar);
+
+
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")->addHeaderLine("Pragma: public")
             ->addHeaderLine(
@@ -381,7 +420,8 @@ class CalendarCommunityController extends CalendarAbstractController
     public function sendMessageAction()
     {
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (\is_null($calendar)) {
+
+        if (null === $calendar) {
             return $this->notFoundAction();
         }
 
@@ -454,14 +494,22 @@ class CalendarCommunityController extends CalendarAbstractController
 
     /**
      * Produce a binder of all documents in the call and type.
+     *
+     * @return Response
      */
-    public function downloadBinderAction()
+    public function downloadBinderAction(): Response
     {
         set_time_limit(0);
 
         $calendar = $this->getCalendarService()->findCalendarById($this->params('id'));
-        if (\is_null($calendar)) {
-            return $this->notFoundAction();
+
+        /** @var Response $response */
+        $response = $this->getResponse();
+
+        if (null === $calendar) {
+            $response->setStatusCode(Response::STATUS_CODE_404);
+
+            return $response;
         }
 
         $fileName = $calendar->getDocRef() . '-binder.zip';
@@ -486,7 +534,7 @@ class CalendarCommunityController extends CalendarAbstractController
             $zip->close();
         }
 
-        $response = $this->getResponse();
+
         $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine("Cache-Control: max-age=36000, must-revalidate")
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
@@ -494,6 +542,6 @@ class CalendarCommunityController extends CalendarAbstractController
             ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
         $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
 
-        return $this->response;
+        return $response;
     }
 }

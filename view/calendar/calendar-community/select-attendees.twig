@@ -8,19 +8,19 @@
 
 {% if calendar.projectCalendar %}
     <div class="form-group row">
-        <label class="col-md-3 form-control-label control-label">{{ translate("txt-project-name") }}</label>
+        <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
+            <p class="form-control-static form-control-plaintext">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
         </div>
     </div>
 {% endif %}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label control-label">{{ translate("txt-name") }}</label>
+    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendar }}</p>
+        <p class="form-control-static form-control-plaintext">{{ calendar }}</p>
     </div>
 </div>
 

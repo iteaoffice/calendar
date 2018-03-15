@@ -11,20 +11,20 @@
 {{ form().openTag(form)|raw }}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label control-label">{{ translate("txt-calendar") }}</label>
+    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarLink(document.calendar,'view-community') }}</p>
+        <p class="form-control-static form-control-plaintext">{{ calendarLink(document.calendar,'view-community') }}</p>
     </div>
 </div>
 
 {{ ztbformelement(form.get('document')) }}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label control-label">{{ translate("txt-current-file") }}</label>
+    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-current-file") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static">{{ calendarDocumentLink(document,'download','name') }}</p>
+        <p class="form-control-static form-control-plaintext">{{ calendarDocumentLink(document,'download','name') }}</p>
     </div>
 </div>
 

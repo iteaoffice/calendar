@@ -317,13 +317,13 @@
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active text-highlight{% endif %}"></i>
                             <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active text-highlight{% endif %}"></i>
                             <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active text-highlight{% endif %}"></i>
                             {% else %}
                             {{ calendarContact.status }}</td>
                         {% endif %}
@@ -339,6 +339,14 @@
         {% if calendarContacts|length > 0 %}
             {{ calendarLink(calendar,'send-message', 'button') }}
             {{ calendarLink(calendar,'presence-list', 'button') }}
+            {{ calendarLink(calendar,'signature-list', 'button') }}
         {% endif %}
     </div>
 </div>
+
+<style type="text/css">
+    .presence-icon:hover {
+        cursor: pointer;
+        color: #00a651;
+    }
+</style>

@@ -62,6 +62,11 @@ return [
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
+                    'route'     => 'community/calendar/signature-list',
+                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'assertion' => CalendarAssertion::class,
+                ],
+                [
                     'route'     => 'community/calendar/update-status',
                     'roles'     => [strtolower(Access::ACCESS_USER)],
                     'assertion' => ContactAssertion::class,

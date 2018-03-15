@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Calendar\Controller;
 
 use Calendar\Entity\Type;
+use Zend\Http\Response;
 
 /**
  *
@@ -20,9 +21,9 @@ use Calendar\Entity\Type;
 class CalendarController extends CalendarAbstractController
 {
     /**
-     * @return \Zend\Stdlib\ResponseInterface
+     * @return Response
      */
-    public function calendarTypeColorCssAction()
+    public function calendarTypeColorCssAction(): Response
     {
         $calendarTypes = $this->getCalendarService()->findAll(Type::class);
         $calendarType = new Type();
@@ -36,6 +37,8 @@ class CalendarController extends CalendarAbstractController
         );
         //Save a copy of the file in the caching-folder
         file_put_contents($cacheFileName, $css);
+
+        /** @var Response $response */
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Content-Type: text/css');
         $response->setContent($css);

@@ -27,13 +27,14 @@ class CalendarLink extends LinkAbstract
 {
     /**
      * @param Calendar|null $calendar
-     * @param string $action
-     * @param string $show
-     * @param string $which
-     * @param null $alternativeShow
-     * @param null $year
-     * @param Project|null $project
-     * @param null $classes
+     * @param string        $action
+     * @param string        $show
+     * @param string        $which
+     * @param null          $alternativeShow
+     * @param null          $year
+     * @param Project|null  $project
+     * @param null          $classes
+     *
      * @return string
      */
     public function __invoke(
@@ -59,11 +60,13 @@ class CalendarLink extends LinkAbstract
         $this->addClasses($classes);
 
         // Set the non-standard options needed to give an other link value
-        $this->setShowOptions([
-            'alternativeShow' => $this->getAlternativeShow(),
-            'text-which-tab'  => ucfirst((string) $this->getWhich()),
-            'name'            => $this->getCalendar()->getCalendar(),
-        ]);
+        $this->setShowOptions(
+            [
+                'alternativeShow' => $this->getAlternativeShow(),
+                'text-which-tab'  => ucfirst((string)$this->getWhich()),
+                'name'            => $this->getCalendar()->getCalendar(),
+            ]
+        );
 
         /*
          * Check the access to the object
@@ -143,6 +146,10 @@ class CalendarLink extends LinkAbstract
             case 'presence-list':
                 $this->setRouter('community/calendar/presence-list');
                 $this->setText($this->translate("txt-download-presence-list"));
+                break;
+            case 'signature-list':
+                $this->setRouter('community/calendar/signature-list');
+                $this->setText($this->translate("txt-download-signature-list"));
                 break;
             case 'overview-admin':
                 $this->setRouter('zfcadmin/calendar-manager/overview');

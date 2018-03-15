@@ -16,6 +16,7 @@ use Calendar\Options;
 use Calendar\Service;
 use Calendar\View;
 use Zend\Stdlib;
+use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 
 $config = [
     'controllers'        => [
@@ -32,8 +33,8 @@ $config = [
             'renderReviewCalendar'      => Controller\Plugin\RenderReviewCalendar::class,
         ],
         'factories' => [
-            Controller\Plugin\RenderCalendarContactList::class => Controller\Factory\PluginFactory::class,
-            Controller\Plugin\RenderReviewCalendar::class      => Controller\Factory\PluginFactory::class,
+            Controller\Plugin\RenderCalendarContactList::class => ConfigAbstractFactory::class,
+            Controller\Plugin\RenderReviewCalendar::class      => ConfigAbstractFactory::class,
         ],
     ],
     'service_manager'    => [

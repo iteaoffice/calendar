@@ -59,7 +59,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param array $data
+     * @param array    $data
      * @param Calendar $calendar
      *
      * array (size=5)
@@ -120,7 +120,7 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param Calendar $calendar
-     * @param Contact $contact
+     * @param Contact  $contact
      *
      * @return bool
      */
@@ -137,7 +137,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param  string $which
+     * @param  string  $which
      * @param  Contact $contact
      *
      * @return CalendarContact[]
@@ -153,7 +153,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param Contact $contact
+     * @param Contact  $contact
      * @param Calendar $calendar
      *
      * @return CalendarContact
@@ -170,23 +170,25 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param Calendar $calendar
-     * @param int $status
+     * @param int      $status
+     * @param string   $order
      *
-     * @return CalendarContact[]
+     * @return array
      */
-    public function findCalendarContactsByCalendar(Calendar $calendar, $status = CalendarContact::STATUS_ALL): array
-    {
+    public function findCalendarContactsByCalendar(Calendar $calendar, int $status = CalendarContact::STATUS_ALL,
+        string $order = 'lastname'
+    ): array {
         /** @var Repository\Contact $repository */
         $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
 
-        return $repository->findCalendarContactsByCalendar($calendar, $status);
+        return $repository->findCalendarContactsByCalendar($calendar, $status, $order);
     }
 
     /**
      * This function will return a boolean value to see if a contact can view the calendar
      *
      * @param Calendar $calendar
-     * @param Contact $contact
+     * @param Contact  $contact
      *
      * @return bool
      */
@@ -199,10 +201,11 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param string $which
+     * @param string       $which
      * @param Contact|null $contact
-     * @param null $year
-     * @param null $type
+     * @param null         $year
+     * @param null         $type
+     *
      * @return \Doctrine\ORM\Query
      */
     public function findCalendarItems(
@@ -232,7 +235,7 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param bool $onlyFinal
+     * @param bool    $onlyFinal
      * @param Project $project
      *
      * @return Calendar[]
@@ -282,7 +285,7 @@ class CalendarService extends ServiceAbstract
     /**
      * Return the news review meeting
      *
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $datetime
      *
      * @return Calendar|null
@@ -298,8 +301,9 @@ class CalendarService extends ServiceAbstract
     }
 
     /**
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $datetime
+     *
      * @return Calendar|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -315,7 +319,8 @@ class CalendarService extends ServiceAbstract
 
     /**
      * @param CalendarContact $calendarContact
-     * @param string $status
+     * @param string          $status
+     *
      * @throws \Doctrine\ORM\ORMException
      */
     public function updateContactStatus(

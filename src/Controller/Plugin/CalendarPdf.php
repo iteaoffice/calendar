@@ -19,6 +19,7 @@ use setasign\Fpdi\TcpdfFpdi;
 
 /**
  * Class CalendarPdf
+ *
  * @package Calendar\Controller\Plugin
  */
 class CalendarPdf extends TcpdfFpdi
