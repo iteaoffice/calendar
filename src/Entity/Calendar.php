@@ -705,7 +705,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return \Contact\Entity\Contact[]|Collections\ArrayCollection
+     * @return \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
     public function getCalendarContact()
     {

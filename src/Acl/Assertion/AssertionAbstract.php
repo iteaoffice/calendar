@@ -101,11 +101,21 @@ abstract class AssertionAbstract implements AssertionInterface
     {
         if (!$access instanceof PersistentCollection) {
             /*
-             * We only have a string, so we need to lookup the role
+             * We only have a string or array, so we need to lookup the role
              */
-            $access = [
-                $this->getAdminService()->findAccessByName($access),
-            ];
+            if (\is_array($access)) {
+                foreach ($access as $key => $accessItem) {
+                    if (!\is_null($accessObject = $this->getAdminService()->findAccessByName($accessItem))) {
+                        $access[$key] = $accessObject;
+                    } else {
+                        unset($access[$key]);
+                    }
+                }
+            } else {
+                $access = [
+                    $this->getAdminService()->findAccessByName($access),
+                ];
+            }
         }
 
         return $access;
