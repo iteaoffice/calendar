@@ -33,8 +33,8 @@ class Contact extends EntityRepository
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_contact');
         $qb->from(Entity\Contact::class, 'calendar_entity_contact');
-        $qb->join('calendar_entity_contact.calendar', "calendar_entity_calendar");
-        $qb->join('calendar_entity_contact.contact', "contact");
+        $qb->join('calendar_entity_contact.calendar', 'calendar_entity_calendar');
+        $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
@@ -53,7 +53,7 @@ class Contact extends EntityRepository
                 $qb->setParameter(1, new \DateTime());
                 $projectCalendarSubSelect = $this->_em->createQueryBuilder();
                 $projectCalendarSubSelect->select('calendar.id');
-                $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
+                $projectCalendarSubSelect->from(\Project\Entity\Calendar\Calendar::class, 'projectCalendar');
                 $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
                 $qb->andWhere($qb->expr()->in('calendar_entity_calendar.id', $projectCalendarSubSelect->getDQL()));
                 break;
@@ -73,7 +73,7 @@ class Contact extends EntityRepository
         }
 
         $qb->andWhere('calendar_entity_contact.contact = ?10');
-        $qb->addOrderBy('contact.lastName', 'ASC');
+        $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
         $qb->setParameter(10, $contact);
 
         return $qb->getQuery()->getResult();
@@ -119,16 +119,14 @@ class Contact extends EntityRepository
         $qb->andWhere('calendar_entity_contact.calendar = ?11');
         $qb->setParameter(11, $calendar);
 
-        switch ($order)
-        {
+        switch ($order) {
             case 'lastname':
                 $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
                 break;
 
             case 'organisation':
-
-                $qb->leftJoin('contact_entity_contact.contactOrganisation','contact_entity_contact_organisation');
-                $qb->leftJoin('contact_entity_contact_organisation.organisation','organisation_entity_organisation');
+                $qb->leftJoin('contact_entity_contact.contactOrganisation', 'contact_entity_contact_organisation');
+                $qb->leftJoin('contact_entity_contact_organisation.organisation', 'organisation_entity_organisation');
 
                 $qb->addOrderBy('organisation_entity_organisation.organisation', 'ASC');
                 $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');

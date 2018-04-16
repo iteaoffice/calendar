@@ -9,7 +9,7 @@
 
 {% if calendar.projectCalendar %}
     <div class="form-group row">
-        <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-project-name") }}</label>
+        <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
             <p class="form-control-static form-control-plaintext">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
@@ -18,7 +18,7 @@
 {% endif %}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-name") }}</label>
+    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
         <p class="form-control-static form-control-plaintext">{{ calendar }}</p>
@@ -27,7 +27,7 @@
 
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-recipients") }}</label>
+    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-recipients") }}</label>
 
     <div class="col-sm-9">
         <p class="form-control-static form-control-plaintext">
@@ -39,6 +39,7 @@
 </div>
 
 {{ ztbformelement(form.get('message')) }}
+{{ formelement(form.get('csrf')) }}
 
 <hr>
 

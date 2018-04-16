@@ -17,23 +17,73 @@ declare(strict_types=1);
 
 namespace Calendar;
 
-use Calendar\Controller\Plugin;
+use Application\Service\AssertionService;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
+use Calendar\Service\FormService;
+use Contact\Service\ContactService;
+use Contact\Service\SelectionContactService;
+use Doctrine\ORM\EntityManager;
+use General\Service\EmailService;
+use General\Service\GeneralService;
+use Project\Service\ActionService;
+use Project\Service\ProjectService;
+use Project\Service\WorkpackageService;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use ZfcTwig\View\TwigRenderer;
 
 return [
     ConfigAbstractFactory::class => [
+        //Controllers
+        Controller\CalendarController::class               => [
+            CalendarService::class,
+            TwigRenderer::class
+        ],
+        Controller\CommunityController::class              => [
+            CalendarService::class,
+            GeneralService::class,
+            ContactService::class,
+            ProjectService::class,
+            WorkpackageService::class,
+            AssertionService::class,
+            EmailService::class,
+            TranslatorInterface::class,
+            EntityManager::class
+        ],
+        Controller\DocumentController::class               => [
+            CalendarService::class,
+            GeneralService::class,
+            EntityManager::class,
+            TranslatorInterface::class
+        ],
+        Controller\JsonController::class                   => [
+            CalendarService::class
+        ],
+        Controller\ManagerController::class                => [
+            CalendarService::class,
+            FormService::class,
+            ProjectService::class,
+            ActionService::class,
+            ContactService::class,
+            GeneralService::class,
+            EntityManager::class,
+            TranslatorInterface::class
+        ],
         // Controller plugins
-        Plugin\RenderCalendarContactList::class => [
+        Controller\Plugin\RenderCalendarContactList::class => [
             TwigRenderer::class,
             ModuleOptions::class,
             CalendarService::class
         ],
-        Plugin\RenderReviewCalendar::class      => [
+        Controller\Plugin\RenderReviewCalendar::class      => [
             TwigRenderer::class,
             ModuleOptions::class
         ],
+        Service\CalendarService::class                     => [
+            EntityManager::class,
+            SelectionContactService::class,
+            ContactService::class
+        ]
     ]
 ];

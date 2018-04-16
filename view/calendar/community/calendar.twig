@@ -1,6 +1,8 @@
 {% do headTitle().append(translate("txt-calendar")) %}
 {% do headTitle().append(calendar.calendar) %}
-<h1 class="display-4">{{ calendar }} {{ calendarLink(calendar,'view-admin','icon') }}</h1>
+<h1 class="display-4">{{ calendar }}</h1>
+
+<p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}, {{ calendar.location }} {{ calendarLink(calendar,'view-admin','icon') }}</p>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
@@ -97,6 +99,7 @@
                     {{ form().openTag(form)|raw }}
                     {{ ztbformelement(form.get('document')) }}
                     {{ ztbformelement(form.get('file')) }}
+                    {{ formelement(form.get('csrf')) }}
 
                     <div class="form-group row">
                         <div class="offset-md-3 col-sm-offset-3 col-sm-9">

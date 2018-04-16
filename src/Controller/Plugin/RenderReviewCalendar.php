@@ -52,7 +52,7 @@ class RenderReviewCalendar extends AbstractPlugin
      *
      * @return CalendarPdf
      */
-    public function render(array $calendarItems): CalendarPdf
+    public function __invoke(array $calendarItems): CalendarPdf
     {
         $pdf = new CalendarPdf();
 

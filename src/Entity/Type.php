@@ -20,54 +20,50 @@ use Zend\Form\Annotation;
  * CalendarType.
  *
  * @ORM\Table(name="calendar_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Calendar\Repository\Type")
  * @ORM\HasLifecycleCallbacks
  */
-class Type
+class Type extends AbstractEntity
 {
     /**
      * @ORM\Column(name="type_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Annotation\Type("\Zend\Form\Element\Hidden")
      *
      * @var integer
      */
     private $id;
     /**
-     * @ORM\Column(name="type", type="string", length=30, nullable=false)
+     * @ORM\Column(name="type", type="string", nullable=false, unique=true)
+     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Options({"label":"txt-calendar-type-type-label","help-block": "txt-calendar-type-type-help-block"})
+     * @Annotation\Attributes({"placeholder":"txt-calendar-type-type-placeholder"})
      *
      * @var string
      */
     private $type;
     /**
-     * @ORM\Column(name="color", type="string", length=7, nullable=true)
+     * @ORM\Column(name="color", type="string", nullable=true)
+     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Options({"label":"txt-calendar-background-color-label","help-block": "txt-calendar-background-color-help-block"})
      *
      * @var string
      */
     private $color;
     /**
-     * @ORM\Column(name="color_font", type="string", length=7, nullable=true)
+     * @ORM\Column(name="color_font", type="string", nullable=true)
+     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Options({"label":"txt-calendar-font-color-label","help-block": "txt-calendar-font-color-help-block"})
      *
      * @var string
      */
     private $colorFont;
     /**
-     * @ORM\Column(name="url", type="string", length=30, nullable=true)
-     *
-     * @var string
-     */
-    private $url;
-    /**
-     * @ORM\Column(name="autoplan", type="smallint", nullable=false)
-     *
-     * @var integer
-     */
-    private $autoPlan;
-    /**
      * @ORM\OneToMany(targetEntity="\Calendar\Entity\Calendar", cascade={"persist"}, mappedBy="type")
      * @Annotation\Exclude()
      *
-     * @var \Calendar\Entity\Calendar
+     * @var \Calendar\Entity\Calendar[]|Collections\ArrayCollection
      */
     private $calendar;
     /**
@@ -90,14 +86,14 @@ class Type
      *          }
      *      }
      * )
-     * @Annotation\Attributes({"label":"txt-access","help-block":"txt-access-help-block"})
+     * @Annotation\Attributes({"label":"txt-calendar-type-access-label","help-block":"txt-calendar-type-access-help-block"})
      *
      * @var \Admin\Entity\Access[]
      */
     private $access;
 
     /**
-     * Class constructor.
+     * Type constructor.
      */
     public function __construct()
     {
@@ -106,9 +102,44 @@ class Type
     }
 
     /**
+     * Magic Getter
+     *
+     * @param $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter
+     *
+     * @param $property
+     * @param $value
+     *
+     * @return void
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * @param $property
+     *
+     * @return bool
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
+    }
+
+    /**
      * @ORM\PreUpdate
      */
-    public function removeCachedCssFile()
+    public function removeCachedCssFile(): void
     {
         if (file_exists($this->getCacheCssFileName())) {
             unlink($this->getCacheCssFileName());
@@ -120,7 +151,7 @@ class Type
      *
      * @return string
      */
-    public function getCacheCssFileName()
+    public function getCacheCssFileName(): string
     {
         return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
             . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
@@ -129,13 +160,13 @@ class Type
     /**
      * Return a normalized CSS name for the type.
      */
-    public function parseCssName()
+    public function parseCssName(): string
     {
         return 'calendar-type-' . $this->getId();
     }
 
     /**
-     * @return int
+     * @return int|string
      */
     public function getId()
     {
@@ -147,25 +178,16 @@ class Type
      *
      * @return Type
      */
-    public function setId($id)
+    public function setId($id): Type
     {
         $this->id = $id;
-
         return $this;
     }
 
     /**
      * @return string
      */
-    public function __toString()
-    {
-        return (string)$this->type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -175,17 +197,16 @@ class Type
      *
      * @return Type
      */
-    public function setType($type)
+    public function setType(string $type): Type
     {
         $this->type = $type;
-
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getColor()
+    public function getColor(): ?string
     {
         return $this->color;
     }
@@ -195,17 +216,16 @@ class Type
      *
      * @return Type
      */
-    public function setColor($color)
+    public function setColor(string $color): Type
     {
         $this->color = $color;
-
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getColorFont()
+    public function getColorFont(): ?string
     {
         return $this->colorFont;
     }
@@ -215,55 +235,14 @@ class Type
      *
      * @return Type
      */
-    public function setColorFont($colorFont)
+    public function setColorFont(string $colorFont): Type
     {
         $this->colorFont = $colorFont;
-
         return $this;
     }
 
     /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return Type
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAutoPlan()
-    {
-        return $this->autoPlan;
-    }
-
-    /**
-     * @param int $autoPlan
-     *
-     * @return Type
-     */
-    public function setAutoPlan($autoPlan)
-    {
-        $this->autoPlan = $autoPlan;
-
-        return $this;
-    }
-
-    /**
-     * @return Calendar
+     * @return Calendar[]|Collections\ArrayCollection
      */
     public function getCalendar()
     {
@@ -271,19 +250,18 @@ class Type
     }
 
     /**
-     * @param Calendar $calendar
+     * @param Calendar[]|Collections\ArrayCollection $calendar
      *
      * @return Type
      */
-    public function setCalendar($calendar)
+    public function setCalendar($calendar): Type
     {
         $this->calendar = $calendar;
-
         return $this;
     }
 
     /**
-     * @return \Admin\Entity\Access[]
+     * @return \Admin\Entity\Access[]|Collections\ArrayCollection
      */
     public function getAccess()
     {
@@ -295,10 +273,9 @@ class Type
      *
      * @return Type
      */
-    public function setAccess($access)
+    public function setAccess($access): Type
     {
         $this->access = $access;
-
         return $this;
     }
 }

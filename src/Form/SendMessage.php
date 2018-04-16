@@ -49,6 +49,13 @@ class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
+            ]
+        );
+
+        $this->add(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [

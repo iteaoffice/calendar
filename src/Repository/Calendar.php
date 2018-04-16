@@ -293,6 +293,6 @@ class Calendar extends EntityRepository
         $qb->setParameter(100, $calendar);
 
 
-        return !\is_null($qb->getQuery()->getOneOrNullResult());
+        return null !== $qb->getQuery()->getOneOrNullResult();
     }
 }

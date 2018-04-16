@@ -16,12 +16,17 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Calendar\Repository;
 use Contact\Entity\Contact;
+use Contact\Service\ContactService;
+use Contact\Service\SelectionContactService;
+use Doctrine\ORM\EntityManager;
 use Project\Entity\Project;
 
 /**
+ * Class CalendarService
  *
+ * @package Calendar\Service
  */
-class CalendarService extends ServiceAbstract
+class CalendarService extends AbstractService
 {
     /**
      * Constant to determine which affiliations must be taken from the database
@@ -32,26 +37,46 @@ class CalendarService extends ServiceAbstract
     public const WHICH_FINAL = 'final';
     public const WHICH_REVIEWS = 'project-reviews';
     public const WHICH_ON_HOMEPAGE = 'on-homepage';
-
+    /**
+     * @var ContactService
+     */
+    protected $contactService;
 
     /**
-     * @param $id
+     * CalendarService constructor.
      *
-     * @return null|Calendar|object
+     * @param EntityManager           $entityManager
+     * @param SelectionContactService $selectionContactService
+     * @param ContactService          $contactService
      */
-    public function findCalendarById($id): ?Calendar
+    public function __construct(
+        EntityManager $entityManager,
+        SelectionContactService $selectionContactService,
+        ContactService $contactService
+    ) {
+        parent::__construct($entityManager, $selectionContactService);
+
+        $this->contactService = $contactService;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Calendar|null
+     */
+    public function findCalendarById(int $id): ?Calendar
     {
-        return $this->getEntityManager()->getRepository(Calendar::class)->find($id);
+        return $this->entityManager->getRepository(Calendar::class)->find($id);
     }
 
     /**
      * @param $docRef
      *
-     * @return null|Entity\Calendar|object
+     * @return null|Entity\Calendar
      */
-    public function findCalendarByDocRef($docRef): ?Calendar
+    public function findCalendarByDocRef(string $docRef): ?Calendar
     {
-        return $this->getEntityManager()->getRepository(Entity\Calendar::class)->findOneBy(
+        return $this->entityManager->getRepository(Entity\Calendar::class)->findOneBy(
             [
                 'docRef' => $docRef,
             ]
@@ -75,9 +100,9 @@ class CalendarService extends ServiceAbstract
         //Update the contacts
         if (!empty($data['added'])) {
             foreach (explode(',', $data['added']) as $contactId) {
-                $contact = $this->getContactService()->findEntityById(Contact::class, $contactId);
+                $contact = $this->contactService->findContactById((int)$contactId);
 
-                if (!\is_null($contact) && !$this->calendarHasContact($calendar, $contact)) {
+                if (null !== $contact && !$this->calendarHasContact($calendar, $contact)) {
                     $calendarContact = new CalendarContact();
                     $calendarContact->setContact($contact);
                     $calendarContact->setCalendar($calendar);
@@ -87,7 +112,7 @@ class CalendarService extends ServiceAbstract
                      *
                      * @var $role Entity\ContactRole
                      */
-                    $role = $this->findEntityById(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
+                    $role = $this->find(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
                     $calendarContact->setRole($role);
 
                     /**
@@ -95,13 +120,10 @@ class CalendarService extends ServiceAbstract
                      *
                      * @var $status Entity\ContactStatus
                      */
-                    $status = $this->findEntityById(
-                        Entity\ContactStatus::class,
-                        Entity\ContactStatus::STATUS_TENTATIVE
-                    );
+                    $status = $this->find(Entity\ContactStatus::class, Entity\ContactStatus::STATUS_TENTATIVE);
                     $calendarContact->setStatus($status);
 
-                    $this->newEntity($calendarContact);
+                    $this->save($calendarContact);
                 }
             }
         }
@@ -111,7 +133,7 @@ class CalendarService extends ServiceAbstract
             foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
                     if ($calendarContact->getContact()->getId() === (int)$contactId) {
-                        $this->removeEntity($calendarContact);
+                        $this->delete($calendarContact);
                     }
                 }
             }
@@ -126,14 +148,14 @@ class CalendarService extends ServiceAbstract
      */
     public function calendarHasContact(Calendar $calendar, Contact $contact): bool
     {
-        $calendarContact = $this->getEntityManager()->getRepository(CalendarContact::class)->findOneBy(
+        $calendarContact = $this->entityManager->getRepository(CalendarContact::class)->findOneBy(
             [
                 'calendar' => $calendar,
                 'contact'  => $contact,
             ]
         );
 
-        return !\is_null($calendarContact);
+        return null !== $calendarContact;
     }
 
     /**
@@ -147,7 +169,7 @@ class CalendarService extends ServiceAbstract
         Contact $contact = null
     ): array {
         /** @var Repository\Contact $repository */
-        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+        $repository = $this->entityManager->getRepository(CalendarContact::class);
 
         return $repository->findCalendarContactByContact($which, $contact);
     }
@@ -163,7 +185,7 @@ class CalendarService extends ServiceAbstract
         Calendar $calendar
     ): ?CalendarContact {
         /** @var Repository\Contact $repository */
-        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+        $repository = $this->entityManager->getRepository(CalendarContact::class);
 
         return $repository->findCalendarContactByContactAndCalendar($contact, $calendar);
     }
@@ -175,11 +197,13 @@ class CalendarService extends ServiceAbstract
      *
      * @return array
      */
-    public function findCalendarContactsByCalendar(Calendar $calendar, int $status = CalendarContact::STATUS_ALL,
+    public function findCalendarContactsByCalendar(
+        Calendar $calendar,
+        $status = CalendarContact::STATUS_ALL,
         string $order = 'lastname'
     ): array {
         /** @var Repository\Contact $repository */
-        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+        $repository = $this->entityManager->getRepository(CalendarContact::class);
 
         return $repository->findCalendarContactsByCalendar($calendar, $status, $order);
     }
@@ -195,7 +219,7 @@ class CalendarService extends ServiceAbstract
     public function canViewCalendar(Calendar $calendar, Contact $contact): bool
     {
         /** @var Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->canViewCalendar($calendar, $contact);
     }
@@ -215,19 +239,18 @@ class CalendarService extends ServiceAbstract
         $type = null
     ): \Doctrine\ORM\Query {
         /** @var \Calendar\Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         $limitQueryBuilder = null;
         if (null !== $contact) {
             /*
              * Grab the limiting query-builder from the AdminService
              */
-            $limitQueryBuilder = $this->getAdminService()
-                ->parseWherePermit(
-                    'calendar_entity_calendar',
-                    'view',
-                    $contact
-                );
+            $limitQueryBuilder = $this->parseWherePermit(
+                new Calendar(),
+                'view',
+                $contact
+            );
         }
 
 
@@ -277,7 +300,7 @@ class CalendarService extends ServiceAbstract
     public function findLatestProjectCalendar(Project $project): ?Calendar
     {
         /** @var \Calendar\Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findLatestProjectCalendar($project);
     }
@@ -295,7 +318,7 @@ class CalendarService extends ServiceAbstract
         \DateTime $datetime
     ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findNextProjectCalendar($project, $datetime);
     }
@@ -312,7 +335,7 @@ class CalendarService extends ServiceAbstract
         \DateTime $datetime
     ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findPreviousProjectCalendar($project, $datetime);
     }
@@ -328,7 +351,7 @@ class CalendarService extends ServiceAbstract
         string $status
     ): void {
         /** @var Entity\ContactStatus $contactStatus */
-        $contactStatus = $this->getEntityManager()->getReference(Entity\ContactStatus::class, $status);
+        $contactStatus = $this->entityManager->getReference(Entity\ContactStatus::class, $status);
 
         $calendarContact->setStatus($contactStatus);
         $this->updateEntity($calendarContact);
@@ -342,7 +365,7 @@ class CalendarService extends ServiceAbstract
     public function findGeneralCalendarContactByCalendar(Calendar $calendar)
     {
         /** @var Repository\Contact $repository */
-        $repository = $this->getEntityManager()->getRepository(CalendarContact::class);
+        $repository = $this->entityManager->getRepository(CalendarContact::class);
 
         return $repository->findGeneralCalendarContactByCalendar($calendar);
     }
@@ -353,7 +376,7 @@ class CalendarService extends ServiceAbstract
     public function findMinAndMaxYear(): \stdClass
     {
         /** @var Repository\Calendar $repository */
-        $repository = $this->getEntityManager()->getRepository(Entity\Calendar::class);
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         $yearSpanResult = $repository->findMinAndMaxYear();
         $yearSpan = new \stdClass();

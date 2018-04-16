@@ -16,7 +16,6 @@ use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\Form\Annotation;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Calendar
@@ -24,7 +23,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Calendar")
  */
-class Calendar extends EntityAbstract implements ResourceInterface
+class Calendar extends AbstractEntity
 {
     /**
      * Constant for final = -1 (draft)
@@ -173,7 +172,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @ORM\Column(name="image_url", type="string", length=125, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
-     * @Annotation\Options({"label":"txt-image-url","help-block": "txt-image-url-explanation"})
+     * @Annotation\Options({"label":"txt-image-url","help-block":"txt-image-url-explanation"})
      * @var string
      */
     private $imageUrl;
@@ -221,12 +220,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
      */
     private $document;
     /**
-     * @ORM\OneToMany(targetEntity="Calendar\Entity\Schedule", cascade={"persist","remove"}, mappedBy="calendar")
-     * @Annotation\Exclude()
-     * @var \Calendar\Entity\Schedule[]|Collections\ArrayCollection
-     */
-    private $schedule;
-    /**
      * @ORM\OneToOne(targetEntity="Project\Entity\Calendar\Calendar", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
      * @var \Project\Entity\Calendar\Calendar
@@ -241,6 +234,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      * @ORM\OrderBy({"call"="ASC"})
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
+     * @Annotation\Options({"help-block":"txt-calendar-program-call-help-block"})
      * @Annotation\Attributes({"label":"txt-program-call"})
      * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
      */
@@ -253,7 +247,6 @@ class Calendar extends EntityAbstract implements ResourceInterface
     {
         $this->calendarContact = new Collections\ArrayCollection();
         $this->document = new Collections\ArrayCollection();
-        $this->schedule = new Collections\ArrayCollection();
         $this->call = new Collections\ArrayCollection();
     }
 
@@ -300,6 +293,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
 
     /**
      * @param $property
+     *
      * @return bool
      */
     public function __isset($property)
@@ -334,7 +328,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->calendar;
     }
@@ -357,7 +351,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @param int $final
      */
-    public function setFinal($final)
+    public function setFinal(int $final)
     {
         $this->final = $final;
     }
@@ -379,7 +373,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @param int $onHomepage
      */
-    public function setOnHomepage($onHomepage)
+    public function setOnHomepage(int $onHomepage)
     {
         $this->onHomepage = $onHomepage;
     }
@@ -407,7 +401,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getCalendar()
+    public function getCalendar(): ?string
     {
         return $this->calendar;
     }
@@ -427,7 +421,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getLocation()
+    public function getLocation(): ?string
     {
         return $this->location;
     }
@@ -447,7 +441,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getDocRef()
+    public function getDocRef(): ?string
     {
         return $this->docRef;
     }
@@ -467,7 +461,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateFrom()
+    public function getDateFrom(): ?\DateTime
     {
         return $this->dateFrom;
     }
@@ -487,7 +481,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
@@ -507,7 +501,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateCreated()
+    public function getDateCreated(): \DateTime
     {
         return $this->dateCreated;
     }
@@ -527,7 +521,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateUpdated()
+    public function getDateUpdated(): ?\DateTime
     {
         return $this->dateUpdated;
     }
@@ -547,7 +541,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return int
      */
-    public function getSequence()
+    public function getSequence(): int
     {
         return $this->sequence;
     }
@@ -557,7 +551,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setSequence($sequence): Calendar
+    public function setSequence(int $sequence): Calendar
     {
         $this->sequence = $sequence;
 
@@ -567,7 +561,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -577,7 +571,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setDescription($description): Calendar
+    public function setDescription(string $description): Calendar
     {
         $this->description = $description;
 
@@ -587,7 +581,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -597,7 +591,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setUrl($url): Calendar
+    public function setUrl(string $url): Calendar
     {
         $this->url = $url;
 
@@ -607,7 +601,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDatePlan()
+    public function getDatePlan(): ?\DateTime
     {
         return $this->datePlan;
     }
@@ -617,7 +611,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setDatePlan($datePlan)
+    public function setDatePlan(\DateTime $datePlan): Calendar
     {
         $this->datePlan = $datePlan;
 
@@ -647,7 +641,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return Image
      */
-    public function getImage()
+    public function getImage(): ?Image
     {
         return $this->image;
     }
@@ -667,7 +661,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return Type
      */
-    public function getType()
+    public function getType(): Type
     {
         return $this->type;
     }
@@ -687,7 +681,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
     /**
      * @return \Contact\Entity\Contact
      */
-    public function getContact()
+    public function getContact(): \Contact\Entity\Contact
     {
         return $this->contact;
     }
@@ -697,7 +691,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setContact($contact): Calendar
+    public function setContact(\Contact\Entity\Contact $contact): Calendar
     {
         $this->contact = $contact;
 
@@ -737,7 +731,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setDocument($document)
+    public function setDocument($document): Calendar
     {
         $this->document = $document;
 
@@ -745,29 +739,9 @@ class Calendar extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return Schedule[]|Collections\ArrayCollection
-     */
-    public function getSchedule()
-    {
-        return $this->schedule;
-    }
-
-    /**
-     * @param Schedule[]|Collections\ArrayCollection $schedule
-     *
-     * @return Calendar
-     */
-    public function setSchedule($schedule)
-    {
-        $this->schedule = $schedule;
-
-        return $this;
-    }
-
-    /**
      * @return \Project\Entity\Calendar\Calendar
      */
-    public function getProjectCalendar()
+    public function getProjectCalendar(): ?\Project\Entity\Calendar\Calendar
     {
         return $this->projectCalendar;
     }
@@ -777,7 +751,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setProjectCalendar($projectCalendar)
+    public function setProjectCalendar(\Project\Entity\Calendar\Calendar $projectCalendar): Calendar
     {
         $this->projectCalendar = $projectCalendar;
 
@@ -797,7 +771,7 @@ class Calendar extends EntityAbstract implements ResourceInterface
      *
      * @return Calendar
      */
-    public function setCall($call)
+    public function setCall($call): Calendar
     {
         $this->call = $call;
 

@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Press\View\Handler;
+namespace Calendar\View\Handler;
 
 use Content\Entity\Content;
 use Content\Navigation\Service\UpdateNavigationService;

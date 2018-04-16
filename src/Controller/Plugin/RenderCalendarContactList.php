@@ -49,7 +49,9 @@ class RenderCalendarContactList extends AbstractPlugin
      * @param ModuleOptions   $moduleOptions
      * @param CalendarService $calendarService
      */
-    public function __construct(TwigRenderer $twigRenderer, ModuleOptions $moduleOptions,
+    public function __construct(
+        TwigRenderer $twigRenderer,
+        ModuleOptions $moduleOptions,
         CalendarService $calendarService
     ) {
         $this->twigRenderer = $twigRenderer;
@@ -71,7 +73,9 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFont('freesans', '', 10);
 
         $calendarContacts = $this->calendarService->findCalendarContactsByCalendar(
-            $calendar, CalendarContact::STATUS_ALL, 'organisation'
+            $calendar,
+            CalendarContact::STATUS_ALL,
+            'organisation'
         );
 
         //Create chunks of arrays per 22, as that amount fits on the screen
@@ -117,7 +121,8 @@ class RenderCalendarContactList extends AbstractPlugin
         $pdf->SetFont('freesans', '', 10);
 
         $calendarContacts = $this->calendarService->findCalendarContactsByCalendar(
-            $calendar, CalendarContact::STATUS_NO_DECLINED
+            $calendar,
+            CalendarContact::STATUS_NO_DECLINED
         );
 
         //Create chunks of arrays per 13, as that amount fits on the screen
@@ -149,6 +154,4 @@ class RenderCalendarContactList extends AbstractPlugin
 
         return $pdf;
     }
-
-
 }

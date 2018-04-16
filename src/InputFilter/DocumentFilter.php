@@ -23,6 +23,7 @@ use Zend\Validator\File\Size;
 
 /**
  * Class DocumentFilter
+ *
  * @package Calendar\InputFilter
  */
 class DocumentFilter extends InputFilter

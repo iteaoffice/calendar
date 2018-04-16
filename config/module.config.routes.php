@@ -17,7 +17,6 @@ return [
         'routes' => [
             'assets'    => [
                 'type'          => 'Literal',
-                'priority'      => 999,
                 'options'       => [
                     'route' => '/assets/' . (defined("ITEAOFFICE_HOST")
                             ? ITEAOFFICE_HOST : 'test'),
@@ -45,8 +44,7 @@ return [
                         'options'       => [
                             'route'    => '/calendar',
                             'defaults' => [
-                                'namespace'  => __NAMESPACE__,
-                                'controller' => Controller\CalendarCommunityController::class,
+                                'controller' => Controller\CommunityController::class,
                                 'action'     => 'index',
                             ],
                         ],
@@ -166,7 +164,7 @@ return [
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => Controller\CalendarDocumentController::class,
+                                        'controller' => Controller\DocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],
@@ -210,14 +208,13 @@ return [
             ],
             'zfcadmin'  => [
                 'child_routes' => [
-                    'calendar-manager' => [
+                    'calendar' => [
                         'type'          => 'Segment',
                         'priority'      => 1000,
                         'options'       => [
                             'route'    => '/calendar',
                             'defaults' => [
-                                'namespace'  => __NAMESPACE__,
-                                'controller' => Controller\CalendarManagerController::class,
+                                'controller' => Controller\ManagerController::class,
                                 'action'     => 'index',
                             ],
                         ],
@@ -270,21 +267,34 @@ return [
                                     ],
                                 ],
                             ],
-                            'update-role'      => [
-                                'type'    => 'Literal',
-                                'options' => [
-                                    'route'    => '/update-role.json',
+                            'json'             => [
+                                'type'          => 'Segment',
+                                'options'       => [
+                                    'route'    => '/document',
                                     'defaults' => [
-                                        'action' => 'update-role',
+                                        'controller' => Controller\JsonController::class,
+                                        'action'     => 'document',
                                     ],
                                 ],
-                            ],
-                            'get-roles'        => [
-                                'type'    => 'Literal',
-                                'options' => [
-                                    'route'    => '/get-roles.json',
-                                    'defaults' => [
-                                        'action' => 'get-roles',
+                                'may_terminate' => false,
+                                'child_routes'  => [
+                                    'update-role' => [
+                                        'type'    => 'Literal',
+                                        'options' => [
+                                            'route'    => '/update-role.json',
+                                            'defaults' => [
+                                                'action' => 'update-role',
+                                            ],
+                                        ],
+                                    ],
+                                    'get-roles'   => [
+                                        'type'    => 'Literal',
+                                        'options' => [
+                                            'route'    => '/get-roles.json',
+                                            'defaults' => [
+                                                'action' => 'get-roles',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -293,7 +303,7 @@ return [
                                 'options'       => [
                                     'route'    => '/document',
                                     'defaults' => [
-                                        'controller' => Controller\CalendarDocumentController::class,
+                                        'controller' => Controller\DocumentController::class,
                                         'action'     => 'document',
                                     ],
                                 ],

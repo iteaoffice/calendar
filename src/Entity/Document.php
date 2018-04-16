@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use General\Entity\ContentType;
 use Zend\Form\Annotation;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * CalendarDocument.
@@ -25,7 +24,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  * @ORM\Table(name="calendar_document")
  * @ORM\Entity
  */
-class Document extends EntityAbstract implements ResourceInterface
+class Document extends AbstractEntity
 {
     /**
      * @ORM\Column(name="document_id", type="integer", nullable=false)
@@ -63,18 +62,14 @@ class Document extends EntityAbstract implements ResourceInterface
     private $dateUpdated;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="document")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id", nullable=false)
      *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
     /**
      * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendarDocument")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      *
      * @var \Contact\Entity\Contact
      */
@@ -94,6 +89,15 @@ class Document extends EntityAbstract implements ResourceInterface
      * @var \Calendar\Entity\DocumentObject[]|ArrayCollection
      */
     private $object;
+
+    /**
+     * Document constructor.
+     *
+     */
+    public function __construct()
+    {
+        $this->size = 0;
+    }
 
     /**
      * Magic Getter.
@@ -120,6 +124,7 @@ class Document extends EntityAbstract implements ResourceInterface
 
     /**
      * @param $property
+     *
      * @return bool
      */
     public function __isset($property)
@@ -138,25 +143,25 @@ class Document extends EntityAbstract implements ResourceInterface
          * When we don't know the extension, leave out the dot at the end of the to prevent that the document
          * is not in the zip
          */
-        if ($this->getContentType()->getId() === ContentType::TYPE_UNKNOWN) {
-            return sprintf('%s', $this->getDocument());
+        if ($this->contentType->getId() === ContentType::TYPE_UNKNOWN) {
+            return $this->document;
         }
 
-        if (strpos($this->getDocument(), $this->getContentType()->getExtension()) !== false) {
-            return sprintf('%s', $this->getDocument());
+        if (\strpos($this->document, $this->contentType->getExtension()) !== false) {
+            return $this->document;
         }
 
         return sprintf(
             '%s.%s',
-            $this->getDocument(),
-            $this->getContentType()->getExtension()
+            $this->document,
+            $this->contentType->getExtension()
         );
     }
 
     /**
-     * @return ContentType
+     * @return ContentType|null
      */
-    public function getContentType()
+    public function getContentType(): ?ContentType
     {
         return $this->contentType;
     }
@@ -166,7 +171,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setContentType($contentType)
+    public function setContentType(ContentType $contentType): Document
     {
         $this->contentType = $contentType;
 
@@ -176,7 +181,15 @@ class Document extends EntityAbstract implements ResourceInterface
     /**
      * @return string
      */
-    public function getDocument()
+    public function __toString(): string
+    {
+        return (string)$this->document;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocument(): ?string
     {
         return $this->document;
     }
@@ -186,7 +199,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setDocument($document)
+    public function setDocument(string $document): Document
     {
         $this->document = $document;
 
@@ -194,17 +207,9 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return string
+     * @return int|null
      */
-    public function __toString(): string
-    {
-        return (string)$this->getDocument();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -214,7 +219,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
 
@@ -224,7 +229,7 @@ class Document extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateCreated()
+    public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
@@ -234,7 +239,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setDateCreated($dateCreated)
+    public function setDateCreated(\DateTime $dateCreated): Document
     {
         $this->dateCreated = $dateCreated;
 
@@ -244,7 +249,7 @@ class Document extends EntityAbstract implements ResourceInterface
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -254,7 +259,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setSize($size)
+    public function setSize(int $size): Document
     {
         $this->size = $size;
 
@@ -264,7 +269,7 @@ class Document extends EntityAbstract implements ResourceInterface
     /**
      * @return \DateTime
      */
-    public function getDateUpdated()
+    public function getDateUpdated(): ?\DateTime
     {
         return $this->dateUpdated;
     }
@@ -274,7 +279,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setDateUpdated($dateUpdated)
+    public function setDateUpdated(\DateTime $dateUpdated): Document
     {
         $this->dateUpdated = $dateUpdated;
 
@@ -282,9 +287,9 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return Calendar
+     * @return Calendar|null
      */
-    public function getCalendar()
+    public function getCalendar(): ?Calendar
     {
         return $this->calendar;
     }
@@ -294,7 +299,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setCalendar($calendar)
+    public function setCalendar($calendar): Document
     {
         $this->calendar = $calendar;
 
@@ -302,9 +307,9 @@ class Document extends EntityAbstract implements ResourceInterface
     }
 
     /**
-     * @return \Contact\Entity\Contact
+     * @return \Contact\Entity\Contact|null
      */
-    public function getContact()
+    public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }
@@ -314,7 +319,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setContact($contact)
+    public function setContact(\Contact\Entity\Contact $contact): Document
     {
         $this->contact = $contact;
 
@@ -334,7 +339,7 @@ class Document extends EntityAbstract implements ResourceInterface
      *
      * @return Document
      */
-    public function setObject($object)
+    public function setObject($object): Document
     {
         $this->object = $object;
 

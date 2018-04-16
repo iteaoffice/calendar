@@ -22,6 +22,7 @@ use Zend\Validator\Callback;
 
 /**
  * Class CalendarFilter
+ *
  * @package Calendar\InputFilter
  */
 class CalendarFilter extends InputFilter
@@ -133,6 +134,12 @@ class CalendarFilter extends InputFilter
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
                 ],
+            ]
+        );
+        $inputFilter->add(
+            [
+                'name'     => 'image',
+                'required' => false,
             ]
         );
         $inputFilter->add(

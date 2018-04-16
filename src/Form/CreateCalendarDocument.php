@@ -66,6 +66,12 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
         );
         $this->add(
             [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
+            ]
+        );
+        $this->add(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [

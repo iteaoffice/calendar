@@ -7,6 +7,7 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+
 use Admin\Entity\Access;
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Acl\Assertion\Contact as ContactAssertion;
@@ -91,39 +92,39 @@ return [
                     'assertion' => DocumentAssertion::class,
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/overview',
+                    'route' => 'zfcadmin/calendar/overview',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/edit',
+                    'route' => 'zfcadmin/calendar/edit',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/calendar',
+                    'route' => 'zfcadmin/calendar/calendar',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/new',
+                    'route' => 'zfcadmin/calendar/new',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/select-attendees',
+                    'route' => 'zfcadmin/calendar/select-attendees',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/update-role',
+                    'route' => 'zfcadmin/calendar/json/update-role',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/get-roles',
+                    'route' => 'zfcadmin/calendar/json/get-roles',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/document/document',
+                    'route' => 'zfcadmin/calendar/document/document',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/document/edit',
+                    'route' => 'zfcadmin/calendar/document/edit',
                     'roles' => [Access::ACCESS_OFFICE],
                 ],
             ],

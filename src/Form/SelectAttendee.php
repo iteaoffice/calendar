@@ -36,7 +36,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         $contacts = [];
         foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
             $contacts[$contact->getId()] = sprintf(
-                "%s (%s, %s)",
+                '%s (%s, %s)',
                 $contact->getDisplayName(),
                 $contact->getContactOrganisation()->getOrganisation(),
                 $contact->getContactOrganisation()->getOrganisation()->getCountry()
@@ -51,6 +51,13 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
                     'value_options' => $contacts,
                     'label'         => _("txt-contact-name"),
                 ],
+            ]
+        );
+
+        $this->add(
+            [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
             ]
         );
 

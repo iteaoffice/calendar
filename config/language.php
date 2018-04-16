@@ -15,3 +15,5 @@ _("txt-location-explanation");
 
 _("txt-final-explanation");
 _("txt-on-homepage-explanation");
+
+_("txt-calendar-program-call-help-block");

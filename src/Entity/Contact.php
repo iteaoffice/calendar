@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Contact.
@@ -21,7 +20,7 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
-class Contact extends EntityAbstract implements ResourceInterface
+class Contact extends AbstractEntity
 {
     public const STATUS_ALL = 1;
     public const STATUS_NO_DECLINED = 2;
@@ -71,6 +70,13 @@ class Contact extends EntityAbstract implements ResourceInterface
     private $contact;
 
     /**
+     * Contact constructor.
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * Magic Getter.
      *
      * @param $property
@@ -94,9 +100,18 @@ class Contact extends EntityAbstract implements ResourceInterface
     }
 
     /**
+     * @param $property
+     * @return bool
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
+    }
+
+    /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->role;
     }

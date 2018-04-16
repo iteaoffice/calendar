@@ -22,7 +22,7 @@ use Zend\Form\Annotation;
  * @ORM\Table(name="calendar_contact_status")
  * @ORM\Entity
  */
-class ContactStatus
+class ContactStatus extends AbstractEntity
 {
     public const STATUS_TENTATIVE = 1;
     public const STATUS_ACCEPT = 2;
@@ -31,24 +31,25 @@ class ContactStatus
      * @ORM\Column(name="status_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Annotation\Type("\Zend\Form\Element\Hidden")
      *
      * @var integer
      */
     private $id;
     /**
-     * @ORM\Column(name="status", type="string", length=45, nullable=false)
+     * @ORM\Column(name="status", type="string", nullable=false)
+     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Options({"label":"txt-calendar-contact-status-status-label","help-block": "txt-calendar-contact-status-status-help-block"})
+     * @Annotation\Attributes({"placeholder":"txt-calendar-contact-status-status-placeholder"})
      *
      * @var string
      */
     private $status;
     /**
-     * @ORM\Column(name="image", type="string", length=45, nullable=false)
-     *
-     * @var string
-     */
-    private $image;
-    /**
      * @ORM\Column(name="status_change", type="string", length=45, nullable=false)
+     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Options({"label":"txt-calendar-contact-status-status-change-label","help-block": "txt-calendar-contact-status-status-change-help-block"})
+     * @Annotation\Attributes({"placeholder":"txt-calendar-contact-status-status-change-placeholder"})
      *
      * @var string
      */
@@ -57,31 +58,49 @@ class ContactStatus
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="status")
      * @Annotation\Exclude()
      *
-     * @var \Calendar\Entity\Contact[]
+     * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
     private $calendarContact;
-    /**
-     * @ORM\OneToMany(targetEntity="Calendar\Entity\ScheduleContact", cascade={"persist"}, mappedBy="status")
-     * @Annotation\Exclude()
-     *
-     * @var \Calendar\Entity\ScheduleContact[]
-     */
-    private $scheduleContact;
 
     /**
      * Class constructor.
      */
     public function __construct()
     {
-        $this->scheduleContact = new Collections\ArrayCollection();
+        $this->calendarContact = new Collections\ArrayCollection();
     }
 
     /**
-     * @return string
+     * Magic Getter.
+     *
+     * @param $property
+     *
+     * @return mixed
      */
-    public function __toString()
+    public function __get($property)
     {
-        return (string)$this->status;
+        return $this->$property;
+    }
+
+    /**
+     * Magic Setter.
+     *
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value)
+    {
+        $this->$property = $value;
+    }
+
+    /**
+     * @param $property
+     *
+     * @return bool
+     */
+    public function __isset($property)
+    {
+        return isset($this->$property);
     }
 
     /**
@@ -97,17 +116,16 @@ class ContactStatus
      *
      * @return ContactStatus
      */
-    public function setId($id)
+    public function setId($id): ContactStatus
     {
         $this->id = $id;
-
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): ?string
     {
         return $this->status;
     }
@@ -117,30 +135,9 @@ class ContactStatus
      *
      * @return ContactStatus
      */
-    public function setStatus($status)
+    public function setStatus(string $status): ContactStatus
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param string $image
-     *
-     * @return ContactStatus
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-
         return $this;
     }
 
@@ -157,15 +154,14 @@ class ContactStatus
      *
      * @return ContactStatus
      */
-    public function setStatusChange($statusChange)
+    public function setStatusChange(string $statusChange): ContactStatus
     {
         $this->statusChange = $statusChange;
-
         return $this;
     }
 
     /**
-     * @return Contact[]
+     * @return Contact[]|Collections\ArrayCollection
      */
     public function getCalendarContact()
     {
@@ -173,34 +169,13 @@ class ContactStatus
     }
 
     /**
-     * @param Contact[] $calendarContact
+     * @param Contact[]|Collections\ArrayCollection $calendarContact
      *
      * @return ContactStatus
      */
-    public function setCalendarContact($calendarContact)
+    public function setCalendarContact($calendarContact): ContactStatus
     {
         $this->calendarContact = $calendarContact;
-
-        return $this;
-    }
-
-    /**
-     * @return ScheduleContact[]
-     */
-    public function getScheduleContact()
-    {
-        return $this->scheduleContact;
-    }
-
-    /**
-     * @param ScheduleContact[] $scheduleContact
-     *
-     * @return ContactStatus
-     */
-    public function setScheduleContact($scheduleContact)
-    {
-        $this->scheduleContact = $scheduleContact;
-
         return $this;
     }
 }

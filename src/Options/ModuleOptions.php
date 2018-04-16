@@ -26,12 +26,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $__strictMode__ = false;
     /**
-     * Activate Calendar Contacts in Community.
-     *
-     * @var boolean
-     */
-    protected $communityCalendarContactEnabled = true;
-    /**
      * Location of the PDF having the calendar contact template.
      *
      * @var string

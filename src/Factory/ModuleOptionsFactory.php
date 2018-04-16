@@ -31,8 +31,8 @@ final class ModuleOptionsFactory implements FactoryInterface
      * Create an instance of the requested class name.
      *
      * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
+     * @param string             $requestedName
+     * @param null|array         $options
      *
      * @return ModuleOptions
      */
@@ -40,6 +40,6 @@ final class ModuleOptionsFactory implements FactoryInterface
     {
         $config = $container->get('Config');
 
-        return new ModuleOptions(isset($config['calendar_option']) ? $config['calendar_option'] : []);
+        return new ModuleOptions($config['calendar_option'] ?? []);
     }
 }

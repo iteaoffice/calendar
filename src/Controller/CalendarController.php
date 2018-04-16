@@ -13,30 +13,54 @@ declare(strict_types=1);
 namespace Calendar\Controller;
 
 use Calendar\Entity\Type;
+use Calendar\Service\CalendarService;
 use Zend\Http\Response;
+use Zend\Mvc\Controller\AbstractActionController;
+use ZfcTwig\View\TwigRenderer;
 
 /**
  *
  */
-class CalendarController extends CalendarAbstractController
+class CalendarController extends AbstractActionController
 {
+    /**
+     * @var CalendarService
+     */
+    protected $calendarService;
+    /**
+     * @var TwigRenderer
+     */
+    protected $renderer;
+
+    /**
+     * CalendarController constructor.
+     *
+     * @param CalendarService $calendarService
+     * @param TwigRenderer    $renderer
+     */
+    public function __construct(CalendarService $calendarService, TwigRenderer $renderer)
+    {
+        $this->calendarService = $calendarService;
+        $this->renderer = $renderer;
+    }
+
     /**
      * @return Response
      */
     public function calendarTypeColorCssAction(): Response
     {
-        $calendarTypes = $this->getCalendarService()->findAll(Type::class);
+        $calendarTypes = $this->calendarService->findAll(Type::class);
         $calendarType = new Type();
         $cacheFileName = $calendarType->getCacheCssFileName();
 
-        $css = $this->getRenderer()->render(
+        $css = $this->renderer->render(
             'calendar/calendar/calendar-type-color-css',
             [
                 'calendarTypes' => $calendarTypes,
             ]
         );
         //Save a copy of the file in the caching-folder
-        file_put_contents($cacheFileName, $css);
+        \file_put_contents($cacheFileName, $css);
 
         /** @var Response $response */
         $response = $this->getResponse();

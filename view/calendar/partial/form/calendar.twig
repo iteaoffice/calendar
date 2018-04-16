@@ -18,7 +18,7 @@
 
 {% if project %}
     <div class="form-group row">
-        <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-project") }}</label>
+        <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-project") }}</label>
 
         <div class="col-sm-9">
             <p class="form-control-static form-control-plaintext">{{ project.parseFullName() }}</p></div>
@@ -35,6 +35,9 @@
 {{ ztbformelement(calendar.get('imageUrl')) }}
 {{ ztbformelement(calendar.get('image')) }}
 {{ ztbformelement(calendar.get('url')) }}
+
+
+{{ formelement(calendar.get('csrf')) }}
 
 
 <div class="form-group row">

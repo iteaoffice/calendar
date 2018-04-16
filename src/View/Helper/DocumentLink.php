@@ -118,7 +118,7 @@ class DocumentLink extends LinkAbstract
                 );
                 break;
             case 'document-admin':
-                $this->setRouter('zfcadmin/calendar-manager/document/document');
+                $this->setRouter('zfcadmin/calendar/document/document');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-view-calendar-document-%s"),
@@ -127,7 +127,7 @@ class DocumentLink extends LinkAbstract
                 );
                 break;
             case 'edit':
-                $this->setRouter('zfcadmin/calendar-manager/document/edit');
+                $this->setRouter('zfcadmin/calendar/document/edit');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-edit-calendar-document-%s"),

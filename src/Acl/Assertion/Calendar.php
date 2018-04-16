@@ -18,7 +18,7 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
-class Calendar extends AssertionAbstract
+class Calendar extends AbstractAssertion
 {
     /**
      * Returns true if and only if the assertion conditions are met.
@@ -39,17 +39,17 @@ class Calendar extends AssertionAbstract
         RoleInterface $role = null,
         ResourceInterface $calendar = null,
         $privilege = null
-    ) {
+    ): bool {
         $this->setPrivilege($privilege);
+        $id = $id = $this->getId();
 
-        if (!$calendar instanceof CalendarEntity && null !== ($id = $this->getId())) {
-            /** @var CalendarEntity $calendar */
-            $calendar = $this->getCalendarService()->findCalendarById($id);
+        if (!$calendar instanceof CalendarEntity && null !== $id) {
+            $calendar = $this->calendarService->findCalendarById((int)$id);
         }
 
         switch ($this->getPrivilege()) {
             case 'edit':
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'select-attendees':
                 /**
                  * Stop this case when there is no project calendar
@@ -58,19 +58,19 @@ class Calendar extends AssertionAbstract
                     return false;
                 }
 
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
+                if ($this->hasPermission($calendar, 'edit')) {
                     return true;
                 }
 
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'add-document':
             case 'presence-list':
             case 'signature-list':
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
+                if ($this->hasPermission($calendar, 'edit')) {
                     return true;
                 }
 
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'list':
                 return true;
             case 'overview-admin':
@@ -78,7 +78,7 @@ class Calendar extends AssertionAbstract
             case 'edit-attendees-admin':
             case 'set-roles-admin':
             case 'new':
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'overview':
             case 'review-calendar':
             case 'download-review-calendar':
@@ -91,14 +91,14 @@ class Calendar extends AssertionAbstract
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $calendar)) {
+                if ($this->hasPermission($calendar, 'view')) {
                     return true;
                 }
 
                 return $this->rolesHaveAccess($calendar->getType()->getAccess());
 
             case 'view':
-                return $this->getCalendarService()->canViewCalendar($calendar, $this->getContact());
+                return $this->calendarService->canViewCalendar($calendar, $this->contact);
         }
 
         return false;

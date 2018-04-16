@@ -92,7 +92,7 @@ class CalendarLink extends LinkAbstract
     {
         switch ($this->getAction()) {
             case 'edit':
-                $this->setRouter('zfcadmin/calendar-manager/edit');
+                $this->setRouter('zfcadmin/calendar/edit');
                 $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
                 break;
             case 'list':
@@ -152,7 +152,7 @@ class CalendarLink extends LinkAbstract
                 $this->setText($this->translate("txt-download-signature-list"));
                 break;
             case 'overview-admin':
-                $this->setRouter('zfcadmin/calendar-manager/overview');
+                $this->setRouter('zfcadmin/calendar/overview');
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view':
@@ -171,15 +171,15 @@ class CalendarLink extends LinkAbstract
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'view-admin':
-                $this->setRouter('zfcadmin/calendar-manager/calendar');
+                $this->setRouter('zfcadmin/calendar/calendar');
                 $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
                 break;
             case 'edit-attendees-admin':
-                $this->setRouter('zfcadmin/calendar-manager/select-attendees');
+                $this->setRouter('zfcadmin/calendar/select-attendees');
                 $this->setText(sprintf($this->translate("txt-select-attendees-for-calendar-%s"), $this->getCalendar()));
                 break;
             case 'new':
-                $this->setRouter('zfcadmin/calendar-manager/new');
+                $this->setRouter('zfcadmin/calendar/new');
                 if (\is_null($this->getProject())) {
                     $this->setText(sprintf($this->translate("txt-add-calendar-item")));
                 } else {

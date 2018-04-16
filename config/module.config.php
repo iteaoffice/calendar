@@ -7,6 +7,7 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+
 use Calendar\Acl;
 use Calendar\Controller;
 use Calendar\Factory;
@@ -15,16 +16,17 @@ use Calendar\Navigation;
 use Calendar\Options;
 use Calendar\Service;
 use Calendar\View;
-use Zend\Stdlib;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Zend\Stdlib;
 
 $config = [
     'controllers'        => [
         'factories' => [
-            Controller\CalendarCommunityController::class => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarController::class          => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarDocumentController::class  => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarManagerController::class   => Controller\Factory\ControllerFactory::class,
+            Controller\CommunityController::class => ConfigAbstractFactory::class,
+            Controller\CalendarController::class  => ConfigAbstractFactory::class,
+            Controller\DocumentController::class  => ConfigAbstractFactory::class,
+            Controller\JsonController::class      => ConfigAbstractFactory::class,
+            Controller\ManagerController::class   => ConfigAbstractFactory::class,
         ],
     ],
     'controller_plugins' => [
@@ -38,18 +40,20 @@ $config = [
         ],
     ],
     'service_manager'    => [
-        'factories' => [
-            Service\CalendarService::class            => Factory\CalendarServiceFactory::class,
+        'factories'  => [
+            Service\CalendarService::class            => ConfigAbstractFactory::class,
             Service\FormService::class                => Factory\FormServiceFactory::class,
             Options\ModuleOptions::class              => Factory\ModuleOptionsFactory::class,
-            Acl\Assertion\Calendar::class             => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Contact::class              => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Document::class             => Acl\Factory\AssertionFactory::class,
-            InputFilter\CalendarFilter::class         => Factory\InputFilterFactory::class,
-            InputFilter\DocumentFilter::class         => Factory\InputFilterFactory::class,
+            Acl\Assertion\Calendar::class             => Factory\InvokableFactory::class,
+            Acl\Assertion\Contact::class              => Factory\InvokableFactory::class,
+            Acl\Assertion\Document::class             => Factory\InvokableFactory::class,
             Navigation\Invokable\CalendarLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
             Navigation\Invokable\DocumentLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
         ],
+        'invokables' => [
+            InputFilter\CalendarFilter::class => InputFilter\CalendarFilter::class,
+            InputFilter\DocumentFilter::class => InputFilter\DocumentFilter::class,
+        ]
     ],
     'view_manager'       => [
         'template_map' => include __DIR__ . '/../template_map.php',

@@ -16,7 +16,7 @@ namespace Calendar\View\Helper;
 use BjyAuthorize\Controller\Plugin\IsAllowed;
 use BjyAuthorize\Service\Authorize;
 use Calendar\Entity\Calendar;
-use Calendar\Entity\EntityAbstract;
+use Calendar\Entity\AbstractEntity;
 use Project\Entity\Project;
 use Zend\Router\Http\RouteMatch;
 use Zend\View\Helper\ServerUrl;
@@ -169,6 +169,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                         $this->addLinkContent('<i class="fa fa-users"></i>');
                         break;
                     case 'view-admin':
+                    case 'view-community':
                         $this->addLinkContent('<i class="fa fa-link"></i>');
                         break;
                     default:
@@ -316,13 +317,13 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param EntityAbstract $entity
+     * @param AbstractEntity $entity
      * @param string         $assertion
      * @param string         $action
      *
      * @return bool
      */
-    public function hasAccess(EntityAbstract $entity, $assertion, $action)
+    public function hasAccess(AbstractEntity $entity, $assertion, $action)
     {
         $assertion = $this->getAssertion($assertion);
         if (!\is_null($entity)
@@ -357,7 +358,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param null|EntityAbstract $resource
+     * @param null|AbstractEntity $resource
      * @param string              $privilege
      *
      * @return bool

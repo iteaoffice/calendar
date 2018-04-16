@@ -9,7 +9,7 @@
 {{ form().openTag(form)|raw }}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label col-form-label">{{ translate("txt-calendar") }}</label>
+    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
         <p class="form-control-static form-control-plaintext">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
@@ -319,7 +319,7 @@
 
         $.ajax({
             method: 'post',
-            url: '{{ url('zfcadmin/selection/get-contacts') }}',
+            url: '{{ url('zfcadmin/selection/json/get-contacts') }}',
             dataType: 'json',
             data: {
                 id: q

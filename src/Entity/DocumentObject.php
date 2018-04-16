@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="calendar_document_object")
  * @ORM\Entity
  */
-class DocumentObject extends EntityAbstract
+class DocumentObject extends AbstractEntity
 {
     /**
      * @ORM\Column(name="object_id", type="integer", nullable=false)
@@ -71,6 +71,7 @@ class DocumentObject extends EntityAbstract
 
     /**
      * @param $property
+     *
      * @return bool
      */
     public function __isset($property)
@@ -88,6 +89,7 @@ class DocumentObject extends EntityAbstract
 
     /**
      * @param int $id
+     *
      * @return DocumentObject
      */
     public function setId(int $id): DocumentObject
@@ -107,6 +109,7 @@ class DocumentObject extends EntityAbstract
 
     /**
      * @param string $object
+     *
      * @return DocumentObject
      */
     public function setObject($object): DocumentObject
@@ -126,6 +129,7 @@ class DocumentObject extends EntityAbstract
 
     /**
      * @param Document $document
+     *
      * @return DocumentObject
      */
     public function setDocument(Document $document): DocumentObject
