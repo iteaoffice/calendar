@@ -501,7 +501,7 @@ class Calendar extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getDateCreated(): \DateTime
+    public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
@@ -539,9 +539,9 @@ class Calendar extends AbstractEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSequence(): int
+    public function getSequence(): ?int
     {
         return $this->sequence;
     }
@@ -579,9 +579,9 @@ class Calendar extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return string|string
      */
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -659,9 +659,9 @@ class Calendar extends AbstractEntity
     }
 
     /**
-     * @return Type
+     * @return Type|null
      */
-    public function getType(): Type
+    public function getType(): ?Type
     {
         return $this->type;
     }
@@ -679,9 +679,9 @@ class Calendar extends AbstractEntity
     }
 
     /**
-     * @return \Contact\Entity\Contact
+     * @return \Contact\Entity\Contact|null
      */
-    public function getContact(): \Contact\Entity\Contact
+    public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }

@@ -17,9 +17,9 @@ use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
 use Calendar\Entity;
 
 /**
- * Create a link to an project.
+ * Class DocumentLink
  *
- * @category   Calendar
+ * @package Calendar\View\Helper
  */
 class DocumentLink extends LinkAbstract
 {

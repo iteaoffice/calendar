@@ -46,7 +46,7 @@ class Type extends AbstractEntity
     /**
      * @ORM\Column(name="color", type="string", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Color")
-     * @Annotation\Options({"label":"txt-calendar-background-color-label","help-block": "txt-calendar-background-color-help-block"})
+     * @Annotation\Options({"label":"txt-calendar-type-background-color-label","help-block": "txt-calendar-type-background-color-help-block"})
      *
      * @var string
      */

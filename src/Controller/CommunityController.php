@@ -33,6 +33,7 @@ use General\Service\EmailService;
 use General\Service\GeneralService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
+use setasign\Fpdi\TcpdfFpdi;
 use Zend\Http\Response;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -50,7 +51,7 @@ use Zend\View\Model\ViewModel;
  * @package Calendar\Controller
  * @method Identity|\Contact\Entity\Contact identity()
  * @method FlashMessenger flashMessenger()
- * @method RenderReviewCalendar renderReviewCalendar(array $calendarItems)
+ * @method RenderReviewCalendar|TcpdfFpdi renderReviewCalendar(array $calendarItems)
  * @method RenderCalendarContactList renderCalendarContactList()
  */
 class CommunityController extends AbstractActionController

@@ -66,7 +66,7 @@ abstract class AbstractService
     public function findFilteredByContact(string $entity, $filter, Entity\Contact $contact): QueryBuilder
     {
         //The 'filter' should always be there to support the repositories
-        if (!array_key_exists('filter', $filter)) {
+        if (!\array_key_exists('filter', $filter)) {
             $filter['filter'] = [];
         }
 
@@ -105,7 +105,7 @@ abstract class AbstractService
     ): QueryBuilder {
 
         //Create an entity from the name
-        /** @var AbstractEntity $entity */
+        /** @var Entity\AbstractEntity $entity */
         $entity = new $entity();
 
         switch ($permit) {
@@ -146,7 +146,7 @@ abstract class AbstractService
      *
      * @param Entity\AbstractEntity $entity
      * @param string                $roleName
-     * @param Entity\Contact        $contact
+     * @param Contact               $contact
      *
      * @return QueryBuilder|null
      */
@@ -244,7 +244,6 @@ abstract class AbstractService
 
 
         $this->entityManager->flush();
-
 
         $this->flushPermitsByEntityAndId($entity, (int)$entity->getId());
 

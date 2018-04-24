@@ -27,10 +27,10 @@ class Calendar extends AbstractAssertion
      * $role, $calendar, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl                                      $acl
-     * @param RoleInterface                            $role
-     * @param ResourceInterface|CalendarEntity|\object $calendar
-     * @param string                                   $privilege
+     * @param Acl                              $acl
+     * @param RoleInterface                    $role
+     * @param ResourceInterface|CalendarEntity $calendar
+     * @param string                           $privilege
      *
      * @return bool
      */

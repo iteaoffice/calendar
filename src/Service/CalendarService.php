@@ -354,7 +354,7 @@ class CalendarService extends AbstractService
         $contactStatus = $this->entityManager->getReference(Entity\ContactStatus::class, $status);
 
         $calendarContact->setStatus($contactStatus);
-        $this->updateEntity($calendarContact);
+        $this->save($calendarContact);
     }
 
     /**
@@ -362,7 +362,7 @@ class CalendarService extends AbstractService
      *
      * @return CalendarContact[]
      */
-    public function findGeneralCalendarContactByCalendar(Calendar $calendar)
+    public function findGeneralCalendarContactByCalendar(Calendar $calendar): array
     {
         /** @var Repository\Contact $repository */
         $repository = $this->entityManager->getRepository(CalendarContact::class);

@@ -221,7 +221,7 @@ class ManagerController extends AbstractActionController
                 $calendar = $form->getData();
 
                 $calendar->setContact($this->identity());
-                $calendar = $this->calendarService->save($calendar);
+                $this->calendarService->save($calendar);
 
                 if (null !== $project) {
                     $projectCalendar = new \Project\Entity\Calendar\Calendar();
@@ -308,7 +308,7 @@ class ManagerController extends AbstractActionController
                     $calendar->setCall([]);
                 }
 
-                $calendar = $this->calendarService->save($calendar);
+                $this->calendarService->save($calendar);
                 $this->flashMessenger()->setNamespace('success')
                     ->addMessage(
                         sprintf(

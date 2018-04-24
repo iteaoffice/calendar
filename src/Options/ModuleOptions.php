@@ -57,30 +57,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $calendarPastTemplate = '';
 
-    /**
-     * Enable the calendar contacts.
-     *
-     * @return boolean
-     */
-    public function getCommunityCalendarContactEnabled()
-    {
-        return $this->communityCalendarContactEnabled;
-    }
-
-    /**
-     * Sets whether the review invitations should be enabled on the homepage of the community.
-     *
-     * @param $communityCalendarContactEnabled
-     *
-     * @return ModuleOptions
-     */
-    public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled)
-    {
-        $this->communityCalendarContactEnabled = $communityCalendarContactEnabled;
-
-        return $this;
-    }
-
+    
     /**
      * @return string
      */
