@@ -57,7 +57,7 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $calendarPastTemplate = '';
 
-    
+
     /**
      * @return string
      */

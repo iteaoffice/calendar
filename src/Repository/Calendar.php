@@ -274,13 +274,13 @@ class Calendar extends EntityRepository
      *
      * @return bool
      */
-    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact): bool
+    public function canViewCalendar(Entity\Calendar $calendar, Contact $contact = null): bool
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
         $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
-        if ($contact->isEmpty()) {
+        if (null === $contact) {
             $contact = new Contact();
             $contact->setId(0);
             $access = new Access();

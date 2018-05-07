@@ -211,12 +211,12 @@ class CalendarService extends AbstractService
     /**
      * This function will return a boolean value to see if a contact can view the calendar
      *
-     * @param Calendar $calendar
-     * @param Contact  $contact
+     * @param Calendar     $calendar
+     * @param Contact|null $contact
      *
      * @return bool
      */
-    public function canViewCalendar(Calendar $calendar, Contact $contact): bool
+    public function canViewCalendar(Calendar $calendar, Contact $contact = null): bool
     {
         /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);

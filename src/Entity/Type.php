@@ -137,6 +137,14 @@ class Type extends AbstractEntity
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->type;
+    }
+
+    /**
      * @ORM\PreUpdate
      */
     public function removeCachedCssFile(): void
