@@ -10,12 +10,14 @@
 
 declare(strict_types=1);
 
-namespace CalendarTest\InputFilter;
+namespace CalendarTest;
 
 use Calendar\Module;
+use Calendar\View\Handler\CalendarHandler;
 use Testing\Util\AbstractServiceTest;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Zend\View\HelperPluginManager;
 
 /**
  * Class GeneralTest
@@ -46,6 +48,10 @@ class ModuleTest extends AbstractServiceTest
 
         foreach ($abstractFacories as $service => $dependencies) {
 
+            if ($service === CalendarHandler::class) {
+                continue;
+            }
+
             $instantiatedDependencies = [];
             foreach ($dependencies as $dependency) {
 
@@ -54,6 +60,9 @@ class ModuleTest extends AbstractServiceTest
                 }
                 if ($dependency === 'Config') {
                     $dependency = [];
+                }
+                if ($dependency === 'ViewHelperManager') {
+                    $dependency = HelperPluginManager::class;
                 }
                 $instantiatedDependencies[]
                     = $this->getMockBuilder($dependency)->disableOriginalConstructor()->getMock();

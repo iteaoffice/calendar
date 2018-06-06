@@ -96,26 +96,6 @@ class CalendarLink extends LinkAbstract
                 $this->setRouter('zfcadmin/calendar/edit');
                 $this->setText(sprintf($this->translate("txt-edit-calendar-%s"), $this->getCalendar()));
                 break;
-            case 'list':
-                /*
-                 * Push the docRef in the params array
-                 */
-                $this->setRouter(Route::parseRouteName(Route::DEFAULT_ROUTE_CALENDAR));
-                switch ($this->getWhich()) {
-                    case CalendarService::WHICH_UPCOMING:
-                        $this->addRouterParam('docRef', 'upcoming-events');
-                        $this->setText($this->translate("txt-upcoming-events"));
-                        break;
-                    case CalendarService::WHICH_ON_HOMEPAGE:
-                        $this->addRouterParam('docRef', 'events');
-                        $this->setText($this->translate("txt-upcoming-events"));
-                        break;
-                    case CalendarService::WHICH_PAST:
-                        $this->addRouterParam('docRef', 'past-events');
-                        $this->setText($this->translate("txt-past-events"));
-                        break;
-                }
-                break;
             case 'overview':
                 $this->setRouter('community/calendar/overview');
                 $this->setText($this->translate("txt-view-full-calendar"));

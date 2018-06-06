@@ -54,58 +54,45 @@ use Zend\View\Model\ViewModel;
  * @method RenderReviewCalendar|TcpdfFpdi renderReviewCalendar(array $calendarItems)
  * @method RenderCalendarContactList renderCalendarContactList()
  */
-class CommunityController extends AbstractActionController
+final class CommunityController extends AbstractActionController
 {
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
     /**
      * @var GeneralService
      */
-    protected $generalService;
+    private $generalService;
     /**
      * @var ContactService
      */
-    protected $contactService;
+    private $contactService;
     /**
      * @var ProjectService
      */
-    protected $projectService;
+    private $projectService;
     /**
      * @var WorkpackageService
      */
-    protected $workpackageService;
+    private $workpackageService;
     /**
      * @var AssertionService
      */
-    protected $assertionService;
+    private $assertionService;
     /**
      * @var EmailService
      */
-    protected $emailService;
+    private $emailService;
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
     /**
      * @var EntityManager
      */
-    protected $entityManager;
+    private $entityManager;
 
-    /**
-     * CommunityController constructor.
-     *
-     * @param CalendarService     $calendarService
-     * @param GeneralService      $generalService
-     * @param ContactService      $contactService
-     * @param ProjectService      $projectService
-     * @param WorkpackageService  $workpackageService
-     * @param AssertionService    $assertionService
-     * @param EmailService        $emailService
-     * @param TranslatorInterface $translator
-     * @param EntityManager       $entityManager
-     */
     public function __construct(
         CalendarService $calendarService,
         GeneralService $generalService,
@@ -128,10 +115,6 @@ class CommunityController extends AbstractActionController
         $this->entityManager = $entityManager;
     }
 
-
-    /**
-     * @return ViewModel
-     */
     public function overviewAction(): ViewModel
     {
         $which = $this->params('which', CalendarService::WHICH_UPCOMING);
@@ -154,9 +137,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return ViewModel
-     */
     public function contactAction(): ViewModel
     {
         $calendarContacts = $this->calendarService->findCalendarContactByContact(
@@ -171,9 +151,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return ViewModel
-     */
     public function reviewCalendarAction(): ViewModel
     {
         $calendarItems = $this->calendarService
@@ -190,9 +167,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return Response
-     */
     public function downloadReviewCalendarAction(): Response
     {
         $calendarItems = $this->calendarService
@@ -210,7 +184,7 @@ class CommunityController extends AbstractActionController
             ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Pragma: public')
-            ->addHeaderLine('Content-Disposition', 'attachment; filename="review-calendar.pdf"')
+            ->addHeaderLine('Content-Disposition', 'attachment; filename="Review calendar.pdf"')
             ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
             ->addHeaderLine('Content-Length', \strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
@@ -218,9 +192,6 @@ class CommunityController extends AbstractActionController
         return $response;
     }
 
-    /**
-     * @return Response|ViewModel
-     */
     public function calendarAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -279,10 +250,6 @@ class CommunityController extends AbstractActionController
                     )
                 );
 
-            /*
-             * Document uploaded
-             */
-
             return $this->redirect()->toRoute(
                 'community/calendar/calendar',
                 [
@@ -307,6 +274,7 @@ class CommunityController extends AbstractActionController
         return new ViewModel(
             [
                 'calendarService'    => $this->calendarService,
+                'assertionService'   => $this->assertionService,
                 'calendar'           => $calendar,
                 'workpackageService' => $this->workpackageService,
                 'projectService'     => $this->projectService,
@@ -316,10 +284,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return JsonModel
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function updateStatusAction(): JsonModel
     {
         $calendarContactId = $this->getEvent()->getRequest()->getPost()->get('id');
@@ -340,9 +304,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return Response|ViewModel
-     */
     public function selectAttendeesAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -440,9 +401,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * @return Response
-     */
     public function presenceListAction(): Response
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -459,12 +417,12 @@ class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderPresenceList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="presence-list-' . $calendar->getCalendar() . '.pdf"'
+                'attachment; filename="Presence list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
             ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
@@ -473,9 +431,6 @@ class CommunityController extends AbstractActionController
         return $response;
     }
 
-    /**
-     * @return Response
-     */
     public function signatureListAction(): Response
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -492,12 +447,12 @@ class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderSignatureList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="presence-list-' . $calendar->getCalendar() . '.pdf"'
+                'attachment; filename="Signature list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
             ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
@@ -506,11 +461,6 @@ class CommunityController extends AbstractActionController
         return $response;
     }
 
-    /**
-     * Special action which produces an HTML version of the review calendar.
-     *
-     * @return ViewModel|Response
-     */
     public function sendMessageAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -586,11 +536,6 @@ class CommunityController extends AbstractActionController
         );
     }
 
-    /**
-     * Produce a binder of all documents in the call and type.
-     *
-     * @return Response
-     */
     public function downloadBinderAction(): Response
     {
         set_time_limit(0);
@@ -611,8 +556,8 @@ class CommunityController extends AbstractActionController
         /*
          * throw the filename away
          */
-        if (file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
-            unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
+        if (\file_exists(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
+            \unlink(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
         }
 
         $zip = new \ZipArchive();
@@ -629,13 +574,13 @@ class CommunityController extends AbstractActionController
         }
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
+        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
             ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Type: application/octet-stream')
-            ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
-        $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+            ->addHeaderLine('Content-Length: ' . \filesize(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+        $response->setContent(\file_get_contents(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
 
         return $response;
     }

@@ -67,17 +67,16 @@ class EntityTest extends TestCase
                         $labels[] = $element->getOptions()['placeholder'];
                     }
 
-                    foreach ($testClass->getStaticProperties() as $constant) {
-                        if (\is_array($constant)) {
-                            foreach ($constant as $constantValue) {
-                                $labels[] = $constantValue;
-                            }
-                        }
-                    }
-
                     $this->assertInternalType('array', ($element->getAttributes()));
                     $this->assertInternalType('array', ($element->getOptions()));
+                }
 
+                foreach ($testClass->getStaticProperties() as $constant) {
+                    if (\is_array($constant)) {
+                        foreach ($constant as $constantValue) {
+                            $labels[] = $constantValue;
+                        }
+                    }
                 }
             }
         }

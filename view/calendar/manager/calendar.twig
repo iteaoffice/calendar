@@ -242,7 +242,7 @@
                                data-title="{{ translate("txt-update-role") }}">{{ calendarContact.role }}</a>
                         </td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'Calendar\\Acl\\Assertion\\Contact') %}
+                            {% do assertionService.addResource(calendarContact,'Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"

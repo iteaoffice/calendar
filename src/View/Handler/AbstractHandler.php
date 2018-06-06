@@ -1,11 +1,14 @@
 <?php
 /**
- * ITEA Office copyright message placeholder
+ * ITEA Office all rights reserved
  *
- * @category  Calendar
- * @package   View\Handler
- * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * PHP Version 7
+ *
+ *
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2004-2018 ITEA Office (https://itea3.org)
+ * @license     https://itea3.org/license.txt proprietary
+ *
  */
 declare(strict_types=1);
 
@@ -13,13 +16,12 @@ namespace Calendar\View\Handler;
 
 use Content\Entity\Content;
 use Content\Navigation\Service\UpdateNavigationService;
-use Press\Service\ArticleService;
-use Press\View\Helper\ArticleLink;
-use Project\Service\ProjectService;
 use Zend\Authentication\AuthenticationService;
+use Zend\Http\Request;
 use Zend\Http\Response;
+use Zend\I18n\Translator\TranslatorInterface;
+use Zend\Mvc\Application;
 use Zend\Router\Http\RouteMatch;
-use Zend\Stdlib\ResponseInterface;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\HeadMeta;
 use Zend\View\Helper\HeadStyle;
@@ -29,9 +31,9 @@ use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
 /**
- * Class AbstractViewHelper
+ * Class AbstractHandler
  *
- * @package News\View\Helper
+ * @package Calendar\View
  */
 abstract class AbstractHandler extends AbstractHelper
 {
@@ -48,9 +50,13 @@ abstract class AbstractHandler extends AbstractHelper
      */
     protected $renderer;
     /**
-     * @var ResponseInterface
+     * @var Response
      */
     protected $response;
+    /**
+     * @var Request
+     */
+    protected $request;
     /**
      * @var AuthenticationService
      */
@@ -60,46 +66,73 @@ abstract class AbstractHandler extends AbstractHelper
      */
     protected $updateNavigationService;
     /**
-     * @var ArticleService
+     * @var TranslatorInterface
      */
-    protected $articleService;
+    protected $translator;
+
     /**
-     * @var ProjectService
+     * AbstractHandler constructor.
+     *
+     * @param Application             $application
+     * @param HelperPluginManager     $helperPluginManager
+     * @param TwigRenderer            $renderer
+     * @param AuthenticationService   $authenticationService
+     * @param UpdateNavigationService $updateNavigationService
+     * @param TranslatorInterface     $translator
      */
-    protected $projectService;
+    public function __construct(
+        Application $application,
+        HelperPluginManager $helperPluginManager,
+        TwigRenderer $renderer,
+        AuthenticationService $authenticationService,
+        UpdateNavigationService $updateNavigationService,
+        TranslatorInterface $translator
+    ) {
+        $this->helperPluginManager = $helperPluginManager;
+        $this->renderer = $renderer;
+        $this->authenticationService = $authenticationService;
+        $this->updateNavigationService = $updateNavigationService;
+        $this->translator = $translator;
+
+        //Take the last remaining properties from the application
+        $this->routeMatch = $application->getMvcEvent()->getRouteMatch();
+        $this->response = $application->getMvcEvent()->getResponse();
+        $this->request = $application->getMvcEvent()->getRequest();
+    }
 
     /**
      * @param Content $content
+     *
      * @return array
      */
     public function extractContentParam(Content $content): array
     {
         $params = [
-            'id'           => null,
-            'docRef'       => null,
-            'year'         => null,
-            'limit'        => null,
+            'id'     => null,
+            'docRef' => null,
+            'year'   => null,
+            'limit'  => null,
         ];
 
-
         foreach ($content->getContentParam() as $contentParam) {
-            $params[$contentParam->getParameter()->getParam()] = $contentParam->getParameterId();
+            if (!empty($contentParam->getParameterId())) {
+                $params[$contentParam->getParameter()->getParam()] = $contentParam->getParameterId();
+            }
         }
 
-        foreach ($this->getRouteMatch()->getParams() as $routeParam => $value) {
-            null === $value ?: $params[$routeParam] = $value;
+        //Overrule all the params, except when we are dealing with docRef
+        foreach ($this->routeMatch->getParams() as $routeParam => $value) {
+            if ($routeParam !== 'docRef' || null === $params['docRef']) {
+                $params[$routeParam] = $value;
+            }
         }
+
+        //Convert the ints to ints (it they are null
+        null === $params['id'] ?: $params['id'] = (int)$params['id'];
+        null === $params['year'] ?: $params['year'] = (int)$params['year'];
+        null === $params['limit'] ?: $params['limit'] = (int)$params['limit'];
 
         return $params;
-    }
-
-
-    /**
-     * @return null|string
-     */
-    public function getDocRef(): ?string
-    {
-        return $this->getRouteMatch()->getParam('routeMatch');
     }
 
     /**
@@ -111,136 +144,11 @@ abstract class AbstractHandler extends AbstractHelper
     }
 
     /**
-     * @return HelperPluginManager
+     * @return null|string
      */
-    public function getHelperPluginManager(): HelperPluginManager
+    public function getDocRef(): ?string
     {
-        return $this->helperPluginManager;
-    }
-
-    /**
-     * @param HelperPluginManager $helperPluginManager
-     * @return AbstractHandler
-     */
-    public function setHelperPluginManager(HelperPluginManager $helperPluginManager): AbstractHandler
-    {
-        $this->helperPluginManager = $helperPluginManager;
-
-        return $this;
-    }
-
-    /**
-     * @return RouteMatch
-     */
-    public function getRouteMatch(): RouteMatch
-    {
-        return $this->routeMatch;
-    }
-
-    /**
-     * @param RouteMatch $routeMatch
-     * @return AbstractHandler
-     */
-    public function setRouteMatch(RouteMatch $routeMatch): AbstractHandler
-    {
-        $this->routeMatch = $routeMatch;
-
-        return $this;
-    }
-
-    /**
-     * @return AuthenticationService
-     */
-    public function getAuthenticationService(): AuthenticationService
-    {
-        return $this->authenticationService;
-    }
-
-    /**
-     * @param AuthenticationService $authenticationService
-     * @return AbstractHandler
-     */
-    public function setAuthenticationService(AuthenticationService $authenticationService): AbstractHandler
-    {
-        $this->authenticationService = $authenticationService;
-
-        return $this;
-    }
-
-    /**
-     * @return TwigRenderer
-     */
-    public function getRenderer(): TwigRenderer
-    {
-        return $this->renderer;
-    }
-
-    /**
-     * @param TwigRenderer $renderer
-     * @return AbstractHandler
-     */
-    public function setRenderer(TwigRenderer $renderer): AbstractHandler
-    {
-        $this->renderer = $renderer;
-
-        return $this;
-    }
-
-    /**
-     * @return ResponseInterface|Response
-     */
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
-
-    /**
-     * @param ResponseInterface $response
-     * @return AbstractHandler
-     */
-    public function setResponse(ResponseInterface $response): AbstractHandler
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * @return UpdateNavigationService
-     */
-    public function getUpdateNavigationService(): UpdateNavigationService
-    {
-        return $this->updateNavigationService;
-    }
-
-    /**
-     * @param UpdateNavigationService $updateNavigationService
-     * @return AbstractHandler
-     */
-    public function setUpdateNavigationService(UpdateNavigationService $updateNavigationService): AbstractHandler
-    {
-        $this->updateNavigationService = $updateNavigationService;
-
-        return $this;
-    }
-
-    /**
-     * @return ArticleService
-     */
-    public function getArticleService(): ArticleService
-    {
-        return $this->articleService;
-    }
-
-    /**
-     * @param ArticleService $articleService
-     * @return AbstractHandler
-     */
-    public function setArticleService(ArticleService $articleService): AbstractHandler
-    {
-        $this->articleService = $articleService;
-
-        return $this;
+        return $this->routeMatch->getParam('routeMatch');
     }
 
     /**
@@ -248,7 +156,7 @@ abstract class AbstractHandler extends AbstractHelper
      */
     public function getHeadTitle(): HeadTitle
     {
-        return $this->getHelperPluginManager()->get('headTitle');
+        return $this->helperPluginManager->get('headTitle');
     }
 
     /**
@@ -256,7 +164,7 @@ abstract class AbstractHandler extends AbstractHelper
      */
     public function getHeadMeta(): HeadMeta
     {
-        return $this->getHelperPluginManager()->get('headMeta');
+        return $this->helperPluginManager->get('headMeta');
     }
 
     /**
@@ -264,15 +172,7 @@ abstract class AbstractHandler extends AbstractHelper
      */
     public function getHeadStyle(): HeadStyle
     {
-        return $this->getHelperPluginManager()->get('headStyle');
-    }
-
-    /**
-     * @return ArticleLink
-     */
-    public function getArticleLink(): ArticleLink
-    {
-        return $this->getHelperPluginManager()->get(ArticleLink::class);
+        return $this->helperPluginManager->get('headStyle');
     }
 
     /**
@@ -282,25 +182,6 @@ abstract class AbstractHandler extends AbstractHelper
      */
     public function translate($string): string
     {
-        return $this->getHelperPluginManager()->get('translate')($string);
-    }
-
-    /**
-     * @return ProjectService
-     */
-    public function getProjectService(): ProjectService
-    {
-        return $this->projectService;
-    }
-
-    /**
-     * @param ProjectService $projectService
-     * @return AbstractHandler
-     */
-    public function setProjectService(ProjectService $projectService): AbstractHandler
-    {
-        $this->projectService = $projectService;
-
-        return $this;
+        return $this->translator->translate($string);
     }
 }

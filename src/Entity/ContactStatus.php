@@ -94,6 +94,14 @@ class ContactStatus extends AbstractEntity
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string)$this->status;
+    }
+
+    /**
      * @param $property
      *
      * @return bool

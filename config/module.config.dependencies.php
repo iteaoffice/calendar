@@ -23,12 +23,14 @@ use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Service\ContactService;
 use Contact\Service\SelectionContactService;
+use Content\Navigation\Service\UpdateNavigationService;
 use Doctrine\ORM\EntityManager;
 use General\Service\EmailService;
 use General\Service\GeneralService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
+use Zend\Authentication\AuthenticationService;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use ZfcTwig\View\TwigRenderer;
@@ -67,6 +69,7 @@ return [
             ActionService::class,
             ContactService::class,
             GeneralService::class,
+            AssertionService::class,
             EntityManager::class,
             TranslatorInterface::class
         ],
@@ -84,6 +87,15 @@ return [
             EntityManager::class,
             SelectionContactService::class,
             ContactService::class
-        ]
+        ],
+        View\Handler\CalendarHandler::class                => [
+            'Application',
+            'ViewHelperManager',
+            TwigRenderer::class,
+            AuthenticationService::class,
+            UpdateNavigationService::class,
+            Service\CalendarService::class,
+            TranslatorInterface::class
+        ],
     ]
 ];

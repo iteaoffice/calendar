@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Calendar\Controller;
 
+use Application\Service\AssertionService;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
@@ -41,53 +42,45 @@ use Zend\View\Model\ViewModel;
  * @method FlashMessenger flashMessenger()
  * @method Identity|\Contact\Entity\Contact identity()
  */
-class ManagerController extends AbstractActionController
+final class ManagerController extends AbstractActionController
 {
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
     /**
      * @var FormService
      */
-    protected $formService;
+    private $formService;
     /**
      * @var ProjectService
      */
-    protected $projectService;
+    private $projectService;
     /**
      * @var ActionService
      */
-    protected $actionService;
+    private $actionService;
     /**
      * @var ContactService
      */
-    protected $contactService;
+    private $contactService;
     /**
      * @var GeneralService
      */
-    protected $generalService;
+    private $generalService;
+    /**
+     * @var AssertionService
+     */
+    private $assertionService;
     /**
      * @var EntityManager
      */
-    protected $entityManager;
+    private $entityManager;
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
-    /**
-     * ManagerController constructor.
-     *
-     * @param CalendarService     $calendarService
-     * @param FormService         $formService
-     * @param ProjectService      $projectService
-     * @param ActionService       $actionService
-     * @param ContactService      $contactService
-     * @param GeneralService      $generalService
-     * @param EntityManager       $entityManager
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         CalendarService $calendarService,
         FormService $formService,
@@ -95,6 +88,7 @@ class ManagerController extends AbstractActionController
         ActionService $actionService,
         ContactService $contactService,
         GeneralService $generalService,
+        AssertionService $assertionService,
         EntityManager $entityManager,
         TranslatorInterface $translator
     ) {
@@ -104,16 +98,11 @@ class ManagerController extends AbstractActionController
         $this->actionService = $actionService;
         $this->contactService = $contactService;
         $this->generalService = $generalService;
+        $this->assertionService = $assertionService;
         $this->entityManager = $entityManager;
         $this->translator = $translator;
     }
 
-
-    /**
-     * Display the calendar on the website.
-     *
-     * @return ViewModel
-     */
     public function overviewAction(): ViewModel
     {
         $which = $this->params('which', CalendarService::WHICH_UPCOMING);
@@ -195,7 +184,7 @@ class ManagerController extends AbstractActionController
         $project = null;
 
         if (null !== $this->params('project')) {
-            $project = $this->projectService->findProjectById($this->params('project'));
+            $project = $this->projectService->findProjectById((int) $this->params('project'));
 
             if (null === $project) {
                 return $this->notFoundAction();
@@ -255,7 +244,7 @@ class ManagerController extends AbstractActionController
      */
     public function editAction()
     {
-        $calendar = $this->calendarService->findCalendarById((int) $this->params('id'));
+        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
 
         if (null === $calendar) {
             return $this->notFoundAction();
@@ -329,7 +318,7 @@ class ManagerController extends AbstractActionController
      */
     public function selectAttendeesAction()
     {
-        $calendar = $this->calendarService->findCalendarById((int) $this->params('id'));
+        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
 
         if (null === $calendar) {
             return $this->notFoundAction();
@@ -374,7 +363,7 @@ class ManagerController extends AbstractActionController
      */
     public function setRolesAction()
     {
-        $calendar = $this->calendarService->findCalendarById((int) $this->params('id'));
+        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
 
         if (null === $calendar) {
             return $this->notFoundAction();
@@ -415,14 +404,9 @@ class ManagerController extends AbstractActionController
         );
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function calendarAction()
     {
-        $calendar = $this->calendarService->findCalendarById((int) $this->params('id'));
+        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
 
         if (null === $calendar) {
             return $this->notFoundAction();
@@ -491,11 +475,12 @@ class ManagerController extends AbstractActionController
 
         return new ViewModel(
             [
-                'calendarService' => $this->calendarService,
-                'contactService'  => $this->contactService,
-                'actionService'   => $this->actionService,
-                'calendar'        => $calendar,
-                'form'            => $form,
+                'calendarService'  => $this->calendarService,
+                'contactService'   => $this->contactService,
+                'actionService'    => $this->actionService,
+                'calendar'         => $calendar,
+                'form'             => $form,
+                'assertionService' => $this->assertionService
             ]
         );
     }

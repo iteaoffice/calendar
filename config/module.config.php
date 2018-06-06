@@ -62,12 +62,11 @@ $config = [
         'aliases'   => [
             'calendarDocumentLink' => View\Helper\DocumentLink::class,
             'calendarLink'         => View\Helper\CalendarLink::class,
-            'calendarHandler'      => View\Helper\CalendarHandler::class,
         ],
         'factories' => [
-            View\Helper\DocumentLink::class    => View\Factory\ViewHelperFactory::class,
-            View\Helper\CalendarLink::class    => View\Factory\ViewHelperFactory::class,
-            View\Helper\CalendarHandler::class => View\Factory\ViewHelperFactory::class,
+            View\Helper\DocumentLink::class     => View\Factory\ViewHelperFactory::class,
+            View\Helper\CalendarLink::class     => View\Factory\ViewHelperFactory::class,
+            View\Handler\CalendarHandler::class => ConfigAbstractFactory::class,
         ],
     ],
     'doctrine'           => [

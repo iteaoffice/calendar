@@ -9,6 +9,7 @@
     <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab" role="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
     <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab" role="tab">{{ translate("txt-documents")|capitalize }}</a></li>
     <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab" role="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab" role="tab">{{ translate("txt-actions")|capitalize }}</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -316,7 +317,7 @@
                         </td>
                         <td>{{ calendarContact.role }}</td>
                         <td>
-                            {% do calendarService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
+                            {% do assertionService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
                             <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
@@ -343,6 +344,16 @@
             {{ calendarLink(calendar,'send-message', 'button') }}
             {{ calendarLink(calendar,'presence-list', 'button') }}
             {{ calendarLink(calendar,'signature-list', 'button') }}
+        {% endif %}
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="action">
+        <h2>{{ translate("txt-action-list") }}</h2>
+
+        {% if calendar.action.count() > 0 %}
+            {% include 'project/partial/list/action-community' with {'actions' : calendar.action } %}
+        {% else %}
+            {{ ztbalert().info(translate("txt-there-are-no-actions-defined-for-this-project-calendar"))|raw }}
         {% endif %}
     </div>
 </div>
