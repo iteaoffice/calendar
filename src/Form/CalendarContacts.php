@@ -41,7 +41,7 @@ class CalendarContacts extends Form
         $this->add(
             [
                 'type'    => EntitySelect::class,
-                'name'    => 'country',
+                'name'    => 'selection',
                 'options' => [
                     'target_class'   => Selection::class,
                     'object_manager' => $entityManager,
