@@ -70,16 +70,6 @@ abstract class AbstractHandler extends AbstractHelper
      */
     protected $translator;
 
-    /**
-     * AbstractHandler constructor.
-     *
-     * @param Application             $application
-     * @param HelperPluginManager     $helperPluginManager
-     * @param TwigRenderer            $renderer
-     * @param AuthenticationService   $authenticationService
-     * @param UpdateNavigationService $updateNavigationService
-     * @param TranslatorInterface     $translator
-     */
     public function __construct(
         Application $application,
         HelperPluginManager $helperPluginManager,

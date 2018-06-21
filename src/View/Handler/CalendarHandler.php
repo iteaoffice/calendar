@@ -38,19 +38,8 @@ class CalendarHandler extends AbstractHandler
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
 
-    /**
-     * BlogHandler constructor.
-     *
-     * @param Application             $application
-     * @param HelperPluginManager     $helperPluginManager
-     * @param TwigRenderer            $renderer
-     * @param AuthenticationService   $authenticationService
-     * @param UpdateNavigationService $updateNavigationService
-     * @param CalendarService         $calendarService
-     * @param TranslatorInterface     $translator
-     */
     public function __construct(
         Application $application,
         HelperPluginManager $helperPluginManager,
@@ -72,12 +61,6 @@ class CalendarHandler extends AbstractHandler
         $this->calendarService = $calendarService;
     }
 
-    /**
-     * @param Content $content
-     *
-     * @return null|string
-     * @throws \Exception
-     */
     public function __invoke(Content $content): ?string
     {
         $params = $this->extractContentParam($content);
@@ -134,11 +117,6 @@ class CalendarHandler extends AbstractHandler
         }
     }
 
-    /**
-     * @param array $params
-     *
-     * @return Calendar|null
-     */
     private function getCalendarByParams(array $params): ?Calendar
     {
         $calendar = null;
@@ -153,19 +131,11 @@ class CalendarHandler extends AbstractHandler
         return $calendar;
     }
 
-    /**
-     * @return CalendarLink
-     */
     public function getCalendarLink(): CalendarLink
     {
         return $this->helperPluginManager->get(CalendarLink::class);
     }
 
-    /**
-     * @param Calendar $calendar
-     *
-     * @return string
-     */
     public function parseCalendarItem(Calendar $calendar): string
     {
         return $this->renderer->render(
@@ -176,14 +146,6 @@ class CalendarHandler extends AbstractHandler
         );
     }
 
-    /**
-     * @param int     $year
-     * @param int     $limit
-     * @param Contact $contact
-     * @param string  $which
-     *
-     * @return null|string
-     */
     public function parseCalendar(
         ?int $year,
         ?int $limit = self::LIMIT,
@@ -217,13 +179,6 @@ class CalendarHandler extends AbstractHandler
         );
     }
 
-    /**
-     * @param int|null     $limit
-     * @param Contact|null $contact
-     * @param string       $which
-     *
-     * @return null|string
-     */
     public function parseUpcomingCalendar(
         ?int $limit = self::LIMIT,
         Contact $contact = null,
@@ -252,11 +207,6 @@ class CalendarHandler extends AbstractHandler
         );
     }
 
-    /**
-     * @param int $limit
-     *
-     * @return string
-     */
     public function parseCalendarSmall(int $limit = self::LIMIT): string
     {
         $calendarItems = $this->calendarService->findCalendarItems(CalendarService::WHICH_ON_HOMEPAGE)

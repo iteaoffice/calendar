@@ -286,8 +286,8 @@ final class CommunityController extends AbstractActionController
 
     public function updateStatusAction(): JsonModel
     {
-        $calendarContactId = $this->getEvent()->getRequest()->getPost()->get('id');
-        $statusId = $this->getEvent()->getRequest()->getPost()->get('status');
+        $calendarContactId = (int)$this->getEvent()->getRequest()->getPost()->get('id');
+        $statusId = (string)$this->getEvent()->getRequest()->getPost()->get('status');
 
         /** @var Contact $calendarContact */
         $calendarContact = $this->calendarService->find(Contact::class, $calendarContactId);
@@ -485,29 +485,17 @@ final class CommunityController extends AbstractActionController
                         ['fragment' => 'attendees']
                     );
             }
-            /*
-             * Send the email tot he office
-             */
-            $email = $this->emailService->create();
-            $email->setPersonal(false);
-            $email->setFromContact($this->identity());
-            /*
-             * Inject the contacts in the email
-             */
+
+            $this->emailService->setWebInfo('calendar/message');
+            $this->emailService->setFrom($this->identity()->parseFullName(), $this->identity()->getEmail());
+
             foreach ($calendar->getCalendarContact() as $calendarContact) {
-                $email->addTo($calendarContact->getContact());
+                $this->emailService->addTo($calendarContact->getContact());
             }
 
-            $email->setSubject(
-                sprintf(
-                    '[[site]-%s] Message received from %s',
-                    $calendar->getCalendar(),
-                    $this->identity()->getDisplayName()
-                )
-            );
-
-            $email->setHtmlLayoutName('signature_twig');
-            $email->setMessage(nl2br($form->getData()['message']));
+            $this->emailService->setTemplateVariable('message', \nl2br($form->getData()['message']));
+            $this->emailService->setTemplateVariable('calendar', $calendar->getCalendar());
+            $this->emailService->setTemplateVariable('sender_name', $this->identity()->parseFullName());
 
             $this->emailService->send();
 
