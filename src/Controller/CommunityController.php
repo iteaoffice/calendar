@@ -487,7 +487,6 @@ final class CommunityController extends AbstractActionController
             }
 
             $this->emailService->setWebInfo('calendar/message');
-            $this->emailService->setFrom($this->identity()->parseFullName(), $this->identity()->getEmail());
 
             foreach ($calendar->getCalendarContact() as $calendarContact) {
                 $this->emailService->addTo($calendarContact->getContact());
