@@ -136,6 +136,7 @@
 
         {{ ztbformelement(form.get('document')) }}
         {{ ztbformelement(form.get('file')) }}
+        {{ ztbformelement(form.get('csrf')) }}
 
         <div class="form-group row">
             <div class="offset-md-3 col-sm-offset-3 col-sm-9">
@@ -185,19 +186,7 @@
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-reviewers-found-for-this-review-meeting"))|raw }}
             {% endif %}
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
     {% endif %}
 
     <div class="tab-pane" role="tabpanel" id="attendee">

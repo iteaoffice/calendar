@@ -175,10 +175,6 @@ final class ManagerController extends AbstractActionController
         );
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     * @throws \Exception
-     */
     public function newAction()
     {
         $project = null;
@@ -239,9 +235,6 @@ final class ManagerController extends AbstractActionController
         );
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     */
     public function editAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -313,9 +306,6 @@ final class ManagerController extends AbstractActionController
         return new ViewModel(['form' => $form]);
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     */
     public function selectAttendeesAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -358,9 +348,6 @@ final class ManagerController extends AbstractActionController
         );
     }
 
-    /**
-     * @return \Zend\Http\Response|ViewModel
-     */
     public function setRolesAction()
     {
         $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
@@ -461,10 +448,6 @@ final class ManagerController extends AbstractActionController
                     )
                 );
 
-            /*
-             * Document uploaded
-             */
-
             return $this->redirect()->toRoute(
                 'zfcadmin/calendar/calendar',
                 [
@@ -472,7 +455,6 @@ final class ManagerController extends AbstractActionController
                 ]
             );
         }
-
         return new ViewModel(
             [
                 'calendarService'  => $this->calendarService,
