@@ -23,17 +23,16 @@
   "require": {
     "php": "^7.2",
     "zendframework/zend-mvc": "^3.0.1",
-    "zendframework/zend-mvc-form": "1.0.*",
-    "zendframework/zend-mvc-console": "1.1.*",
-    "zendframework/zend-code": "3.3.0",
-    "zendframework/zend-mvc-plugins": "1.0.*",
-    "zendframework/zend-navigation": "2.9.*",
-    "zendframework/zend-permissions-acl": "2.7.*",
-    "doctrine/doctrine-orm-module": "^2.1.0"
+    "zendframework/zend-mvc-form": "^1.0.0",
+    "zendframework/zend-mvc-console": "^1.2.0",
+    "zendframework/zend-code": "^3.3.0",
+    "zendframework/zend-mvc-plugins": "^1.0.1",
+    "zendframework/zend-navigation": "^2.9.0",
+    "kokspflanze/bjy-authorize": "^1.6.2"
   },
   "require-dev": {
-    "iteaoffice/testing": "1.1.*",
-    "iteaoffice/contact": "3.0.*"
+    "iteaoffice/testing": "^1.1.5",
+    "iteaoffice/contact": "^3.0.0"
   },
   "autoload": {
     "psr-4": {
