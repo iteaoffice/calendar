@@ -22,16 +22,7 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.2",
-    "zendframework/zend-mvc": "^3.0.1",
-    "zendframework/zend-permissions-acl": "2.7.*",
-    "kokspflanze/zfc-twig": "2.2.*",
-    "zendframework/zend-mvc-form": "1.0.*",
-    "zendframework/zend-mvc-console": "1.2.*",
-    "zendframework/zend-mvc-plugins": "1.0.*",
-    "setasign/fpdi-tcpdf": "^2.0",
-    "doctrine/doctrine-orm-module": "2.1.*",
-    "iteaoffice/contact": "3.0.*",
-    "iteaoffice/project": "3.0.*"
+    "zendframework/zend-mvc": "^3.0.1"
   },
   "require-dev": {
     "iteaoffice/testing": "1.1.*"
