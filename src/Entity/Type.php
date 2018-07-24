@@ -141,7 +141,7 @@ class Type extends AbstractEntity
      */
     public function __toString(): string
     {
-        return (string) $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -154,15 +154,11 @@ class Type extends AbstractEntity
         }
     }
 
-    /**
-     * Return a link to the Css Filename.
-     *
-     * @return string
-     */
     public function getCacheCssFileName(): string
     {
         return __DIR__ . '/../../../../../public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR
-            . ITEAOFFICE_HOST . DIRECTORY_SEPARATOR . 'css/calendar-type-color.css';
+            . (\defined('ITEAOFFICE_HOST') ? ITEAOFFICE_HOST : 'test') . DIRECTORY_SEPARATOR
+            . 'css/calendar-type-color.css';
     }
 
     /**
