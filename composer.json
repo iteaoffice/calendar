@@ -33,6 +33,7 @@
   },
   "require-dev": {
     "iteaoffice/testing": "1.1.*",
+    "iteaoffice/contact": "3.0.*"
   },
   "autoload": {
     "psr-4": {
