@@ -22,7 +22,8 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.2",
-    "zendframework/zend-mvc": "^3.0.1"
+    "zendframework/zend-mvc": "^3.0.1",
+    "zendframework/zend-mvc-form": "1.0.*"
   },
   "require-dev": {
     "iteaoffice/testing": "1.1.*"
