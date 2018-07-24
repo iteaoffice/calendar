@@ -1,20 +1,20 @@
 language: php
 
 php:
-  - 7.2
-  - nightly
+- 7.2
+- nightly
 
 sudo: false
 
 before_script:
-  - composer self-update
-  - composer install --prefer-dist;
+- composer self-update
+- composer install --prefer-dist;
 
 script:
-  - ./vendor/bin/parallel-lint ./src/
-  - ./vendor/bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./src/
-  - ./vendor/bin/php-cs-fixer fix -v ./src --dry-run
-  - ./vendor/bin/phpunit
+- ./vendor/bin/parallel-lint ./src/
+- ./vendor/bin/phpcs -n -p --standard=PSR2 --extensions=php,twig ./src/
+- ./vendor/bin/php-cs-fixer fix -v ./src --dry-run
+- ./vendor/bin/phpstan analyse ./src --level=1
 
 notifications:
   email:
@@ -23,4 +23,4 @@ notifications:
 matrix:
   fast_finish: true
   allow_failures:
-    - php: nightly
+  - php: nightly
