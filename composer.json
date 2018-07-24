@@ -25,7 +25,6 @@
     "zendframework/zend-mvc": "^3.0.1",
     "zendframework/zend-mvc-form": "^1.0.0",
     "zendframework/zend-mvc-console": "^1.2.0",
-    "zendframework/zend-code": "^3.3.0",
     "zendframework/zend-mvc-plugins": "^1.0.1",
     "zendframework/zend-navigation": "^2.9.0",
     "kokspflanze/bjy-authorize": "^1.6.2"
