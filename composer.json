@@ -29,7 +29,7 @@
     "zendframework/zend-mvc-plugins": "^1.0.1",
     "zendframework/zend-navigation": "^2.9.0",
     "kokspflanze/bjy-authorize": "^1.6.2",
-    "doctrine/doctrine-orm-module": "^2.1.2"
+    "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
     "iteaoffice/testing": "^1.1.5",
