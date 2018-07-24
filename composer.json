@@ -33,6 +33,7 @@
   },
   "require-dev": {
     "iteaoffice/testing": "^1.1.5",
+    "iteaoffice/search": "^1.0",
     "iteaoffice/contact": "^3.0.0"
   },
   "autoload": {
