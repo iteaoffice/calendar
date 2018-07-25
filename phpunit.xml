@@ -8,7 +8,7 @@
          backupGlobals="false"
 >
     <testsuite name="iteaoffice/calendar">
-        <directory>./tests</directory>
+        <directory>./test</directory>
     </testsuite>
     <filter>
         <whitelist>
