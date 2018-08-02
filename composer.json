@@ -28,7 +28,7 @@
     "zendframework/zend-mvc-console": "^1.2.0",
     "zendframework/zend-mvc-plugins": "^1.0.1",
     "zendframework/zend-navigation": "^2.9.0",
-    "kokspflanze/bjy-authorize": "^1.6.2",
+    "jield-webdev/bjy-authorize": "^1.4.0",
     "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
