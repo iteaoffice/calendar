@@ -26,18 +26,6 @@ use Project\Entity\Project;
  */
 class CalendarLink extends LinkAbstract
 {
-    /**
-     * @param Calendar|null $calendar
-     * @param string        $action
-     * @param string        $show
-     * @param string        $which
-     * @param null          $alternativeShow
-     * @param null          $year
-     * @param Project|null  $project
-     * @param null          $classes
-     *
-     * @return string
-     */
     public function __invoke(
         Calendar $calendar = null,
         $action = 'view',
