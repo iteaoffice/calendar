@@ -19,34 +19,27 @@ use Zend\Mvc\Controller\AbstractActionController;
 use ZfcTwig\View\TwigRenderer;
 
 /**
+ * Class CalendarController
  *
+ * @package Calendar\Controller
  */
 class CalendarController extends AbstractActionController
 {
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
     /**
      * @var TwigRenderer
      */
-    protected $renderer;
+    private $renderer;
 
-    /**
-     * CalendarController constructor.
-     *
-     * @param CalendarService $calendarService
-     * @param TwigRenderer    $renderer
-     */
     public function __construct(CalendarService $calendarService, TwigRenderer $renderer)
     {
         $this->calendarService = $calendarService;
         $this->renderer = $renderer;
     }
 
-    /**
-     * @return Response
-     */
     public function calendarTypeColorCssAction(): Response
     {
         $calendarTypes = $this->calendarService->findAll(Type::class);

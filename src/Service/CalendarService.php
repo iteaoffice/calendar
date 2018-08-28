@@ -42,13 +42,6 @@ class CalendarService extends AbstractService
      */
     protected $contactService;
 
-    /**
-     * CalendarService constructor.
-     *
-     * @param EntityManager           $entityManager
-     * @param SelectionContactService $selectionContactService
-     * @param ContactService          $contactService
-     */
     public function __construct(
         EntityManager $entityManager,
         SelectionContactService $selectionContactService,
@@ -59,21 +52,11 @@ class CalendarService extends AbstractService
         $this->contactService = $contactService;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Calendar|null
-     */
     public function findCalendarById(int $id): ?Calendar
     {
         return $this->entityManager->getRepository(Calendar::class)->find($id);
     }
 
-    /**
-     * @param $docRef
-     *
-     * @return null|Entity\Calendar
-     */
     public function findCalendarByDocRef(string $docRef): ?Calendar
     {
         return $this->entityManager->getRepository(Entity\Calendar::class)->findOneBy(

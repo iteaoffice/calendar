@@ -20,29 +20,19 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
+ * Class JsonController
  *
+ * @package Calendar\Controller
  */
-class JsonController extends AbstractActionController
+final class JsonController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    protected $calendarService;
+    private $calendarService;
 
-    /**
-     * JsonController constructor.
-     *
-     * @param CalendarService $calendarService
-     */
     public function __construct(CalendarService $calendarService)
     {
         $this->calendarService = $calendarService;
     }
 
-
-    /**
-     * @return JsonModel
-     */
     public function getRolesAction(): JsonModel
     {
         /** @var ContactRole[] $calendarRoles */
@@ -62,9 +52,6 @@ class JsonController extends AbstractActionController
         return new JsonModel($roles);
     }
 
-    /**
-     * @return JsonModel|ViewModel
-     */
     public function updateRoleAction()
     {
         $calendarContactId = (int)$this->params()->fromPost('pk');

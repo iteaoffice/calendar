@@ -31,6 +31,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use General\Service\EmailService;
 use General\Service\GeneralService;
+use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use setasign\Fpdi\TcpdfFpdi;
@@ -77,6 +78,10 @@ final class CommunityController extends AbstractActionController
      */
     private $workpackageService;
     /**
+     * @var ActionService
+     */
+    private $actionService;
+    /**
      * @var AssertionService
      */
     private $assertionService;
@@ -99,6 +104,7 @@ final class CommunityController extends AbstractActionController
         ContactService $contactService,
         ProjectService $projectService,
         WorkpackageService $workpackageService,
+        ActionService $actionService,
         AssertionService $assertionService,
         EmailService $emailService,
         TranslatorInterface $translator,
@@ -109,6 +115,7 @@ final class CommunityController extends AbstractActionController
         $this->contactService = $contactService;
         $this->projectService = $projectService;
         $this->workpackageService = $workpackageService;
+        $this->actionService = $actionService;
         $this->assertionService = $assertionService;
         $this->emailService = $emailService;
         $this->translator = $translator;
@@ -264,10 +271,14 @@ final class CommunityController extends AbstractActionController
         $this->assertionService->addResource($calendar, CalendarAssertion::class);
 
         $results = null;
+        $openActions = [];
         if ($calendar->getProjectCalendar()) {
             $results = $this->projectService->findResultsByProjectAndContact(
                 $calendar->getProjectCalendar()->getProject(),
                 $this->identity()
+            );
+            $openActions = $this->actionService->findOpenActionsByProject(
+                $calendar->getProjectCalendar()->getProject()
             );
         }
 
@@ -280,6 +291,8 @@ final class CommunityController extends AbstractActionController
                 'projectService'     => $this->projectService,
                 'form'               => $form,
                 'results'            => $results,
+                'openActions'        => $openActions,
+                'actionService'      => $this->actionService
             ]
         );
     }

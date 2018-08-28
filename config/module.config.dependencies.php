@@ -48,6 +48,7 @@ return [
             ContactService::class,
             ProjectService::class,
             WorkpackageService::class,
+            ActionService::class,
             AssertionService::class,
             EmailService::class,
             TranslatorInterface::class,

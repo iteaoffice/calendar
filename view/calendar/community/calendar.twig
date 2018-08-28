@@ -36,9 +36,7 @@
 
     </div>
     <div class="tab-pane" role="tabpanel" id="documents">
-
         <br>
-
         <ul class="nav nav-pills nav-nos-menu">
             <li class="nav-item active"><a class="nav-link active" href="#total-calendar-documents"
                                   data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
@@ -350,10 +348,10 @@
     <div role="tabpanel" class="tab-pane" id="action">
         <h2>{{ translate("txt-action-list") }}</h2>
 
-        {% if calendar.action.count() > 0 %}
-            {% include 'project/partial/list/action-community' with {'actions' : calendar.action } %}
+        {% if openActions|length > 0 %}
+            {% include 'project/partial/list/action-community' with {'actions' : openActions,'deadline' : calendar } %}
         {% else %}
-            {{ ztbalert().info(translate("txt-there-are-no-actions-defined-for-this-project-calendar"))|raw }}
+            {{ ztbalert().info(translate("txt-there-are-no-open-actions-defined-for-this-project"))|raw }}
         {% endif %}
     </div>
 </div>

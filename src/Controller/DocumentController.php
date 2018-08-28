@@ -32,33 +32,25 @@ use Zend\View\Model\ViewModel;
  * @package Calendar\Controller
  * @method FlashMessenger flashMessenger()
  */
-class DocumentController extends AbstractActionController
+final class DocumentController extends AbstractActionController
 {
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
     /**
      * @var GeneralService
      */
-    protected $generalService;
+    private $generalService;
     /**
      * @var EntityManager
      */
-    protected $entityManager;
+    private $entityManager;
     /**
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
-    /**
-     * DocumentController constructor.
-     *
-     * @param CalendarService     $calendarService
-     * @param GeneralService      $generalService
-     * @param EntityManager       $entityManager
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         CalendarService $calendarService,
         GeneralService $generalService,
@@ -71,10 +63,6 @@ class DocumentController extends AbstractActionController
         $this->translator = $translator;
     }
 
-
-    /**
-     * @return Response
-     */
     public function downloadAction(): Response
     {
         /** @var Response $response */
@@ -107,9 +95,6 @@ class DocumentController extends AbstractActionController
         return $response;
     }
 
-    /**
-     * @return ViewModel
-     */
     public function documentAction(): ViewModel
     {
         $document = $this->calendarService->find(Document::class, (int)$this->params('id'));
@@ -121,11 +106,6 @@ class DocumentController extends AbstractActionController
         return new ViewModel(['document' => $document]);
     }
 
-    /**
-     * @return Response|ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
     public function editAction()
     {
         /** @var Document $document */
