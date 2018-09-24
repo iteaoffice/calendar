@@ -207,19 +207,11 @@ class CalendarService extends AbstractService
         return $repository->canViewCalendar($calendar, $contact);
     }
 
-    /**
-     * @param string       $which
-     * @param Contact|null $contact
-     * @param null         $year
-     * @param null         $type
-     *
-     * @return \Doctrine\ORM\Query
-     */
     public function findCalendarItems(
-        $which = self::WHICH_UPCOMING,
+        string $which = self::WHICH_UPCOMING,
         Contact $contact = null,
-        $year = null,
-        $type = null
+        int $year = null,
+        int $type = null
     ): \Doctrine\ORM\Query {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);

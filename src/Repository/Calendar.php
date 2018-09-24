@@ -15,6 +15,7 @@ use Admin\Entity\Access;
 use Calendar\Entity;
 use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -27,12 +28,13 @@ use Project\Entity\Project;
 class Calendar extends EntityRepository
 {
     /**
-     * @param $which
-     * @param bool $filterForAccess
-     * @param Contact|null $contact
-     * @param null $year
-     * @param null $type
+     * @param                   $which
+     * @param bool              $filterForAccess
+     * @param Contact|null      $contact
+     * @param null              $year
+     * @param null              $type
      * @param QueryBuilder|null $limitQueryBuilder
+     *
      * @return Query
      */
     public function findCalendarItems(
@@ -57,13 +59,13 @@ class Calendar extends EntityRepository
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
                 break;
             case CalendarService::WHICH_PAST:
-                $qb->andWhere('calendar_entity_calendar.dateEnd < ?1');
+                $qb->andWhere('calendar_entity_calendar.dateFrom < ?1');
 
                 if (null !== $type) {
                     $qb->andWhere('calendar_entity_calendar.type = ?9');
                     $qb->setParameter(9, $type);
                 }
-                $qb->orderBy('calendar_entity_calendar.dateEnd', 'DESC');
+                $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
                 $qb->setParameter(1, new \DateTime());
                 break;
             case CalendarService::WHICH_REVIEWS:
@@ -82,12 +84,13 @@ class Calendar extends EntityRepository
             case CalendarService::WHICH_FINAL:
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
+                $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
                 $qb->addOrderBy('calendar_entity_calendar.sequence', 'ASC');
                 break;
             case CalendarService::WHICH_UPDATED:
-                $qb->orderBy('calendar_entity_calendar.dateUpdated', 'DESC');
+                $qb->orderBy('calendar_entity_calendar.dateUpdated', Criteria::DESC);
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
+                $qb->andWhere($qb->expr()->isNotNull('calendar_entity_calendar.dateUpdated'));
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
                 break;
             case CalendarService::WHICH_ON_HOMEPAGE:
@@ -101,7 +104,6 @@ class Calendar extends EntityRepository
                 $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
                 break;
         }
-
 
         if ($filterForAccess) {
             /**
@@ -128,13 +130,17 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param Contact $contact
+     * @param QueryBuilder      $qb
+     * @param Contact           $contact
      * @param QueryBuilder|null $limitQueryBuilder
+     *
      * @return QueryBuilder
      */
-    public function filterForAccess(QueryBuilder $qb, Contact $contact, ?QueryBuilder $limitQueryBuilder = null): QueryBuilder
-    {
+    public function filterForAccess(
+        QueryBuilder $qb,
+        Contact $contact,
+        ?QueryBuilder $limitQueryBuilder = null
+    ): QueryBuilder {
         //Filter based on the type access type
         $subSelect = $this->_em->createQueryBuilder();
         $subSelect->select('type');
@@ -213,7 +219,7 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $dateTime
      *
      * @return Entity\Calendar|null
@@ -240,8 +246,9 @@ class Calendar extends EntityRepository
     }
 
     /**
-     * @param Project $project
+     * @param Project   $project
      * @param \DateTime $dateTime
+     *
      * @return Entity\Calendar|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -270,7 +277,7 @@ class Calendar extends EntityRepository
      * Function which returns true/false based ont he fact if a user can view the calendar
      *
      * @param Entity\Calendar $calendar
-     * @param Contact $contact
+     * @param Contact         $contact
      *
      * @return bool
      */

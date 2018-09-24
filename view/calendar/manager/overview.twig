@@ -49,7 +49,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td>{{ calendar.date|string_date }}</td>
+                            <td>{{ calendar.date|date('d M Y') }}</td>
                             <td colspan="2">{{ calendar.item }}</td>
                             <td>{{ translate("txt-birthday") }}</td>
                         </tr>

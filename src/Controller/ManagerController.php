@@ -105,49 +105,16 @@ final class ManagerController extends AbstractActionController
 
     public function overviewAction(): ViewModel
     {
-        $which = $this->params('which', CalendarService::WHICH_UPCOMING);
+        $which = (string)$this->params('which', CalendarService::WHICH_UPCOMING);
         $page = $this->params('page', 1);
 
         $birthDays = $this->contactService->findContactsWithDateOfBirth();
         $calendarItems = $this->calendarService->findCalendarItems($which, $this->identity())->getResult();
+
         $calender = [];
 
-        $today = new \DateTime();
-
-        foreach ($birthDays as $birthDay) {
-            /*
-             * Produce a index which holds the current year
-             */
-            $dateOfBirth = $birthDay->getDateOfBirth();
-
-            $birthDayDate = \DateTime::createFromFormat(
-                'Y-m-d',
-                sprintf("%s-%s", date('Y'), $dateOfBirth->format('m-d'))
-            );
-
-            if ($birthDayDate < $today) {
-                continue;
-            }
-
-            $index = $birthDayDate->format('Y-m-d');
-
-            $calender[$index][] = [
-                'item' => sprintf(
-                    $this->translator->translate("Birthday of %s (%s)"),
-                    $birthDay->getDisplayName(),
-                    $birthDay->getDateOfBirth()->format('Y')
-                ),
-                'date' => $birthDayDate,
-            ];
-        }
-        /**
-         * @var $calendarItems Calendar[]
-         */
+        /** @var Calendar $calendarItem */
         foreach ($calendarItems as $calendarItem) {
-            if ($calendarItem->getDateFrom() < $today) {
-                continue;
-            }
-
             $index = $calendarItem->getDateFrom()->format('Y-m-d');
 
             $calender[$index][] = [
@@ -157,10 +124,41 @@ final class ManagerController extends AbstractActionController
             ];
         }
 
-        ksort($calender);
+        if ($which === CalendarService::WHICH_UPCOMING) {
+            $today = new \DateTime();
+            foreach ($birthDays as $birthDay) {
+                /*
+                 * Produce a index which holds the current year
+                 */
+                /** @var \DateTime $dateOfBirth */
+                $dateOfBirth = $birthDay->getDateOfBirth();
+
+                $birthDayDate = \DateTime::createFromFormat(
+                    'Y-m-d',
+                    \sprintf('%s-%s', date('Y'), $dateOfBirth->format('m-d'))
+                );
+
+                if ($birthDayDate < $today) {
+                    continue;
+                }
+
+                $index = $birthDayDate->format('Y-m-d');
+
+                $calender[$index][] = [
+                    'item' => \sprintf(
+                        $this->translator->translate('Birthday of %s (%s)'),
+                        $birthDay->getDisplayName(),
+                        date('Y') - $birthDay->getDateOfBirth()->format('Y')
+                    ),
+                    'date' => $birthDayDate,
+                ];
+            }
+
+            ksort($calender);
+        }
 
         $paginator = new Paginator(new ArrayAdapter($calender));
-        $paginator::setDefaultItemCountPerPage(PHP_INT_MAX);
+        $paginator::setDefaultItemCountPerPage(25);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
         $whichValues = $this->calendarService->getWhichValues();
@@ -180,7 +178,7 @@ final class ManagerController extends AbstractActionController
         $project = null;
 
         if (null !== $this->params('project')) {
-            $project = $this->projectService->findProjectById((int) $this->params('project'));
+            $project = $this->projectService->findProjectById((int)$this->params('project'));
 
             if (null === $project) {
                 return $this->notFoundAction();
