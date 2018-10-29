@@ -19,11 +19,11 @@ namespace Calendar;
 
 use Application\Service\AssertionService;
 use Calendar\Options\ModuleOptions;
+use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Service\ContactService;
 use Contact\Service\SelectionContactService;
-use Content\Navigation\Service\UpdateNavigationService;
 use Doctrine\ORM\EntityManager;
 use General\Service\EmailService;
 use General\Service\GeneralService;
@@ -87,16 +87,19 @@ return [
         Service\CalendarService::class                     => [
             EntityManager::class,
             SelectionContactService::class,
+            CalendarSearchService::class,
             ContactService::class
+        ],
+        Search\Service\CalendarSearchService::class        => [
+            'Config'
         ],
         View\Handler\CalendarHandler::class                => [
             'Application',
             'ViewHelperManager',
             TwigRenderer::class,
-            AuthenticationService::class,
-            UpdateNavigationService::class,
+            TranslatorInterface::class,
             Service\CalendarService::class,
-            TranslatorInterface::class
+            CalendarSearchService::class
         ],
     ]
 ];

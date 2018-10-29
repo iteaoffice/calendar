@@ -38,9 +38,7 @@ class DocumentObject extends AbstractEntity
     private $object;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Document", cascade="persist", inversedBy="object")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="document_id", referencedColumnName="document_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="document_id", nullable=false)
      *
      * @var \Calendar\Entity\Document
      */

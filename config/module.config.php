@@ -14,6 +14,7 @@ use Calendar\Factory;
 use Calendar\InputFilter;
 use Calendar\Navigation;
 use Calendar\Options;
+use Calendar\Search;
 use Calendar\Service;
 use Calendar\View;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
@@ -41,14 +42,15 @@ $config = [
     ],
     'service_manager'    => [
         'factories'  => [
-            Service\CalendarService::class            => ConfigAbstractFactory::class,
-            Service\FormService::class                => Factory\FormServiceFactory::class,
-            Options\ModuleOptions::class              => Factory\ModuleOptionsFactory::class,
-            Acl\Assertion\Calendar::class             => Factory\InvokableFactory::class,
-            Acl\Assertion\Contact::class              => Factory\InvokableFactory::class,
-            Acl\Assertion\Document::class             => Factory\InvokableFactory::class,
-            Navigation\Invokable\CalendarLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
-            Navigation\Invokable\DocumentLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
+            Service\CalendarService::class              => ConfigAbstractFactory::class,
+            Service\FormService::class                  => Factory\FormServiceFactory::class,
+            Options\ModuleOptions::class                => Factory\ModuleOptionsFactory::class,
+            Acl\Assertion\Calendar::class               => Factory\InvokableFactory::class,
+            Acl\Assertion\Contact::class                => Factory\InvokableFactory::class,
+            Acl\Assertion\Document::class               => Factory\InvokableFactory::class,
+            Search\Service\CalendarSearchService::class => ConfigAbstractFactory::class,
+            Navigation\Invokable\CalendarLabel::class   => Factory\InvokableFactory::class,
+            Navigation\Invokable\DocumentLabel::class   => Factory\InvokableFactory::class,
         ],
         'invokables' => [
             InputFilter\CalendarFilter::class => InputFilter\CalendarFilter::class,

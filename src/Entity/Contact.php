@@ -34,83 +34,48 @@ class Contact extends AbstractEntity
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      *
      * @var \Calendar\Entity\ContactRole
      */
     private $role;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
-     * })
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      *
      * @var \Calendar\Entity\ContactStatus
      */
     private $status;
     /**
      * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
-     * })
+     * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      *
      * @var \Contact\Entity\Contact
      */
     private $contact;
 
-    /**
-     * Contact constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Magic Getter.
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * Magic Setter.
-     *
-     * @param $property
-     * @param $value
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @param $property
-     * @return bool
-     */
     public function __isset($property)
     {
         return isset($this->$property);
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return (string)$this->role;

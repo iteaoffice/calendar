@@ -202,26 +202,30 @@ abstract class AbstractAssertion implements AssertionInterface
         return false;
     }
 
-    /**
-     * @param string|PersistentCollection $accessRoleOrCollection
-     *
-     * @return array
-     */
-    protected function prepareAccessRoles($accessRoleOrCollection): array
+    private function prepareAccessRoles($accessRoleOrCollection): array
     {
-        if (\is_string($accessRoleOrCollection)) {
-            return [\strtolower($accessRoleOrCollection)];
-        }
+        if (!$accessRoleOrCollection instanceof PersistentCollection) {
+            /*
+             * We only have a string or array, so we need to lookup the role
+             */
+            if (\is_array($accessRoleOrCollection)) {
+                foreach ($accessRoleOrCollection as $key => $accessItem) {
+                    $access = $this->adminService->findAccessByName($accessItem);
 
-        $accessRoles = [];
-        /** @var Access $access */
-        if (\is_iterable($accessRoleOrCollection)) {
-            foreach ($accessRoleOrCollection as $access) {
-                $accessRoles[] = \strtolower($access->getAccess());
+                    if (null !== $access) {
+                        $accessRoleOrCollection[$key] = strtolower($access->getAccess());
+                    } else {
+                        unset($accessRoleOrCollection[$key]);
+                    }
+                }
+            } else {
+                $accessRoleOrCollection = [
+                    strtolower($this->adminService->findAccessByName($accessRoleOrCollection)->getAccess()),
+                ];
             }
         }
 
-        return \array_unique($accessRoles);
+        return $accessRoleOrCollection;
     }
 
     /**

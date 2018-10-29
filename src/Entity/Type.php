@@ -113,32 +113,16 @@ class Type extends AbstractEntity
         return $this->$property;
     }
 
-    /**
-     * Magic Setter
-     *
-     * @param $property
-     * @param $value
-     *
-     * @return void
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @param $property
-     *
-     * @return bool
-     */
     public function __isset($property)
     {
         return isset($this->$property);
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return (string)$this->type;
@@ -245,9 +229,6 @@ class Type extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return Calendar[]|Collections\ArrayCollection
-     */
     public function getCalendar()
     {
         return $this->calendar;

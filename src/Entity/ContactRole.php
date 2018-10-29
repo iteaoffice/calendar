@@ -64,60 +64,31 @@ class ContactRole extends AbstractEntity
      */
     private $calendarContact;
 
-    /**
-     * Class constructor.
-     */
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
     }
 
-    /**
-     * Magic Getter.
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * Magic Setter.
-     *
-     * @param $property
-     * @param $value
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @param $property
-     *
-     * @return bool
-     */
     public function __isset($property)
     {
         return isset($this->$property);
     }
 
-    /**
-     * Return the name of the role.
-     *
-     * @return string
-     */
     public function __toString(): string
     {
         return (string)$this->role;
     }
 
-    /**
-     * @return int
-     */
     public function getId()
     {
         return $this->id;

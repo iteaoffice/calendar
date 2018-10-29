@@ -28,15 +28,6 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  */
 final class FormServiceFactory implements FactoryInterface
 {
-    /**
-     * Create an instance of the requested class name.
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
-     *
-     * @return FormService
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): FormService
     {
         /** @var FormService $formService */

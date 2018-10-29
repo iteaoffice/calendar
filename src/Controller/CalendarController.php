@@ -23,7 +23,7 @@ use ZfcTwig\View\TwigRenderer;
  *
  * @package Calendar\Controller
  */
-class CalendarController extends AbstractActionController
+final class CalendarController extends AbstractActionController
 {
     /**
      * @var CalendarService

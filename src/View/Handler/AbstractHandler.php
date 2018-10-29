@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace Calendar\View\Handler;
 
 use Content\Entity\Content;
-use Content\Navigation\Service\UpdateNavigationService;
-use Zend\Authentication\AuthenticationService;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\TranslatorInterface;
@@ -26,7 +24,6 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Helper\HeadMeta;
 use Zend\View\Helper\HeadStyle;
 use Zend\View\Helper\HeadTitle;
-use Zend\View\Helper\Placeholder\Container\AbstractContainer;
 use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
 
@@ -58,14 +55,6 @@ abstract class AbstractHandler extends AbstractHelper
      */
     protected $request;
     /**
-     * @var AuthenticationService
-     */
-    protected $authenticationService;
-    /**
-     * @var UpdateNavigationService
-     */
-    protected $updateNavigationService;
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
@@ -74,14 +63,10 @@ abstract class AbstractHandler extends AbstractHelper
         Application $application,
         HelperPluginManager $helperPluginManager,
         TwigRenderer $renderer,
-        AuthenticationService $authenticationService,
-        UpdateNavigationService $updateNavigationService,
         TranslatorInterface $translator
     ) {
         $this->helperPluginManager = $helperPluginManager;
         $this->renderer = $renderer;
-        $this->authenticationService = $authenticationService;
-        $this->updateNavigationService = $updateNavigationService;
         $this->translator = $translator;
 
         //Take the last remaining properties from the application
@@ -90,11 +75,6 @@ abstract class AbstractHandler extends AbstractHelper
         $this->request = $application->getMvcEvent()->getRequest();
     }
 
-    /**
-     * @param Content $content
-     *
-     * @return array
-     */
     public function extractContentParam(Content $content): array
     {
         $params = [
@@ -125,52 +105,32 @@ abstract class AbstractHandler extends AbstractHelper
         return $params;
     }
 
-    /**
-     * @return bool
-     */
     public function hasDocRef(): bool
     {
         return null !== $this->getDocRef();
     }
 
-    /**
-     * @return null|string
-     */
     public function getDocRef(): ?string
     {
         return $this->routeMatch->getParam('routeMatch');
     }
 
-    /**
-     * @return HeadTitle|AbstractContainer
-     */
     public function getHeadTitle(): HeadTitle
     {
         return $this->helperPluginManager->get('headTitle');
     }
 
-    /**
-     * @return HeadMeta
-     */
     public function getHeadMeta(): HeadMeta
     {
         return $this->helperPluginManager->get('headMeta');
     }
 
-    /**
-     * @return HeadStyle
-     */
     public function getHeadStyle(): HeadStyle
     {
         return $this->helperPluginManager->get('headStyle');
     }
 
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    public function translate($string): string
+    public function translate(string $string): string
     {
         return $this->translator->translate($string);
     }

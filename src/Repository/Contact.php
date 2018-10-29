@@ -18,17 +18,13 @@ use Contact\Entity\Contact as ContactEntity;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * @category    Calendar
+ * Class Contact
+ *
+ * @package Calendar\Repository
  */
 class Contact extends EntityRepository
 {
-    /**
-     * @param string $which
-     * @param ContactEntity $contact
-     *
-     * @return Entity\Contact[]
-     */
-    public function findCalendarContactByContact($which, ContactEntity $contact = null): array
+    public function findCalendarContactByContact(string $which, ContactEntity $contact): array
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_contact');
@@ -79,16 +75,10 @@ class Contact extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param ContactEntity $contact
-     * @param Entity\Calendar $calendar
-     *
-     * @return Entity\Contact
-     */
     public function findCalendarContactByContactAndCalendar(
         ContactEntity $contact,
         Entity\Calendar $calendar
-    ):?Entity\Contact {
+    ): ?Entity\Contact {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_contact');
         $qb->from(Entity\Contact::class, 'calendar_entity_contact');
@@ -102,13 +92,6 @@ class Contact extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @param Entity\Calendar $calendar
-     * @param int             $status
-     * @param string          $order
-     *
-     * @return array
-     */
     public function findCalendarContactsByCalendar(Entity\Calendar $calendar, int $status, string $order): array
     {
         $qb = $this->_em->createQueryBuilder();
@@ -133,9 +116,6 @@ class Contact extends EntityRepository
                 break;
         }
 
-
-
-
         if ($status === Entity\Contact::STATUS_NO_DECLINED) {
             $qb->join('calendar_entity_contact.status', 'status');
             $qb->andWhere('status.id <> :status');
@@ -145,11 +125,6 @@ class Contact extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param Entity\Calendar $calendar
-     *
-     * @return Entity\Contact[]
-     */
     public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar): array
     {
         $qb = $this->_em->createQueryBuilder();
@@ -162,10 +137,12 @@ class Contact extends EntityRepository
         /** @var \Contact\Repository\Contact $contactRepository */
         $contactRepository = $this->_em->getRepository(ContactEntity::class);
 
-        $qb->andWhere($qb->expr()->notIn(
-            'calendar_entity_contact.contact',
-            $contactRepository->findContactByProjectIdQueryBuilder()->getDQL()
-        ));
+        $qb->andWhere(
+            $qb->expr()->notIn(
+                'calendar_entity_contact.contact',
+                $contactRepository->findContactByProjectIdQueryBuilder()->getDQL()
+            )
+        );
 
         $qb->setParameter(1, $calendar->getProjectCalendar()->getProject()->getId());
         $qb->setParameter('calendar', $calendar);

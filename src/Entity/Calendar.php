@@ -11,60 +11,62 @@ declare(strict_types=1);
 
 namespace Calendar\Entity;
 
-use Content\Entity\Image;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zend\Form\Annotation;
 
 /**
- * Calendar
- *
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Calendar")
  */
 class Calendar extends AbstractEntity
 {
-    /**
-     * Constant for final = -1 (draft)
-     */
     public const FINAL_DRAFT = -1;
-    /**
-     * Constant for final = 1 (final)
-     */
     public const FINAL_FINAL = 1;
-    /**
-     * Constant for final = 0 (tentative)
-     */
     public const FINAL_TENTATIVE = 0;
-    /**
-     * Constant for not on homepage = 0 (not on homepage)
-     */
+
     public const NOT_ON_HOMEPAGE = 0;
-    /**
-     * Constant for on homepage = 1 (on homepage)
-     */
     public const ON_HOMEPAGE = 1;
-    /**
-     * Textual versions of the final
-     *
-     * @var array
-     */
-    protected static $finalTemplates
+
+    public const NO_HIGHLIGHT = 0;
+    public const HIGHLIGHT = 1;
+
+    public const NO_OWN_EVENT = 0;
+    public const OWN_EVENT = 1;
+
+    public const NOT_PRESENT = 0;
+    public const PRESENT = 1;
+
+    private static $finalTemplates
         = [
             self::FINAL_DRAFT     => 'txt-draft',
             self::FINAL_TENTATIVE => 'txt-tentative',
             self::FINAL_FINAL     => 'txt-final',
         ];
-    /**
-     * Textual versions of the on homepage
-     *
-     * @var array
-     */
-    protected static $onHomepageTemplates
+
+    private static $onHomepageTemplates
         = [
             self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
-            self::ON_HOMEPAGE     => 'txt-on-homepage',
+            self::ON_HOMEPAGE     => 'txt-on-homepage'
+        ];
+
+    private static $highlightTemplates
+        = [
+            self::NO_HIGHLIGHT => 'txt-no-highlight',
+            self::HIGHLIGHT    => 'txt-highlight-on-homepage'
+        ];
+
+    private static $ownEventTemplates
+        = [
+            self::NO_OWN_EVENT => 'txt-no-own-event',
+            self::OWN_EVENT    => 'txt-own-event'
+        ];
+
+    private static $presentTemplates
+        = [
+            self::NOT_PRESENT => 'txt-office-not-present',
+            self::PRESENT     => 'txt-office-present'
         ];
     /**
      * @ORM\Column(name="calendar_id", type="integer", nullable=false)
@@ -75,16 +77,18 @@ class Calendar extends AbstractEntity
      */
     private $id;
     /**
-     * @ORM\Column(name="calendar", type="string", length=60, nullable=true)
+     * @ORM\Column(name="calendar", type="string")
      * @Annotation\Type("\Zend\Form\Element\Text")
-     * @Annotation\Options({"label":"txt-calendar","help-block": "txt-calendar-explanation"})
+     * @Annotation\Options({"label":"txt-calendar-calendar-label","help-block": "txt-calendar-calendar-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-calendar-placeholder"})
      * @var string
      */
     private $calendar;
     /**
      * @ORM\Column(name="location", type="string", length=255, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
-     * @Annotation\Options({"label":"txt-location","help-block": "txt-location-explanation"})
+     * @Annotation\Options({"label":"txt-calendar-location-label","help-block": "txt-calendar-location-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-location-placeholder"})
      * @var string
      */
     private $location;
@@ -98,7 +102,7 @@ class Calendar extends AbstractEntity
     /**
      * @ORM\Column(name="date_from", type="datetime", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\DateTime")
-     * @Annotation\Options({"label":"txt-date-from","help-block": "txt-date-from-explanation", "format": "Y-m-d H:i"})
+     * @Annotation\Options({"label":"txt-calendar-date-from-label","help-block": "txt-calendar-date-from-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
      * @var \DateTime
      */
@@ -106,7 +110,7 @@ class Calendar extends AbstractEntity
     /**
      * @ORM\Column(name="date_end", type="datetime", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\DateTime")
-     * @Annotation\Options({"label":"txt-date-end","help-block": "txt-date-end-explanation", "format": "Y-m-d H:i"})
+     * @Annotation\Options({"label":"txt-calendar-date-end-label","help-block": "txt-calendar-date-end-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
      * @var \DateTime
      */
@@ -129,8 +133,8 @@ class Calendar extends AbstractEntity
      * @ORM\Column(name="final", type="smallint", nullable=false)
      * @Annotation\Type("Zend\Form\Element\Radio")
      * @Annotation\Attributes({"array":"finalTemplates"})
-     * @Annotation\Attributes({"label":"txt-final"})
-     * @Annotation\Options({"help-block":"txt-final-explanation"})
+     * @Annotation\Attributes({"label":"txt-calendar-final-label"})
+     * @Annotation\Options({"help-block":"txt-calendar-final-help-block"})
      * @var integer
      */
     private $final;
@@ -138,29 +142,66 @@ class Calendar extends AbstractEntity
      * @ORM\Column(name="on_homepage", type="smallint", nullable=false)
      * @Annotation\Type("Zend\Form\Element\Radio")
      * @Annotation\Attributes({"array":"onHomepageTemplates"})
-     * @Annotation\Attributes({"label":"txt-on-homepage"})
-     * @Annotation\Options({"help-block":"txt-on-homepage-explanation"})
+     * @Annotation\Attributes({"label":"txt-calendar-on-homepage-label"})
+     * @Annotation\Options({"help-block":"txt-calendar-on-homepage-help-block"})
      * @var integer
      */
     private $onHomepage;
     /**
-     * @ORM\Column(name="sequence", type="smallint", length=4, nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
-     * @Annotation\Options({"label":"txt-sequence","help-block": "txt-calendar-sequence-explanation"})
+     * @ORM\Column(name="highlight", type="smallint", nullable=false)
+     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Attributes({"array":"highlightTemplates"})
+     * @Annotation\Attributes({"label":"txt-calendar-highlight-label"})
+     * @Annotation\Options({"help-block":"txt-calendar-highlight-help-block"})
+     * @var integer
+     */
+    private $highlight;
+    /**
+     * @ORM\Column(name="highlight_description", type="text", nullable=true)
+     * @Annotation\Type("\Zend\Form\Element\Textarea")
+     * @Annotation\Options({"label":"txt-calendar-highlight-description-label","help-block": "txt-calendar-highlight-description-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-highlight-description-placeholder"})
+     * @var string
+     */
+    private $highlightDescription;
+    /**
+     * @ORM\Column(name="own_event", type="smallint", nullable=false)
+     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Attributes({"array":"ownEventTemplates"})
+     * @Annotation\Attributes({"label":"txt-calendar-own-event-label"})
+     * @Annotation\Options({"help-block":"txt-calendar-own-event-help-block"})
+     * @var integer
+     */
+    private $ownEvent;
+    /**
+     * @ORM\Column(name="present", type="smallint", nullable=false)
+     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Attributes({"array":"presentTemplates"})
+     * @Annotation\Attributes({"label":"txt-calendar-present-label"})
+     * @Annotation\Options({"help-block":"txt-calendar-present-help-block"})
+     * @var integer
+     */
+    private $present;
+    /**
+     * @ORM\Column(name="sequence", type="smallint")
+     * @Annotation\Type("\Zend\Form\Element\Number")
+     * @Annotation\Options({"label":"txt-calendar-sequence-label","help-block":"txt-calendar-sequence-help-block"})
      * @var int
      */
     private $sequence;
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Textarea")
-     * @Annotation\Options({"label":"txt-description","help-block": "txt-calendar-description-explanation"})
+     * @Annotation\Options({"label":"txt-calendar-description-label","help-block": "txt-calendar-description-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-description-placeholder"})
      * @var string
      */
     private $description;
     /**
-     * @ORM\Column(name="url", type="string", length=60, nullable=true)
+     * @ORM\Column(name="url", length=1000, type="string")
      * @Annotation\Type("\Zend\Form\Element\Url")
-     * @Annotation\Options({"label":"txt-url","help-block": "txt-calendar-url-explanation"})
+     * @Annotation\Options({"label":"txt-calendar-url-label","help-block": "txt-calendar-url-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-url-placeholder"})
      * @var string
      */
     private $url;
@@ -172,25 +213,14 @@ class Calendar extends AbstractEntity
     /**
      * @ORM\Column(name="image_url", type="string", length=125, nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
-     * @Annotation\Options({"label":"txt-image-url","help-block":"txt-image-url-explanation"})
+     * @Annotation\Options({"label":"txt-calendar-image-url-label","help-block": "txt-calendar-image-url-help-block"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-image-url-placeholder"})
      * @var string
      */
     private $imageUrl;
     /**
-     * @ORM\ManyToOne(targetEntity="Content\Entity\Image", cascade={"persist"}, inversedBy="calendar")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="image_id", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Number")
-     * @Annotation\Options({"label":"txt-calendar-image-label","help-block":"txt-calendar-image-help-block"})
-     * @Annotation\Attributes({"placeholder":"txt-calendar-image-placeholder"})
-     *
-     * @var \Content\Entity\Image
-     */
-    private $image;
-    /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Type", cascade="persist", inversedBy="calendar")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="type_id", referencedColumnName="type_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id", nullable=false)
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-type-explanation"})
      * @Annotation\Attributes({"label":"txt-calendar-type", "help-block":"txt-type-explanation"})
@@ -199,9 +229,7 @@ class Calendar extends AbstractEntity
     private $type;
     /**
      * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendar")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      * @Annotation\Exclude()
      * @var \Contact\Entity\Contact
      */
@@ -240,105 +268,103 @@ class Calendar extends AbstractEntity
      */
     private $call;
 
-    /**
-     * Class constructor
-     */
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
         $this->document = new Collections\ArrayCollection();
         $this->call = new Collections\ArrayCollection();
+
+        $this->final = self::FINAL_DRAFT;
+        $this->onHomepage = self::ON_HOMEPAGE;
+        $this->highlight = self::NO_HIGHLIGHT;
+        $this->ownEvent = self::NO_OWN_EVENT;
+        $this->present = self::NOT_PRESENT;
     }
 
-    /**
-     * @return array
-     */
     public static function getFinalTemplates(): array
     {
         return self::$finalTemplates;
     }
 
-    /**
-     * @return array
-     */
     public static function getOnHomepageTemplates(): array
     {
         return self::$onHomepageTemplates;
     }
 
-    /**
-     * Magic Getter
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
+    public static function getHighlightTemplates(): array
+    {
+        return self::$highlightTemplates;
+    }
+
+    public static function getOwnEventTemplates(): array
+    {
+        return self::$ownEventTemplates;
+    }
+
+    public static function getPresentTemplates(): array
+    {
+        return self::$presentTemplates;
+    }
+
+    public function isHighlight(): bool
+    {
+        return $this->highlight === self::HIGHLIGHT;
+    }
+
+    public function isOwnEvent(): bool
+    {
+        return $this->ownEvent === self::OWN_EVENT;
+    }
+
+    public function isPresent(): bool
+    {
+        return $this->present === self::PRESENT;
+    }
+
+    public function onHomepage(): bool
+    {
+        return $this->isFinal() && $this->onHomepage === self::ON_HOMEPAGE;
+    }
+
+    public function isFinal(): bool
+    {
+        return $this->final === self::FINAL_FINAL;
+    }
+
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * Magic Setter
-     *
-     * @param $property
-     * @param $value
-     *
-     * @return void
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @param $property
-     *
-     * @return bool
-     */
     public function __isset($property)
     {
         return isset($this->$property);
     }
 
-    /**
-     * New function needed to make the hydrator happy
-     *
-     * @param Collections\Collection $collection
-     */
-    public function addCall(Collections\Collection $collection)
+    public function addCall(Collections\Collection $collection): void
     {
         foreach ($collection as $call) {
             $this->call->add($call);
         }
     }
 
-    /**
-     * New function needed to make the hydrator happy
-     *
-     * @param Collections\Collection $collection
-     */
-    public function removeCall(Collections\Collection $collection)
+    public function removeCall(Collections\Collection $collection): void
     {
         foreach ($collection as $call) {
             $this->call->removeElement($call);
         }
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return (string)$this->calendar;
     }
 
-
-    /**
-     * @param bool $textual
-     *
-     * @return int|string
-     */
     public function getFinal(bool $textual = false)
     {
         if ($textual) {
@@ -348,19 +374,13 @@ class Calendar extends AbstractEntity
         return $this->final;
     }
 
-    /**
-     * @param int $final
-     */
-    public function setFinal(int $final)
+    public function setFinal(int $final): Calendar
     {
         $this->final = $final;
+
+        return $this;
     }
 
-    /**
-     * @param bool $textual
-     *
-     * @return int|string
-     */
     public function getOnHomepage(bool $textual = false)
     {
         if ($textual) {
@@ -370,27 +390,67 @@ class Calendar extends AbstractEntity
         return $this->onHomepage;
     }
 
-    /**
-     * @param int $onHomepage
-     */
-    public function setOnHomepage(int $onHomepage)
+    public function setOnHomepage(int $onHomepage): Calendar
     {
         $this->onHomepage = $onHomepage;
+
+        return $this;
     }
 
-    /**
-     * @return int
-     */
+    public function getHighlight(bool $textual = false)
+    {
+        if ($textual) {
+            return self::$highlightTemplates[$this->highlight];
+        }
+
+        return $this->highlight;
+    }
+
+
+    public function setHighlight(int $highlight): Calendar
+    {
+        $this->highlight = $highlight;
+
+        return $this;
+    }
+
+    public function getOwnEvent(bool $textual = false)
+    {
+        if ($textual) {
+            return self::$ownEventTemplates[$this->ownEvent];
+        }
+
+        return $this->ownEvent;
+    }
+
+    public function setOwnEvent(int $ownEvent): Calendar
+    {
+        $this->ownEvent = $ownEvent;
+
+        return $this;
+    }
+
+    public function getPresent(bool $textual = false)
+    {
+        if ($textual) {
+            return self::$presentTemplates[$this->present];
+        }
+
+        return $this->present;
+    }
+
+    public function setPresent(int $present): Calendar
+    {
+        $this->present = $present;
+
+        return $this;
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Calendar
-     */
     public function setId($id): Calendar
     {
         $this->id = $id;
@@ -398,19 +458,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCalendar(): ?string
     {
         return $this->calendar;
     }
 
-    /**
-     * @param string $calendar
-     *
-     * @return Calendar
-     */
     public function setCalendar($calendar): Calendar
     {
         $this->calendar = $calendar;
@@ -418,19 +470,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    /**
-     * @param string $location
-     *
-     * @return Calendar
-     */
     public function setLocation($location): Calendar
     {
         $this->location = $location;
@@ -438,19 +482,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDocRef(): ?string
     {
         return $this->docRef;
     }
 
-    /**
-     * @param string $docRef
-     *
-     * @return Calendar
-     */
     public function setDocRef($docRef): Calendar
     {
         $this->docRef = $docRef;
@@ -458,19 +494,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateFrom(): ?\DateTime
     {
         return $this->dateFrom;
     }
 
-    /**
-     * @param \DateTime $dateFrom
-     *
-     * @return Calendar
-     */
     public function setDateFrom($dateFrom): Calendar
     {
         $this->dateFrom = $dateFrom;
@@ -478,19 +506,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
 
-    /**
-     * @param \DateTime $dateEnd
-     *
-     * @return Calendar
-     */
     public function setDateEnd($dateEnd): Calendar
     {
         $this->dateEnd = $dateEnd;
@@ -498,19 +518,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
 
-    /**
-     * @param \DateTime $dateCreated
-     *
-     * @return Calendar
-     */
     public function setDateCreated($dateCreated): Calendar
     {
         $this->dateCreated = $dateCreated;
@@ -518,19 +530,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateUpdated(): ?\DateTime
     {
         return $this->dateUpdated;
     }
 
-    /**
-     * @param \DateTime $dateUpdated
-     *
-     * @return Calendar
-     */
     public function setDateUpdated($dateUpdated): Calendar
     {
         $this->dateUpdated = $dateUpdated;
@@ -538,19 +542,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getSequence(): ?int
     {
         return $this->sequence;
     }
 
-    /**
-     * @param int $sequence
-     *
-     * @return Calendar
-     */
     public function setSequence(int $sequence): Calendar
     {
         $this->sequence = $sequence;
@@ -558,19 +554,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return Calendar
-     */
     public function setDescription(string $description): Calendar
     {
         $this->description = $description;
@@ -578,19 +566,23 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string|string
-     */
+    public function getHighlightDescription(): ?string
+    {
+        return $this->highlightDescription;
+    }
+
+    public function setHighlightDescription(string $highlightDescription): Calendar
+    {
+        $this->highlightDescription = $highlightDescription;
+
+        return $this;
+    }
+
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     *
-     * @return Calendar
-     */
     public function setUrl(string $url): Calendar
     {
         $this->url = $url;
@@ -598,19 +590,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDatePlan(): ?\DateTime
     {
         return $this->datePlan;
     }
 
-    /**
-     * @param \DateTime $datePlan
-     *
-     * @return Calendar
-     */
     public function setDatePlan(\DateTime $datePlan): Calendar
     {
         $this->datePlan = $datePlan;
@@ -618,19 +602,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
 
-    /**
-     * @param string $imageUrl
-     *
-     * @return Calendar
-     */
     public function setImageUrl($imageUrl): Calendar
     {
         $this->imageUrl = $imageUrl;
@@ -638,39 +614,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return Image
-     */
-    public function getImage(): ?Image
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param Image $image
-     *
-     * @return Calendar
-     */
-    public function setImage($image): Calendar
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * @return Type|null
-     */
     public function getType(): ?Type
     {
         return $this->type;
     }
 
-    /**
-     * @param Type $type
-     *
-     * @return Calendar
-     */
     public function setType($type): Calendar
     {
         $this->type = $type;
@@ -678,19 +626,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \Contact\Entity\Contact|null
-     */
     public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }
 
-    /**
-     * @param \Contact\Entity\Contact $contact
-     *
-     * @return Calendar
-     */
     public function setContact(\Contact\Entity\Contact $contact): Calendar
     {
         $this->contact = $contact;
@@ -698,19 +638,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \Calendar\Entity\Contact[]|Collections\ArrayCollection
-     */
     public function getCalendarContact()
     {
         return $this->calendarContact;
     }
 
-    /**
-     * @param \Contact\Entity\Contact[]|Collections\ArrayCollection $calendarContact
-     *
-     * @return Calendar
-     */
     public function setCalendarContact($calendarContact)
     {
         $this->calendarContact = $calendarContact;
@@ -718,19 +650,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return Document[]|Collections\ArrayCollection
-     */
     public function getDocument()
     {
         return $this->document;
     }
 
-    /**
-     * @param Document[]|Collections\ArrayCollection $document
-     *
-     * @return Calendar
-     */
     public function setDocument($document): Calendar
     {
         $this->document = $document;
@@ -738,19 +662,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \Project\Entity\Calendar\Calendar
-     */
     public function getProjectCalendar(): ?\Project\Entity\Calendar\Calendar
     {
         return $this->projectCalendar;
     }
 
-    /**
-     * @param \Project\Entity\Calendar\Calendar $projectCalendar
-     *
-     * @return Calendar
-     */
     public function setProjectCalendar(\Project\Entity\Calendar\Calendar $projectCalendar): Calendar
     {
         $this->projectCalendar = $projectCalendar;
@@ -758,19 +674,11 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return Collections\ArrayCollection|\Program\Entity\Call\Call[]
-     */
     public function getCall()
     {
         return $this->call;
     }
 
-    /**
-     * @param Collections\ArrayCollection|\Program\Entity\Call\Call[] $call
-     *
-     * @return Calendar
-     */
     public function setCall($call): Calendar
     {
         $this->call = $call;

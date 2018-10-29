@@ -210,7 +210,7 @@ final class ManagerController extends AbstractActionController
                     $projectCalendar = new \Project\Entity\Calendar\Calendar();
                     $projectCalendar->setProject($project);
                     $projectCalendar->setCalendar($calendar);
-                    $this->projectService->updateEntity($projectCalendar);
+                    $this->projectService->save($projectCalendar);
                 }
 
                 $this->flashMessenger()->setNamespace('success')

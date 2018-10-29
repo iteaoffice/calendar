@@ -57,12 +57,18 @@
                 <dt>{{ translate("txt-docref") }}</dt>
                 <dd>{{ calendar.docRef }}</dd>
             {% endif %}
-            <dt>{{ translate("txt-state") }}</dt>
+            <dt>{{ translate("txt-final") }}</dt>
             <dd>{{ translate(calendar.getFinal(true)) }}</dd>
             <dt>{{ translate("txt-on-homepage") }}</dt>
             <dd>{{ translate(calendar.getOnHomepage(true)) }}
                 ({{ translate("txt-sequence:-%s")|format(calendar.sequence) }})
             </dd>
+            <dt>{{ translate("txt-highlight") }}</dt>
+            <dd>{{ translate(calendar.getHighlight(true)) }}</dd>
+            <dt>{{ translate("txt-own-event") }}</dt>
+            <dd>{{ translate(calendar.getOwnEvent(true)) }}</dd>
+            <dt>{{ translate("txt-present") }}</dt>
+            <dd>{{ translate(calendar.getPresent(true)) }}</dd>
             {% if calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
                 <dd>{{ calendar.description|raw }}</dd>

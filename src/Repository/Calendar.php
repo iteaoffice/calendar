@@ -19,35 +19,37 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use DoctrineExtensions\Query\Mysql\Year;
 use Project\Entity\Project;
 
 /**
- * @category    Calendar
- * @package     Repository
+ * Class Calendar
+ *
+ * @package Calendar\Repository
  */
 class Calendar extends EntityRepository
 {
-    /**
-     * @param                   $which
-     * @param bool              $filterForAccess
-     * @param Contact|null      $contact
-     * @param null              $year
-     * @param null              $type
-     * @param QueryBuilder|null $limitQueryBuilder
-     *
-     * @return Query
-     */
     public function findCalendarItems(
-        $which,
-        $filterForAccess = true,
+        string $which,
+        bool $filterForAccess = true,
         Contact $contact = null,
-        $year = null,
-        $type = null,
+        int $year = null,
+        string $type = null,
         ?QueryBuilder $limitQueryBuilder = null
     ): Query {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
         $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
+
+        //Add a sub-select to be able to filter on public
+        $subSelect = $this->_em->createQueryBuilder();
+        $subSelect->select('calendar_entity_calendar_type');
+        $subSelect->from(Entity\Type::class, 'calendar_entity_calendar_type');
+        $subSelect->join('calendar_entity_calendar_type.access', 'admin_entity_access');
+        $subSelect->andWhere(
+            $qb->expr()
+                ->in('admin_entity_access.access', [Access::ACCESS_PUBLIC])
+        );
 
 
         switch ($which) {
@@ -84,8 +86,8 @@ class Calendar extends EntityRepository
             case CalendarService::WHICH_FINAL:
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
-                $qb->addOrderBy('calendar_entity_calendar.sequence', 'ASC');
+                $qb->orderBy('calendar_entity_calendar.dateFrom', Criteria::DESC);
+                $qb->addOrderBy('calendar_entity_calendar.sequence', Criteria::ASC);
                 break;
             case CalendarService::WHICH_UPDATED:
                 $qb->orderBy('calendar_entity_calendar.dateUpdated', Criteria::DESC);
@@ -100,8 +102,31 @@ class Calendar extends EntityRepository
                 $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('calendar_entity_calendar.sequence', 'ASC');
-                $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
+                $qb->orderBy('calendar_entity_calendar.sequence', Criteria::ASC);
+                $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
+
+                //We only want public events
+                $qb->andWhere(
+                    $qb->expr()->in('calendar_entity_calendar.type', $subSelect->getDQL())
+                );
+
+                break;
+            case CalendarService::WHICH_HIGHLIGHT:
+                $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
+                $qb->setParameter(1, new \DateTime());
+                $qb->andWhere('calendar_entity_calendar.onHomepage = ?2');
+                $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
+                $qb->andWhere('calendar_entity_calendar.final = ?3');
+                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
+                $qb->andWhere('calendar_entity_calendar.highlight = ?3');
+                $qb->setParameter(3, Entity\Calendar::HIGHLIGHT);
+                $qb->orderBy('calendar_entity_calendar.sequence', Criteria::ASC);
+                $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
+
+                //We only want public events
+                $qb->andWhere(
+                    $qb->expr()->in('calendar_entity_calendar.type', $subSelect->getDQL())
+                );
                 break;
         }
 
@@ -121,7 +146,7 @@ class Calendar extends EntityRepository
 
         if (null !== $year) {
             $emConfig = $this->getEntityManager()->getConfiguration();
-            $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+            $emConfig->addCustomDatetimeFunction('YEAR', Year::class);
             $qb->andWhere('YEAR(calendar_entity_calendar.dateEnd) = ?8');
             $qb->setParameter(8, (int)$year);
         }
@@ -129,13 +154,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery();
     }
 
-    /**
-     * @param QueryBuilder      $qb
-     * @param Contact           $contact
-     * @param QueryBuilder|null $limitQueryBuilder
-     *
-     * @return QueryBuilder
-     */
     public function filterForAccess(
         QueryBuilder $qb,
         Contact $contact,
@@ -173,11 +191,6 @@ class Calendar extends EntityRepository
         return $qb;
     }
 
-    /**
-     * @param Project $project
-     *
-     * @return Entity\Calendar|null
-     */
     public function findLatestProjectCalendar(Project $project): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
@@ -198,32 +211,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @return array
-     */
-    public function findMinAndMaxYear(): array
-    {
-        $emConfig = $this->getEntityManager()->getConfiguration();
-        $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-
-        $dql
-            = 'SELECT 
-                        MIN(YEAR(calendar_entity_calendar.dateFrom)) AS minYear,
-                        MAX(YEAR(calendar_entity_calendar.dateFrom)) AS maxYear
-                   FROM Calendar\Entity\Calendar calendar_entity_calendar';
-
-
-        $result = $this->_em->createQuery($dql)->getScalarResult();
-
-        return array_shift($result);
-    }
-
-    /**
-     * @param Project   $project
-     * @param \DateTime $dateTime
-     *
-     * @return Entity\Calendar|null
-     */
     public function findNextProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
@@ -245,13 +232,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @param Project   $project
-     * @param \DateTime $dateTime
-     *
-     * @return Entity\Calendar|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
     public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
@@ -273,14 +253,6 @@ class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * Function which returns true/false based ont he fact if a user can view the calendar
-     *
-     * @param Entity\Calendar $calendar
-     * @param Contact         $contact
-     *
-     * @return bool
-     */
     public function canViewCalendar(Entity\Calendar $calendar, Contact $contact = null): bool
     {
         $qb = $this->_em->createQueryBuilder();
