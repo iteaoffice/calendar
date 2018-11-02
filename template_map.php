@@ -6,6 +6,7 @@ return array(
     'calendar/pdf/presence-list'                => __DIR__ . '//view/calendar/pdf/presence-list.twig',
     'calendar/calendar/calendar-type-color-css' => __DIR__ . '//view/calendar/calendar/calendar-type-color-css.twig',
     'calendar/partial/pagination-control'       => __DIR__ . '//view/calendar/partial/pagination-control.twig',
+    'calendar/partial/list/calendar-small'      => __DIR__ . '//view/calendar/partial/list/calendar-small.twig',
     'calendar/partial/list/calendar-contact'    => __DIR__ . '//view/calendar/partial/list/calendar-contact.twig',
     'calendar/partial/list/calendar-community'  => __DIR__ . '//view/calendar/partial/list/calendar-community.twig',
     'calendar/partial/year-selector'            => __DIR__ . '//view/calendar/partial/year-selector.twig',

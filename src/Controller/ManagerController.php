@@ -241,14 +241,7 @@ final class ManagerController extends AbstractActionController
             return $this->notFoundAction();
         }
 
-        $data = array_merge(
-            [
-                'calendar_entity_calendar' => [
-                    'image' => null !== $calendar->getImage() ? $calendar->getImage()->getId() : null
-                ]
-            ],
-            $this->getRequest()->getPost()->toArray()
-        );
+        $data = $this->getRequest()->getPost()->toArray();
 
         $form = $this->formService->prepare($calendar, $data);
 

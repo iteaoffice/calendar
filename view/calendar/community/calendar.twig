@@ -300,9 +300,9 @@
                 <tbody>
                 {% for calendarContact in calendarContacts %}
 
-                    <tr {% if zfcUserIdentity().getId() == calendarContact.contact.contact.id %}class="success"{% endif %}>
+                    <tr {% if identity().getId() == calendarContact.contact.contact.id %}class="success"{% endif %}>
                         <td>
-                            {% if zfcUserIdentity().getId() == calendarContact.contact.contact.id %}
+                            {% if identity().getId() == calendarContact.contact.contact.id %}
                                 <i class="fa fa-user"></i>
                             {% endif %}
                             {{ calendarContact.contact.displayName }}

@@ -1,0 +1,22 @@
+
+
+
+<h3>{{ translate("txt-upcoming-events")  }}</h3>
+
+<table class="table table-condensed table-sm">
+    <tbody>
+    {% for calendar in calendarItems %}
+        <tr {% if identity() and calendarService.calendarHasContact(calendar, identity()) %}class="active"{% endif %}>
+            <td>{{ calendarLink(calendar,'view','name') }}</td>
+            <td>
+                {% if identity() and calendarService.calendarHasContact(calendar, identity()) %}
+                    <i class="fa fa-user"></i>
+                {% endif %}
+                {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+            <td>{{ calendar.location }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ calendarLink(null,'list', 'alternativeShow', 'upcoming', 'read more') }}

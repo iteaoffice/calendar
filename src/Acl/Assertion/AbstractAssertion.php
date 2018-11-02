@@ -68,11 +68,6 @@ abstract class AbstractAssertion implements AssertionInterface
      */
     private $container;
 
-    /**
-     * AbstractAssertion constructor.
-     *
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -82,12 +77,6 @@ abstract class AbstractAssertion implements AssertionInterface
         $this->contact = $container->get(AuthenticationService::class)->getIdentity();
     }
 
-
-    /**
-     * @param string $string
-     *
-     * @return bool
-     */
     public function routeHasString(string $string): bool
     {
         return $this->hasRouteMatch() && \strpos($this->getRouteMatch()->getMatchedRouteName(), $string) !== false;
@@ -101,9 +90,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return null !== $this->getRouteMatch()->getMatchedRouteName();
     }
 
-    /**
-     * @return RouteMatch
-     */
     protected function getRouteMatch(): RouteMatch
     {
         $routeMatch = $this->container->get('Application')->getMvcEvent()->getRouteMatch();
@@ -114,9 +100,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return new RouteMatch([]);
     }
 
-    /**
-     * @return Request
-     */
     protected function getRequest(): Request
     {
         return $this->container->get('Application')->getMvcEvent()->getRequest();
@@ -140,11 +123,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return $this->privilege;
     }
 
-    /**
-     * @param string $privilege
-     *
-     * @return AbstractAssertion
-     */
     public function setPrivilege(?string $privilege): AbstractAssertion
     {
         $this->privilege = $privilege;
@@ -152,9 +130,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         if (null !== $this->getRequest()->getPost('id')) {
@@ -170,13 +145,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return null;
     }
 
-    /**
-     * Returns true when a role or roles have access.
-     *
-     * @param string|PersistentCollection $accessRoleOrCollection
-     *
-     * @return boolean
-     */
     public function rolesHaveAccess($accessRoleOrCollection): bool
     {
         $accessRoles = $this->prepareAccessRoles($accessRoleOrCollection);
@@ -223,25 +191,18 @@ abstract class AbstractAssertion implements AssertionInterface
                     strtolower($this->adminService->findAccessByName($accessRoleOrCollection)->getAccess()),
                 ];
             }
+        } else {
+            $accessRoleOrCollection = $accessRoleOrCollection->toArray();
         }
 
         return $accessRoleOrCollection;
     }
 
-    /**
-     * @return bool
-     */
     public function hasContact(): bool
     {
         return null !== $this->contact;
     }
 
-    /**
-     * @param AbstractEntity $entity
-     * @param string         $role
-     *
-     * @return bool
-     */
     public function hasPermission(AbstractEntity $entity, string $role): bool
     {
         return $this->contactService->contactHasPermit($this->contact, $role, $entity);
