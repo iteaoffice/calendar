@@ -54,7 +54,7 @@ class Calendar extends AbstractEntity
     private static $highlightTemplates
         = [
             self::NO_HIGHLIGHT => 'txt-no-highlight',
-            self::HIGHLIGHT    => 'txt-highlight-on-homepage'
+            self::HIGHLIGHT    => 'txt-highlight-on-event-page'
         ];
 
     private static $ownEventTemplates
@@ -222,8 +222,8 @@ class Calendar extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Type", cascade="persist", inversedBy="calendar")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id", nullable=false)
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-type-explanation"})
-     * @Annotation\Attributes({"label":"txt-calendar-type", "help-block":"txt-type-explanation"})
+     * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-calendar-type-help-block"})
+     * @Annotation\Attributes({"label":"txt-calendar-type-label"})
      * @var \Calendar\Entity\Type
      */
     private $type;

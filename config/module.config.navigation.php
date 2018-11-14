@@ -104,7 +104,6 @@ return [
                         'pages' => [
                             'view-calendar' => [
                                 'route'   => 'zfcadmin/calendar/calendar',
-                                'visible' => false,
                                 'params'  => [
                                     'entities'   => [
                                         'id' => Calendar\Entity\Calendar::class,

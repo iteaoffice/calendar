@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityRepository;
  *
  * @package Calendar\Repository
  */
-class Contact extends EntityRepository
+final class Contact extends EntityRepository
 {
     public function findCalendarContactByContact(string $which, ContactEntity $contact): array
     {
@@ -63,8 +63,9 @@ class Contact extends EntityRepository
                 $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('calendar_entity_calendar.sequence', 'ASC');
                 $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
+                $qb->orderBy('calendar_entity_calendar.sequence', 'ASC');
+
                 break;
         }
 

@@ -85,14 +85,10 @@ class CalendarHandler extends AbstractHandler
                 return $this->parseCalendarItem($calendar);
             case 'calendar':
             case 'calendar_past':
-                $this->getHeadTitle()->append($this->translate('txt-calendar'));
-
-                return $this->parseCalendar();
-
             case 'calendar_upcoming':
                 $this->getHeadTitle()->append($this->translate('txt-upcoming-calendar'));
 
-                return $this->parseCalendar(true);
+                return $this->parseCalendar();
 
             case 'calendar_small':
                 return $this->parseCalendarSmall($params['limit']);
@@ -134,7 +130,7 @@ class CalendarHandler extends AbstractHandler
         );
     }
 
-    public function parseCalendar(bool $upcoming = false): string
+    public function parseCalendar(): string
     {
         $page = $this->routeMatch->getParam('page', 1);
 
@@ -151,13 +147,13 @@ class CalendarHandler extends AbstractHandler
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
         if ($this->request->isGet()) {
-            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction'], $upcoming);
+            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction']);
             if (isset($data['facet'])) {
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
 
                     foreach ($values as $value) {
-                        $quotedValues[] = \sprintf('"%s"', $value);
+                        $quotedValues[] = \sprintf('%s"', $value);
                     }
 
                     $this->calendarSearchService->addFilterQuery(
@@ -169,7 +165,8 @@ class CalendarHandler extends AbstractHandler
 
             $form->addSearchResults(
                 $this->calendarSearchService->getQuery()->getFacetSet(),
-                $this->calendarSearchService->getResultSet()->getFacetSet()
+                $this->calendarSearchService->getResultSet()->getFacetSet(),
+                true
             );
             $form->setData($data);
         }
@@ -180,7 +177,7 @@ class CalendarHandler extends AbstractHandler
                 $this->calendarSearchService->getQuery()
             )
         );
-        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 12);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
 
@@ -196,14 +193,16 @@ class CalendarHandler extends AbstractHandler
         return $this->renderer->render(
             'cms/calendar/list',
             [
-                'form'            => $form,
-                'order'           => $data['order'],
-                'direction'       => $data['direction'],
-                'query'           => $data['query'],
-                'arguments'       => http_build_query($filteredData),
-                'paginator'       => $paginator,
-                'page'            => $page,
-                'calendarService' => $this->calendarService
+                'form'             => $form,
+                'order'            => $data['order'],
+                'direction'        => $data['direction'],
+                'query'            => $data['query'],
+                'arguments'        => http_build_query($filteredData),
+                'paginator'        => $paginator,
+                'page'             => $page,
+                'calendarService'  => $this->calendarService,
+                'upcomingCalendar' => $this->calendarSearchService->findUpcomingCalendar(),
+                'highlightCalendar' => $this->calendarSearchService->findHighlightCalendar(),
             ]
         );
     }

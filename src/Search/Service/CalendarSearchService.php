@@ -52,24 +52,15 @@ final class CalendarSearchService extends AbstractSearchService
         $this->getQuery()->setQuery($query);
 
         $hasTerm = !\in_array($searchTerm, ['*', ''], true);
-        $hasSort = ($order !== '');
-
-        if ($hasSort) {
-            switch ($order) {
-                default:
-                    $this->getQuery()->addSort('date_from', Query::SORT_DESC);
-                    break;
-            }
-        }
+        $this->getQuery()->addSort('date_from', Query::SORT_DESC);
 
         if ($hasTerm) {
             $this->getQuery()->addSort('score', Query::SORT_DESC);
-        } else {
-            $this->getQuery()->addSort('date_from', Query::SORT_DESC);
         }
 
+
         $facetSet = $this->getQuery()->getFacetSet();
-        $facetSet->createFacetField('year')->setField('year')->setSort('year')->setMinCount(1)->setExcludes(['year']);
+        $facetSet->createFacetField('year')->setField('year')->setSort('year')->setMinCount(1);
 
         return $this;
     }
@@ -81,6 +72,17 @@ final class CalendarSearchService extends AbstractSearchService
         $this->query->setQuery('(on_homepage:true) AND date_from:[NOW TO *]')
             ->addSort('date_from', Query::SORT_DESC)
             ->setRows($limit);
+
+
+        return $this->getSolrClient()->execute($this->query);
+    }
+
+    public function findHighlightCalendar(): ResultInterface
+    {
+        $this->setQuery($this->getSolrClient()->createSelect());
+
+        $this->query->setQuery('on_homepage:true AND highlight:true')
+            ->addSort('date_from', Query::SORT_DESC);
 
 
         return $this->getSolrClient()->execute($this->query);

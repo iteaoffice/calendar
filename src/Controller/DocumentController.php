@@ -131,13 +131,12 @@ final class DocumentController extends AbstractActionController
              * Remove the file if delete is pressed
              */
             if (isset($data['delete'])) {
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-document-%s-successfully-removed"),
-                            $document->parseFileName()
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-document-%s-successfully-removed"),
+                        $document->parseFileName()
+                    )
+                );
                 $this->calendarService->delete($document);
 
                 return $this->redirect()
@@ -182,13 +181,12 @@ final class DocumentController extends AbstractActionController
                     $this->calendarService->save($documentObject);
                 }
                 $this->calendarService->save($document);
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-document-%s-successfully-updated"),
-                            $document->parseFileName()
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-document-%s-successfully-updated"),
+                        $document->parseFileName()
+                    )
+                );
             }
 
             return $this->redirect()->toRoute('community/calendar/document/document', ['id' => $document->getId()]);

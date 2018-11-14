@@ -27,7 +27,7 @@ use Project\Entity\Project;
  *
  * @package Calendar\Repository
  */
-class Calendar extends EntityRepository
+final class Calendar extends EntityRepository
 {
     public function findCalendarItems(
         string $which,
@@ -102,8 +102,8 @@ class Calendar extends EntityRepository
                 $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
                 $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('calendar_entity_calendar.sequence', Criteria::ASC);
                 $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
+                $qb->orderBy('calendar_entity_calendar.sequence', Criteria::ASC);
 
                 //We only want public events
                 $qb->andWhere(

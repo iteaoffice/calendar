@@ -25,6 +25,7 @@ use Search\Service\AbstractSearchService;
 use Search\Service\SearchUpdateInterface;
 use Solarium\Client;
 use Solarium\Core\Query\AbstractQuery;
+use Solarium\QueryType\Update\Query\Document\Document;
 
 /**
  * Class CalendarService
@@ -164,57 +165,66 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $searchClient = new Client();
         $update = $searchClient->createUpdate();
 
-        // Add the calendar data as the document
+        /** @var Document $calendarDocument */
         $calendarDocument = $update->createDocument();
+
         // Calendar properties
-        $calendarDocument->id = $calendar->getResourceId();
-        $calendarDocument->calendar_id = $calendar->getId();
+        $calendarDocument->setField('id', $calendar->getResourceId());
+        $calendarDocument->setField('calendar_id', $calendar->getId());
 
-        $calendarDocument->docref = $calendar->getDocRef();
+        $calendarDocument->setField('docref', $calendar->getDocRef());
 
-        $calendarDocument->calendar = $calendar->getCalendar();
-        $calendarDocument->calendar_sort = $calendar->getCalendar();
-        $calendarDocument->calendar_search = $calendar->getCalendar();
+        $calendarDocument->setField('calendar', $calendar->getCalendar());
+        $calendarDocument->setField('calendar_sort', $calendar->getCalendar());
+        $calendarDocument->setField('calendar_search', $calendar->getCalendar());
 
-        $calendarDocument->description = $calendar->getDescription();
-        $calendarDocument->description_sort = $calendar->getDescription();
-        $calendarDocument->description_search = $calendar->getDescription();
+        $calendarDocument->setField('description', $calendar->getDescription());
+        $calendarDocument->setField('description_sort', $calendar->getDescription());
+        $calendarDocument->setField('description_search', $calendar->getDescription());
 
         if ($calendar->isHighlight()) {
-            $calendarDocument->highlight_description = $calendar->getHighlightDescription();
-            $calendarDocument->highlight_description_sort = $calendar->getHighlightDescription();
-            $calendarDocument->highlight_description_search = $calendar->getHighlightDescription();
+            $calendarDocument->setField('highlight_description', $calendar->getHighlightDescription());
+            $calendarDocument->setField('highlight_description_sort', $calendar->getHighlightDescription());
+            $calendarDocument->setField('highlight_description_search', $calendar->getHighlightDescription());
         }
 
-        $calendarDocument->location = $calendar->getLocation();
-        $calendarDocument->location_sort = $calendar->getLocation();
-        $calendarDocument->location_search = $calendar->getLocation();
+        $calendarDocument->setField('location', $calendar->getLocation());
+        $calendarDocument->setField('location_sort', $calendar->getLocation());
+        $calendarDocument->setField('location_search', $calendar->getLocation());
 
         if (null !== $calendar->getDateFrom()) {
-            $calendarDocument->date_from = $calendar->getDateFrom()->format(AbstractSearchService::DATE_SOLR);
+            $calendarDocument->setField(
+                'date_from',
+                $calendar->getDateFrom()->format(AbstractSearchService::DATE_SOLR)
+            );
         }
         if (null !== $calendar->getDateEnd()) {
-            $calendarDocument->date_end = $calendar->getDateEnd()->format(AbstractSearchService::DATE_SOLR);
+            $calendarDocument->setField('date_end', $calendar->getDateEnd()->format(AbstractSearchService::DATE_SOLR));
         }
         if (null !== $calendar->getDateCreated()) {
-            $calendarDocument->date_created = $calendar->getDateCreated()->format(AbstractSearchService::DATE_SOLR);
+            $calendarDocument->setField(
+                'date_created',
+                $calendar->getDateCreated()->format(AbstractSearchService::DATE_SOLR)
+            );
         }
         if (null !== $calendar->getDateUpdated()) {
-            $calendarDocument->date_updated = $calendar->getDateUpdated()->format(AbstractSearchService::DATE_SOLR);
+            $calendarDocument->setField(
+                'date_updated',
+                $calendar->getDateUpdated()->format(AbstractSearchService::DATE_SOLR)
+            );
         }
 
-        $calendarDocument->year = $calendar->getDateFrom()->format('Y');
-        $calendarDocument->month = $calendar->getDateFrom()->format('m');
+        $calendarDocument->setField('year', $calendar->getDateFrom()->format('Y'));
+        $calendarDocument->setField('month', $calendar->getDateFrom()->format('m'));
 
-        $calendarDocument->highlight = $calendar->isHighlight();
-        $calendarDocument->highlight_text = $calendar->isHighlight() ? 'Yes' : 'No';
-        $calendarDocument->own_event = $calendar->isOwnEvent();
-        $calendarDocument->own_event_text = $calendar->isOwnEvent() ? 'Yes' : 'No';
-        $calendarDocument->is_present = $calendar->isPresent();
-        $calendarDocument->is_present_text = $calendar->isPresent() ? 'Yes' : 'No';
-        $calendarDocument->on_homepage = $calendar->onHomepage();
-        $calendarDocument->on_homepage_text = $calendar->onHomepage() ? 'Yes' : 'No';
-
+        $calendarDocument->setField('highlight', $calendar->isHighlight());
+        $calendarDocument->setField('highlight_text', $calendar->isHighlight() ? 'Yes' : 'No');
+        $calendarDocument->setField('own_event', $calendar->isOwnEvent());
+        $calendarDocument->setField('own_event_text', $calendar->isOwnEvent() ? 'Yes' : 'No');
+        $calendarDocument->setField('is_present', $calendar->isPresent());
+        $calendarDocument->setField('is_present_text', $calendar->isPresent() ? 'Yes' : 'No');
+        $calendarDocument->setField('on_homepage', $calendar->onHomepage());
+        $calendarDocument->setField('on_homepage_text', $calendar->onHomepage() ? 'Yes' : 'No');
 
         $update->addDocument($calendarDocument);
         $update->addCommit();

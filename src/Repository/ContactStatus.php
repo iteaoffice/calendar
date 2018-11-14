@@ -27,13 +27,8 @@ use Doctrine\ORM\QueryBuilder;
  *
  * @package Calendar\Repository
  */
-class ContactStatus extends EntityRepository
+final class ContactStatus extends EntityRepository
 {
-    /**
-     * @param array $filter
-     *
-     * @return QueryBuilder
-     */
     public function findFiltered(array $filter): QueryBuilder
     {
         $queryBuilder = $this->_em->createQueryBuilder();

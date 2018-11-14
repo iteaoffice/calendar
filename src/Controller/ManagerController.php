@@ -213,13 +213,12 @@ final class ManagerController extends AbstractActionController
                     $this->projectService->save($projectCalendar);
                 }
 
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-item-%s-has-been-created-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-item-%s-has-been-created-successfully"),
+                        $calendar->getCalendar()
+                    )
+                );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
             }
@@ -258,13 +257,12 @@ final class ManagerController extends AbstractActionController
             if (isset($data['delete'])) {
                 $this->calendarService->delete($calendar);
 
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
+                        $calendar->getCalendar()
+                    )
+                );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar/overview');
             }
@@ -282,13 +280,12 @@ final class ManagerController extends AbstractActionController
                 }
 
                 $this->calendarService->save($calendar);
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                            $calendar->getCalendar()
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                        $calendar->getCalendar()
+                    )
+                );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
             }
@@ -315,13 +312,12 @@ final class ManagerController extends AbstractActionController
                 return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
             }
 
-            $this->flashMessenger()->setNamespace('success')
-                ->addMessage(
-                    sprintf(
-                        $this->translator->translate("txt-contacts-of-calendar-have-been-updated-successfully"),
-                        $calendar->getCalendar()
-                    )
-                );
+            $this->flashMessenger()->addSuccessMessage(
+                sprintf(
+                    $this->translator->translate("txt-contacts-of-calendar-have-been-updated-successfully"),
+                    $calendar->getCalendar()
+                )
+            );
 
 
             $this->calendarService->updateCalendarContacts($calendar, $data);
@@ -360,13 +356,12 @@ final class ManagerController extends AbstractActionController
 
 
             if ($form->isValid()) {
-                $this->flashMessenger()->setNamespace('success')
-                    ->addMessage(
-                        sprintf(
-                            $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                            $calendar
-                        )
-                    );
+                $this->flashMessenger()->addSuccessMessage(
+                    sprintf(
+                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                        $calendar
+                    )
+                );
 
                 return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
             }
