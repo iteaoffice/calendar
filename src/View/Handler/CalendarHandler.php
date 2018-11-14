@@ -153,7 +153,7 @@ class CalendarHandler extends AbstractHandler
                     $quotedValues = [];
 
                     foreach ($values as $value) {
-                        $quotedValues[] = \sprintf('%s"', $value);
+                        $quotedValues[] = $value;
                     }
 
                     $this->calendarSearchService->addFilterQuery(

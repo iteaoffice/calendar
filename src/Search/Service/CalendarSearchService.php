@@ -27,7 +27,7 @@ use Solarium\QueryType\Select\Query\Query;
  *
  * @package Calendar\Search\Service
  */
-final class CalendarSearchService extends AbstractSearchService
+class CalendarSearchService extends AbstractSearchService
 {
     public const SOLR_CONNECTION = 'calendar_calendar';
 
@@ -60,7 +60,7 @@ final class CalendarSearchService extends AbstractSearchService
 
 
         $facetSet = $this->getQuery()->getFacetSet();
-        $facetSet->createFacetField('year')->setField('year')->setSort('year')->setMinCount(1);
+        $facetSet->createFacetField('year')->setField('year')->setSort('year')->setMinCount(1)->setExcludes(['year']);
 
         return $this;
     }
