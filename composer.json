@@ -32,9 +32,9 @@
     "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
-    "iteaoffice/testing": "^1.1.5",
-    "iteaoffice/search": "^1.0",
-    "iteaoffice/contact": "^3.0.0"
+    "iteaoffice/testing": "^1.2",
+    "iteaoffice/search": "^1.1",
+    "iteaoffice/contact": "^4.1"
   },
   "autoload": {
     "psr-4": {
@@ -48,8 +48,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "3.0.x-dev",
-      "dev-develop": "3.1.x-dev"
+      "dev-master": "4.0.x-dev",
+      "dev-develop": "4.1.x-dev"
     }
   }
 }
