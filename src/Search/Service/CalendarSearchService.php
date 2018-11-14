@@ -70,7 +70,7 @@ final class CalendarSearchService extends AbstractSearchService
         $this->setQuery($this->getSolrClient()->createSelect());
 
         $this->query->setQuery('(on_homepage:true) AND date_from:[NOW TO *]')
-            ->addSort('date_from', Query::SORT_DESC)
+            ->addSort('date_from', Query::SORT_ASC)
             ->setRows($limit);
 
 
