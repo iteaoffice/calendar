@@ -17,8 +17,5 @@ namespace Calendar\Version;
  */
 final class Version
 {
-    /**
-     * Zend Framework version identification - see compareVersion().
-     */
-    public const VERSION = '3.1.0-DEV';
+    public const VERSION = '4.0.0';
 }
