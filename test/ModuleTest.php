@@ -1,11 +1,11 @@
 <?php
 /**
- * ITEA copyright message placeholder
+ * Jield BV all rights reserved
  *
- * @category    ProjectTest
- * @package     Entity
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @author      Dr. ir. Johan van der Heide <info@jield.nl>
+ * @copyright   Copyright (c) 2004-2017 Jield BV (https://jield.nl)
+ * @license     https://jield.net/license.txt proprietary
+ * @link        https://jield.net
  */
 
 declare(strict_types=1);
@@ -13,16 +13,15 @@ declare(strict_types=1);
 namespace CalendarTest;
 
 use Calendar\Module;
-use Calendar\View\Handler\CalendarHandler;
 use Testing\Util\AbstractServiceTest;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\View\HelperPluginManager;
 
 /**
- * Class GeneralTest
+ * Class ModuleTest
  *
- * @package GeneralTest\Entity
+ * @package CalendarTest
  */
 class ModuleTest extends AbstractServiceTest
 {
@@ -47,14 +46,16 @@ class ModuleTest extends AbstractServiceTest
         $abstractFacories = $config[ConfigAbstractFactory::class] ?? [];
 
         foreach ($abstractFacories as $service => $dependencies) {
-
-            if ($service === CalendarHandler::class) {
+            //Skip the Filters
+            if (strpos($service, 'Filter') !== false) {
+                continue;
+            }
+            if (strpos($service, 'Handler') !== false) {
                 continue;
             }
 
             $instantiatedDependencies = [];
             foreach ($dependencies as $dependency) {
-
                 if ($dependency === 'Application') {
                     $dependency = Application::class;
                 }
@@ -64,14 +65,18 @@ class ModuleTest extends AbstractServiceTest
                 if ($dependency === 'ViewHelperManager') {
                     $dependency = HelperPluginManager::class;
                 }
-                $instantiatedDependencies[]
-                    = $this->getMockBuilder($dependency)->disableOriginalConstructor()->getMock();
+
+                if (\is_string($dependency)) {
+                    $instantiatedDependencies[] = $this->getMockBuilder($dependency)->disableOriginalConstructor()
+                        ->getMock();
+                } else {
+                    $instantiatedDependencies[] = [];
+                }
             }
 
             $instance = new $service(...$instantiatedDependencies);
 
             $this->assertInstanceOf($service, $instance);
         }
-
     }
 }
