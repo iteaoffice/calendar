@@ -8,6 +8,8 @@
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -23,12 +25,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * Turn off strict options mode.
      */
     protected $__strictMode__ = false;
-    /**
-     * Activate Calendar Contacts in Community.
-     *
-     * @var boolean
-     */
-    protected $communityCalendarContactEnabled = true;
     /**
      * Location of the PDF having the calendar contact template.
      *
@@ -61,29 +57,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $calendarPastTemplate = '';
 
-    /**
-     * Enable the calendar contacts.
-     *
-     * @return boolean
-     */
-    public function getCommunityCalendarContactEnabled()
-    {
-        return $this->communityCalendarContactEnabled;
-    }
-
-    /**
-     * Sets whether the review invitations should be enabled on the homepage of the community.
-     *
-     * @param $communityCalendarContactEnabled
-     *
-     * @return ModuleOptions
-     */
-    public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled)
-    {
-        $this->communityCalendarContactEnabled = $communityCalendarContactEnabled;
-
-        return $this;
-    }
 
     /**
      * @return string
@@ -144,50 +117,6 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
     public function setDefaultYear($defaultYear)
     {
         $this->defaultYear = $defaultYear;
-
-        return $this;
-    }
-
-    /**
-     * Return template to use for Upcoming Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarUpcomingTemplate()
-    {
-        return $this->calendarUpcomingTemplate;
-    }
-
-    /**
-     * @param  string $calendarUpcomingTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate)
-    {
-        $this->calendarUpcomingTemplate = $calendarUpcomingTemplate;
-
-        return $this;
-    }
-
-    /**
-     * Return template to use for Past Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarPastTemplate()
-    {
-        return $this->calendarPastTemplate;
-    }
-
-    /**
-     * @param $calendarPastTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarPastTemplate($calendarPastTemplate)
-    {
-        $this->calendarPastTemplate = $calendarPastTemplate;
 
         return $this;
     }

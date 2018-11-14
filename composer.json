@@ -21,11 +21,20 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.1",
-    "zendframework/zendframework": "~3.0"
+    "php": "^7.2",
+    "zendframework/zend-mvc": "^3.0.1",
+    "zendframework/zend-mvc-form": "^1.0.0",
+    "zendframework/zend-code": "@stable",
+    "zendframework/zend-mvc-console": "^1.2.0",
+    "zendframework/zend-mvc-plugins": "^1.0.1",
+    "zendframework/zend-navigation": "^2.9.0",
+    "jield-webdev/bjy-authorize": "^1.4.0",
+    "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
-    "iteaoffice/testing": "^1.0"
+    "iteaoffice/testing": "^1.2",
+    "iteaoffice/search": "^1.1",
+    "iteaoffice/contact": "^4.1"
   },
   "autoload": {
     "psr-4": {
@@ -34,13 +43,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CalendarTest\\": "tests/"
+      "CalendarTest\\": "test/"
     }
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "3.0.x-dev",
-      "dev-develop": "3.1.x-dev"
+      "dev-master": "4.0.x-dev",
+      "dev-develop": "4.1.x-dev"
     }
   }
 }

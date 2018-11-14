@@ -23,14 +23,14 @@
             <td width="25">{{ calendar.projectCalendar.project.call.shortName }}</td>
             <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
             <td>{{ calendar.location }}</td>
-            <td>{{ calendar.projectCalendar.project.contact.parseFullName }}
+            <td>{{ calendar.projectCalendar.project.contact.displayName }}
                 ({{ calendar.projectCalendar.project.contact.contactOrganisation.organisation }})
             </td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 6 %}{{ contact.contact.shortName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 9 %}{{ contact.contact.shortName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 7 %}{{ contact.contact.shortName }}
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 6 %}{{ contact.contact.displayName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 9 %}{{ contact.contact.displayName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 7 %}{{ contact.contact.displayName }}
                     <br>{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 8 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact if contact.role.id == 8 %}{{ contact.contact.displayName }}{% endfor %}</td>
             <td>{% for contact in calendar.calendarContact if contact.role.id == 4 %}{{ contact.contact.shortName }}{% endfor %}</td>
             <td>{% for contact in calendar.calendarContact if contact.role.id == 2 %}{{ contact.contact.shortName }}{% endfor %}</td>
         </tr>

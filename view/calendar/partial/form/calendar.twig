@@ -17,16 +17,20 @@
 {{ ztbformelement(calendar.get('location')) }}
 
 {% if project %}
-    <div class="form-group">
-        <label class="col-sm-3 control-label">{{ translate("txt-project") }}</label>
+    <div class="form-group row">
+        <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-project") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static">{{ project.parseFullName() }}</p></div>
+            <p class="form-control-static form-control-plaintext">{{ project.parseFullName() }}</p></div>
     </div>
 {% endif %}
 
 {{ ztbformelement(calendar.get('final')) }}
 {{ ztbformelement(calendar.get('onHomepage')) }}
+{{ ztbformelement(calendar.get('highlight')) }}
+{{ ztbformelement(calendar.get('highlightDescription')) }}
+{{ ztbformelement(calendar.get('ownEvent')) }}
+{{ ztbformelement(calendar.get('present')) }}
 {{ ztbformelement(calendar.get('sequence')) }}
 {{ ztbformelement(calendar.get('dateFrom')) }}
 {{ ztbformelement(calendar.get('dateEnd')) }}
@@ -35,9 +39,11 @@
 {{ ztbformelement(calendar.get('imageUrl')) }}
 {{ ztbformelement(calendar.get('url')) }}
 
+{{ formelement(form.get('csrf')) }}
 
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+
+<div class="form-group row">
+    <div class="offset-md-3 col-sm-offset-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {% if form.has('delete') %}
             {{ ztbformelement(form.get('delete')) }}

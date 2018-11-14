@@ -11,19 +11,18 @@
  * @link       https://itea3.org
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller\Plugin;
 
+use setasign\Fpdi\TcpdfFpdi;
+
 /**
- * Create a link to an project.
+ * Class CalendarPdf
  *
- * @category   Calendar
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    https://itea3.org/licence.txt proprietary
- *
- * @link       https://itea3.org
+ * @package Calendar\Controller\Plugin
  */
-class CalendarPdf extends \FPDI
+class CalendarPdf extends TcpdfFpdi
 {
     /**
      * "Remembers" the template id of the imported page.
@@ -39,8 +38,8 @@ class CalendarPdf extends \FPDI
      */
     public function header()
     {
-        if (is_null($this->_tplIdx)) {
-            if (! file_exists($this->template)) {
+        if (\is_null($this->_tplIdx)) {
+            if (!file_exists($this->template)) {
                 throw new \InvalidArgumentException(sprintf("Template %s cannot be found", $this->template));
             }
             $this->setSourceFile($this->template);
@@ -48,7 +47,8 @@ class CalendarPdf extends \FPDI
         }
         $this->SetTopMargin(35);
         $this->useTemplate($this->_tplIdx, 0, 0);
-//        $this->SetFont('freesans', 'N', 15);
+
+        //        $this->SetFont('freesans', 'N', 15);
         $this->SetTextColor(0);
         $this->SetXY(15, 5);
     }

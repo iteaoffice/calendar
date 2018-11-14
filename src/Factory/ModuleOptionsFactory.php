@@ -12,6 +12,8 @@
  *
  * @link        http://github.com/iteaoffice/main for the canonical source repository
  */
+declare(strict_types=1);
+
 namespace Calendar\Factory;
 
 use Calendar\Options\ModuleOptions;
@@ -38,6 +40,6 @@ final class ModuleOptionsFactory implements FactoryInterface
     {
         $config = $container->get('Config');
 
-        return new ModuleOptions(isset($config['calendar_option']) ? $config['calendar_option'] : []);
+        return new ModuleOptions($config['calendar_option'] ?? []);
     }
 }

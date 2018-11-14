@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Calendar\Entity\Calendar;
@@ -21,7 +23,7 @@ use Zend\InputFilter\InputFilterProviderInterface;
 class SelectAttendee extends Form implements InputFilterProviderInterface
 {
     /**
-     * @param Calendar       $calendar
+     * @param Calendar $calendar
      * @param ContactService $contactService
      */
     public function __construct(Calendar $calendar, ContactService $contactService)
@@ -33,7 +35,12 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
 
         $contacts = [];
         foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
-            $contacts[$contact->getId()] = $contact->getDisplayName();
+            $contacts[$contact->getId()] = sprintf(
+                '%s (%s, %s)',
+                $contact->getDisplayName(),
+                $contact->getContactOrganisation()->getOrganisation(),
+                $contact->getContactOrganisation()->getOrganisation()->getCountry()
+            );
         }
 
         $this->add(
@@ -44,6 +51,13 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
                     'value_options' => $contacts,
                     'label'         => _("txt-contact-name"),
                 ],
+            ]
+        );
+
+        $this->add(
+            [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
             ]
         );
 
@@ -75,7 +89,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
      *
      * @return array
      */
-    public function getInputFilterSpecification()
+    public function getInputFilterSpecification(): array
     {
         return [
             'contact' => [

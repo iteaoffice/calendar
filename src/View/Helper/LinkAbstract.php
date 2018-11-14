@@ -9,14 +9,16 @@
  * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use BjyAuthorize\Controller\Plugin\IsAllowed;
 use BjyAuthorize\Service\Authorize;
 use Calendar\Entity\Calendar;
-use Calendar\Entity\EntityAbstract;
+use Calendar\Entity\AbstractEntity;
 use Project\Entity\Project;
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\Http\RouteMatch;
 use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
 use Zend\View\HelperPluginManager;
@@ -88,11 +90,10 @@ abstract class LinkAbstract extends AbstractViewHelper
     protected $project;
 
     /**
-     * This function produces the link in the end.
-     *
      * @return string
+     * @throws \Exception
      */
-    public function createLink()
+    public function createLink(): string
     {
         /**
          * @var $url Url
@@ -101,22 +102,22 @@ abstract class LinkAbstract extends AbstractViewHelper
         /**
          * @var $serverUrl ServerUrl
          */
-        $serverUrl         = $this->getHelperPluginManager()->get('serverUrl');
+        $serverUrl = $this->getHelperPluginManager()->get('serverUrl');
         $this->linkContent = [];
-        $this->classes     = [];
+
         $this->parseAction();
         $this->parseShow();
         if ('social' === $this->getShow()) {
-            return $serverUrl->__invoke() . $url($this->router, $this->routerParams);
+            return $serverUrl() . $url($this->router, $this->routerParams);
         }
         $uri = '<a href="%s" title="%s" class="%s">%s</a>';
 
         return sprintf(
             $uri,
             $serverUrl() . $url($this->router, $this->routerParams),
-            htmlentities($this->text),
+            htmlentities((string)$this->text),
             implode(' ', $this->classes),
-            in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
+            \in_array($this->getShow(), ['icon', 'button', 'alternativeShow']) ? implode('', $this->linkContent)
                 : htmlentities(implode('', $this->linkContent))
         );
     }
@@ -124,7 +125,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     /**
      *
      */
-    public function parseAction()
+    public function parseAction(): void
     {
         $this->action = null;
     }
@@ -132,12 +133,13 @@ abstract class LinkAbstract extends AbstractViewHelper
     /**
      * @throws \Exception
      */
-    public function parseShow()
+    public function parseShow(): void
     {
         switch ($this->getShow()) {
             case 'icon':
             case 'button':
                 switch ($this->getAction()) {
+                    case 'new':
                     case 'new-community':
                         $this->addLinkContent('<i class="fa fa-plus"></i>');
                         break;
@@ -157,6 +159,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                         $this->addLinkContent('<i class="fa fa-download"></i>');
                         break;
                     case 'presence-list':
+                    case 'signature-list':
                         $this->addLinkContent('<i class="fa fa-file-pdf-o"></i>');
                         break;
                     case 'send-message':
@@ -166,6 +169,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                         $this->addLinkContent('<i class="fa fa-users"></i>');
                         break;
                     case 'view-admin':
+                    case 'view-community':
                         $this->addLinkContent('<i class="fa fa-link"></i>');
                         break;
                     default:
@@ -174,14 +178,14 @@ abstract class LinkAbstract extends AbstractViewHelper
                 }
                 if ($this->getShow() === 'button') {
                     $this->addLinkContent(' ' . $this->getText());
-                    $this->addClasses("btn btn-primary");
+                    $this->addClasses('btn btn-primary');
                 }
                 break;
             case 'text':
                 $this->addLinkContent($this->getText());
                 break;
             case 'paginator':
-                if (is_null($this->getAlternativeShow())) {
+                if (null === $this->getAlternativeShow()) {
                     throw new \InvalidArgumentException(
                         sprintf("this->alternativeShow cannot be null for a paginator link")
                     );
@@ -195,7 +199,7 @@ abstract class LinkAbstract extends AbstractViewHelper
 
                 return;
             default:
-                if (! array_key_exists($this->getShow(), $this->showOptions)) {
+                if (!array_key_exists($this->getShow(), $this->showOptions)) {
                     throw new \InvalidArgumentException(
                         sprintf(
                             "The option \"%s\" should be available in the showOptions array, only \"%s\" are available",
@@ -248,7 +252,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addLinkContent($linkContent)
     {
-        if (! is_array($linkContent)) {
+        if (!is_array($linkContent)) {
             $linkContent = [$linkContent];
         }
         foreach ($linkContent as $content) {
@@ -281,10 +285,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addClasses($classes)
     {
-        if (! is_array($classes)) {
-            $classes = [$classes];
-        }
-        foreach ($classes as $class) {
+        foreach ((array)$classes as $class) {
             $this->classes[] = $class;
         }
 
@@ -308,7 +309,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param string $showOptions
+     * @param array $showOptions
      */
     public function setShowOptions($showOptions)
     {
@@ -316,22 +317,22 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param EntityAbstract $entity
+     * @param AbstractEntity $entity
      * @param string         $assertion
      * @param string         $action
      *
      * @return bool
      */
-    public function hasAccess(EntityAbstract $entity, $assertion, $action)
+    public function hasAccess(AbstractEntity $entity, $assertion, $action)
     {
         $assertion = $this->getAssertion($assertion);
-        if (! is_null($entity)
-             && ! $this->getAuthorizeService()->getAcl()->hasResource($entity)
+        if (!\is_null($entity)
+            && !$this->getAuthorizeService()->getAcl()->hasResource($entity)
         ) {
             $this->getAuthorizeService()->getAcl()->addResource($entity);
             $this->getAuthorizeService()->getAcl()->allow([], $entity, [], $assertion);
         }
-        if (! $this->isAllowed($entity, $action)) {
+        if (!$this->isAllowed($entity, $action)) {
             return false;
         }
 
@@ -357,7 +358,7 @@ abstract class LinkAbstract extends AbstractViewHelper
     }
 
     /**
-     * @param null|EntityAbstract $resource
+     * @param null|AbstractEntity $resource
      * @param string              $privilege
      *
      * @return bool
@@ -381,10 +382,10 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function addRouterParam($key, $value, $allowNull = true)
     {
-        if (! $allowNull && is_null($value)) {
+        if (!$allowNull && null === $value) {
             throw new \InvalidArgumentException(sprintf("null is not allowed for %s", $key));
         }
-        if (! is_null($value)) {
+        if (null !== $value) {
             $this->routerParams[$key] = $value;
         }
     }
@@ -418,7 +419,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function getProject()
     {
-        if (is_null($this->project)) {
+        if (\is_null($this->project)) {
             $this->project = new Project();
         }
 
@@ -443,7 +444,7 @@ abstract class LinkAbstract extends AbstractViewHelper
      */
     public function getCalendar()
     {
-        if (is_null($this->calendar)) {
+        if (\is_null($this->calendar)) {
             $this->calendar = new Calendar();
         }
 

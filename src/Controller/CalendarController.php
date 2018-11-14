@@ -8,32 +8,54 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller;
 
 use Calendar\Entity\Type;
+use Calendar\Service\CalendarService;
+use Zend\Http\Response;
+use Zend\Mvc\Controller\AbstractActionController;
+use ZfcTwig\View\TwigRenderer;
 
 /**
+ * Class CalendarController
  *
+ * @package Calendar\Controller
  */
-class CalendarController extends CalendarAbstractController
+final class CalendarController extends AbstractActionController
 {
     /**
-     * @return \Zend\Stdlib\ResponseInterface
+     * @var CalendarService
      */
-    public function calendarTypeColorCssAction()
+    private $calendarService;
+    /**
+     * @var TwigRenderer
+     */
+    private $renderer;
+
+    public function __construct(CalendarService $calendarService, TwigRenderer $renderer)
     {
-        $calendarTypes = $this->getCalendarService()->findAll(Type::class);
-        $calendarType  = new Type();
+        $this->calendarService = $calendarService;
+        $this->renderer = $renderer;
+    }
+
+    public function calendarTypeColorCssAction(): Response
+    {
+        $calendarTypes = $this->calendarService->findAll(Type::class);
+        $calendarType = new Type();
         $cacheFileName = $calendarType->getCacheCssFileName();
 
-        $css = $this->getRenderer()->render(
+        $css = $this->renderer->render(
             'calendar/calendar/calendar-type-color-css',
             [
                 'calendarTypes' => $calendarTypes,
             ]
         );
         //Save a copy of the file in the caching-folder
-        file_put_contents($cacheFileName, $css);
+        \file_put_contents($cacheFileName, $css);
+
+        /** @var Response $response */
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Content-Type: text/css');
         $response->setContent($css);

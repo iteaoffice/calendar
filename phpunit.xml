@@ -6,10 +6,9 @@
          stopOnFailure="false"
          processIsolation="false"
          backupGlobals="false"
-         syntaxCheck="true"
 >
     <testsuite name="iteaoffice/calendar">
-        <directory>./tests</directory>
+        <directory>./test</directory>
     </testsuite>
     <filter>
         <whitelist>

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Zend\Form\Form;
@@ -47,6 +49,13 @@ class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
+            ]
+        );
+
+        $this->add(
+            [
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [
@@ -73,7 +82,7 @@ class SendMessage extends Form implements InputFilterProviderInterface
      *
      * @return array
      */
-    public function getInputFilterSpecification()
+    public function getInputFilterSpecification(): array
     {
         return [
             'message' => [

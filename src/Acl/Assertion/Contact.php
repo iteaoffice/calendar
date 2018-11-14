@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -16,7 +18,7 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
-class Contact extends AssertionAbstract
+class Contact extends AbstractAssertion
 {
     /**
      * Returns true if and only if the assertion conditions are met.
@@ -32,22 +34,30 @@ class Contact extends AssertionAbstract
      *
      * @return bool
      */
-    public function assert(Acl $acl, RoleInterface $role = null, ResourceInterface $contact = null, $privilege = null)
-    {
+    public function assert(
+        Acl $acl,
+        RoleInterface $role = null,
+        ResourceInterface $contact = null,
+        $privilege = null
+    ): bool {
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (! $contact instanceof ContactEntity) {
-            $contact = $this->getCalendarService()->findEntityById(ContactEntity::class, $id);
+        if (!$contact instanceof ContactEntity && null !== $id) {
+            $contact = $this->calendarService->find(ContactEntity::class, $id);
+        }
+
+        if (null === $contact) {
+            return true;
         }
 
         switch ($this->getPrivilege()) {
             case 'update-status':
-                if ($this->getCalendarService()->calendarHasContact($contact->getCalendar(), $this->getContact())) {
+                if ($this->calendarService->calendarHasContact($contact->getCalendar(), $this->contact)) {
                     return true;
                 }
 
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
         }
 
         return false;

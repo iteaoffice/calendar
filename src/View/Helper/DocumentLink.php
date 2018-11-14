@@ -9,15 +9,17 @@
  * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
 use Calendar\Entity;
 
 /**
- * Create a link to an project.
+ * Class DocumentLink
  *
- * @category   Calendar
+ * @package Calendar\View\Helper
  */
 class DocumentLink extends LinkAbstract
 {
@@ -28,8 +30,8 @@ class DocumentLink extends LinkAbstract
 
     /**
      * @param Entity\Document $document
-     * @param string          $action
-     * @param string          $show
+     * @param string $action
+     * @param string $show
      *
      * @return string
      *
@@ -57,7 +59,7 @@ class DocumentLink extends LinkAbstract
         /*
          * Check the access to the object
          */
-        if (! $this->hasAccess(
+        if (!$this->hasAccess(
             $this->getDocument(),
             CalendarDocumentAssertion::class,
             $this->getAction()
@@ -76,7 +78,7 @@ class DocumentLink extends LinkAbstract
      */
     public function getDocument()
     {
-        if (is_null($this->document)) {
+        if (\is_null($this->document)) {
             $this->document = new Entity\Document();
         }
 
@@ -94,7 +96,7 @@ class DocumentLink extends LinkAbstract
     /**
      * Parse te action and fill the correct parameters.
      */
-    public function parseAction()
+    public function parseAction(): void
     {
         switch ($this->getAction()) {
             case 'document-community':
@@ -116,7 +118,7 @@ class DocumentLink extends LinkAbstract
                 );
                 break;
             case 'document-admin':
-                $this->setRouter('zfcadmin/calendar-manager/document/document');
+                $this->setRouter('zfcadmin/calendar/document/document');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-view-calendar-document-%s"),
@@ -125,7 +127,7 @@ class DocumentLink extends LinkAbstract
                 );
                 break;
             case 'edit':
-                $this->setRouter('zfcadmin/calendar-manager/document/edit');
+                $this->setRouter('zfcadmin/calendar/document/edit');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-edit-calendar-document-%s"),

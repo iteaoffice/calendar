@@ -1,0 +1,25 @@
+<h1 style="color: #00a651; font-size: 18px">{{ translate("txt-list-of-participants") }}
+    <br>{{ calendar }}</h1>
+<h2 style="color: #808285; font-size: 14px">{{ calendar.dateFrom|date('M. jS, Y ') }}
+    - {{ calendar.location }}</h2>
+
+<p>&nbsp;<p>
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th valign="middle"><strong>{{ translate("txt-name") }}</strong></th>
+        <th valign="middle"><strong>{{ translate("txt-organisation") }}</strong></th>
+        <th valign="middle"><strong>{{ translate("txt-presence") }}</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set extraLimit = 13 - calendarContacts|length %}
+    {% for calendarContact in calendarContacts %}
+        <tr>
+            <td valign="middle">{{ calendarContact.contact.displayName }}</td>
+            <td valign="middle">{{ calendarContact.contact.contactOrganisation.organisation }}</td>
+            <td valign="middle">{{ calendarContact.status }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,43 +1,36 @@
 <?php
 /**
- * ITEA Office all rights reserved
+ * Jield BV all rights reserved.
  *
- * PHP Version 7
+ * @category    Application
  *
- * @category    Project
- *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
- * @license     https://itea3.org/license.txt proprietary
- *
- * @link        http://github.com/iteaoffice/project for the canonical source repository
+ * @author      Dr. ir. Johan van der Heide <info@jield.nl>
+ * @copyright   Copyright (c) 2004-2017 Jield (https://jield.nl)
  */
+
+declare(strict_types=1);
 
 namespace Calendar\Form;
 
-use Calendar\Entity\EntityAbstract;
+use Calendar\Entity\AbstractEntity;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
+use Zend\Form\Element;
 use Zend\Form\Form;
 
 /**
- * ITEA Office all rights reserved
+ * Class CreateObject
  *
- * @category    Calendar
- *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @package General\Form
  */
-class CreateObject extends Form
+final class CreateObject extends Form
 {
-    /**
-     * CreateObject constructor.
-     *
-     * @param EntityManager  $entityManager
-     * @param EntityAbstract $object
-     */
-    public function __construct(EntityManager $entityManager, EntityAbstract $object)
-    {
-        parent::__construct($object->get("underscore_entity_name"));
+    public function __construct(
+        EntityManager $entityManager,
+        AbstractEntity $object,
+        ContainerInterface $serviceManager
+    ) {
+        parent::__construct($object->get('entity_name'));
 
         /**
          * There is an option to drag the fieldset from the serviceManager,
@@ -45,26 +38,35 @@ class CreateObject extends Form
          * If not we will use the default ObjectFieldset
          */
 
-        $objectSpecificFieldset = __NAMESPACE__ . '\\' . $object->get('entity_name') . 'Fieldset';
+        $objectSpecificFieldset = $object->get('entity_fieldset_name');
 
         /**
          * Load a specific fieldSet when present
          */
-        if (class_exists($objectSpecificFieldset)) {
+        if ($serviceManager->has($objectSpecificFieldset)) {
+            $objectFieldset = $serviceManager->get($objectSpecificFieldset);
+        } elseif (class_exists($objectSpecificFieldset)) {
             $objectFieldset = new $objectSpecificFieldset($entityManager, $object);
         } else {
             $objectFieldset = new ObjectFieldset($entityManager, $object);
         }
+
         $objectFieldset->setUseAsBaseFieldset(true);
         $this->add($objectFieldset);
-
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-horizontal');
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type' => Element\Csrf::class,
+                'name' => 'csrf',
+            ]
+        );
+
+        $this->add(
+            [
+                'type'       => Element\Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => "btn btn-primary",
@@ -74,7 +76,7 @@ class CreateObject extends Form
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Element\Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => "btn btn-warning",
@@ -84,7 +86,7 @@ class CreateObject extends Form
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Element\Submit::class,
                 'name'       => 'delete',
                 'attributes' => [
                     'class' => "btn btn-danger",
@@ -94,11 +96,21 @@ class CreateObject extends Form
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Element\Submit::class,
                 'name'       => 'restore',
                 'attributes' => [
                     'class' => "btn btn-info",
                     'value' => _("txt-restore"),
+                ],
+            ]
+        );
+        $this->add(
+            [
+                'type'       => Element\Submit::class,
+                'name'       => 'redirect',
+                'attributes' => [
+                    'class' => "btn btn-info",
+                    'value' => _("txt-redirect-to-front"),
                 ],
             ]
         );

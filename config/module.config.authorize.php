@@ -7,7 +7,7 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
-use Admin\Entity\Access;
+
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Acl\Assertion\Contact as ContactAssertion;
 use Calendar\Acl\Assertion\Document as DocumentAssertion;
@@ -24,102 +24,107 @@ return [
                 ['route' => 'assets/calendar-type-color-css', 'roles' => []],
                 [
                     'route' => 'community/calendar/overview',
-                    'roles' => [strtolower(Access::ACCESS_USER)],
+                    'roles' => ['user'],
                 ],
                 [
                     'route'     => 'community/calendar/calendar',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/review-calendar',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/download-review-calendar',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/select-attendees',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/send-message',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/download-binder',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/presence-list',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
+                    'assertion' => CalendarAssertion::class,
+                ],
+                [
+                    'route'     => 'community/calendar/signature-list',
+                    'roles'     => ['user'],
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/update-status',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => ContactAssertion::class,
                 ],
                 [
                     'route' => 'community/calendar/contact',
-                    'roles' => [strtolower(Access::ACCESS_USER)],
+                    'roles' => ['user'],
                 ],
                 [
                     'route'     => 'community/calendar/document/document',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => DocumentAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/document/download',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => DocumentAssertion::class,
                 ],
                 [
                     'route'     => 'community/calendar/document/edit',
-                    'roles'     => [strtolower(Access::ACCESS_USER)],
+                    'roles'     => ['user'],
                     'assertion' => DocumentAssertion::class,
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/overview',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/overview',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/edit',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/edit',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/calendar',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/calendar',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/new',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/new',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/select-attendees',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/select-attendees',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/update-role',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/json/update-role',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/get-roles',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/json/get-roles',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/document/document',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/document/document',
+                    'roles' => ['office'],
                 ],
                 [
-                    'route' => 'zfcadmin/calendar-manager/document/edit',
-                    'roles' => [Access::ACCESS_OFFICE],
+                    'route' => 'zfcadmin/calendar/document/edit',
+                    'roles' => ['office'],
                 ],
             ],
         ],

@@ -96,15 +96,14 @@ return [
             'calendar' => [
                 'label' => _("txt-calendar-admin"),
                 'order' => 60,
-                'route' => 'zfcadmin/calendar-manager',
+                'route' => 'zfcadmin/calendar',
                 'pages' => [
                     'calendar'          => [
                         'label' => _("txt-calendar"),
-                        'route' => 'zfcadmin/calendar-manager/overview',
+                        'route' => 'zfcadmin/calendar/overview',
                         'pages' => [
                             'view-calendar' => [
-                                'route'   => 'zfcadmin/calendar-manager/calendar',
-                                'visible' => false,
+                                'route'   => 'zfcadmin/calendar/calendar',
                                 'params'  => [
                                     'entities'   => [
                                         'id' => Calendar\Entity\Calendar::class,
@@ -114,9 +113,19 @@ return [
                                     ],
                                 ],
                                 'pages'   => [
-                                    'edit-calendar' => [
+                                    'edit-calendar'    => [
                                         'label'   => _("txt-edit-calendar"),
-                                        'route'   => 'zfcadmin/calendar-manager/edit',
+                                        'route'   => 'zfcadmin/calendar/edit',
+                                        'visible' => false,
+                                        'params'  => [
+                                            'entities' => [
+                                                'id' => Calendar\Entity\Calendar::class,
+                                            ],
+                                        ],
+                                    ],
+                                    'select-attendees' => [
+                                        'label'   => _("txt-nav-calendar-select-attendees"),
+                                        'route'   => 'zfcadmin/calendar/select-attendees',
                                         'visible' => false,
                                         'params'  => [
                                             'entities' => [
@@ -130,7 +139,7 @@ return [
                     ],
                     'new-calendar-item' => [
                         'label' => _("txt-add-calendar-item"),
-                        'route' => 'zfcadmin/calendar-manager/new',
+                        'route' => 'zfcadmin/calendar/new',
                     ],
                 ],
             ],

@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Calendar\Entity\Document;
@@ -60,6 +62,12 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                     'class'      => 'form-control',
                     "help-block" => _("txt-calendar-document-file-help-block"),
                 ],
+            ]
+        );
+        $this->add(
+            [
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'csrf',
             ]
         );
         $this->add(

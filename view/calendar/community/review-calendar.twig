@@ -1,0 +1,89 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-review-calendar")) %}
+<h1 class="display-4">{{ translate("txt-review-calendar") }}</h1>
+
+{% if calendarItems|length > 0 %}
+    <table class="table table-striped table-condensed table-sm table-hover">
+        <thead>
+        <tr>
+            <th>{{ translate("txt-project") }}</th>
+            <th>{{ translate("txt-name") }}</th>
+            <th>{{ translate("txt-call") }}</th>
+            <th>{{ translate("txt-date") }}</th>
+            <th>{{ translate("txt-location") }}</th>
+            <th>{{ translate("txt-project-leader") }}</th>
+            <th>{{ translate("txt-country-external-expert") }}</th>
+            <th>{{ translate("txt-mentor") }}</th>
+            <th>{{ translate("txt-stg-reviewers") }}</th>
+            <th>{{ translate("txt-stg-spare-reviewer") }}</th>
+            <th>{{ translate("txt-secretary") }}</th>
+            <th>{{ translate("txt-chairman") }}</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>{{ translate("txt-project") }}</th>
+            <th>{{ translate("txt-name") }}</th>
+            <th>{{ translate("txt-call") }}</th>
+            <th>{{ translate("txt-date") }}</th>
+            <th>{{ translate("txt-location") }}</th>
+            <th>{{ translate("txt-project-leader") }}</th>
+            <th>{{ translate("txt-external-reviewer") }}</th>
+            <th>{{ translate("txt-mentor") }}</th>
+            <th>{{ translate("txt-stg-reviewers") }}</th>
+            <th>{{ translate("txt-stg-spare-reviewer") }}</th>
+            <th>{{ translate("txt-secretary") }}</th>
+            <th>{{ translate("txt-chairman") }}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for calendar in calendarItems %}
+            <tr {% if 'final' in calendar.calendar %}class="success"{% endif %}>
+
+                <td>{{ projectLink(calendar.projectCalendar.project,'view-community', 'number') }}</td>
+                <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
+                <td>{{ calendar.projectCalendar.project.call.shortName }}</td>
+                <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+                <td>{{ calendar.location }}</td>
+                <td>{{ calendar.projectCalendar.project.contact.shortName }}<br>
+                    <small>({{ calendar.projectCalendar.project.contact.contactOrganisation.organisation }})</small>
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 6 %}
+                        {{ contact.contact.shortName }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 9 %}
+                        {{ contact.contact.shortName }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 7 %}
+                        {{ contact.contact.shortName }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 8 %}
+                        {{ contact.contact.shortName }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 4 %}
+                        {{ contact.contact.shortName }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for contact in calendar.calendarContact if contact.role.id == 2 %}
+                        {{ contact.contact.shortName }}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ calendarLink(null,'download-review-calendar','button') }}
+{% else %}
+    {{ ztbalert().info(translate("txt-there-are-no-review-meetings-scheduled"))|raw }}
+{% endif %}

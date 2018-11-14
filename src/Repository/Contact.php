@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Repository;
 
 use Calendar\Entity;
@@ -16,107 +18,107 @@ use Contact\Entity\Contact as ContactEntity;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * @category    Calendar
+ * Class Contact
+ *
+ * @package Calendar\Repository
  */
-class Contact extends EntityRepository
+final class Contact extends EntityRepository
 {
-    /**
-     * @param               $which
-     * @param ContactEntity $contact
-     *
-     * @return Entity\Contact[]
-     */
-    public function findCalendarContactByContact($which, ContactEntity $contact = null)
+    public function findCalendarContactByContact(string $which, ContactEntity $contact): array
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('cc');
-        $qb->from("Calendar\Entity\Contact", 'cc');
-        $qb->join('cc.calendar', "c");
-        $qb->join('cc.contact', "contact");
+        $qb->select('calendar_entity_contact');
+        $qb->from(Entity\Contact::class, 'calendar_entity_contact');
+        $qb->join('calendar_entity_contact.calendar', 'calendar_entity_calendar');
+        $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
         switch ($which) {
             case CalendarService::WHICH_UPCOMING:
-                $qb->andWhere('c.dateFrom >= ?1');
-                $qb->orderBy('c.dateFrom', 'ASC');
+                $qb->andWhere('calendar_entity_calendar.dateFrom >= ?1');
+                $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
                 break;
             case CalendarService::WHICH_PAST:
-                $qb->andWhere('c.dateFrom <= ?1');
-                $qb->orderBy('c.dateEnd', 'DESC');
+                $qb->andWhere('calendar_entity_calendar.dateFrom <= ?1');
+                $qb->orderBy('calendar_entity_calendar.dateEnd', 'DESC');
                 $qb->setParameter(1, new \DateTime());
                 break;
             case CalendarService::WHICH_REVIEWS:
-                $qb->andWhere('c.dateEnd >= ?1');
-                $qb->orderBy('c.dateFrom', 'ASC');
+                $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
+                $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
                 $qb->setParameter(1, new \DateTime());
                 $projectCalendarSubSelect = $this->_em->createQueryBuilder();
                 $projectCalendarSubSelect->select('calendar.id');
-                $projectCalendarSubSelect->from('Project\Entity\Calendar\Calendar', 'projectCalendar');
+                $projectCalendarSubSelect->from(\Project\Entity\Calendar\Calendar::class, 'projectCalendar');
                 $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
-                $qb->andWhere($qb->expr()->in('c.id', $projectCalendarSubSelect->getDQL()));
+                $qb->andWhere($qb->expr()->in('calendar_entity_calendar.id', $projectCalendarSubSelect->getDQL()));
                 break;
             case CalendarService::WHICH_UPDATED:
-                $qb->orderBy('c.dateUpdated', 'DESC');
+                $qb->orderBy('calendar_entity_calendar.dateUpdated', 'DESC');
                 break;
             case CalendarService::WHICH_ON_HOMEPAGE:
-                $qb->andWhere('c.dateEnd >= ?1');
+                $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
                 $qb->setParameter(1, new \DateTime());
-                $qb->andWhere('c.onHomepage = ?2');
+                $qb->andWhere('calendar_entity_calendar.onHomepage = ?2');
                 $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
-                $qb->andWhere('c.final = ?3');
+                $qb->andWhere('calendar_entity_calendar.final = ?3');
                 $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->orderBy('c.sequence', 'ASC');
-                $qb->addOrderBy('c.dateFrom', 'ASC');
+                $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
+                $qb->orderBy('calendar_entity_calendar.sequence', 'ASC');
+
                 break;
         }
 
-        $qb->andWhere('cc.contact = ?10');
-        $qb->addOrderBy('contact.lastName', 'ASC');
+        $qb->andWhere('calendar_entity_contact.contact = ?10');
+        $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
         $qb->setParameter(10, $contact);
 
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param ContactEntity   $contact
-     * @param Entity\Calendar $calendar
-     *
-     * @return Entity\Contact
-     */
-    public function findCalendarContactByContactAndCalendar(ContactEntity $contact, Entity\Calendar $calendar)
-    {
+    public function findCalendarContactByContactAndCalendar(
+        ContactEntity $contact,
+        Entity\Calendar $calendar
+    ): ?Entity\Contact {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('cc');
-        $qb->from("Calendar\Entity\Contact", 'cc');
+        $qb->select('calendar_entity_contact');
+        $qb->from(Entity\Contact::class, 'calendar_entity_contact');
 
-        $qb->andWhere('cc.contact = ?10');
+        $qb->andWhere('calendar_entity_contact.contact = ?10');
         $qb->setParameter(10, $contact);
 
-        $qb->andWhere('cc.calendar = ?11');
+        $qb->andWhere('calendar_entity_contact.calendar = ?11');
         $qb->setParameter(11, $calendar);
 
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @param Entity\Calendar $calendar
-     * @param int             $status ;
-     *
-     * @return Entity\Contact[]
-     */
-    public function findCalendarContactsByCalendar(Entity\Calendar $calendar, $status)
+    public function findCalendarContactsByCalendar(Entity\Calendar $calendar, int $status, string $order): array
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('cc');
-        $qb->from("Calendar\Entity\Contact", 'cc');
-        $qb->join("cc.contact", 'contact');
+        $qb->select('calendar_entity_contact');
+        $qb->from(Entity\Contact::class, 'calendar_entity_contact');
+        $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
-        $qb->andWhere('cc.calendar = ?11');
+        $qb->andWhere('calendar_entity_contact.calendar = ?11');
         $qb->setParameter(11, $calendar);
-        $qb->addOrderBy('contact.lastName', 'ASC');
+
+        switch ($order) {
+            case 'lastname':
+                $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+                break;
+
+            case 'organisation':
+                $qb->leftJoin('contact_entity_contact.contactOrganisation', 'contact_entity_contact_organisation');
+                $qb->leftJoin('contact_entity_contact_organisation.organisation', 'organisation_entity_organisation');
+
+                $qb->addOrderBy('organisation_entity_organisation.organisation', 'ASC');
+                $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+                break;
+        }
 
         if ($status === Entity\Contact::STATUS_NO_DECLINED) {
-            $qb->join("cc.status", 'status');
+            $qb->join('calendar_entity_contact.status', 'status');
             $qb->andWhere('status.id <> :status');
             $qb->setParameter('status', Entity\ContactStatus::STATUS_DECLINE);
         }
@@ -124,23 +126,24 @@ class Contact extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @param Entity\Calendar $calendar
-     *
-     * @return Entity\Contact[]
-     */
-    public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar)
+    public function findGeneralCalendarContactByCalendar(Entity\Calendar $calendar): array
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('cc');
-        $qb->from("Calendar\Entity\Contact", 'cc');
-        $qb->join('cc.contact', 'contact');
-        $qb->andWhere('cc.calendar = :calendar');
+        $qb->select('calendar_entity_contact');
+        $qb->from(Entity\Contact::class, 'calendar_entity_contact');
+        $qb->join('calendar_entity_contact.contact', 'contact');
+        $qb->andWhere('calendar_entity_contact.calendar = :calendar');
 
         //Remove all the contacts which are already in the project as associate or otherwise affected
-        $findContactByProjectIdQueryBuilder = $this->_em->getRepository('Contact\Entity\Contact')
-                                                        ->findContactByProjectIdQueryBuilder();
-        $qb->andWhere($qb->expr()->notIn('cc.contact', $findContactByProjectIdQueryBuilder->getDQL()));
+        /** @var \Contact\Repository\Contact $contactRepository */
+        $contactRepository = $this->_em->getRepository(ContactEntity::class);
+
+        $qb->andWhere(
+            $qb->expr()->notIn(
+                'calendar_entity_contact.contact',
+                $contactRepository->findContactByProjectIdQueryBuilder()->getDQL()
+            )
+        );
 
         $qb->setParameter(1, $calendar->getProjectCalendar()->getProject()->getId());
         $qb->setParameter('calendar', $calendar);

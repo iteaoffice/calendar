@@ -1,0 +1,43 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+{% do headTitle().append(translate("txt-edit-document-%s")|format(document)) %}
+
+<h1 class="display-4">{{ translate("txt-edit-calendar-document") }}</h1>
+
+<p class="lead">{{ translate("txt-edit-calendar-document-%s-explanation")|format(document) }}</p>
+
+{% do form.prepare() %}
+{% do form.setAttribute('class','form-horizontal') %}
+
+{{ form().openTag(form)|raw }}
+
+<div class="form-group row">
+    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-calendar") }}</label>
+
+    <div class="col-sm-9">
+        <p class="form-control-static form-control-plaintext">{{ calendarLink(document.calendar,'view-community') }}</p>
+    </div>
+</div>
+
+{{ ztbformelement(form.get('document')) }}
+
+<div class="form-group row">
+    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-current-file") }}</label>
+
+    <div class="col-sm-9">
+        <p class="form-control-static form-control-plaintext">{{ calendarDocumentLink(document,'download','name') }}</p>
+    </div>
+</div>
+
+{{ ztbformelement(form.get('file')) }}
+{{ formelement(form.get('csrf')) }}
+
+
+<div class="form-group row">
+    <div class="offset-md-3 col-sm-offset-3 col-sm-9">
+        {{ ztbformelement(form.get('submit')) }}
+        {{ ztbformelement(form.get('delete')) }}
+        {{ ztbformelement(form.get('cancel')) }}
+    </div>
+</div>
+
+{{ form().closeTag()|raw }}

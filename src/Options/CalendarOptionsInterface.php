@@ -8,6 +8,8 @@
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Options;
 
 /**
@@ -15,22 +17,6 @@ namespace Calendar\Options;
  */
 interface CalendarOptionsInterface
 {
-    /**
-     * Sets whether the review invitations should be enabled on the homepage of the community.
-     *
-     * @param $communityCalendarContactEnabled
-     *
-     * @return CalendarOptionsInterface
-     */
-    public function setCommunityCalendarContactEnabled($communityCalendarContactEnabled);
-
-    /**
-     * Enable the calendar contacts.
-     *
-     * @return boolean
-     */
-    public function getCommunityCalendarContactEnabled();
-
     /**
      * @param $calendarContactTemplate
      *
@@ -68,32 +54,4 @@ interface CalendarOptionsInterface
      * @return $this
      */
     public function setDefaultYear($defaultYear);
-
-    /**
-     * @param  string $calendarUpcomingTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarUpcomingTemplate($calendarUpcomingTemplate);
-
-    /**
-     * Return template to use for Upcoming Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarUpcomingTemplate();
-
-    /**
-     * @param $calendarPastTemplate
-     *
-     * @return $this
-     */
-    public function setCalendarPastTemplate($calendarPastTemplate);
-
-    /**
-     * Return template to use for Past Event rendering
-     *
-     * @return string
-     */
-    public function getCalendarPastTemplate();
 }

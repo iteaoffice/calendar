@@ -1,0 +1,280 @@
+{% do headTitle().append(translate("txt-admin")) %}
+{% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
+
+<h1 class="display-4">{{ translate("txt-calendar-item-%s")|format(calendar) }} </h1>
+
+<p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}
+    , {{ calendar.location }} {{ calendarLink(calendar,'view-community','icon') }}</p>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item active"><a class="nav-link active" href="#general"
+                                   data-toggle="tab" role="tab">{{ translate("txt-general-information") }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab"
+                            role="tab">{{ translate("txt-documents") }}</a></li>
+    {% if calendar.projectCalendar %}
+        <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
+                                role="tab">{{ translate("txt-actions") }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reviewers" data-toggle="tab"
+                                role="tab">{{ translate("txt-reviewers") }}</a></li>
+    {% endif %}
+    <li class="nav-item"><a class="nav-link" href="#attendee" data-toggle="tab"
+                            role="tab">{{ translate("txt-attendees") }}</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="general">
+        <h3>{{ translate("txt-calendar-details") }}</h3>
+
+        <dl class="dl-horizontal">
+            <dt>{{ translate("txt-calendar-name") }}</dt>
+            <dd>{{ calendarLink(calendar,'view-community', 'name') }}</dd>
+            <dt>{{ translate("txt-date") }}</dt>
+            <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
+            <dt>{{ translate("txt-date-from") }}</dt>
+            <dd>{{ calendar.dateFrom|date }}</dd>
+            <dt>{{ translate("txt-date-end") }}</dt>
+            <dd>{{ calendar.dateEnd|date }}</dd>
+            <dt>{{ translate("txt-calendar-type") }}</dt>
+            <dd>{{ calendar.type }}</dd>
+            {% if calendar.projectCalendar %}
+                <dt>{{ translate("txt-project-name") }}</dt>
+                <dd>{{ projectLink(calendar.projectCalendar.project,'view-admin','name') }} {{ projectLink(calendar.projectCalendar.project,'view-community','icon') }}</dd>
+            {% endif %}
+            {% for call in calendar.call %}
+                {% if loop.first %}
+                    <dt>{{ translate("txt-program-call") }}</dt>
+                {% endif %}
+                <dd>{{ callLink(call,'view-admin','name') }}</dd>
+            {% endfor %}
+
+            {% if calendar.location %}
+                <dt>{{ translate("txt-location") }}</dt>
+                <dd>{{ calendar.location }}</dd>
+            {% endif %}
+            {% if calendar.docRef %}
+                <dt>{{ translate("txt-docref") }}</dt>
+                <dd>{{ calendar.docRef }}</dd>
+            {% endif %}
+            <dt>{{ translate("txt-final") }}</dt>
+            <dd>{{ translate(calendar.getFinal(true)) }}</dd>
+            <dt>{{ translate("txt-on-homepage") }}</dt>
+            <dd>{{ translate(calendar.getOnHomepage(true)) }}
+                ({{ translate("txt-sequence:-%s")|format(calendar.sequence) }})
+            </dd>
+            <dt>{{ translate("txt-highlight") }}</dt>
+            <dd>{{ translate(calendar.getHighlight(true)) }}</dd>
+            <dt>{{ translate("txt-own-event") }}</dt>
+            <dd>{{ translate(calendar.getOwnEvent(true)) }}</dd>
+            <dt>{{ translate("txt-present") }}</dt>
+            <dd>{{ translate(calendar.getPresent(true)) }}</dd>
+            {% if calendar.description %}
+                <dt>{{ translate("txt-description") }}</dt>
+                <dd>{{ calendar.description|raw }}</dd>
+            {% endif %}
+            {% if calendar.imageUrl %}
+                <dt>{{ translate("txt-image-url") }}</dt>
+                <dd>{{ calendar.imageUrl }}</dd>
+            {% endif %}
+            {% if calendar.image %}
+                <dt>{{ translate("txt-image") }}</dt>
+                <dd>{{ image(calendar.image, 120) }}</dd>
+            {% endif %}
+            {% if calendar.url %}
+                <dt>{{ translate("txt-url") }}</dt>
+                <dd><a href="{{ calendar.url }}">{{ calendar.url }}</a></dd>
+            {% endif %}
+            {% if calendar.dateCreated %}
+                <dt>{{ translate("txt-date-created") }}</dt>
+                <dd>{{ calendar.dateCreated|string_date }}
+                    {{ translate("txt-by-%s")|format(calendar.contact.displayName()) }}</dd>
+            {% endif %}
+            {% if calendar.lastUpdate %}
+                <dt>{{ translate("txt-last-update") }}</dt>
+                <dd>{{ calendarService.lastUpdate|string_date }}</dd>
+            {% endif %}
+            <dt>{{ translate("txt-access") }}</dt>
+            {% for access in calendar.type.access %}
+                <dd>{{ accessLink(access,'view','name') }}</dd>
+            {% endfor %}
+        </dl>
+
+        {{ calendarLink(calendar,'edit', 'button') }}
+
+    </div>
+    <div class="tab-pane" role="tabpanel" id="document">
+
+        <h2>{{ translate("txt-calendar-documents") }}</h2>
+        {% if calendar.document.count() > 0 %}
+
+            <table class="table table-hover table-striped table-condensed table-sm">
+                <thead>
+                <tr>
+                    <th>{{ translate("txt-document") }}</th>
+                    <th>{{ translate("txt-type") }}</th>
+                    <th>{{ translate("txt-date") }}</th>
+                    <th>{{ translate("txt-size") }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in calendar.document %}
+                    <tr>
+                        <td>{{ calendarDocumentLink(document,'document-admin','name') }}
+                            {{ calendarDocumentLink(document,'download','icon') }}
+                        </td>
+                        <td>{{ contentTypeIcon(document.contentType) }} {{ document.contentType }}</td>
+                        <td>{{ document.dateCreated|string_date }}</td>
+                        <td>{{ document.size|parse_size }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-documents-uploaded-for-this-calendar-%s")|
+                format(calendar))|raw }}
+        {% endif %}
+
+        <h4>{{ translate("txt-upload-new-calendar-documents") }}</h4>
+
+        {% do form.prepare() %}
+        {{ form().openTag(form)|raw }}
+
+        {{ ztbformelement(form.get('document')) }}
+        {{ ztbformelement(form.get('file')) }}
+        {{ ztbformelement(form.get('csrf')) }}
+
+        <div class="form-group row">
+            <div class="offset-md-3 col-sm-offset-3 col-sm-9">
+                {{ ztbformelement(form.get('submit')) }}
+            </div>
+        </div>
+
+        {{ form().closeTag()|raw }}
+
+    </div>
+
+    {% if calendar.projectCalendar %}
+        <div class="tab-pane" role="tabpanel" id="action">
+
+            <h2>{{ translate("txt-project-actions") }}</h2>
+
+            {% if calendar.projectCalendar.action.count() > 0 %}
+                {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.action } %}
+            {% else %}
+                {{ ztbalert().info(translate("txt-there-are-no-actions-defined-for-this-review-meeting"))|raw }}
+            {% endif %}
+
+            {{ actionLink(null, 'new-admin', 'button', calendar.projectCalendar.project, calendar.projectCalendar) }}
+        </div>
+
+        <div class="tab-pane" role="tabpanel" id="reviewers">
+
+            <h2>{{ translate("txt-reviewers") }}</h2>
+
+            {% if calendar.projectCalendar.review.count() > 0 %}
+                <table class="table table-hover table-condensed table-sm table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{ translate("txt-contact") }}</th>
+                        <th>{{ translate("txt-handle") }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reviewer in calendar.projectCalendar.review %}
+                        <tr>
+                            <td>{{ contactLink(reviewer.getContact(), 'view-admin', 'name') }}</td>
+                            <td>{{ reviewContactLink(reviewer.getContact().getProjectReviewContact(), 'view', 'handle') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {{ ztbalert().info(translate("txt-there-are-no-reviewers-found-for-this-review-meeting"))|raw }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="tab-pane" role="tabpanel" id="attendee">
+
+        <h2>{{ translate("txt-calendar-attendees") }}</h2>
+        {% if calendar.calendarContact.count() > 0 %}
+            <table class="table table-hover table-striped table-condensed table-sm">
+                <thead>
+                <tr>
+                    <th>{{ translate("txt-name") }}</th>
+                    <th>{{ translate("txt-organisation") }}</th>
+                    <th>{{ translate("txt-role") }}</th>
+                    <th>{{ translate("txt-presence") }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for calendarContact in calendar.calendarContact %}
+                    <tr {% if identity().getId() == contact.id %}class="success"{% endif %}>
+                        <td>
+                            {% if identity().getId() == contact.id %}
+                                <i class="fa fa-user"></i>
+                            {% endif %}
+                            {{ calendarContact.contact.displayName }}
+                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
+                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+                            </div>
+                        </td>
+                        <td>{{ contactService.parseOrganisation(calendarContact.contact) }}
+                            ({{ contactService.parseCountry(calendarContact.contact) }})
+                        </td>
+
+                        <td>
+
+
+                            <a id="calendarcontact_{{ calendarContact.id }}"
+                               href="#" class="role"
+                               data-type="select"
+                               data-source="{{ url('zfcadmin/calendar/json/get-roles') }}"
+                               data-pk="{{ calendarContact.id }}"
+                               data-value="{{ calendarContact.role.id }}"
+                               data-url="{{ url('zfcadmin/calendar/json/update-role') }}"
+                               data-title="{{ translate("txt-update-role") }}">{{ calendarContact.role }}</a>
+                        </td>
+                        <td>
+                            {% do assertionService.addResource(calendarContact,'Calendar\\Acl\\Assertion\\Contact') %}
+                            {% if isAllowed(calendarContact,'update-status') %}
+                            <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
+                            <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                            {% else %}
+                            {{ calendarContact.status }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-attandeed-defined-for-this-calendar-%s")|
+                format(calendar))|raw }}
+        {% endif %}
+
+
+        {{ calendarLink(calenderService.calendar,'edit-attendees-admin','button') }}
+        {{ calendarLink(calenderService.calendar,'presence-list','button') }}
+        {{ calendarLink(calenderService.calendar,'select-attendees','button') }}
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    /**
+     * Calculate the sum per year
+     */
+    $(document).ready(function () {
+        //turn to inline mode
+        $.fn.editable.defaults.mode = 'popup';
+        $('.role').editable();
+    });
+</script>

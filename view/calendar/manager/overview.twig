@@ -1,0 +1,64 @@
+{% do headTitle().append(translate("txt-admin")) %}
+{% do headTitle().append(translate("txt-calendar")) %}
+
+{% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
+
+<h1 class="display-4">{{ translate("txt-calendar") }}</h1>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    {% for whichValue in whichValues %}
+        <li class="nav-item {% if (which == whichValue) %}active{% endif %}">
+
+            {% set classes = ['nav-link'] %}
+            {% if (which == whichValue) %}
+                {% set classes = classes|merge(['active']) %}
+            {% endif %}
+
+            {{ calendarLink(null,'overview-admin', 'text-which-tab', whichValue, null, null, null, classes) }}
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="upcoming">
+        <h2>{{ translate("txt-%s-events")|format(which|capitalize) }}</h2>
+
+        <table class="table table-hover table-striped table-sm table-condensed">
+            <thead>
+            <tr>
+                <th>{{ translate("txt-date") }}</th>
+                <th>{{ translate("txt-event-meeting") }}</th>
+                <th>{{ translate("txt-location") }}</th>
+                <th>{{ translate("txt-type") }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for date, calendarItems in paginator.getCurrentItems() %}
+                {% for calendar in calendarItems %}
+                    {% if calendar.calendar %}
+                        {% set calendarHasContact = calendarService.calendarHasContact(calendar.calendar, identity()) %}
+                        <tr {% if calendarHasContact %}class="active"{% endif %}>
+                            <td>
+                                {% if calendarHasContact %}<i class="fa fa-user"></i>{% endif %}
+                                {{ calendar.calendar.dateFrom|from_to_date(calendar.calendar.dateEnd) }}</td>
+                            <td>{{ calendarLink(calendar.calendar,'view-admin', 'name') }}</td>
+                            <td>{{ calendar.calendar.location }}</td>
+                            <td class="{{ calendar.calendar.type.parseCssName() }}">{{ calendar.calendar.type }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ calendar.date|date('d M Y') }}</td>
+                            <td colspan="2">{{ calendar.item }}</td>
+                            <td>{{ translate("txt-birthday") }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'calendar/partial/pagination-control' %}
+    </div>
+</div>

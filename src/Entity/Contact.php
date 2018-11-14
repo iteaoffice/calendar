@@ -8,10 +8,11 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Contact.
@@ -19,10 +20,10 @@ use Zend\Permissions\Acl\Resource\ResourceInterface;
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
-class Contact extends EntityAbstract implements ResourceInterface
+class Contact extends AbstractEntity
 {
-    const STATUS_ALL = 1;
-    const STATUS_NO_DECLINED = 2;
+    public const STATUS_ALL = 1;
+    public const STATUS_NO_DECLINED = 2;
     /**
      * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
      * @ORM\Id
@@ -33,68 +34,49 @@ class Contact extends EntityAbstract implements ResourceInterface
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      *
      * @var \Calendar\Entity\ContactRole
      */
     private $role;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
-     * })
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      *
      * @var \Calendar\Entity\ContactStatus
      */
     private $status;
     /**
      * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendarContact")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
-     * })
+     * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      *
      * @var \Contact\Entity\Contact
      */
     private $contact;
 
-    /**
-     * Magic Getter.
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * Magic Setter.
-     *
-     * @param $property
-     * @param $value
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __isset($property)
+    {
+        return isset($this->$property);
+    }
+
+    public function __toString(): string
     {
         return (string)$this->role;
     }

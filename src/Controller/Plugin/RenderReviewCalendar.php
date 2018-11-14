@@ -11,51 +11,60 @@
  * @link       https://itea3.org
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;
-use Contact\Service\ContactService;
-use General\Service\GeneralService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcTwig\View\TwigRenderer;
 
 /**
- * Create a link to an project.
+ * Class RenderReviewCalendar
  *
- * @category   Program
- *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @license    https://itea3.org/licence.txt proprietary
- *
- * @link       https://itea3.org
+ * @package Calendar\Controller\Plugin
  */
 class RenderReviewCalendar extends AbstractPlugin
 {
     /**
-     * @var ServiceLocatorInterface
+     * @var TwigRenderer
      */
-    protected $serviceLocator;
+    protected $twigRenderer;
+    /**
+     * @var ModuleOptions
+     */
+    protected $moduleOptions;
+
+    /**
+     * RenderReviewCalendar constructor.
+     *
+     * @param TwigRenderer  $twigRenderer
+     * @param ModuleOptions $moduleOptions
+     */
+    public function __construct(TwigRenderer $twigRenderer, ModuleOptions $moduleOptions)
+    {
+        $this->twigRenderer = $twigRenderer;
+        $this->moduleOptions = $moduleOptions;
+    }
 
     /**
      * @param array $calendarItems
      *
      * @return CalendarPdf
      */
-    public function render(array $calendarItems)
+    public function __invoke(array $calendarItems): CalendarPdf
     {
         $pdf = new CalendarPdf();
 
-        $pdf->setTemplate($this->getModuleOptions()->getReviewCalendarTemplate());
+        $pdf->setTemplate($this->moduleOptions->getReviewCalendarTemplate());
         $pdf->setPageOrientation('L');
         $pdf->AddPage();
-
-        $pdf->SetFontSize(8);
-        $twig = $this->getServiceLocator()->get('ZfcTwigRenderer');
+        $pdf->SetFont('freesans', '', 12);
 
         /*
          * Use the NDA object to render the filename
          */
-        $contactListContent = $twig->render(
+        $contactListContent = $this->twigRenderer->render(
             'calendar/pdf/review-calendar',
             [
                 'calendarItems' => $calendarItems,
@@ -65,53 +74,5 @@ class RenderReviewCalendar extends AbstractPlugin
         $pdf->writeHTMLCell(0, 0, 12, 35, $contactListContent, 0, 0, 0, false);
 
         return $pdf;
-    }
-
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->getServiceLocator()->get(ModuleOptions::class);
-    }
-
-    /**
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return $this
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
-     * Gateway to the Contact Service.
-     *
-     * @return ContactService
-     */
-    public function getContactService()
-    {
-        return $this->getServiceLocator()->get(ContactService::class);
-    }
-
-    /**
-     * Gateway to the General Service.
-     *
-     * @return GeneralService
-     */
-    public function getGeneralService()
-    {
-        return $this->getServiceLocator()->get(GeneralService::class);
     }
 }

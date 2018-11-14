@@ -1,0 +1,8 @@
+{% do headTitle().append(translate("txt-calendar")) %}
+<h1 class="display-4">{{ translate("txt-calender-contact-items") }}</h1>
+
+{% if calendarContacts|length > 0 %}
+    {% include 'calendar/partial/list/calendar-contact' with {'elements': calendarContacts} %}
+{% else %}
+    {{ ztbalert().info(translate("txt-no-calendar-items-found"))|raw }}
+{% endif %}

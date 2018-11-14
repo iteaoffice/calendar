@@ -9,53 +9,51 @@
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Form;
 
 use Contact\Entity\Selection;
-use Contact\Service\SelectionService;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManager;
+use DoctrineORMModule\Form\Element\EntitySelect;
 use Zend\Form\Form;
 
 /**
- * Jield copyright message placeholder.
+ * Class CalendarContacts
  *
- * @category    Contact
- *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @package Calendar\Form
  */
 class CalendarContacts extends Form
 {
     /**
      * CalendarContacts constructor.
      *
-     * @param SelectionService $selectionService
+     * @param EntityManager $entityManager
      */
-    public function __construct(SelectionService $selectionService)
+    public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
         $this->setAttribute('action', '');
-        $this->setAttribute("onsubmit", "return storeChanges();");
-
-        $selections = [];
-        /** @var Selection $selection */
-        foreach ($selectionService->findAll(Selection::class) as $selection) {
-            $selections[$selection->getId()] = $selection->getSelection();
-        }
-
-        asort($selections);
+        $this->setAttribute('onsubmit', 'return storeChanges();');
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Select',
-                'name'       => 'selection',
-                'options'    => [
-                    'inline'        => true,
-                    'value_options' => $selections,
-                ],
-                'attributes' => [
-                    'id'    => 'selection',
-                    'class' => 'form-control',
+                'type'    => EntitySelect::class,
+                'name'    => 'selection',
+                'options' => [
+                    'target_class'   => Selection::class,
+                    'object_manager' => $entityManager,
+                    'label'          => _("txt-form-calendar-contacts-selection-label"),
+                    'help-block'     => _("txt-form-calendar-contacts-selection-help-block"),
+                    'find_method'    => [
+                        'name'   => 'findBy',
+                        'params' => [
+                            'criteria' => [],
+                            'orderBy'  => ['id' => Criteria::DESC],
+                        ],
+                    ],
                 ],
             ]
         );

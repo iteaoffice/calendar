@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="calendar_calendar" version="1.5">
+
+    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
+      or Solr won't start. _version_ and update log are required for SolrCloud
+   -->
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+
+    <!-- points to the root document of a block of nested documents. Required for nested
+      document support, may be removed otherwise
+   -->
+    <field name="_root_" type="string" indexed="true" stored="false"/>
+
+    <!-- Only remove the "id" field if you have a very good reason to. While not strictly
+     required, it is highly recommended. A <uniqueKey> is present in almost all Solr
+     installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
+   -->
+    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+
+    <field name="calendar_id" type="int" indexed="true" stored="true" omitNorms="true"/>
+    <field name="docref" type="string" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="calendar" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="calendar_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
+    <field name="calendar_search" type="text_general_edge_ngram" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="description" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="description_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
+    <field name="description_search" type="text_general_edge_ngram" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="highlight_description" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="highlight_description_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
+    <field name="highlight_description_search" type="text_general_edge_ngram" indexed="true" stored="true"
+           omitNorms="true"/>
+
+    <field name="location" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="location_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
+    <field name="location_search" type="text_general_edge_ngram" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="date_from" type="date" indexed="true" stored="true" omitNorms="true"/>
+    <field name="date_end" type="date" indexed="true" stored="true" omitNorms="true"/>
+    <field name="date_created" type="date" indexed="true" stored="true" omitNorms="true"/>
+    <field name="date_updated" type="date" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="year" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="month" type="string" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="highlight" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="own_event" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_present" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="on_homepage" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="highlight_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="own_event_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_present_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="on_homepage_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+
+    <uniqueKey>id</uniqueKey>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+
+    <fieldType name="text_en_splitting" class="solr.TextField" positionIncrementGap="100"
+               autoGeneratePhraseQueries="true">
+        <analyzer type="index">
+            <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+            <filter class="solr.StopFilterFactory"
+                    ignoreCase="true"
+                    words="lang/stopwords_en.txt"
+            />
+            <filter class="solr.WordDelimiterFilterFactory" generateNumberParts="1"
+                    catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+            <filter class="solr.PorterStemFilterFactory"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+            <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+            <filter class="solr.StopFilterFactory"
+                    ignoreCase="true"
+                    words="lang/stopwords_en.txt"
+            />
+            <filter class="solr.WordDelimiterFilterFactory" generateNumberParts="1"
+                    catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+            <filter class="solr.PorterStemFilterFactory"/>
+        </analyzer>
+    </fieldType>
+
+    <fieldType name="text_general_edge_ngram" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <tokenizer class="solr.LowerCaseTokenizerFactory"/>
+            <filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.LowerCaseTokenizerFactory"/>
+        </analyzer>
+    </fieldType>
+
+    <fieldType name="string_ci" class="solr.TextField"
+               sortMissingLast="true" omitNorms="true">
+        <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+        </analyzer>
+    </fieldType>
+</schema>

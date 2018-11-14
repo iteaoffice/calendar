@@ -13,28 +13,24 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\InputFilter;
 
-use Doctrine\ORM\EntityManager;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator\Callback;
 
 /**
- * ITEA Office all rights reserved
+ * Class CalendarFilter
  *
- * @category    CalendarFilter
- *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @package Calendar\InputFilter
  */
 class CalendarFilter extends InputFilter
 {
     /**
-     * PartnerFilter constructor.
-     *
-     * @param EntityManager $entityManager
+     * CalendarFilter constructor.
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct()
     {
         $inputFilter = new InputFilter();
 
@@ -142,6 +138,12 @@ class CalendarFilter extends InputFilter
         );
         $inputFilter->add(
             [
+                'name'     => 'image',
+                'required' => false,
+            ]
+        );
+        $inputFilter->add(
+            [
                 'name'     => 'call',
                 'required' => false,
             ]
@@ -169,7 +171,7 @@ class CalendarFilter extends InputFilter
                             ],
                             'callback' => function ($value, $context = []) {
                                 $dateFrom = \DateTime::createFromFormat('Y-m-d H:i', $context['dateFrom']);
-                                $dateEnd  = \DateTime::createFromFormat('Y-m-d H:i', $value);
+                                $dateEnd = \DateTime::createFromFormat('Y-m-d H:i', $value);
 
                                 return $dateEnd >= $dateFrom;
                             },

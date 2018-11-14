@@ -1,4 +1,4 @@
-<table class="table table-condensed table-striped table-hover">
+<table class="table table-condensed table-sm table-striped table-hover">
     <thead>
     <tr>
         <th></th>
@@ -15,8 +15,8 @@
     </thead>
     <tbody>
     {% for calendar in elements %}
-        {% if calendarService.calendarHasContact(calendar, zfcUserIdentity()) %}
-            {% set calendarContact = calendarService.findCalendarContactByContactAndCalendar(zfcUserIdentity(), calendar) %}
+        {% if calendarService.calendarHasContact(calendar, identity()) %}
+            {% set calendarContact = calendarService.findCalendarContactByContactAndCalendar(identity(), calendar) %}
         {% else %}
             {% set calendarContact = false %}
         {% endif %}

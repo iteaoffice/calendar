@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
 
 /**
  * CalendarDocumentObject.
@@ -20,7 +20,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="calendar_document_object")
  * @ORM\Entity
  */
-class DocumentObject extends EntityAbstract
+class DocumentObject extends AbstractEntity
 {
     /**
      * @ORM\Column(name="object_id", type="integer", nullable=false)
@@ -38,9 +38,7 @@ class DocumentObject extends EntityAbstract
     private $object;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Document", cascade="persist", inversedBy="object")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="document_id", referencedColumnName="document_id", nullable=false)
-     * })
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="document_id", nullable=false)
      *
      * @var \Calendar\Entity\Document
      */
@@ -70,44 +68,13 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * Set input filter.
+     * @param $property
      *
-     * @param InputFilterInterface $inputFilter
-     *
-     * @throws \Exception
+     * @return bool
      */
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function __isset($property)
     {
-        throw new \Exception("Setting an inputFilter is currently not supported");
-    }
-
-    /**
-     * @return \Zend\InputFilter\InputFilter|\Zend\InputFilter\InputFilterInterface
-     */
-    public function getInputFilter()
-    {
-        if (! $this->inputFilter) {
-            $inputFilter       = new InputFilter();
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
-    }
-
-    /**
-     * @return \Calendar\Entity\Document
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param \Calendar\Entity\Document $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
+        return isset($this->$property);
     }
 
     /**
@@ -120,10 +87,14 @@ class DocumentObject extends EntityAbstract
 
     /**
      * @param int $id
+     *
+     * @return DocumentObject
      */
-    public function setId($id)
+    public function setId(int $id): DocumentObject
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -135,10 +106,34 @@ class DocumentObject extends EntityAbstract
     }
 
     /**
-     * @param resource $object
+     * @param string $object
+     *
+     * @return DocumentObject
      */
-    public function setObject($object)
+    public function setObject($object): DocumentObject
     {
         $this->object = $object;
+
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function getDocument(): ?Document
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param Document $document
+     *
+     * @return DocumentObject
+     */
+    public function setDocument(Document $document): DocumentObject
+    {
+        $this->document = $document;
+
+        return $this;
     }
 }

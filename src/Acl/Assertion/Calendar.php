@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -16,7 +18,7 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
-class Calendar extends AssertionAbstract
+class Calendar extends AbstractAssertion
 {
     /**
      * Returns true if and only if the assertion conditions are met.
@@ -25,10 +27,10 @@ class Calendar extends AssertionAbstract
      * $role, $calendar, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
      * privileges, respectively.
      *
-     * @param Acl               $acl
-     * @param RoleInterface     $role
-     * @param ResourceInterface $calendar
-     * @param string            $privilege
+     * @param Acl                              $acl
+     * @param RoleInterface                    $role
+     * @param ResourceInterface|CalendarEntity $calendar
+     * @param string                           $privilege
      *
      * @return bool
      */
@@ -37,65 +39,38 @@ class Calendar extends AssertionAbstract
         RoleInterface $role = null,
         ResourceInterface $calendar = null,
         $privilege = null
-    ) {
+    ): bool {
         $this->setPrivilege($privilege);
+        $id = $id = $this->getId();
 
-        if (! $calendar instanceof CalendarEntity && ! is_null($id = $this->getId())) {
-            $calendar = $this->getCalendarService()->findCalendarById($id);
+        if (!$calendar instanceof CalendarEntity && null !== $id) {
+            $calendar = $this->calendarService->findCalendarById((int)$id);
         }
 
         switch ($this->getPrivilege()) {
             case 'edit':
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'select-attendees':
                 /**
                  * Stop this case when there is no project calendar
                  */
-                if (is_null($calendar->getProjectCalendar())) {
+                if (null === $calendar->getProjectCalendar()) {
                     return false;
                 }
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
+
+                if ($this->hasPermission($calendar, 'edit')) {
                     return true;
                 }
 
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (! is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'edit',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
-                    ) {
-                        return true;
-                    }
-                }
-
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'add-document':
             case 'presence-list':
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'edit', $calendar)) {
+            case 'signature-list':
+                if ($this->hasPermission($calendar, 'edit')) {
                     return true;
                 }
 
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (! is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'edit',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
-                    ) {
-                        return true;
-                    }
-                }
-
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'list':
                 return true;
             case 'overview-admin':
@@ -103,7 +78,7 @@ class Calendar extends AssertionAbstract
             case 'edit-attendees-admin':
             case 'set-roles-admin':
             case 'new':
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'overview':
             case 'review-calendar':
             case 'download-review-calendar':
@@ -116,29 +91,14 @@ class Calendar extends AssertionAbstract
                  * Access can be granted via the type or via the permit-editor.
                  * We will first check the permit and have a fail over to the type
                  */
-                if ($this->getContactService()->contactHasPermit($this->getContact(), 'view', $calendar)) {
+                if ($this->hasPermission($calendar, 'view')) {
                     return true;
-                }
-
-                /*
-                 * The project leader also has rights to invite users
-                 */
-                if (! is_null($calendar->getProjectCalendar())) {
-                    if ($this->getContactService()
-                             ->contactHasPermit(
-                                 $this->getContact(),
-                                 'view',
-                                 $calendar->getProjectCalendar()->getProject()
-                             )
-                    ) {
-                        return true;
-                    }
                 }
 
                 return $this->rolesHaveAccess($calendar->getType()->getAccess());
 
             case 'view':
-                return $this->getCalendarService()->canViewCalendar($calendar, $this->getContact());
+                return $this->calendarService->canViewCalendar($calendar, $this->contact);
         }
 
         return false;

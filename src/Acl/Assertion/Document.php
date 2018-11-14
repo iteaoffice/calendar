@@ -8,6 +8,8 @@
  * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
 
+declare(strict_types=1);
+
 namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
@@ -16,7 +18,7 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
-class Document extends AssertionAbstract
+class Document extends AbstractAssertion
 {
     /**
      * Returns true if and only if the assertion conditions are met.
@@ -37,39 +39,40 @@ class Document extends AssertionAbstract
         RoleInterface $role = null,
         ResourceInterface $document = null,
         $privilege = null
-    ) {
+    ): bool {
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (! $document instanceof DocumentEntity) {
-            $document = $this->getCalendarService()->findEntityById(DocumentEntity::class, $id);
+        if (!$document instanceof DocumentEntity && null !== $id) {
+            $document = $this->calendarService->find(DocumentEntity::class, $id);
         }
-
 
         /*
          * No document was found, so return true because we do not now anything about the access
          */
-        if (is_null($document)) {
+        if (null === $document) {
             return true;
         }
 
         switch ($this->getPrivilege()) {
             case 'document-community':
             case 'download':
-                return $this->getCalendarService()->canViewCalendar($document->getCalendar(), $this->getContact());
+                if ($this->hasPermission($document->getCalendar(), 'view')) {
+                    return true;
+                }
+
+                return $this->calendarService->canViewCalendar($document->getCalendar(), $this->contact);
             case 'edit-community':
-                if ($this->getContactService()
-                         ->contactHasPermit($this->getContact(), 'edit', $document->getCalendar())
-                ) {
+                if ($this->hasPermission($document->getCalendar(), 'edit')) {
                     return true;
                 }
 
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (! is_null($document->getCalendar()->getProjectCalendar())) {
-                    if ($this->getContactService()->contactHasPermit(
-                        $this->getContact(),
+                if (null !== $document->getCalendar()->getProjectCalendar()) {
+                    if ($this->contactService->contactHasPermit(
+                        $this->contact,
                         'edit',
                         $document->getCalendar()->getProjectCalendar()->getProject()
                     )
@@ -78,9 +81,9 @@ class Document extends AssertionAbstract
                     }
                 }
 
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'document-admin':
-                return $this->rolesHaveAccess([Access::ACCESS_OFFICE]);
+                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
         }
 
         return false;

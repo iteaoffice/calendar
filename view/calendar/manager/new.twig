@@ -1,0 +1,8 @@
+{% do headTitle().append(translate("txt-admin")) %}
+{% do headTitle().append(translate("txt-create-new-calendar-item")) %}
+
+<h1 class="display-4">{{ translate("txt-create-new-calendar-item") }}</h1>
+
+<p class="lead">{{ translate("txt-create-new-calendar-item-explanation") }}</p>
+
+{% include 'calendar/partial/form/calendar' %}

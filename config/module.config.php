@@ -7,23 +7,27 @@
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
  */
+
 use Calendar\Acl;
 use Calendar\Controller;
 use Calendar\Factory;
 use Calendar\InputFilter;
 use Calendar\Navigation;
 use Calendar\Options;
+use Calendar\Search;
 use Calendar\Service;
 use Calendar\View;
+use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\Stdlib;
 
 $config = [
     'controllers'        => [
         'factories' => [
-            Controller\CalendarCommunityController::class => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarController::class          => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarDocumentController::class  => Controller\Factory\ControllerFactory::class,
-            Controller\CalendarManagerController::class   => Controller\Factory\ControllerFactory::class,
+            Controller\CommunityController::class => ConfigAbstractFactory::class,
+            Controller\CalendarController::class  => ConfigAbstractFactory::class,
+            Controller\DocumentController::class  => ConfigAbstractFactory::class,
+            Controller\JsonController::class      => ConfigAbstractFactory::class,
+            Controller\ManagerController::class   => ConfigAbstractFactory::class,
         ],
     ],
     'controller_plugins' => [
@@ -32,23 +36,26 @@ $config = [
             'renderReviewCalendar'      => Controller\Plugin\RenderReviewCalendar::class,
         ],
         'factories' => [
-            Controller\Plugin\RenderCalendarContactList::class => Controller\Factory\PluginFactory::class,
-            Controller\Plugin\RenderReviewCalendar::class      => Controller\Factory\PluginFactory::class,
+            Controller\Plugin\RenderCalendarContactList::class => ConfigAbstractFactory::class,
+            Controller\Plugin\RenderReviewCalendar::class      => ConfigAbstractFactory::class,
         ],
     ],
     'service_manager'    => [
-        'factories' => [
-            Service\CalendarService::class            => Factory\CalendarServiceFactory::class,
-            Service\FormService::class                => Factory\FormServiceFactory::class,
-            Options\ModuleOptions::class              => Factory\ModuleOptionsFactory::class,
-            Acl\Assertion\Calendar::class             => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Contact::class              => Acl\Factory\AssertionFactory::class,
-            Acl\Assertion\Document::class             => Acl\Factory\AssertionFactory::class,
-            InputFilter\CalendarFilter::class         => Factory\InputFilterFactory::class,
-            InputFilter\DocumentFilter::class         => Factory\InputFilterFactory::class,
-            Navigation\Invokable\CalendarLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
-            Navigation\Invokable\DocumentLabel::class => Navigation\Factory\NavigationInvokableFactory::class,
+        'factories'  => [
+            Service\CalendarService::class              => ConfigAbstractFactory::class,
+            Service\FormService::class                  => Factory\FormServiceFactory::class,
+            Options\ModuleOptions::class                => Factory\ModuleOptionsFactory::class,
+            Acl\Assertion\Calendar::class               => Factory\InvokableFactory::class,
+            Acl\Assertion\Contact::class                => Factory\InvokableFactory::class,
+            Acl\Assertion\Document::class               => Factory\InvokableFactory::class,
+            Search\Service\CalendarSearchService::class => ConfigAbstractFactory::class,
+            Navigation\Invokable\CalendarLabel::class   => Factory\InvokableFactory::class,
+            Navigation\Invokable\DocumentLabel::class   => Factory\InvokableFactory::class,
         ],
+        'invokables' => [
+            InputFilter\CalendarFilter::class => InputFilter\CalendarFilter::class,
+            InputFilter\DocumentFilter::class => InputFilter\DocumentFilter::class,
+        ]
     ],
     'view_manager'       => [
         'template_map' => include __DIR__ . '/../template_map.php',
@@ -57,12 +64,11 @@ $config = [
         'aliases'   => [
             'calendarDocumentLink' => View\Helper\DocumentLink::class,
             'calendarLink'         => View\Helper\CalendarLink::class,
-            'calendarHandler'      => View\Helper\CalendarHandler::class,
         ],
         'factories' => [
-            View\Helper\DocumentLink::class    => View\Factory\ViewHelperFactory::class,
-            View\Helper\CalendarLink::class    => View\Factory\ViewHelperFactory::class,
-            View\Helper\CalendarHandler::class => View\Factory\ViewHelperFactory::class,
+            View\Helper\DocumentLink::class     => View\Factory\ViewHelperFactory::class,
+            View\Helper\CalendarLink::class     => View\Factory\ViewHelperFactory::class,
+            View\Handler\CalendarHandler::class => ConfigAbstractFactory::class,
         ],
     ],
     'doctrine'           => [

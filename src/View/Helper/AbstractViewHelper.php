@@ -13,6 +13,8 @@
  * @link        http://github.com/iteaoffice/project for the canonical source repository
  */
 
+declare(strict_types=1);
+
 namespace Calendar\View\Helper;
 
 use Interop\Container\ContainerInterface;
@@ -50,7 +52,7 @@ abstract class AbstractViewHelper extends AbstractHelper
      */
     public function getRouteMatch()
     {
-        if (is_null($this->routeMatch)) {
+        if (null === $this->routeMatch) {
             $this->routeMatch = $this->getServiceManager()->get('application')->getMvcEvent()->getRouteMatch();
         }
 
@@ -66,7 +68,7 @@ abstract class AbstractViewHelper extends AbstractHelper
     }
 
     /**
-     * @param ContainerInterface|ServiceLocatorInterface $serviceManager
+     * @param ContainerInterface $serviceManager
      *
      * @return AbstractViewHelper
      */
