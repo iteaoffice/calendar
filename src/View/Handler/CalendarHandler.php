@@ -144,10 +144,12 @@ class CalendarHandler extends AbstractHandler
             ],
             $this->request->getQuery()->toArray()
         );
+        $hasTerm = !\in_array($data['query'], ['*', ''], true) || \count($data['facet']) !== 0;
+
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
         if ($this->request->isGet()) {
-            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction']);
+            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction'], false, $hasTerm);
             if (isset($data['facet'])) {
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
@@ -190,18 +192,22 @@ class CalendarHandler extends AbstractHandler
             ARRAY_FILTER_USE_KEY
         );
 
+
+
+
         return $this->renderer->render(
             'cms/calendar/list',
             [
-                'form'             => $form,
-                'order'            => $data['order'],
-                'direction'        => $data['direction'],
-                'query'            => $data['query'],
-                'arguments'        => http_build_query($filteredData),
-                'paginator'        => $paginator,
-                'page'             => $page,
-                'calendarService'  => $this->calendarService,
-                'upcomingCalendar' => $this->calendarSearchService->findUpcomingCalendar(),
+                'form'              => $form,
+                'order'             => $data['order'],
+                'direction'         => $data['direction'],
+                'query'             => $data['query'],
+                'arguments'         => http_build_query($filteredData),
+                'paginator'         => $paginator,
+                'page'              => $page,
+                'hasTerm'           => $hasTerm,
+                'calendarService'   => $this->calendarService,
+                'upcomingCalendar'  => $this->calendarSearchService->findUpcomingCalendar(),
                 'highlightCalendar' => $this->calendarSearchService->findHighlightCalendar(),
             ]
         );

@@ -36,7 +36,8 @@ class CalendarSearchService extends AbstractSearchService
         array $searchFields = [],
         string $order = '',
         string $direction = Query::SORT_ASC,
-        bool $upcoming = false
+        bool $upcoming = false,
+        bool $hasTerm = false
     ): SearchServiceInterface {
         $this->setQuery($this->getSolrClient()->createSelect());
 
@@ -46,12 +47,16 @@ class CalendarSearchService extends AbstractSearchService
             $query .= ' date_from:[NOW TO *] AND ';
         }
 
+        if (!$hasTerm) {
+            $query .= ' date_from:[* TO NOW] AND ';
+        }
+
         $query .= static::parseQuery($searchTerm, $searchFields);
 
 
         $this->getQuery()->setQuery($query);
 
-        $hasTerm = !\in_array($searchTerm, ['*', ''], true);
+
         $this->getQuery()->addSort('date_from', Query::SORT_DESC);
 
         if ($hasTerm) {

@@ -100,11 +100,6 @@ abstract class AbstractAssertion implements AssertionInterface
         return new RouteMatch([]);
     }
 
-    protected function getRequest(): Request
-    {
-        return $this->container->get('Application')->getMvcEvent()->getRequest();
-    }
-
     /**
      * @return string
      */
@@ -145,6 +140,11 @@ abstract class AbstractAssertion implements AssertionInterface
         return null;
     }
 
+    protected function getRequest(): Request
+    {
+        return $this->container->get('Application')->getMvcEvent()->getRequest();
+    }
+
     public function rolesHaveAccess($accessRoleOrCollection): bool
     {
         $accessRoles = $this->prepareAccessRoles($accessRoleOrCollection);
@@ -153,12 +153,14 @@ abstract class AbstractAssertion implements AssertionInterface
         }
 
         foreach ($accessRoles as $access) {
-            if ($access === strtolower(Access::ACCESS_PUBLIC)) {
+            $accessNormalised = \strtolower((string)$access);
+
+            if ($accessNormalised === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
             }
             if ($this->hasContact()
                 && \in_array(
-                    $access,
+                    $accessNormalised,
                     $this->adminService->findAccessRolesByContactAsArray($this->contact),
                     true
                 )
