@@ -37,7 +37,7 @@ final class Contact extends AbstractAssertion
             return true;
         }
 
-        if ($contact->getContact()->getId() === $this->contact->getId()) {
+        if ($this->calendarService->calendarHasContact($contact->getCalendar(), $this->contact)) {
             return true;
         }
 
