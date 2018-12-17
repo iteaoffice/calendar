@@ -616,7 +616,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         /** @var Document $calendarDocument */
         $calendarDocument = $update->createDocument();
         // Calendar properties
-        $calendarDocument->setField('id', 'call_' . $eventName . '_' . $date->getTimestamp());
+        $calendarDocument->setField('id', 'call_' . $eventName . '_' . $call . '_' . $date->getTimestamp());
 
         $calendarDocument->setField('calendar', $eventName);
         $calendarDocument->setField('calendar_sort', $eventName);
