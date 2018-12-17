@@ -27,10 +27,10 @@ use Contact\Service\SelectionContactService;
 use Doctrine\ORM\EntityManager;
 use General\Service\EmailService;
 use General\Service\GeneralService;
+use Program\Service\CallService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
-use Zend\Authentication\AuthenticationService;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use ZfcTwig\View\TwigRenderer;
@@ -44,6 +44,7 @@ return [
         ],
         Controller\CommunityController::class              => [
             CalendarService::class,
+            CalendarSearchService::class,
             GeneralService::class,
             ContactService::class,
             ProjectService::class,
@@ -65,6 +66,7 @@ return [
         ],
         Controller\ManagerController::class                => [
             CalendarService::class,
+            CalendarSearchService::class,
             FormService::class,
             ProjectService::class,
             ActionService::class,
@@ -88,7 +90,9 @@ return [
             EntityManager::class,
             SelectionContactService::class,
             CalendarSearchService::class,
-            ContactService::class
+            ContactService::class,
+            CallService::class,
+            TranslatorInterface::class
         ],
         Search\Service\CalendarSearchService::class        => [
             'Config'

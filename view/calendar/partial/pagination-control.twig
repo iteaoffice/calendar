@@ -1,6 +1,7 @@
 {% set extremePagesLimit = 3 %}
 {% set nearbyPagesLimit = 2 %}
 {{ translate("txt-%s-items-on-%s-pages")|format(paginator.adapter.count, paginator.pageRange) }}
+
 <ul class="pagination pull-right">
     {% if paginator.currentPageNumber > 1 %}
         <li class="page-item">{{ paginationLink((paginator.currentPageNumber - 1),translate("txt-previous")) }}</li>

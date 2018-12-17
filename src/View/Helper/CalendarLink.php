@@ -15,7 +15,6 @@ namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Entity\Calendar;
-use Calendar\Service\CalendarService;
 use Content\Entity\Route;
 use Project\Entity\Project;
 
@@ -30,21 +29,21 @@ class CalendarLink extends LinkAbstract
         Calendar $calendar = null,
         $action = 'view',
         $show = 'name',
-        $which = CalendarService::WHICH_UPCOMING,
         $alternativeShow = null,
-        $year = null,
         Project $project = null,
-        $classes = null
+        $classes = null,
+        string $which = 'upcoming'
     ): string {
         $this->classes = [];
+
+
 
         $this->setCalendar($calendar);
         $this->setAction($action);
         $this->setShow($show);
-        $this->setWhich($which);
-        $this->setYear($year);
         $this->setProject($project);
         $this->setAlternativeShow($alternativeShow);
+        $this->setWhich($which);
 
         $this->addClasses($classes);
 
@@ -56,6 +55,8 @@ class CalendarLink extends LinkAbstract
                 'name'            => $this->getCalendar()->getCalendar(),
             ]
         );
+
+
 
         /*
          * Check the access to the object
@@ -69,7 +70,6 @@ class CalendarLink extends LinkAbstract
         $this->addRouterParam('docRef', $this->getCalendar()->getDocRef());
         $this->addRouterParam('project', $this->getProject()->getId());
         $this->addRouterParam('which', $this->getWhich());
-        $this->addRouterParam('year', $this->getYear());
 
         return $this->createLink();
     }
@@ -86,7 +86,7 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'overview':
                 $this->setRouter('community/calendar/overview');
-                $this->setText($this->translate("txt-view-full-calendar"));
+                $this->setText(sprintf($this->translate("txt-%s-events"), \ucfirst($this->getWhich())));
                 break;
             case 'contact':
                 $this->setRouter('community/calendar/contact');
@@ -122,7 +122,7 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'overview-admin':
                 $this->setRouter('zfcadmin/calendar/overview');
-                $this->setText(sprintf($this->translate("txt-view-calendar-%s"), $this->getCalendar()));
+                $this->setText(sprintf($this->translate("txt-%s-events"), \ucfirst($this->getWhich())));
                 break;
             case 'view':
                 $this->setRouter(Route::parseRouteName(Route::DEFAULT_ROUTE_CALENDAR));
@@ -149,7 +149,7 @@ class CalendarLink extends LinkAbstract
                 break;
             case 'new':
                 $this->setRouter('zfcadmin/calendar/new');
-                if (\is_null($this->getProject())) {
+                if (null === $this->getProject()->getId()) {
                     $this->setText(sprintf($this->translate("txt-add-calendar-item")));
                 } else {
                     $this->setText(sprintf($this->translate("txt-review-meeting-for-%s"), $this->getProject()));

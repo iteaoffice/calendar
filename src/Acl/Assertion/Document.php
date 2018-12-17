@@ -32,7 +32,6 @@ final class Document extends AbstractAssertion
         parent::__construct($container);
 
         $this->projectAssertion = $container->get(Project::class);
-
     }
 
     public function assert(
@@ -48,9 +47,6 @@ final class Document extends AbstractAssertion
             $document = $this->calendarService->find(DocumentEntity::class, $id);
         }
 
-        /*
-         * No document was found, so return true because we do not now anything about the access
-         */
         if (null === $document) {
             return true;
         }
@@ -62,7 +58,7 @@ final class Document extends AbstractAssertion
                     return true;
                 }
 
-                return $this->calendarService->canViewCalendar($document->getCalendar(), $this->contact);
+                return $this->calendarService->isPublic($document->getCalendar());
             case 'edit-community':
                 if ($this->hasPermission($document->getCalendar(), 'edit')) {
                     return true;
@@ -73,7 +69,10 @@ final class Document extends AbstractAssertion
                  */
                 if (null !== $document->getCalendar()->getProjectCalendar()
                     && $this->projectAssertion->assert(
-                        $acl, $role, $document->getCalendar()->getProjectCalendar()->getProject(), 'edit-community'
+                        $acl,
+                        $role,
+                        $document->getCalendar()->getProjectCalendar()->getProject(),
+                        'edit-community'
                     )
                 ) {
                     return true;

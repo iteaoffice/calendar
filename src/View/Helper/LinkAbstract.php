@@ -146,7 +146,8 @@ abstract class LinkAbstract extends AbstractViewHelper
                     case 'review-calendar':
                     case 'overview':
                     case 'contact':
-                        $this->addLinkContent('<i class="fa fa-list-ul"></i>');
+                    case 'overview-admin':
+                        $this->addLinkContent('<i class="fa fa-calendar"></i>');
                         break;
                     case 'edit':
                     case 'edit-community':
@@ -170,7 +171,7 @@ abstract class LinkAbstract extends AbstractViewHelper
                         break;
                     case 'view-admin':
                     case 'view-community':
-                        $this->addLinkContent('<i class="fa fa-link"></i>');
+                        $this->addLinkContent('<i class="fa fa-calendar"></i>');
                         break;
                     default:
                         $this->addLinkContent('<i class="fa fa-file-o"></i>');

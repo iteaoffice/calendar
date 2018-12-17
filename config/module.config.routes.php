@@ -149,16 +149,6 @@ return [
                                     ],
                                 ],
                             ],
-                            'update-status'            => [
-                                'type'    => 'Segment',
-                                'options' => [
-                                    'route'    => '/update-status.html',
-                                    'defaults' => [
-                                        'action'    => 'update-status',
-                                        'privilege' => 'update-status',
-                                    ],
-                                ],
-                            ],
                             'document'                 => [
                                 'type'          => 'Segment',
                                 'options'       => [
@@ -206,6 +196,39 @@ return [
                     ],
                 ],
             ],
+            'json'      => [
+                'type'         => 'Literal',
+                'options'      => [
+                    'route' => '/json',
+                ],
+                'child_routes' => [
+                    'calendar' => [
+                        'type'          => 'Segment',
+                        'priority'      => 1000,
+                        'options'       => [
+                            'route'    => '/calendar',
+                            'defaults' => [
+                                'controller' => Controller\ManagerController::class,
+                                'action'     => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes'  => [
+                            'update-status' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/update-status.json',
+                                    'defaults' => [
+                                        'controller' => Controller\JsonController::class,
+                                        'action'     => 'update-status',
+                                        'privilege'  => 'update-status',
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            ],
             'zfcadmin'  => [
                 'child_routes' => [
                     'calendar' => [
@@ -224,7 +247,7 @@ return [
                                 'type'     => 'Segment',
                                 'priority' => 1000,
                                 'options'  => [
-                                    'route'    => '/overview[/:which][/page-:page].html',
+                                    'route'    => '/overview[/which-:which][/page-:page].html',
                                     'defaults' => [
                                         'action' => 'overview',
                                     ],

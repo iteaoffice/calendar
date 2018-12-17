@@ -321,6 +321,26 @@ class Calendar extends AbstractEntity
         return $this->present === self::PRESENT;
     }
 
+    public function isProject(): bool
+    {
+        return null !== $this->projectCalendar;
+    }
+
+    public function isReview(): bool
+    {
+        return null !== $this->projectCalendar;
+    }
+
+    public function isBirthday(): bool
+    {
+        return false;
+    }
+
+    public function isCall(): bool
+    {
+        return false;
+    }
+
     public function onHomepage(): bool
     {
         return $this->isFinal() && $this->onHomepage === self::ON_HOMEPAGE;

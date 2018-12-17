@@ -84,7 +84,7 @@ final class Calendar extends AbstractAssertion
                 return $this->rolesHaveAccess($calendar->getType()->getAccess());
 
             case 'view':
-                return $this->calendarService->canViewCalendar($calendar, $this->contact);
+                return $this->calendarService->isPublic($calendar);
         }
 
         return false;

@@ -20,12 +20,16 @@ use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Contact\Service\SelectionContactService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Program\Entity\Call\Call;
+use Program\Service\CallService;
 use Project\Entity\Project;
 use Search\Service\AbstractSearchService;
 use Search\Service\SearchUpdateInterface;
 use Solarium\Client;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\QueryType\Update\Query\Document\Document;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Class CalendarService
@@ -34,14 +38,6 @@ use Solarium\QueryType\Update\Query\Document\Document;
  */
 class CalendarService extends AbstractService implements SearchUpdateInterface
 {
-    public const WHICH_UPCOMING = 'Upcoming';
-    public const WHICH_UPDATED = 'Updated';
-    public const WHICH_PAST = 'Past';
-    public const WHICH_FINAL = 'Final';
-    public const WHICH_REVIEWS = 'Reviews';
-    public const WHICH_ON_HOMEPAGE = 'Homepage';
-    public const WHICH_HIGHLIGHT = 'Highlight';
-
     /**
      * @var CalendarSearchService
      */
@@ -50,17 +46,30 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
      * @var ContactService
      */
     private $contactService;
+    /**
+     * @var CallService
+     */
+    private $callService;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
 
     public function __construct(
         EntityManager $entityManager,
         SelectionContactService $selectionContactService,
         CalendarSearchService $calendarSearchService,
-        ContactService $contactService
+        ContactService $contactService,
+        CallService $callService,
+        TranslatorInterface $translator
     ) {
         parent::__construct($entityManager, $selectionContactService);
 
         $this->calendarSearchService = $calendarSearchService;
         $this->contactService = $contactService;
+        $this->callService = $callService;
+        $this->translator = $translator;
     }
 
     public function findCalendarById(int $id): ?Calendar
@@ -182,15 +191,17 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $calendarDocument->setField('description_sort', $calendar->getDescription());
         $calendarDocument->setField('description_search', $calendar->getDescription());
 
-        if ($calendar->isHighlight()) {
-            $calendarDocument->setField('highlight_description', $calendar->getHighlightDescription());
-            $calendarDocument->setField('highlight_description_sort', $calendar->getHighlightDescription());
-            $calendarDocument->setField('highlight_description_search', $calendar->getHighlightDescription());
-        }
+        $calendarDocument->setField('highlight_description', $calendar->getHighlightDescription());
+        $calendarDocument->setField('highlight_description_sort', $calendar->getHighlightDescription());
+        $calendarDocument->setField('highlight_description_search', $calendar->getHighlightDescription());
 
         $calendarDocument->setField('location', $calendar->getLocation());
         $calendarDocument->setField('location_sort', $calendar->getLocation());
         $calendarDocument->setField('location_search', $calendar->getLocation());
+
+        $calendarDocument->setField('type', $calendar->getType()->getType());
+        $calendarDocument->setField('type_sort', $calendar->getType()->getType());
+        $calendarDocument->setField('type_search', $calendar->getType()->getType());
 
         if (null !== $calendar->getDateFrom()) {
             $calendarDocument->setField(
@@ -214,17 +225,33 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             );
         }
 
+        if ($calendar->isReview()) {
+            $calendarDocument->setField('project_id', $calendar->getProjectCalendar()->getProject()->getId());
+            $calendarDocument->setField('project_name', $calendar->getProjectCalendar()->getProject()->parseFullName());
+        }
+
         $calendarDocument->setField('year', $calendar->getDateFrom()->format('Y'));
         $calendarDocument->setField('month', $calendar->getDateFrom()->format('m'));
 
         $calendarDocument->setField('highlight', $calendar->isHighlight());
         $calendarDocument->setField('highlight_text', $calendar->isHighlight() ? 'Yes' : 'No');
+        $calendarDocument->setField('final', $calendar->isFinal());
+        $calendarDocument->setField('final_text', $this->translator->translate($calendar->getFinal(true)));
         $calendarDocument->setField('own_event', $calendar->isOwnEvent());
         $calendarDocument->setField('own_event_text', $calendar->isOwnEvent() ? 'Yes' : 'No');
         $calendarDocument->setField('is_present', $calendar->isPresent());
         $calendarDocument->setField('is_present_text', $calendar->isPresent() ? 'Yes' : 'No');
         $calendarDocument->setField('on_homepage', $calendar->onHomepage());
         $calendarDocument->setField('on_homepage_text', $calendar->onHomepage() ? 'Yes' : 'No');
+
+        $calendarDocument->setField('is_project', $calendar->isProject());
+        $calendarDocument->setField('is_project_text', $calendar->isProject() ? 'Yes' : 'No');
+        $calendarDocument->setField('is_call', $calendar->isCall());
+        $calendarDocument->setField('is_call_text', $calendar->isCall() ? 'Yes' : 'No');
+        $calendarDocument->setField('is_review', $calendar->isReview());
+        $calendarDocument->setField('is_review_text', $calendar->isReview() ? 'Yes' : 'No');
+        $calendarDocument->setField('is_birthday', $calendar->isBirthday());
+        $calendarDocument->setField('is_birthday_text', $calendar->isBirthday() ? 'Yes' : 'No');
 
         $update->addDocument($calendarDocument);
         $update->addCommit();
@@ -241,14 +268,12 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         parent::delete($abstractEntity);
     }
 
-    public function findCalendarContactByContact(
-        string $which,
-        Contact $contact
-    ): array {
+    public function findCalendarContactByContact(Contact $contact): array
+    {
         /** @var Repository\Contact $repository */
         $repository = $this->entityManager->getRepository(CalendarContact::class);
 
-        return $repository->findCalendarContactByContact($which, $contact);
+        return $repository->findCalendarContactByContact($contact);
     }
 
     public function findCalendarContactByContactAndCalendar(
@@ -263,7 +288,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function findCalendarContactsByCalendar(
         Calendar $calendar,
-        $status = CalendarContact::STATUS_ALL,
+        int $status = CalendarContact::STATUS_ALL,
         string $order = 'lastname'
     ): array {
         /** @var Repository\Contact $repository */
@@ -272,36 +297,45 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         return $repository->findCalendarContactsByCalendar($calendar, $status, $order);
     }
 
-    public function canViewCalendar(Calendar $calendar, Contact $contact = null): bool
+    public function isPublic(Calendar $calendar): bool
     {
         /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
-        return $repository->canViewCalendar($calendar, $contact);
+        return $repository->isPublic($calendar);
     }
 
     public function findCalendarItems(
-        string $which = self::WHICH_UPCOMING,
-        Contact $contact = null,
-        int $year = null,
-        string $type = null
-    ): \Doctrine\ORM\Query {
+        Contact $contact,
+        bool $upcoming = true,
+        bool $review = false
+    ): QueryBuilder {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
-        $limitQueryBuilder = null;
-        if (null !== $contact) {
-            /*
-             * Grab the limiting query-builder from the AdminService
-             */
-            $limitQueryBuilder = $this->parseWherePermit(
-                new Calendar(),
-                'view',
-                $contact
-            );
-        }
+        $calendarItems = $repository->findCalendarItems($upcoming, $review);
 
-        return $repository->findCalendarItems($which, true, $contact, $year, $type, $limitQueryBuilder);
+        $limitQueryBuilder = $this->parseWherePermit(
+            new Calendar(),
+            'view',
+            $contact
+        );
+
+        return $repository->filterForAccess($calendarItems, $contact, $limitQueryBuilder);
+    }
+
+    public function findVisibleItems(Contact $contact): array
+    {
+        /** @var \Calendar\Repository\Calendar $repository */
+        $repository = $this->entityManager->getRepository(Entity\Calendar::class);
+
+        $limitQueryBuilder = $this->parseWherePermit(
+            new Calendar(),
+            'view',
+            $contact
+        );
+
+        return $repository->findVisibleItems($contact, $limitQueryBuilder);
     }
 
     public function findCalendarByProject(Project $project, $onlyFinal = true): array
@@ -312,7 +346,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
             if (!$onlyFinal
-                || $calendarItem->getCalendar()->getFinal() === Calendar::FINAL_FINAL
+                || $calendarItem->getCalendar()->isFinal()
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
                     = $calendarItem->getCalendar();
@@ -320,7 +354,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
             if (!$onlyFinal
-                || $calendarItem->getFinal() === Calendar::FINAL_FINAL
+                || $calendarItem->isFinal()
             ) {
                 if ($calendarItem->getDateEnd() > new \DateTime()) {
                     $calendar[$calendarItem->getId()] = $calendarItem;
@@ -386,18 +420,260 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $collection[] = $this->prepareSearchUpdate($calendar);
         }
 
+        //Add the contacts which have their birthday
+        $birthDays = $this->contactService->findContactsWithDateOfBirth();
+        foreach ($birthDays as $contactWithBirthday) {
+            $collection[] = $this->prepareSearchUpdateForBirthday($contactWithBirthday);
+        }
+
+        //Add the call data
+        $calls = $this->callService->findAll(Call::class);
+
+        /** @var Call $call */
+        foreach ($calls as $call) {
+            if (!$call->isActive()) {
+                continue;
+            }
+
+            $collection[] = $this->prepareSearchUpdateForCall(
+                $this->translator->translate('txt-po-open-date'),
+                $call->__toString(),
+                \sprintf(
+                    $this->translator->translate('txt-po-open-calendar-description-call-%s-date-%s'),
+                    $call,
+                    $call->getPoCloseDate()->format('l, d F Y')
+                ),
+                $call->getPoOpenDate()
+            );
+            $collection[] = $this->prepareSearchUpdateForCall(
+                $this->translator->translate('txt-po-close-date'),
+                $call->__toString(),
+                \sprintf(
+                    $this->translator->translate('txt-po-close-calendar-description-call-%s-date-%s'),
+                    $call,
+                    $call->getPoCloseDate()->format('l, d F Y H:i:s T')
+                ),
+                $call->getPoCloseDate()
+            );
+            $collection[] = $this->prepareSearchUpdateForCall(
+                $this->translator->translate('txt-fpp-open-date'),
+                $call->__toString(),
+                \sprintf(
+                    $this->translator->translate('txt-fpp-open-calendar-description-call-%s-date-%s'),
+                    $call,
+                    $call->getFppOpenDate()->format('l, d F Y')
+                ),
+                $call->getFppOpenDate()
+            );
+            $collection[] = $this->prepareSearchUpdateForCall(
+                $this->translator->translate('txt-fpp-close-date'),
+                $call->__toString(),
+                \sprintf(
+                    $this->translator->translate('txt-fpp-close-calendar-description-call-%s-date-%s'),
+                    $call,
+                    $call->getFppCloseDate()->format('l, d F Y H:i:s T')
+                ),
+                $call->getFppCloseDate()
+            );
+            if (null !== $call->getLoiSubmissionDate()) {
+                $collection[] = $this->prepareSearchUpdateForCall(
+                    $this->translator->translate('txt-loi-submission-deadline'),
+                    $call->__toString(),
+                    \sprintf(
+                        $this->translator->translate(
+                            'txt-loi-submission-deadline-calendar-description-call-%s-date-%s'
+                        ),
+                        $call,
+                        $call->getLoiSubmissionDate()->format('l, d F Y')
+                    ),
+                    $call->getLoiSubmissionDate()
+                );
+            }
+            if (null !== $call->getLabelAnnouncementDate()) {
+                $collection[] = $this->prepareSearchUpdateForCall(
+                    $this->translator->translate('txt-label-announcement-date'),
+                    $call->__toString(),
+                    \sprintf(
+                        $this->translator->translate(
+                            'txt-label-announcement-date-calendar-description-call-%s-date-%s'
+                        ),
+                        $call,
+                        $call->getLabelAnnouncementDate()->format('l, d F Y')
+                    ),
+                    $call->getLabelAnnouncementDate()
+                );
+            }
+            if (null !== $call->getDoaSubmissionDate()) {
+                $collection[] = $this->prepareSearchUpdateForCall(
+                    $this->translator->translate('txt-doa-submission-deadline'),
+                    $call->__toString(),
+                    \sprintf(
+                        $this->translator->translate(
+                            'txt-doa-submission-deadline-calendar-description-call-%s-date-%s'
+                        ),
+                        $call,
+                        $call->getDoaSubmissionDate()->format('l, d F Y')
+                    ),
+                    $call->getDoaSubmissionDate()
+                );
+            }
+        }
+
         $this->calendarSearchService->updateIndexWithCollection($collection, $clearIndex);
     }
 
-    public function getWhichValues(): array
+    public function prepareSearchUpdateForBirthday(Contact $contact): AbstractQuery
     {
-        return [
-            self::WHICH_UPCOMING,
-            self::WHICH_UPDATED,
-            self::WHICH_FINAL,
-            self::WHICH_PAST,
-            self::WHICH_REVIEWS,
-            self::WHICH_ON_HOMEPAGE
-        ];
+        $searchClient = new Client();
+        $update = $searchClient->createUpdate();
+
+        $currentYear = \date('Y');
+        $yearSpan = \range($currentYear - 3, $currentYear + 3);
+
+        foreach ($yearSpan as $year) {
+
+            /** @var Document $calendarDocument */
+            $calendarDocument = $update->createDocument();
+            // Calendar properties
+            $calendarDocument->setField('id', 'birthday_' . $contact->getId() . '_' . $year);
+            $name = \sprintf(
+                'Birthday of %s (%s)',
+                $contact->getDisplayName(),
+                $year - $contact->getDateOfBirth()->format('Y')
+            );
+
+            $calendarDocument->setField('calendar', $name);
+            $calendarDocument->setField('calendar_sort', $name);
+            $calendarDocument->setField('calendar_search', $name);
+
+            $calendarDocument->setField('description', $name);
+            $calendarDocument->setField('description_sort', $name);
+            $calendarDocument->setField('description_search', $name);
+
+
+            $calendarDocument->setField('highlight_description', $name);
+            $calendarDocument->setField('highlight_description_sort', $name);
+            $calendarDocument->setField('highlight_description_search', $name);
+
+            $calendarDocument->setField('type', $this->translator->translate('txt-birthday'));
+            $calendarDocument->setField('type_search', $this->translator->translate('txt-birthday'));
+            $calendarDocument->setField('type_sort', $this->translator->translate('txt-birthday'));
+
+
+            $calendarDocument->setField('location', 'NLD, Eindhoven');
+            $calendarDocument->setField('location_sort', 'NLD, Eindhoven');
+            $calendarDocument->setField('location_search', 'NLD, Eindhoven');
+
+            $dateFrom = \DateTime::createFromFormat(
+                'd-m-Y',
+                \sprintf($contact->getDateOfBirth()->format('d-m-' . $year))
+            );
+
+            $calendarDocument->setField(
+                'date_from',
+                $dateFrom->format(AbstractSearchService::DATE_SOLR)
+            );
+            $calendarDocument->setField(
+                'date_end',
+                $dateFrom->format(AbstractSearchService::DATE_SOLR)
+            );
+
+            $calendarDocument->setField('year', $dateFrom->format('Y'));
+            $calendarDocument->setField('month', $dateFrom->format('m'));
+
+            $calendarDocument->setField('highlight', false);
+            $calendarDocument->setField('highlight_text', 'No');
+            $calendarDocument->setField('is_project', false);
+            $calendarDocument->setField('is_project_text', 'No');
+            $calendarDocument->setField('final', true);
+            $calendarDocument->setField('final_text', 'Final');
+            $calendarDocument->setField('is_call', false);
+            $calendarDocument->setField('is_call_text', 'No');
+            $calendarDocument->setField('is_review', false);
+            $calendarDocument->setField('is_review_text', 'No');
+            $calendarDocument->setField('is_birthday', true);
+            $calendarDocument->setField('is_birthday_text', 'Yes');
+            $calendarDocument->setField('own_event', false);
+            $calendarDocument->setField('own_event_text', 'Yes');
+            $calendarDocument->setField('is_present', false);
+            $calendarDocument->setField('is_present_text', 'No');
+            $calendarDocument->setField('on_homepage', false);
+            $calendarDocument->setField('on_homepage_text', 'No');
+
+            $update->addDocument($calendarDocument);
+        }
+        $update->addCommit();
+
+        return $update;
+    }
+
+    public function prepareSearchUpdateForCall(string $eventName, string $call, string $description, \DateTime $date
+    ): AbstractQuery
+    {
+        $searchClient = new Client();
+        $update = $searchClient->createUpdate();
+
+        /** @var Document $calendarDocument */
+        $calendarDocument = $update->createDocument();
+        // Calendar properties
+        $calendarDocument->setField('id', 'call_' . $eventName . '_' . $date->getTimestamp());
+
+        $calendarDocument->setField('calendar', $eventName);
+        $calendarDocument->setField('calendar_sort', $eventName);
+        $calendarDocument->setField('calendar_search', $eventName);
+
+        $calendarDocument->setField('description', $description);
+        $calendarDocument->setField('description_sort', $description);
+        $calendarDocument->setField('description_search', $description);
+
+
+        $calendarDocument->setField('highlight_description', $description);
+        $calendarDocument->setField('highlight_description_sort', $description);
+        $calendarDocument->setField('highlight_description_search', $description);
+
+        $calendarDocument->setField('type', $this->translator->translate('txt-call-date'));
+        $calendarDocument->setField('type_search', $this->translator->translate('txt-call-date'));
+        $calendarDocument->setField('type_sort', $this->translator->translate('txt-call-date'));
+
+        $calendarDocument->setField('location', $call);
+        $calendarDocument->setField('location_sort', $call);
+        $calendarDocument->setField('location_search', $call);
+
+        $calendarDocument->setField(
+            'date_from',
+            $date->format(AbstractSearchService::DATE_SOLR)
+        );
+        $calendarDocument->setField(
+            'date_end',
+            $date->format(AbstractSearchService::DATE_SOLR)
+        );
+
+        $calendarDocument->setField('year', $date->format('Y'));
+        $calendarDocument->setField('month', $date->format('m'));
+
+        $calendarDocument->setField('highlight', false);
+        $calendarDocument->setField('highlight_text', 'No');
+        $calendarDocument->setField('final', true);
+        $calendarDocument->setField('final_text', 'Final');
+        $calendarDocument->setField('is_project', true);
+        $calendarDocument->setField('is_project_text', 'Yes');
+        $calendarDocument->setField('is_call', true);
+        $calendarDocument->setField('is_call_text', 'Yes');
+        $calendarDocument->setField('is_review', false);
+        $calendarDocument->setField('is_review_text', 'No');
+        $calendarDocument->setField('is_birthday', false);
+        $calendarDocument->setField('is_birthday_text', 'No');
+        $calendarDocument->setField('own_event', true);
+        $calendarDocument->setField('own_event_text', 'Yes');
+        $calendarDocument->setField('is_present', false);
+        $calendarDocument->setField('is_present_text', 'No');
+        $calendarDocument->setField('on_homepage', true);
+        $calendarDocument->setField('on_homepage_text', 'Yes');
+
+        $update->addDocument($calendarDocument);
+
+        $update->addCommit();
+
+        return $update;
     }
 }

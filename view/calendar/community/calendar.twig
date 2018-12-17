@@ -2,14 +2,19 @@
 {% do headTitle().append(calendar.calendar) %}
 <h1 class="display-4">{{ calendar }}</h1>
 
-<p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}, {{ calendar.location }} {{ calendarLink(calendar,'view-admin','icon') }}</p>
+<p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}
+    , {{ calendar.location }} {{ calendarLink(calendar,'view-admin','icon') }}</p>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab" role="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab" role="tab">{{ translate("txt-documents")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab" role="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab" role="tab">{{ translate("txt-actions")|capitalize }}</a></li>
+    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab"
+                                   role="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab"
+                            role="tab">{{ translate("txt-documents")|capitalize }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab"
+                            role="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
+                            role="tab">{{ translate("txt-actions")|capitalize }}</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -39,16 +44,16 @@
         <br>
         <ul class="nav nav-pills nav-nos-menu">
             <li class="nav-item active"><a class="nav-link active" href="#total-calendar-documents"
-                                  data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
+                                           data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
             {% if calendar.projectCalendar %}
                 <li class="nav-item"><a class="nav-link" href="#version-documents"
-                       data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
+                                        data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#reporting"
-                       data-toggle="pill">{{ translate("txt-reporting") }}</a></li>
+                                        data-toggle="pill">{{ translate("txt-reporting") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#public-project-results"
-                       data-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
+                                        data-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#workpackage-deliverables"
-                       data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
+                                        data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
             {% endif %}
         </ul>
 
@@ -118,9 +123,9 @@
                     <h3>{{ translate("txt-version-documents") }}</h3>
 
                     {{ ztbalert().info(translate("txt-this-version-%s-has-been-%s-and-submitted-on-%s")|format(
-                    version.versionType,
-                    translate(version.getApproved(true)),
-                    version.dateReviewed|date('d-m-Y')
+                        version.versionType,
+                        translate(version.getApproved(true)),
+                        version.dateReviewed|date('d-m-Y')
                     ))|raw }}
 
                     {% if version.versionDocument.count() > 0 %}
@@ -317,18 +322,23 @@
                         <td>
                             {% do assertionService.addResource(calendarContact,'\Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
-                            <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active text-highlight{% endif %}"></i>
-                            <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active text-highlight{% endif %}"></i>
-                            <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active text-highlight{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                                   class="presence-icon cursor-pointer fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                                   class="presence-icon cursor-pointer fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                                   class="presence-icon cursor-pointer fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
+
                             {% else %}
-                            {{ calendarContact.status }}</td>
-                        {% endif %}
+                                {{ calendarContact.status }}
+                            {% endif %}
+
                     </tr>
                 {% endfor %}
                 </tbody>

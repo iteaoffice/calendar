@@ -68,21 +68,6 @@ class CalendarHandler extends AbstractHandler
         $calendar = $this->getCalendarByParams($params);
 
         switch ($content->getHandler()->getHandler()) {
-            case 'calendar_item':
-                if (null === $calendar) {
-                    $this->response->setStatusCode(404);
-
-                    return 'The selected calendar item cannot be found';
-                }
-
-                $this->getHeadTitle()->append($this->translate('txt-calendar-item'));
-                $this->getHeadTitle()->append($calendar->getCalendar());
-
-                $this->getHeadMeta()->setProperty('og:type', $this->translate("txt-calendar"));
-                $this->getHeadMeta()->setProperty('og:title', $calendar->getCalendar());
-                $this->getHeadMeta()->setProperty('og:url', $this->getCalendarLink()($calendar, 'view', 'social'));
-
-                return $this->parseCalendarItem($calendar);
             case 'calendar':
             case 'calendar_past':
             case 'calendar_upcoming':
@@ -113,21 +98,6 @@ class CalendarHandler extends AbstractHandler
         }
 
         return $calendar;
-    }
-
-    public function getCalendarLink(): CalendarLink
-    {
-        return $this->helperPluginManager->get(CalendarLink::class);
-    }
-
-    public function parseCalendarItem(Calendar $calendar): string
-    {
-        return $this->renderer->render(
-            'cms/calendar/calendar-item',
-            [
-                'calendar' => $calendar,
-            ]
-        );
     }
 
     public function parseCalendar(): string
@@ -192,9 +162,6 @@ class CalendarHandler extends AbstractHandler
             ARRAY_FILTER_USE_KEY
         );
 
-
-
-
         return $this->renderer->render(
             'cms/calendar/list',
             [
@@ -207,7 +174,7 @@ class CalendarHandler extends AbstractHandler
                 'page'              => $page,
                 'hasTerm'           => $hasTerm,
                 'calendarService'   => $this->calendarService,
-                'upcomingCalendar'  => $this->calendarSearchService->findUpcomingCalendar(),
+                'upcomingCalendar'  => $this->calendarSearchService->findUpcomingCalendar(50),
                 'highlightCalendar' => $this->calendarSearchService->findHighlightCalendar(),
             ]
         );

@@ -17,7 +17,6 @@ use Calendar\Entity\ContactRole;
 use Calendar\Service\CalendarService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
 
 /**
  * Class JsonController
@@ -50,6 +49,26 @@ final class JsonController extends AbstractActionController
         }
 
         return new JsonModel($roles);
+    }
+
+    public function updateStatusAction(): JsonModel
+    {
+        $calendarContactId = (int)$this->params()->fromPost('id');
+        $statusId = (string)$this->params()->fromPost('status');
+
+        /** @var Contact $calendarContact */
+        $calendarContact = $this->calendarService->find(Contact::class, $calendarContactId);
+
+        if (null === $calendarContact) {
+            return new JsonModel(['result' => 'error']);
+        }
+        $this->calendarService->updateContactStatus($calendarContact, $statusId);
+
+        return new JsonModel(
+            [
+                'result' => 'success',
+            ]
+        );
     }
 
     public function updateRoleAction()

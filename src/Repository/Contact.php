@@ -24,7 +24,7 @@ use Doctrine\ORM\EntityRepository;
  */
 final class Contact extends EntityRepository
 {
-    public function findCalendarContactByContact(string $which, ContactEntity $contact): array
+    public function findCalendarContactByContact(ContactEntity $contact): array
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_contact');
@@ -32,45 +32,12 @@ final class Contact extends EntityRepository
         $qb->join('calendar_entity_contact.calendar', 'calendar_entity_calendar');
         $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
-        switch ($which) {
-            case CalendarService::WHICH_UPCOMING:
-                $qb->andWhere('calendar_entity_calendar.dateFrom >= ?1');
-                $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-                $qb->setParameter(1, new \DateTime());
-                break;
-            case CalendarService::WHICH_PAST:
-                $qb->andWhere('calendar_entity_calendar.dateFrom <= ?1');
-                $qb->orderBy('calendar_entity_calendar.dateEnd', 'DESC');
-                $qb->setParameter(1, new \DateTime());
-                break;
-            case CalendarService::WHICH_REVIEWS:
-                $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
-                $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-                $qb->setParameter(1, new \DateTime());
-                $projectCalendarSubSelect = $this->_em->createQueryBuilder();
-                $projectCalendarSubSelect->select('calendar.id');
-                $projectCalendarSubSelect->from(\Project\Entity\Calendar\Calendar::class, 'projectCalendar');
-                $projectCalendarSubSelect->join('projectCalendar.calendar', 'calendar');
-                $qb->andWhere($qb->expr()->in('calendar_entity_calendar.id', $projectCalendarSubSelect->getDQL()));
-                break;
-            case CalendarService::WHICH_UPDATED:
-                $qb->orderBy('calendar_entity_calendar.dateUpdated', 'DESC');
-                break;
-            case CalendarService::WHICH_ON_HOMEPAGE:
-                $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
-                $qb->setParameter(1, new \DateTime());
-                $qb->andWhere('calendar_entity_calendar.onHomepage = ?2');
-                $qb->setParameter(2, Entity\Calendar::ON_HOMEPAGE);
-                $qb->andWhere('calendar_entity_calendar.final = ?3');
-                $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
-                $qb->addOrderBy('calendar_entity_calendar.dateFrom', 'ASC');
-                $qb->orderBy('calendar_entity_calendar.sequence', 'ASC');
-
-                break;
-        }
-
         $qb->andWhere('calendar_entity_contact.contact = ?10');
+        $qb->andWhere('calendar_entity_calendar.dateEnd >= :today');
+        $qb->setParameter('today', new \DateTime());
         $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+
+
         $qb->setParameter(10, $contact);
 
         return $qb->getQuery()->getResult();

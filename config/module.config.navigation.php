@@ -103,8 +103,8 @@ return [
                         'route' => 'zfcadmin/calendar/overview',
                         'pages' => [
                             'view-calendar' => [
-                                'route'   => 'zfcadmin/calendar/calendar',
-                                'params'  => [
+                                'route'  => 'zfcadmin/calendar/calendar',
+                                'params' => [
                                     'entities'   => [
                                         'id' => Calendar\Entity\Calendar::class,
                                     ],
@@ -112,7 +112,7 @@ return [
                                         Calendar\Navigation\Invokable\CalendarLabel::class,
                                     ],
                                 ],
-                                'pages'   => [
+                                'pages'  => [
                                     'edit-calendar'    => [
                                         'label'   => _("txt-edit-calendar"),
                                         'route'   => 'zfcadmin/calendar/edit',
@@ -138,8 +138,9 @@ return [
                         ],
                     ],
                     'new-calendar-item' => [
-                        'label' => _("txt-add-calendar-item"),
-                        'route' => 'zfcadmin/calendar/new',
+                        'label'   => _("txt-add-calendar-item"),
+                        'route'   => 'zfcadmin/calendar/new',
+                        'visible' => false,
                     ],
                 ],
             ],

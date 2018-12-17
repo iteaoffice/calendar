@@ -67,7 +67,7 @@ return [
                     'assertion' => CalendarAssertion::class,
                 ],
                 [
-                    'route'     => 'community/calendar/update-status',
+                    'route'     => 'json/calendar/update-status',
                     'roles'     => ['user'],
                     'assertion' => ContactAssertion::class,
                 ],

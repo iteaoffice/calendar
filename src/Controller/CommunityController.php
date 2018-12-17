@@ -24,17 +24,20 @@ use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Form\SelectAttendee;
 use Calendar\Form\SendMessage;
+use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use General\Service\EmailService;
 use General\Service\GeneralService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
+use Search\Form\SearchResult;
+use Search\Paginator\Adapter\SolariumPaginator;
 use setasign\Fpdi\TcpdfFpdi;
+use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -43,7 +46,6 @@ use Zend\Mvc\Plugin\Identity\Identity;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
-use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -61,6 +63,10 @@ final class CommunityController extends AbstractActionController
      * @var CalendarService
      */
     private $calendarService;
+    /**
+     * @var CalendarSearchService
+     */
+    private $searchService;
     /**
      * @var GeneralService
      */
@@ -100,6 +106,7 @@ final class CommunityController extends AbstractActionController
 
     public function __construct(
         CalendarService $calendarService,
+        CalendarSearchService $searchService,
         GeneralService $generalService,
         ContactService $contactService,
         ProjectService $projectService,
@@ -111,6 +118,7 @@ final class CommunityController extends AbstractActionController
         EntityManager $entityManager
     ) {
         $this->calendarService = $calendarService;
+        $this->searchService = $searchService;
         $this->generalService = $generalService;
         $this->contactService = $contactService;
         $this->projectService = $projectService;
@@ -124,36 +132,93 @@ final class CommunityController extends AbstractActionController
 
     public function overviewAction(): ViewModel
     {
-        $which = $this->params('which', CalendarService::WHICH_UPCOMING);
+        /** @var Request $request */
+        $request = $this->getRequest();
         $page = $this->params('page', 1);
-        $calendarItems = $this->calendarService
-            ->findCalendarItems($which, $this->identity());
-        $paginator = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
-        $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 25);
+        $which = $this->params('which', 'upcoming');
+
+        $visibleItems = $this->calendarService
+            ->findVisibleItems(
+                $this->identity()
+            );
+
+
+        $form = new SearchResult();
+        $data = array_merge(
+            [
+                'order'     => '',
+                'direction' => '',
+                'query'     => '',
+                'facet'     => [],
+            ],
+            $request->getQuery()->toArray()
+        );
+        $searchFields = [
+            'calendar_search', //To search for numbers
+            'description_search',
+            'highlight_description_search',
+            'location_search',
+            'type_search'
+        ];
+
+        if ($request->isGet()) {
+            $this->searchService->setCommunitySearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                $which === 'upcoming',
+                $which === 'past',
+                $visibleItems,
+                $this->identity()->isOffice()
+            );
+            if (isset($data['facet'])) {
+                foreach ($data['facet'] as $facetField => $values) {
+                    $quotedValues = [];
+                    foreach ($values as $value) {
+                        $quotedValues[] = \sprintf('"%s"', $value);
+                    }
+
+                    $this->searchService->addFilterQuery(
+                        $facetField,
+                        \implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                    );
+                }
+            }
+
+            $form->addSearchResults(
+                $this->searchService->getQuery()->getFacetSet(),
+                $this->searchService->getResultSet()->getFacetSet()
+            );
+            $form->setData($data);
+        }
+
+        $paginator = new Paginator(
+            new SolariumPaginator($this->searchService->getSolrClient(), $this->searchService->getQuery())
+        );
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-        $whichValues = $this->calendarService->getWhichValues();
+
+        // Remove order and direction from the GET params to prevent duplication
+        $filteredData = array_filter(
+            $data,
+            function ($key) {
+                return !\in_array($key, ['order', 'direction'], true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
         return new ViewModel(
             [
-                'calendarService' => $this->calendarService,
-                'which'           => $which,
+                'form'            => $form,
+                'order'           => $data['order'],
+                'direction'       => $data['direction'],
+                'query'           => $data['query'],
+                'arguments'       => \http_build_query($filteredData),
                 'paginator'       => $paginator,
-                'whichValues'     => $whichValues,
-            ]
-        );
-    }
-
-    public function contactAction(): ViewModel
-    {
-        $calendarContacts = $this->calendarService->findCalendarContactByContact(
-            CalendarService::WHICH_UPCOMING,
-            $this->identity()
-        );
-
-        return new ViewModel(
-            [
-                'calendarContacts' => $calendarContacts,
+                'calendarService' => $this->calendarService,
+                'which'           => $which
             ]
         );
     }
@@ -162,10 +227,11 @@ final class CommunityController extends AbstractActionController
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(
-                CalendarService::WHICH_REVIEWS,
-                $this->identity()
+                $this->identity(),
+                true,
+                true
             )
-            ->getResult();
+            ->getQuery()->getResult();
 
         return new ViewModel(
             [
@@ -174,14 +240,25 @@ final class CommunityController extends AbstractActionController
         );
     }
 
+    public function contactAction(): ViewModel
+    {
+        $calendarContacts = $this->calendarService->findCalendarContactByContact($this->identity());
+        return new ViewModel(
+            [
+                'calendarContacts' => $calendarContacts,
+            ]
+        );
+    }
+
     public function downloadReviewCalendarAction(): Response
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(
-                CalendarService::WHICH_REVIEWS,
-                $this->identity()
+                $this->identity(),
+                true,
+                true
             )
-            ->getResult();
+            ->getQuery()->getResult();
 
         $reviewCalendar = $this->renderReviewCalendar($calendarItems);
 
@@ -297,25 +374,6 @@ final class CommunityController extends AbstractActionController
         );
     }
 
-    public function updateStatusAction(): JsonModel
-    {
-        $calendarContactId = (int)$this->getEvent()->getRequest()->getPost()->get('id');
-        $statusId = (string)$this->getEvent()->getRequest()->getPost()->get('status');
-
-        /** @var Contact $calendarContact */
-        $calendarContact = $this->calendarService->find(Contact::class, $calendarContactId);
-
-        if (null === $calendarContact) {
-            return new JsonModel(['result' => 'error']);
-        }
-        $this->calendarService->updateContactStatus($calendarContact, $statusId);
-
-        return new JsonModel(
-            [
-                'result' => 'success',
-            ]
-        );
-    }
 
     public function selectAttendeesAction()
     {

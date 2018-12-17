@@ -92,22 +92,12 @@ class Type extends AbstractEntity
      */
     private $access;
 
-    /**
-     * Type constructor.
-     */
     public function __construct()
     {
         $this->calendar = new Collections\ArrayCollection();
         $this->access = new Collections\ArrayCollection();
     }
 
-    /**
-     * Magic Getter
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;

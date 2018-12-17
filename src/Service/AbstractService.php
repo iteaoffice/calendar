@@ -111,7 +111,7 @@ abstract class AbstractService
         return $qb;
     }
 
-    public function parseWherePermit(Entity\AbstractEntity $entity, string $roleName, Contact $contact): ?QueryBuilder
+    public function parseWherePermit(Entity\AbstractEntity $entity, string $roleName, Contact $contact): QueryBuilder
     {
         $permitEntity = $this->findPermitEntityByEntity($entity);
 
@@ -131,9 +131,9 @@ abstract class AbstractService
         if (null === $role) {
             //We have no roles found, so return a query which gives always zeros
             //We will simply return NULL
-            print sprintf("Role '%s' on entity '%s' could not be found", $roleName, $entity);
-
-            return null;
+            throw new \InvalidArgumentException(
+                sprintf("Role '%s' on entity '%s' could not be found", $roleName, $permitEntity)
+            );
         }
 
         //@todo; fix this when no role is found (equals to NULL for example)

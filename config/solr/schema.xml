@@ -38,10 +38,17 @@
     <field name="location_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
     <field name="location_search" type="text_general_edge_ngram" indexed="true" stored="true" omitNorms="true"/>
 
+    <field name="type" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="type_sort" type="string_ci" indexed="true" stored="true" omitNorms="true"/>
+    <field name="type_search" type="text_general_edge_ngram" indexed="true" stored="true" omitNorms="true"/>
+
     <field name="date_from" type="date" indexed="true" stored="true" omitNorms="true"/>
     <field name="date_end" type="date" indexed="true" stored="true" omitNorms="true"/>
     <field name="date_created" type="date" indexed="true" stored="true" omitNorms="true"/>
     <field name="date_updated" type="date" indexed="true" stored="true" omitNorms="true"/>
+
+    <field name="project_id" type="int" indexed="true" stored="true" omitNorms="true"/>
+    <field name="project_name" type="string" indexed="true" stored="true" omitNorms="true"/>
 
     <field name="year" type="string" indexed="true" stored="true" omitNorms="true"/>
     <field name="month" type="string" indexed="true" stored="true" omitNorms="true"/>
@@ -50,11 +57,21 @@
     <field name="own_event" type="boolean" indexed="true" stored="true" omitNorms="true"/>
     <field name="is_present" type="boolean" indexed="true" stored="true" omitNorms="true"/>
     <field name="on_homepage" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_project" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_call" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_review" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="final" type="boolean" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_birthday" type="boolean" indexed="true" stored="true" omitNorms="true"/>
 
     <field name="highlight_text" type="string" indexed="true" stored="true" omitNorms="true"/>
     <field name="own_event_text" type="string" indexed="true" stored="true" omitNorms="true"/>
     <field name="is_present_text" type="string" indexed="true" stored="true" omitNorms="true"/>
     <field name="on_homepage_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_project_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_call_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_review_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="final_text" type="string" indexed="true" stored="true" omitNorms="true"/>
+    <field name="is_birthday_text" type="string" indexed="true" stored="true" omitNorms="true"/>
 
     <uniqueKey>id</uniqueKey>
 

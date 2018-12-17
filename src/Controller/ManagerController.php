@@ -18,6 +18,7 @@ use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CalendarContacts;
 use Calendar\Form\CreateCalendarDocument;
+use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Service\ContactService;
@@ -25,11 +26,14 @@ use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
+use Search\Form\SearchResult;
+use Search\Paginator\Adapter\SolariumPaginator;
+use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use Zend\Http\Request;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\Mvc\Plugin\Identity\Identity;
-use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
@@ -48,6 +52,10 @@ final class ManagerController extends AbstractActionController
      * @var CalendarService
      */
     private $calendarService;
+    /**
+     * @var CalendarSearchService
+     */
+    private $searchService;
     /**
      * @var FormService
      */
@@ -83,6 +91,7 @@ final class ManagerController extends AbstractActionController
 
     public function __construct(
         CalendarService $calendarService,
+        CalendarSearchService $searchService,
         FormService $formService,
         ProjectService $projectService,
         ActionService $actionService,
@@ -93,6 +102,7 @@ final class ManagerController extends AbstractActionController
         TranslatorInterface $translator
     ) {
         $this->calendarService = $calendarService;
+        $this->searchService = $searchService;
         $this->formService = $formService;
         $this->projectService = $projectService;
         $this->actionService = $actionService;
@@ -105,70 +115,85 @@ final class ManagerController extends AbstractActionController
 
     public function overviewAction(): ViewModel
     {
-        $which = (string)$this->params('which', CalendarService::WHICH_UPCOMING);
+        /** @var Request $request */
+        $request = $this->getRequest();
         $page = $this->params('page', 1);
+        $which = $this->params('which', 'upcoming');
 
-        $birthDays = $this->contactService->findContactsWithDateOfBirth();
-        $calendarItems = $this->calendarService->findCalendarItems($which, $this->identity())->getResult();
+        $form = new SearchResult();
+        $data = array_merge(
+            [
+                'order'     => '',
+                'direction' => '',
+                'query'     => '',
+                'facet'     => [],
+            ],
+            $request->getQuery()->toArray()
+        );
+        $searchFields = [
+            'calendar_search', //To search for numbers
+            'description_search',
+            'highlight_description_search',
+            'location_search',
+            'type_search'
+        ];
 
-        $calender = [];
+        if ($request->isGet()) {
+            $this->searchService->setAdminSearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                $which === 'upcoming',
+                $which === 'past'
+            );
+            if (isset($data['facet'])) {
+                foreach ($data['facet'] as $facetField => $values) {
+                    $quotedValues = [];
+                    foreach ($values as $value) {
+                        $quotedValues[] = \sprintf('"%s"', $value);
+                    }
 
-        /** @var Calendar $calendarItem */
-        foreach ($calendarItems as $calendarItem) {
-            $index = $calendarItem->getDateFrom()->format('Y-m-d');
-
-            $calender[$index][] = [
-                'item'     => $calendarItem->getCalendar(),
-                'calendar' => $calendarItem,
-                'date'     => null,
-            ];
-        }
-
-        if ($which === CalendarService::WHICH_UPCOMING) {
-            $today = new \DateTime();
-            foreach ($birthDays as $birthDay) {
-                /*
-                 * Produce a index which holds the current year
-                 */
-                /** @var \DateTime $dateOfBirth */
-                $dateOfBirth = $birthDay->getDateOfBirth();
-
-                $birthDayDate = \DateTime::createFromFormat(
-                    'Y-m-d',
-                    \sprintf('%s-%s', date('Y'), $dateOfBirth->format('m-d'))
-                );
-
-                if ($birthDayDate < $today) {
-                    continue;
+                    $this->searchService->addFilterQuery(
+                        $facetField,
+                        \implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                    );
                 }
-
-                $index = $birthDayDate->format('Y-m-d');
-
-                $calender[$index][] = [
-                    'item' => \sprintf(
-                        $this->translator->translate('Birthday of %s (%s)'),
-                        $birthDay->getDisplayName(),
-                        date('Y') - $birthDay->getDateOfBirth()->format('Y')
-                    ),
-                    'date' => $birthDayDate,
-                ];
             }
 
-            ksort($calender);
+            $form->addSearchResults(
+                $this->searchService->getQuery()->getFacetSet(),
+                $this->searchService->getResultSet()->getFacetSet()
+            );
+            $form->setData($data);
         }
 
-        $paginator = new Paginator(new ArrayAdapter($calender));
-        $paginator::setDefaultItemCountPerPage(25);
+        $paginator = new Paginator(
+            new SolariumPaginator($this->searchService->getSolrClient(), $this->searchService->getQuery())
+        );
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-        $whichValues = $this->calendarService->getWhichValues();
+
+        // Remove order and direction from the GET params to prevent duplication
+        $filteredData = array_filter(
+            $data,
+            function ($key) {
+                return !\in_array($key, ['order', 'direction'], true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
         return new ViewModel(
             [
-                'which'           => $which,
+                'form'            => $form,
+                'order'           => $data['order'],
+                'direction'       => $data['direction'],
+                'query'           => $data['query'],
+                'arguments'       => \http_build_query($filteredData),
                 'paginator'       => $paginator,
-                'whichValues'     => $whichValues,
                 'calendarService' => $this->calendarService,
+                'which'           => $which
             ]
         );
     }
