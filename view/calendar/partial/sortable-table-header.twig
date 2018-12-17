@@ -1,0 +1,2 @@
+{% if order == criteria %}{{ direction == 'desc' ? '<i class="fa fa-sort-alpha-desc"></i>' : '<i class="fa fa-sort-alpha-asc"></i>' }}{% endif %}
+<a href="{{ url(route,{'encodedFilter': encodedFilter,'id': id,'which':which},{'fragment':fragment}) }}?order={{ criteria }}&direction={{ direction == 'desc' ? 'asc' : 'desc' }}">{{ text }}</a>
