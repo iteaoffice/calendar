@@ -96,42 +96,37 @@ return [
             'calendar' => [
                 'label' => _("txt-calendar-admin"),
                 'order' => 60,
-                'route' => 'zfcadmin/calendar',
+                'route' => 'zfcadmin/calendar/overview',
                 'pages' => [
-                    'calendar'          => [
-                        'label' => _("txt-calendar"),
-                        'route' => 'zfcadmin/calendar/overview',
-                        'pages' => [
-                            'view-calendar' => [
-                                'route'  => 'zfcadmin/calendar/calendar',
-                                'params' => [
-                                    'entities'   => [
+                    'view-calendar'     => [
+                        'route'   => 'zfcadmin/calendar/calendar',
+                        'visible' => false,
+                        'params'  => [
+                            'entities'   => [
+                                'id' => Calendar\Entity\Calendar::class,
+                            ],
+                            'invokables' => [
+                                Calendar\Navigation\Invokable\CalendarLabel::class,
+                            ],
+                        ],
+                        'pages'   => [
+                            'edit-calendar'    => [
+                                'label'   => _("txt-edit-calendar"),
+                                'route'   => 'zfcadmin/calendar/edit',
+                                'visible' => false,
+                                'params'  => [
+                                    'entities' => [
                                         'id' => Calendar\Entity\Calendar::class,
                                     ],
-                                    'invokables' => [
-                                        Calendar\Navigation\Invokable\CalendarLabel::class,
-                                    ],
                                 ],
-                                'pages'  => [
-                                    'edit-calendar'    => [
-                                        'label'   => _("txt-edit-calendar"),
-                                        'route'   => 'zfcadmin/calendar/edit',
-                                        'visible' => false,
-                                        'params'  => [
-                                            'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class,
-                                            ],
-                                        ],
-                                    ],
-                                    'select-attendees' => [
-                                        'label'   => _("txt-nav-calendar-select-attendees"),
-                                        'route'   => 'zfcadmin/calendar/select-attendees',
-                                        'visible' => false,
-                                        'params'  => [
-                                            'entities' => [
-                                                'id' => Calendar\Entity\Calendar::class,
-                                            ],
-                                        ],
+                            ],
+                            'select-attendees' => [
+                                'label'   => _("txt-nav-calendar-select-attendees"),
+                                'route'   => 'zfcadmin/calendar/select-attendees',
+                                'visible' => false,
+                                'params'  => [
+                                    'entities' => [
+                                        'id' => Calendar\Entity\Calendar::class,
                                     ],
                                 ],
                             ],

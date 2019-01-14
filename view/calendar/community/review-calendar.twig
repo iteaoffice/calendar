@@ -1,9 +1,9 @@
 {% do headTitle().append(translate("txt-calendar")) %}
 {% do headTitle().append(translate("txt-review-calendar")) %}
-<h1 class="display-4">{{ translate("txt-review-calendar") }}</h1>
+<h1>{{ translate("txt-review-calendar") }}</h1>
 
 {% if calendarItems|length > 0 %}
-    <table class="table table-striped table-condensed table-sm table-hover">
+    <table class="table table-striped table-sm table-hover">
         <thead>
         <tr>
             <th>{{ translate("txt-project") }}</th>

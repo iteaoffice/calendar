@@ -3,7 +3,7 @@
 
 {% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
 
-<h1 class="display-4">{{ translate("txt-%s-events")|format(which) }}
+<h1>{{ translate("txt-%s-events")|format(which) }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'all') }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'past') }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'upcoming') }}
@@ -32,7 +32,7 @@
         </div>
 
         {% if paginator.pageRange > 0 %}
-            <table class="table table-hover table-striped table-condensed table-sm">
+            <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
                     <th colspan="2">{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'date', 'text': translate('txt-date')} %}</th>
@@ -101,7 +101,7 @@
         <div class="well well-sm">
             {% set facets = form.get('facet') %}
             {% for facet in facets %}
-                {{ ztbformelement(facet) }}
+                {{ ztbformelement(facet, true) }}
             {% endfor %}
         </div>
     </div>

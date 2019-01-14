@@ -263,7 +263,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
      * @Annotation\Options({"help-block":"txt-calendar-program-call-help-block"})
-     * @Annotation\Attributes({"label":"txt-program-call"})
+     * @Annotation\Options({"label":"txt-program-call"})
      * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
      */
     private $call;
@@ -274,7 +274,7 @@ class Calendar extends AbstractEntity
         $this->document = new Collections\ArrayCollection();
         $this->call = new Collections\ArrayCollection();
 
-        $this->final = self::FINAL_DRAFT;
+//        $this->final = self::FINAL_DRAFT;
         $this->onHomepage = self::ON_HOMEPAGE;
         $this->highlight = self::NO_HIGHLIGHT;
         $this->ownEvent = self::NO_OWN_EVENT;

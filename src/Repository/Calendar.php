@@ -139,7 +139,6 @@ final class Calendar extends EntityRepository
         Contact $contact,
         QueryBuilder $limitQueryBuilder
     ): array {
-
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar.id');
         $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');

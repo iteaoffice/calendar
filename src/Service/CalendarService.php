@@ -607,9 +607,12 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         return $update;
     }
 
-    public function prepareSearchUpdateForCall(string $eventName, string $call, string $description, \DateTime $date
-    ): AbstractQuery
-    {
+    public function prepareSearchUpdateForCall(
+        string $eventName,
+        string $call,
+        string $description,
+        \DateTime $date
+    ): AbstractQuery {
         $searchClient = new Client();
         $update = $searchClient->createUpdate();
 

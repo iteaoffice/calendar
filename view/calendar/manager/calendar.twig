@@ -1,7 +1,7 @@
 {% do headTitle().append(translate("txt-admin")) %}
 {% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1 class="display-4">{{ translate("txt-calendar-item-%s")|format(calendar) }} </h1>
+<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }} </h1>
 
 <p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}
     , {{ calendar.location }} {{ calendarLink(calendar,'view-community','icon') }}</p>
@@ -108,7 +108,7 @@
         <h2>{{ translate("txt-calendar-documents") }}</h2>
         {% if calendar.document.count() > 0 %}
 
-            <table class="table table-hover table-striped table-condensed table-sm">
+            <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-document") }}</th>
@@ -145,7 +145,7 @@
         {{ ztbformelement(form.get('csrf')) }}
 
         <div class="form-group row">
-            <div class="offset-md-3 col-sm-offset-3 col-sm-9">
+            <div class="offset-sm-3 col-sm-9">
                 {{ ztbformelement(form.get('submit')) }}
             </div>
         </div>
@@ -173,7 +173,7 @@
             <h2>{{ translate("txt-reviewers") }}</h2>
 
             {% if calendar.projectCalendar.review.count() > 0 %}
-                <table class="table table-hover table-condensed table-sm table-striped">
+                <table class="table table-hover table-sm table-striped">
                     <thead>
                     <tr>
                         <th>{{ translate("txt-contact") }}</th>
@@ -199,7 +199,7 @@
 
         <h2>{{ translate("txt-calendar-attendees") }}</h2>
         {% if calendar.calendarContact.count() > 0 %}
-            <table class="table table-hover table-striped table-condensed table-sm">
+            <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>

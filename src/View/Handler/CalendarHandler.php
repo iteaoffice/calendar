@@ -138,7 +138,7 @@ class CalendarHandler extends AbstractHandler
             $form->addSearchResults(
                 $this->calendarSearchService->getQuery()->getFacetSet(),
                 $this->calendarSearchService->getResultSet()->getFacetSet(),
-                true
+                ['year']
             );
             $form->setData($data);
         }
