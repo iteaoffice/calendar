@@ -33,7 +33,7 @@
             <dt>{{ translate("txt-location") }}</dt>
             <dd>{{ calendar.location }}</dd>
             <dt>{{ translate("txt-description") }}</dt>
-            <dd>{{ calendar.description|default("-")|raw }}</dd>
+            <dd>{{ calendar.description|default("-")|raw|nl2br }}</dd>
             <dt>{{ translate("txt-documents") }}</dt>
             <dd>{{ translate("txt-%s-documents")|format(calendar.document.count()) }}</dd>
         </dl>

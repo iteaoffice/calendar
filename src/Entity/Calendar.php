@@ -193,7 +193,7 @@ class Calendar extends AbstractEntity
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Textarea")
      * @Annotation\Options({"label":"txt-calendar-description-label","help-block": "txt-calendar-description-help-block"})
-     * @Annotation\Attributes({"placeholder": "txt-calendar-description-placeholder"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-description-placeholder","rows":8})
      * @var string
      */
     private $description;
@@ -274,8 +274,7 @@ class Calendar extends AbstractEntity
         $this->document = new Collections\ArrayCollection();
         $this->call = new Collections\ArrayCollection();
 
-//        $this->final = self::FINAL_DRAFT;
-        $this->onHomepage = self::ON_HOMEPAGE;
+        $this->onHomepage = self::NOT_ON_HOMEPAGE;
         $this->highlight = self::NO_HIGHLIGHT;
         $this->ownEvent = self::NO_OWN_EVENT;
         $this->present = self::NOT_PRESENT;

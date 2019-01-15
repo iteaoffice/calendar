@@ -71,7 +71,7 @@
             <dd>{{ translate(calendar.getPresent(true)) }}</dd>
             {% if calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
-                <dd>{{ calendar.description|raw }}</dd>
+                <dd>{{ calendar.description|raw|nl2br }}</dd>
             {% endif %}
             {% if calendar.imageUrl %}
                 <dt>{{ translate("txt-image-url") }}</dt>

@@ -65,8 +65,6 @@ class CalendarHandler extends AbstractHandler
     {
         $params = $this->extractContentParam($content);
 
-        $calendar = $this->getCalendarByParams($params);
-
         switch ($content->getHandler()->getHandler()) {
             case 'calendar':
             case 'calendar_past':
@@ -84,20 +82,6 @@ class CalendarHandler extends AbstractHandler
                     __CLASS__
                 );
         }
-    }
-
-    private function getCalendarByParams(array $params): ?Calendar
-    {
-        $calendar = null;
-        if (null !== $params['id']) {
-            $calendar = $this->calendarService->findCalendarById((int)$params['id']);
-        }
-
-        if (null !== $params['docRef']) {
-            $calendar = $this->calendarService->findCalendarByDocRef($params['docRef']);
-        }
-
-        return $calendar;
     }
 
     public function parseCalendar(): string
