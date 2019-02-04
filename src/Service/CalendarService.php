@@ -55,7 +55,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
      */
     private $translator;
 
-
     public function __construct(
         EntityManager $entityManager,
         SelectionContactService $selectionContactService,
@@ -84,6 +83,26 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 'docRef' => $docRef,
             ]
         );
+    }
+
+    public function canDeleteCalendar(Entity\Calendar $calendar): bool
+    {
+        if (null === $calendar->getProjectCalendar()) {
+            return true;
+        }
+
+        $cannotDeleteCalendar = [];
+
+        if (!$calendar->getProjectCalendar()->getAction()->isEmpty()) {
+            $cannotDeleteCalendar[] = 'Calendar has actions';
+        }
+
+        if (!$calendar->getProjectCalendar()->getPlannedAction()->isEmpty()) {
+            $cannotDeleteCalendar[] = 'Calendar has planned actions';
+        }
+
+
+        return \count($cannotDeleteCalendar) === 0;
     }
 
     public function updateCalendarContacts(Calendar $calendar, array $data): void

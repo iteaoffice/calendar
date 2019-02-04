@@ -198,16 +198,7 @@ final class CommunityController extends AbstractActionController
         );
         $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-
-        // Remove order and direction from the GET params to prevent duplication
-        $filteredData = array_filter(
-            $data,
-            function ($key) {
-                return !\in_array($key, ['order', 'direction'], true);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
+        $paginator->setPageRange(\ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
 
         return new ViewModel(
             [
@@ -215,7 +206,8 @@ final class CommunityController extends AbstractActionController
                 'order'           => $data['order'],
                 'direction'       => $data['direction'],
                 'query'           => $data['query'],
-                'arguments'       => \http_build_query($filteredData),
+                'badges'          => $form->getBadges(),
+                'arguments'       => \http_build_query($form->getFilteredData()),
                 'paginator'       => $paginator,
                 'calendarService' => $this->calendarService,
                 'which'           => $which

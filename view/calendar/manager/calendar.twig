@@ -25,7 +25,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="general">
-        <h3>{{ translate("txt-calendar-details") }}</h3>
+        <h2>{{ translate("txt-calendar-details") }}</h2>
 
         <dl class="dl-horizontal">
             <dt>{{ translate("txt-calendar-name") }}</dt>
@@ -157,8 +157,15 @@
     {% if calendar.projectCalendar %}
         <div class="tab-pane" role="tabpanel" id="action">
 
-            <h2>{{ translate("txt-project-actions") }}</h2>
+            <h2>{{ translate("txt-planned-project-actions") }}</h2>
 
+            {% if calendar.projectCalendar.plannedAction.count() > 0 %}
+                {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.plannedAction } %}
+            {% else %}
+                {{ ztbalert().info(translate("txt-there-are-no-actions-planned-for-this-review-meeting"))|raw }}
+            {% endif %}
+
+            <h2>{{ translate("txt-defined-project-actions") }}</h2>
             {% if calendar.projectCalendar.action.count() > 0 %}
                 {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.action } %}
             {% else %}

@@ -5,8 +5,6 @@ return array(
     'calendar/pdf/signature-list'               => __DIR__ . '//view/calendar/pdf/signature-list.twig',
     'calendar/pdf/presence-list'                => __DIR__ . '//view/calendar/pdf/presence-list.twig',
     'calendar/calendar/calendar-type-color-css' => __DIR__ . '//view/calendar/calendar/calendar-type-color-css.twig',
-    'calendar/partial/pagination-control'       => __DIR__ . '//view/calendar/partial/pagination-control.twig',
-    'calendar/partial/sortable-table-header'    => __DIR__ . '//view/calendar/partial/sortable-table-header.twig',
     'calendar/partial/list/calendar'            => __DIR__ . '//view/calendar/partial/list/calendar.twig',
     'calendar/partial/list/calendar-community'  => __DIR__ . '//view/calendar/partial/list/calendar-community.twig',
     'calendar/partial/form/calendar'            => __DIR__ . '//view/calendar/partial/form/calendar.twig',

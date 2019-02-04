@@ -81,100 +81,60 @@ class Contact extends AbstractEntity
         return (string)$this->role;
     }
 
-    /**
-     * @return int
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Contact
-     */
-    public function setId($id)
+    public function setId($id): Contact
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return ContactRole
-     */
-    public function getRole()
+    public function getRole(): ?ContactRole
     {
         return $this->role;
     }
 
-    /**
-     * @param ContactRole $role
-     *
-     * @return Contact
-     */
-    public function setRole($role)
+    public function setRole($role): Contact
     {
         $this->role = $role;
 
         return $this;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): ?Calendar
     {
         return $this->calendar;
     }
 
-    /**
-     * @param Calendar $calendar
-     *
-     * @return Contact
-     */
-    public function setCalendar($calendar)
+    public function setCalendar($calendar): Contact
     {
         $this->calendar = $calendar;
 
         return $this;
     }
 
-    /**
-     * @return ContactStatus
-     */
-    public function getStatus()
+    public function getStatus(): ?ContactStatus
     {
         return $this->status;
     }
 
-    /**
-     * @param ContactStatus $status
-     *
-     * @return Contact
-     */
-    public function setStatus($status)
+    public function setStatus($status): Contact
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * @return \Contact\Entity\Contact
-     */
-    public function getContact()
+    public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }
 
-    /**
-     * @param \Contact\Entity\Contact $contact
-     *
-     * @return Contact
-     */
-    public function setContact($contact)
+    public function setContact($contact): Contact
     {
         $this->contact = $contact;
 

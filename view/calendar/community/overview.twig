@@ -35,10 +35,10 @@
             <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
-                    <th colspan="2">{% include 'calendar/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'date', 'text': translate('txt-date')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'name', 'text': translate('txt-name')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'location', 'text': translate('txt-location')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'type', 'text': translate('txt-type')} %}</th>
+                    <th colspan="2">{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'date', 'text': translate('txt-date')} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'name', 'text': translate('txt-name')} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'location', 'text': translate('txt-location')} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'type', 'text': translate('txt-type')} %}</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -74,7 +74,7 @@
                 </tbody>
             </table>
 
-            {% include 'calendar/partial/pagination-control' with {'paginator': paginator} %}
+            {% include 'application/partial/pagination-control' with {'paginator': paginator} %}
         {% else %}
             {{ ztbalert().info(translate("txt-no-calendar-found"))|raw }}
         {% endif %}

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Calendar\Form;
 
 use Contact\Entity\Selection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use DoctrineORMModule\Form\Element\EntitySelect;
 use Zend\Form\Form;
@@ -24,13 +23,8 @@ use Zend\Form\Form;
  *
  * @package Calendar\Form
  */
-class CalendarContacts extends Form
+final class CalendarContacts extends Form
 {
-    /**
-     * CalendarContacts constructor.
-     *
-     * @param EntityManager $entityManager
-     */
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
@@ -40,21 +34,24 @@ class CalendarContacts extends Form
 
         $this->add(
             [
-                'type'    => EntitySelect::class,
-                'name'    => 'selection',
-                'options' => [
+                'type'       => EntitySelect::class,
+                'name'       => 'selection',
+                'options'    => [
                     'target_class'   => Selection::class,
                     'object_manager' => $entityManager,
-                    'label'          => _("txt-form-calendar-contacts-selection-label"),
                     'help-block'     => _("txt-form-calendar-contacts-selection-help-block"),
                     'find_method'    => [
-                        'name'   => 'findBy',
+                        'name'   => 'findActive',
                         'params' => [
                             'criteria' => [],
-                            'orderBy'  => ['id' => Criteria::DESC],
+                            'orderBy'  => [],
                         ],
                     ],
                 ],
+                'attributes' => [
+                    'id'    => 'selection',
+                    'class' => 'form-control'
+                ]
             ]
         );
 

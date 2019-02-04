@@ -20,12 +20,8 @@ use Zend\InputFilter\InputFilterProviderInterface;
 /**
  *
  */
-class SelectAttendee extends Form implements InputFilterProviderInterface
+final class SelectAttendee extends Form implements InputFilterProviderInterface
 {
-    /**
-     * @param Calendar $calendar
-     * @param ContactService $contactService
-     */
     public function __construct(Calendar $calendar, ContactService $contactService)
     {
         parent::__construct();
@@ -83,12 +79,6 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         );
     }
 
-    /**
-     * Should return an array specification compatible with
-     * {@link Zend\InputFilter\Factory::createInputFilter()}.
-     *
-     * @return array
-     */
     public function getInputFilterSpecification(): array
     {
         return [

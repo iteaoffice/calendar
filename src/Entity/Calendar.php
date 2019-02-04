@@ -235,7 +235,7 @@ class Calendar extends AbstractEntity
      */
     private $contact;
     /**
-     * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="calendar")
+     * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
      * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
      */
@@ -278,6 +278,7 @@ class Calendar extends AbstractEntity
         $this->highlight = self::NO_HIGHLIGHT;
         $this->ownEvent = self::NO_OWN_EVENT;
         $this->present = self::NOT_PRESENT;
+        $this->final = self::FINAL_FINAL;
     }
 
     public static function getFinalTemplates(): array

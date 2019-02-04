@@ -3,7 +3,7 @@
 
 {% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
 
-<h1>{{ translate("txt-%s-events")|format(which) }}
+<h1>{{ translate("txt-%s-events")|format(which)|capitalize }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'all') }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'past') }}
     {{ calendarLink(null,'overview-admin','button', null, null, null, 'upcoming') }}
@@ -13,116 +13,76 @@
 {{ form().openTag(form)|raw }}
 
 
-<div class="row">
-    <div class="col-md-10">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="lead">{{ translate("txt-calendar-overview-explanation") }}</p>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    {{ formelement(form.get('query')) }}
-                    <div class="input-group-append input-group-btn">
-                        {{ formelement(form.get('search')) }}
-                        {{ formelement(form.get('reset')) }}
-                    </div>
-                </div>
-                <p class="text-muted">{{ translate("txt-%s-items-on-%s-pages")|format(paginator.adapter.count,paginator.pageRange) }}</p>
-            </div>
-        </div>
+{{ filterbarelement(form) }}
+{% include('application/partial/form-badges') %}
+<p class="text-muted">{{ translate("txt-%s-items-on-%s-pages")|format(paginator.adapter.count,paginator.pageRange) }}</p>
 
-        {% if paginator.pageRange > 0 %}
-            <table class="table table-hover table-striped table-sm">
-                <thead>
-                <tr>
-                    <th colspan="2">{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'date', 'text': translate('txt-date')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'name', 'text': translate('txt-name')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'location', 'text': translate('txt-location')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'type', 'text': translate('txt-type')} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'highlight', 'text': 'H'} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'own-event', 'text': 'O'} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'is_present', 'text': 'P'} %}</th>
-                    <th>{% include 'calendar/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'on_homepage', 'text': 'F'} %}</th>
+{% if paginator.pageRange > 0 %}
+    <table class="table table-hover table-striped table-sm">
+        <thead>
+        <tr>
+            <th colspan="2">{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'date', 'text': translate('txt-date')} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'name', 'text': translate('txt-name')} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'location', 'text': translate('txt-location')} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'type', 'text': translate('txt-type')} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'highlight', 'text': 'H'} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'own-event', 'text': 'O'} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'is_present', 'text': 'P'} %}</th>
+            <th>{% include 'application/partial/sortable-table-header' with {'route': 'zfcadmin/calendar/overview', 'criteria': 'on_homepage', 'text': 'F'} %}</th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for result in paginator.getCurrentItems() %}
+            {% if result.fields['calendar_id'] %}
+
+                {% set calendar = calendarService.findCalendarById(result.fields['calendar_id']) %}
+
+                {% set calendarHasContact = calendarService.calendarHasContact(calendar, identity()) %}
+                <tr {% if calendarHasContact %}class="active"{% endif %}>
+                    <td>
+                        {% if calendarHasContact %}<i class="fa fa-user text-itea"></i>{% endif %}
+                    </td>
+                    <td>{% if not result.fields.final %}<i class="fa fa-question-circle-o" aria-hidden="true"
+                                                           title="{{ translate("txt-event-is-tentative") }}"></i>{% endif %}
+                        {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+                    <td>{{ calendarLink(calendar,'view-admin', 'name') }}</td>
+                    <td>{{ calendar.location }}</td>
+                    <td><i class="fa fa-calendar-o {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
+                    <td>{% if result.fields.highlight %}<i class="fa fa-check text-success"
+                                                           title="{{ translate("txt-event-is-highlight") }}"></i>{% endif %}
+                    </td>
+                    <td>{% if result.fields.own_event %}<i class="fa fa-check text-success"
+                                                           title="{{ translate("txt-is-own-event") }}"></i>{% endif %}
+                    </td>
+                    <td>{% if result.fields.is_present %}<i class="fa fa-check text-success"
+                                                            title="{{ translate("txt-office-is-present") }}"></i>{% endif %}
+                    </td>
+                    <td>{% if result.fields.on_homepage %}<i class="fa fa-check text-success"
+                                                             title="{{ translate("txt-event-on-frontpage") }}"></i>{% endif %}
+                    </td>
+
+
                 </tr>
-                </thead>
-                <tfoot>
-                </tfoot>
-                <tbody>
-                {% for result in paginator.getCurrentItems() %}
-                    {% if result.fields['calendar_id'] %}
+            {% else %}
+                <tr>
+                    <td></td>
+                    <td>{{ result.fields.date_from|solr_date('d M Y') }}</td>
+                    <td>{{ result.fields.calendar }}</td>
+                    <td>{{ result.fields.location }}</td>
+                    <td>{{ result.fields.type }}</td>
+                    <td colspan="4"></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
 
-                        {% set calendar = calendarService.findCalendarById(result.fields['calendar_id']) %}
+    {% include 'application/partial/pagination-control' with {'paginator': paginator} %}
+{% else %}
+    {{ ztbalert().info(translate("txt-no-calendar-found"))|raw }}
+{% endif %}
 
-                        {% set calendarHasContact = calendarService.calendarHasContact(calendar, identity()) %}
-                        <tr {% if calendarHasContact %}class="active"{% endif %}>
-                            <td>
-                                {% if calendarHasContact %}<i class="fa fa-user text-itea"></i>{% endif %}
-                            </td>
-                            <td>{% if not result.fields.final %}<i class="fa fa-question-circle-o" aria-hidden="true" title="{{ translate("txt-event-is-tentative") }}"></i>{% endif %}
-                                {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
-                            <td>{{ calendarLink(calendar,'view-admin', 'name') }}</td>
-                            <td>{{ calendar.location }}</td>
-                            <td><i class="fa fa-calendar-o {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
-                            <td>{% if result.fields.highlight %}<i class="fa fa-check text-success"
-                                                                   title="{{ translate("txt-event-is-highlight") }}"></i>{% endif %}
-                            </td>
-                            <td>{% if result.fields.own_event %}<i class="fa fa-check text-success"
-                                                                   title="{{ translate("txt-is-own-event") }}"></i>{% endif %}
-                            </td>
-                            <td>{% if result.fields.is_present %}<i class="fa fa-check text-success"
-                                                                    title="{{ translate("txt-office-is-present") }}"></i>{% endif %}
-                            </td>
-                            <td>{% if result.fields.on_homepage %}<i class="fa fa-check text-success"
-                                                                     title="{{ translate("txt-event-on-frontpage") }}"></i>{% endif %}
-                            </td>
-
-
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td></td>
-                            <td>{{ result.fields.date_from|solr_date('d M Y') }}</td>
-                            <td>{{ result.fields.calendar }}</td>
-                            <td>{{ result.fields.location }}</td>
-                            <td>{{ result.fields.type }}</td>
-                            <td colspan="4"></td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-
-            {% include 'calendar/partial/pagination-control' with {'paginator': paginator} %}
-        {% else %}
-            {{ ztbalert().info(translate("txt-no-calendar-found"))|raw }}
-        {% endif %}
-    </div>
-    <div class="col-md-2">
-        <div class="well well-sm">
-            {% set facets = form.get('facet') %}
-            {% for facet in facets %}
-                {{ ztbformelement(facet, true) }}
-            {% endfor %}
-        </div>
-    </div>
-</div>
 
 {{ form().closeTag()|raw }}
-
-<script type="text/javascript">
-    $(function () {
-        $('input[type="checkbox"]').on('click', function () {
-            $('#search').submit();
-        });
-        $('#searchButton').on('click', function () {
-            $('#search').submit();
-        });
-        $('#resetButton').on('click', function () {
-            $('input[type="checkbox"]').each(function () {
-                this.removeAttribute('checked');
-            });
-            $('input[name="query"]').val('');
-            $('#search').submit();
-        });
-    });
-</script>

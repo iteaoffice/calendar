@@ -28,38 +28,38 @@
         <table class="table table-hover table-striped table-sm" id="incalendar"></table>
 
 
-        <input type="button" class="btn" onclick="Calendar.SelectAll()" value="{{ translate("txt-select-all") }}">
-        <input type="button" class="btn" onclick="Calendar.Remove()" value="{{ translate("txt-remove") }}">
-        <input type="button" class="btn" onclick="Calendar.Reset()" value="{{ translate("txt-reset") }}">
+        <input type="button" class="btn btn-outline-info" onclick="Calendar.SelectAll()" value="{{ translate("txt-select-all") }}">
+        <input type="button" class="btn btn-outline-warning" onclick="Calendar.Remove()" value="{{ translate("txt-remove") }}">
+        <input type="button" class="btn btn-outline-danger" onclick="Calendar.Reset()" value="{{ translate("txt-reset") }}">
     </div>
 
     <div class="col-md-6">
         <h2>{{ translate("txt-choose-contacts") }}</h2>
 
-        <div class="input-group">
-            {{ formelement(form.get('selection'),"%s%s%s") }}
-            <span class="input-group-btn">
-        <input type="button" class="btn btn-primary"
-               onclick="selectionSearch(document.getElementById('selection').value)"
-               value="GET">
-      </span>
-        </div>
-        <br>
-        <div class="input-group">
-            <input type="text" id="searchstring" class="form-control">
-            <span class="input-group-btn">
-        <input type="button" class="btn btn-primary" onclick="wildSearch(document.getElementById('searchstring').value)"
-               value="GET">
-      </span>
+        <div class="input-group mb-3">
+            {{ formelement(form.get('selection')) }}
+            <div class="input-group-append">
+                <input type="button" class="btn btn-outline-primary"
+                       onclick="selectionSearch(document.getElementById('selection').value)"
+                       value="Get selection">
+            </div>
         </div>
 
+        <div class="input-group">
+            <input type="text" id="searchstring" placeholder="Search ..." class="form-control">
+            <div class="input-group-append">
+                <input type="button" class="btn btn-outline-primary"
+                       onclick="wildSearch(document.getElementById('searchstring').value)"
+                       value="Search">
+            </div>
+        </div>
 
-        <h3>{{ translate("txt-search-results") }}</h3>
+        <h2>{{ translate("txt-search-results") }}</h2>
         <table class="table table-hover table-striped table-sm" id="contacts"></table>
 
 
-        <input type="button" class="btn" onclick="Contacts.SelectAll()" value="{{ translate("txt-select-all") }}">
-        <input type="button" class="btn" onclick="Contacts.MoveTo(Calendar)" value="{{ translate("txt-add") }}">
+        <input type="button" class="btn btn-outline-info" onclick="Contacts.SelectAll()" value="{{ translate("txt-select-all") }}">
+        <input type="button" class="btn btn-outline-success" onclick="Contacts.MoveTo(Calendar)" value="{{ translate("txt-add") }}">
     </div>
 </div>
 
@@ -127,11 +127,11 @@
                 for (var i = 0; i < this.items.length; i++) {
                     item = this.items[i];
 
-                    out += '<tr class="' + (item.selected ? 'success' : '') + (item.removed ? 'danger' : '') + '" ' +
+                    out += '<tr class="' + (item.selected || item.added ? 'table-success' : '') + (item.removed ? 'table-danger' : '') + '" ' +
                         '    id="item' + i + '" ' +
                         '    onclick="' + this.oName + '.Select(' + i + ')" ' +
                         '    >' +
-                        '<td>' + (item.added ? '*' : '') + item.displayName + '</td>' +
+                        '<td>' + (item.added ? '<i class="fa fa-plus text-primary"></i>' : '') + item.displayName + '</td>' +
                         '<td>' + item.org + '</td>' +
                         '</tr>';
                 }

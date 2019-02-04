@@ -202,15 +202,21 @@ final class ManagerController extends AbstractActionController
     {
         $project = null;
 
+        $preData = [];
+
         if (null !== $this->params('project')) {
             $project = $this->projectService->findProjectById((int)$this->params('project'));
 
             if (null === $project) {
                 return $this->notFoundAction();
             }
+
+            $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
+            $preData['calendar_entity_calendar']['type'] = 6;
         }
 
-        $data = $this->getRequest()->getPost()->toArray();
+        $data = \array_merge($preData, $this->getRequest()->getPost()->toArray());
+
         $form = $this->formService->prepare(Calendar::class, $data);
         $form->remove('delete');
 
@@ -269,6 +275,10 @@ final class ManagerController extends AbstractActionController
 
         $form = $this->formService->prepare($calendar, $data);
 
+        if (!$this->calendarService->canDeleteCalendar($calendar)) {
+            $form->remove('delete');
+        }
+
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed
@@ -279,7 +289,7 @@ final class ManagerController extends AbstractActionController
             /*
              * Return when cancel is pressed
              */
-            if (isset($data['delete'])) {
+            if (isset($data['delete']) && $this->calendarService->canDeleteCalendar($calendar)) {
                 $this->calendarService->delete($calendar);
 
                 $this->flashMessenger()->addSuccessMessage(
