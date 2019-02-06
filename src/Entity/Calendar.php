@@ -160,7 +160,7 @@ class Calendar extends AbstractEntity
      * @ORM\Column(name="highlight_description", type="text", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Textarea")
      * @Annotation\Options({"label":"txt-calendar-highlight-description-label","help-block": "txt-calendar-highlight-description-help-block"})
-     * @Annotation\Attributes({"placeholder": "txt-calendar-highlight-description-placeholder"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-highlight-description-placeholder","rows":8})
      * @var string
      */
     private $highlightDescription;

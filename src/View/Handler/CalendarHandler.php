@@ -11,10 +11,8 @@ declare(strict_types=1);
 
 namespace Calendar\View\Handler;
 
-use Calendar\Entity\Calendar;
 use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
-use Calendar\View\Helper\CalendarLink;
 use Content\Entity\Content;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
@@ -103,7 +101,14 @@ class CalendarHandler extends AbstractHandler
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
         if ($this->request->isGet()) {
-            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction'], false, $hasTerm);
+            $this->calendarSearchService->setSearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                false,
+                $hasTerm
+            );
             if (isset($data['facet'])) {
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
@@ -153,7 +158,10 @@ class CalendarHandler extends AbstractHandler
                 'order'             => $data['order'],
                 'direction'         => $data['direction'],
                 'query'             => $data['query'],
+                'badges'            => $form->getBadges(),
                 'arguments'         => http_build_query($filteredData),
+                'route'             => $this->routeMatch->getMatchedRouteName(),
+                'params'            => $this->routeMatch->getParams(),
                 'paginator'         => $paginator,
                 'page'              => $page,
                 'hasTerm'           => $hasTerm,
