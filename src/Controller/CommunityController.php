@@ -257,8 +257,6 @@ final class CommunityController extends AbstractActionController
         /** @var Response $response */
         $response = $this->getResponse();
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Disposition', 'attachment; filename="Review calendar.pdf"')
             ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
@@ -480,8 +478,7 @@ final class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderPresenceList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
@@ -510,8 +507,7 @@ final class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderSignatureList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
@@ -624,8 +620,7 @@ final class CommunityController extends AbstractActionController
         }
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Type: application/octet-stream')
