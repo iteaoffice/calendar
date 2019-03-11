@@ -39,7 +39,7 @@ class ContactRole extends AbstractEntity
         ];
 
     /**
-     * @ORM\Column(name="role_id", type="integer", nullable=false)
+     * @ORM\Column(name="role_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Type("\Zend\Form\Element\Hidden")
@@ -48,7 +48,7 @@ class ContactRole extends AbstractEntity
      */
     private $id;
     /**
-     * @ORM\Column(name="role", type="string", length=45, nullable=false)
+     * @ORM\Column(name="role", type="string", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-contact-role-role-label","help-block": "txt-calendar-contact-role-role-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-contact-role-role-placeholder"})     *

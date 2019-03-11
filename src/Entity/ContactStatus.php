@@ -28,7 +28,7 @@ class ContactStatus extends AbstractEntity
     public const STATUS_ACCEPT = 2;
     public const STATUS_DECLINE = 3;
     /**
-     * @ORM\Column(name="status_id", type="integer", nullable=false)
+     * @ORM\Column(name="status_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Type("\Zend\Form\Element\Hidden")
@@ -46,7 +46,7 @@ class ContactStatus extends AbstractEntity
      */
     private $status;
     /**
-     * @ORM\Column(name="status_change", type="string", length=45, nullable=false)
+     * @ORM\Column(name="status_change", type="string", nullable=false)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-contact-status-status-change-label","help-block": "txt-calendar-contact-status-status-change-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-contact-status-status-change-placeholder"})

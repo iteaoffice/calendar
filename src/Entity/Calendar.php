@@ -69,7 +69,7 @@ class Calendar extends AbstractEntity
             self::PRESENT     => 'txt-office-present'
         ];
     /**
-     * @ORM\Column(name="calendar_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()
@@ -85,7 +85,7 @@ class Calendar extends AbstractEntity
      */
     private $calendar;
     /**
-     * @ORM\Column(name="location", type="string", length=255, nullable=true)
+     * @ORM\Column(name="location", type="string", nullable=true)
      * @Annotation\Type("\Zend\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-location-label","help-block": "txt-calendar-location-help-block"})
      * @Annotation\Attributes({"placeholder": "txt-calendar-location-placeholder"})
@@ -93,7 +93,7 @@ class Calendar extends AbstractEntity
      */
     private $location;
     /**
-     * @ORM\Column(name="docref", type="string", length=255, nullable=false, unique=true)
+     * @ORM\Column(name="docref", type="string", nullable=false, unique=true)
      * @Gedmo\Slug(fields={"calendar","location"})
      * @Annotation\Exclude()
      * @var string

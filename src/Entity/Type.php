@@ -26,7 +26,7 @@ use Zend\Form\Annotation;
 class Type extends AbstractEntity
 {
     /**
-     * @ORM\Column(name="type_id", type="integer", nullable=false)
+     * @ORM\Column(name="type_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Type("\Zend\Form\Element\Hidden")

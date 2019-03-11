@@ -27,7 +27,7 @@ use Zend\Form\Annotation;
 class Document extends AbstractEntity
 {
     /**
-     * @ORM\Column(name="document_id", type="integer", nullable=false)
+     * @ORM\Column(name="document_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
@@ -42,7 +42,7 @@ class Document extends AbstractEntity
      */
     private $dateCreated;
     /**
-     * @ORM\Column(name="document", type="string", length=60, nullable=false)
+     * @ORM\Column(name="document", type="string", nullable=false)
      *
      * @var string
      */
@@ -99,44 +99,21 @@ class Document extends AbstractEntity
         $this->size = 0;
     }
 
-    /**
-     * Magic Getter.
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
     public function __get($property)
     {
         return $this->$property;
     }
 
-    /**
-     * Magic Setter.
-     *
-     * @param $property
-     * @param $value
-     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
-    /**
-     * @param $property
-     *
-     * @return bool
-     */
     public function __isset($property)
     {
         return isset($this->$property);
     }
 
-    /**
-     * Parse a filename.
-     *
-     * @return string
-     */
     public function parseFileName(): string
     {
         /**
@@ -158,9 +135,6 @@ class Document extends AbstractEntity
         );
     }
 
-    /**
-     * @return ContentType|null
-     */
     public function getContentType(): ?ContentType
     {
         return $this->contentType;

@@ -25,7 +25,7 @@ class Contact extends AbstractEntity
     public const STATUS_ALL = 1;
     public const STATUS_NO_DECLINED = 2;
     /**
-     * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_contact_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
