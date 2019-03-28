@@ -54,7 +54,7 @@ class Document extends AbstractEntity
      */
     private $size;
     /**
-     * @ORM\Column(name="date_updated", type="datetime", nullable=false)
+     * @ORM\Column(name="date_updated", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
