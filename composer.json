@@ -10,7 +10,7 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://packages.itea3.eu"
+      "url": "https://packages.itea4.org"
     }
   ],
   "authors": [
