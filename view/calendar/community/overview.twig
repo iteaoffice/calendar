@@ -4,9 +4,9 @@
 {% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
 
 <h1>{{ translate("txt-%s-events")|format(which|capitalize) }}
-    {{ calendarLink(null,'overview','button', null, null, null, 'all') }}
-    {{ calendarLink(null,'overview','button', null, null, null, 'past') }}
-    {{ calendarLink(null,'overview','button', null, null, null, 'upcoming') }}
+    {{ calendarLink(null,'overview','button', 'all') }}
+    {{ calendarLink(null,'overview','button', 'past') }}
+    {{ calendarLink(null,'overview','button', 'upcoming') }}
     {{ calendarLink(null,'new','button') }}</h1>
 
 {% do form.prepare() %}

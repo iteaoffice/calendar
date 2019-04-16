@@ -42,6 +42,10 @@ return [
             CalendarService::class,
             TwigRenderer::class
         ],
+        Controller\TypeController::class                   => [
+            CalendarService::class,
+            FormService::class
+        ],
         Controller\CommunityController::class              => [
             CalendarService::class,
             CalendarSearchService::class,

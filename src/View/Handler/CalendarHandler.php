@@ -22,13 +22,18 @@ use Zend\Mvc\Application;
 use Zend\Paginator\Paginator;
 use Zend\View\HelperPluginManager;
 use ZfcTwig\View\TwigRenderer;
+use function array_filter;
+use function count;
+use function http_build_query;
+use function in_array;
+use function sprintf;
 
 /**
  * Class CalendarHandler
  *
  * @package Calendar\View\Handler
  */
-class CalendarHandler extends AbstractHandler
+final class CalendarHandler extends AbstractHandler
 {
     public const LIMIT = 10;
     /**
@@ -61,8 +66,6 @@ class CalendarHandler extends AbstractHandler
 
     public function __invoke(Content $content): ?string
     {
-        $params = $this->extractContentParam($content);
-
         switch ($content->getHandler()->getHandler()) {
             case 'calendar':
             case 'calendar_past':
@@ -70,9 +73,6 @@ class CalendarHandler extends AbstractHandler
                 $this->getHeadTitle()->append($this->translate('txt-upcoming-calendar'));
 
                 return $this->parseCalendar();
-
-            case 'calendar_small':
-                return $this->parseCalendarSmall($params['limit']);
             default:
                 return sprintf(
                     'No handler available for <code>%s</code> in class <code>%s</code>',
@@ -96,7 +96,7 @@ class CalendarHandler extends AbstractHandler
             ],
             $this->request->getQuery()->toArray()
         );
-        $hasTerm = !\in_array($data['query'], ['*', ''], true) || \count($data['facet']) !== 0;
+        $hasTerm = !in_array($data['query'], ['*', ''], true) || count($data['facet']) !== 0;
 
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
@@ -145,8 +145,8 @@ class CalendarHandler extends AbstractHandler
         // Remove order and direction from the GET params to prevent duplication
         $filteredData = array_filter(
             $data,
-            function ($key) {
-                return !\in_array($key, ['order', 'direction'], true);
+            static function ($key) {
+                return !in_array($key, ['order', 'direction'], true);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -168,18 +168,6 @@ class CalendarHandler extends AbstractHandler
                 'calendarService'   => $this->calendarService,
                 'upcomingCalendar'  => $this->calendarSearchService->findUpcomingCalendar(50),
                 'highlightCalendar' => $this->calendarSearchService->findHighlightCalendar(),
-            ]
-        );
-    }
-
-
-    public function parseCalendarSmall(int $limit = self::LIMIT): string
-    {
-        return $this->renderer->render(
-            'cms/calendar/calendar-small',
-            [
-                'calendarItems'   => $this->calendarSearchService->findUpcomingCalendar($limit),
-                'calendarService' => $this->calendarService
             ]
         );
     }

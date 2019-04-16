@@ -25,6 +25,7 @@ $config = [
         'factories' => [
             Controller\CommunityController::class => ConfigAbstractFactory::class,
             Controller\CalendarController::class  => ConfigAbstractFactory::class,
+            Controller\TypeController::class      => ConfigAbstractFactory::class,
             Controller\DocumentController::class  => ConfigAbstractFactory::class,
             Controller\JsonController::class      => ConfigAbstractFactory::class,
             Controller\ManagerController::class   => ConfigAbstractFactory::class,
@@ -34,10 +35,12 @@ $config = [
         'aliases'   => [
             'renderCalendarContactList' => Controller\Plugin\RenderCalendarContactList::class,
             'renderReviewCalendar'      => Controller\Plugin\RenderReviewCalendar::class,
+            'getFilter'                 => Controller\Plugin\GetFilter::class,
         ],
         'factories' => [
             Controller\Plugin\RenderCalendarContactList::class => ConfigAbstractFactory::class,
             Controller\Plugin\RenderReviewCalendar::class      => ConfigAbstractFactory::class,
+            Controller\Plugin\GetFilter::class                 => Factory\InvokableFactory::class,
         ],
     ],
     'service_manager'    => [
@@ -63,11 +66,13 @@ $config = [
     'view_helpers'       => [
         'aliases'   => [
             'calendarDocumentLink' => View\Helper\DocumentLink::class,
+            'calendarTypeLink'     => View\Helper\TypeLink::class,
             'calendarLink'         => View\Helper\CalendarLink::class,
         ],
         'factories' => [
             View\Helper\DocumentLink::class     => View\Factory\ViewHelperFactory::class,
             View\Helper\CalendarLink::class     => View\Factory\ViewHelperFactory::class,
+            View\Helper\TypeLink::class         => View\Factory\ViewHelperFactory::class,
             View\Handler\CalendarHandler::class => ConfigAbstractFactory::class,
         ],
     ],

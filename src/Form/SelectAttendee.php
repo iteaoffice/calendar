@@ -13,12 +13,15 @@ declare(strict_types=1);
 namespace Calendar\Form;
 
 use Calendar\Entity\Calendar;
+use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
+ * Class SelectAttendee
  *
+ * @package Calendar\Form
  */
 final class SelectAttendee extends Form implements InputFilterProviderInterface
 {
@@ -30,6 +33,7 @@ final class SelectAttendee extends Form implements InputFilterProviderInterface
         $this->setAttribute('action', '');
 
         $contacts = [];
+        /** @var Contact $contact */
         foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
             $contacts[$contact->getId()] = sprintf(
                 '%s (%s, %s)',

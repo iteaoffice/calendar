@@ -25,11 +25,8 @@ use Zend\Validator\Callback;
  *
  * @package Calendar\InputFilter
  */
-class CalendarFilter extends InputFilter
+final class CalendarFilter extends InputFilter
 {
-    /**
-     * CalendarFilter constructor.
-     */
     public function __construct()
     {
         $inputFilter = new InputFilter();

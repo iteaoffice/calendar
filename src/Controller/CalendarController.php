@@ -17,6 +17,7 @@ use Calendar\Service\CalendarService;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZfcTwig\View\TwigRenderer;
+use function file_put_contents;
 
 /**
  * Class CalendarController
@@ -53,7 +54,7 @@ final class CalendarController extends AbstractActionController
             ]
         );
         //Save a copy of the file in the caching-folder
-        \file_put_contents($cacheFileName, $css);
+        file_put_contents($cacheFileName, $css);
 
         /** @var Response $response */
         $response = $this->getResponse();

@@ -27,15 +27,6 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  */
 final class ModuleOptionsFactory implements FactoryInterface
 {
-    /**
-     * Create an instance of the requested class name.
-     *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param null|array         $options
-     *
-     * @return ModuleOptions
-     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): ModuleOptions
     {
         $config = $container->get('Config');

@@ -137,11 +137,7 @@ final class CommunityController extends AbstractActionController
         $page = $this->params('page', 1);
         $which = $this->params('which', 'upcoming');
 
-        $visibleItems = $this->calendarService
-            ->findVisibleItems(
-                $this->identity()
-            );
-
+        $visibleItems = $this->calendarService->findVisibleItems($this->identity());
 
         $form = new SearchResult();
         $data = array_merge(
@@ -281,7 +277,6 @@ final class CommunityController extends AbstractActionController
 
         $form = new CreateCalendarDocument($this->entityManager);
         $form->bind(new Document());
-
 
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {

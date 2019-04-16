@@ -19,15 +19,12 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
+ * Class CreateCalendarDocument
  *
+ * @package Calendar\Form
  */
-class CreateCalendarDocument extends Form implements InputFilterProviderInterface
+final class CreateCalendarDocument extends Form implements InputFilterProviderInterface
 {
-    /**
-     * CreateCalendarDocument constructor.
-     *
-     * @param EntityManager $entityManager
-     */
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
@@ -44,12 +41,12 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'type'       => 'Zend\Form\Element\Text',
                 'name'       => 'document',
                 'options'    => [
-                    'label'      => _("txt-document-name"),
-                    'help-block' => _("txt-document-name-explanation"),
+                    'label'      => _('txt-document-name'),
+                    'help-block' => _('txt-document-name-explanation'),
                 ],
                 'attributes' => [
                     'class'       => 'form-control',
-                    'placeholder' => _("txt-please-give-a-calendar-document-name"),
+                    'placeholder' => _('txt-please-give-a-calendar-document-name'),
                 ],
             ]
         );
@@ -58,9 +55,9 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'type'    => '\Zend\Form\Element\File',
                 'name'    => 'file',
                 'options' => [
-                    "label"      => "txt-file",
+                    'label'      => 'txt-file',
                     'class'      => 'form-control',
-                    "help-block" => _("txt-calendar-document-file-help-block"),
+                    'help-block' => _('txt-calendar-document-file-help-block'),
                 ],
             ]
         );
@@ -75,8 +72,8 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-upload-document"),
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-upload-document'),
                 ],
             ]
         );
@@ -85,8 +82,8 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'delete',
                 'attributes' => [
-                    'class' => "btn btn-danger",
-                    'value' => _("txt-delete"),
+                    'class' => 'btn btn-danger',
+                    'value' => _('txt-delete'),
                 ],
             ]
         );
@@ -95,16 +92,13 @@ class CreateCalendarDocument extends Form implements InputFilterProviderInterfac
                 'type'       => 'Zend\Form\Element\Submit',
                 'name'       => 'cancel',
                 'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
                 ],
             ]
         );
     }
 
-    /**
-     * @return array
-     */
     public function getInputFilterSpecification(): array
     {
         return [

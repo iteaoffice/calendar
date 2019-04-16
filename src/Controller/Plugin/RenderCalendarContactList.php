@@ -21,6 +21,9 @@ use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
+use function array_chunk;
+use function max;
+use function count;
 
 /**
  * Class RenderCalendarContactList
@@ -32,23 +35,16 @@ class RenderCalendarContactList extends AbstractPlugin
     /**
      * @var TwigRenderer
      */
-    protected $twigRenderer;
+    private $twigRenderer;
     /**
      * @var ModuleOptions
      */
-    protected $moduleOptions;
+    private $moduleOptions;
     /**
      * @var CalendarService
      */
-    protected $calendarService;
+    private $calendarService;
 
-    /**
-     * RenderCalendarContactList constructor.
-     *
-     * @param TwigRenderer    $twigRenderer
-     * @param ModuleOptions   $moduleOptions
-     * @param CalendarService $calendarService
-     */
     public function __construct(
         TwigRenderer $twigRenderer,
         ModuleOptions $moduleOptions,
@@ -59,12 +55,6 @@ class RenderCalendarContactList extends AbstractPlugin
         $this->calendarService = $calendarService;
     }
 
-
-    /**
-     * @param Calendar $calendar
-     *
-     * @return CalendarPdf
-     */
     public function renderPresenceList(Calendar $calendar): CalendarPdf
     {
         $pdf = new CalendarPdf();
@@ -80,12 +70,9 @@ class RenderCalendarContactList extends AbstractPlugin
 
         //Create chunks of arrays per 22, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 22);
-        $minAmountOfPages = max(\count($paginatedContacts), 1);
+        $minAmountOfPages = max(count($paginatedContacts), 1);
 
         for ($i = 0; $i < $minAmountOfPages; $i++) {
-            /**
-             *
-             */
             $contactListContent = $this->twigRenderer->render(
                 'calendar/pdf/presence-list',
                 [
@@ -108,11 +95,6 @@ class RenderCalendarContactList extends AbstractPlugin
         return $pdf;
     }
 
-    /**
-     * @param Calendar $calendar
-     *
-     * @return CalendarPdf
-     */
     public function renderSignatureList(Calendar $calendar): CalendarPdf
     {
         $pdf = new CalendarPdf();
@@ -127,7 +109,7 @@ class RenderCalendarContactList extends AbstractPlugin
 
         //Create chunks of arrays per 13, as that amount fits on the screen
         $paginatedContacts = array_chunk($calendarContacts, 13);
-        $minAmountOfPages = max(\count($paginatedContacts), 2);
+        $minAmountOfPages = max(count($paginatedContacts), 2);
 
         for ($i = 0; $i < $minAmountOfPages; $i++) {
             /*

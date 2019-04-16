@@ -38,7 +38,7 @@ class CalendarPdf extends TcpdfFpdi
      */
     public function header()
     {
-        if (\is_null($this->_tplIdx)) {
+        if (null === $this->_tplIdx) {
             if (!file_exists($this->template)) {
                 throw new \InvalidArgumentException(sprintf("Template %s cannot be found", $this->template));
             }
@@ -46,22 +46,16 @@ class CalendarPdf extends TcpdfFpdi
             $this->_tplIdx = $this->importPage(1);
         }
         $this->SetTopMargin(35);
-        $this->useTemplate($this->_tplIdx, 0, 0);
-
-        //        $this->SetFont('freesans', 'N', 15);
+        $this->useTemplate($this->_tplIdx);
         $this->SetTextColor(0);
         $this->SetXY(15, 5);
     }
 
-    public function footer()
+    public function footer(): void
     {
-        // emtpy method body
     }
 
-    /**
-     * @param $template
-     */
-    public function setTemplate($template)
+    public function setTemplate(string $template): void
     {
         $this->template = $template;
     }

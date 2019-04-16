@@ -20,11 +20,8 @@ use Zend\InputFilter\InputFilterProviderInterface;
  *
  * @package Calendar\Form
  */
-class SendMessage extends Form implements InputFilterProviderInterface
+final class SendMessage extends Form implements InputFilterProviderInterface
 {
-    /**
-     * SendMessage constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -76,12 +73,6 @@ class SendMessage extends Form implements InputFilterProviderInterface
         );
     }
 
-    /**
-     * Should return an array specification compatible with
-     * {@link Zend\InputFilter\Factory::createInputFilter()}.
-     *
-     * @return array
-     */
     public function getInputFilterSpecification(): array
     {
         return [

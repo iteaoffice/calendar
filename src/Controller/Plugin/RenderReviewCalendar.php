@@ -29,29 +29,18 @@ class RenderReviewCalendar extends AbstractPlugin
     /**
      * @var TwigRenderer
      */
-    protected $twigRenderer;
+    private $twigRenderer;
     /**
      * @var ModuleOptions
      */
-    protected $moduleOptions;
+    private $moduleOptions;
 
-    /**
-     * RenderReviewCalendar constructor.
-     *
-     * @param TwigRenderer  $twigRenderer
-     * @param ModuleOptions $moduleOptions
-     */
     public function __construct(TwigRenderer $twigRenderer, ModuleOptions $moduleOptions)
     {
         $this->twigRenderer = $twigRenderer;
         $this->moduleOptions = $moduleOptions;
     }
 
-    /**
-     * @param array $calendarItems
-     *
-     * @return CalendarPdf
-     */
     public function __invoke(array $calendarItems): CalendarPdf
     {
         $pdf = new CalendarPdf();
@@ -61,9 +50,6 @@ class RenderReviewCalendar extends AbstractPlugin
         $pdf->AddPage();
         $pdf->SetFont('freesans', '', 12);
 
-        /*
-         * Use the NDA object to render the filename
-         */
         $contactListContent = $this->twigRenderer->render(
             'calendar/pdf/review-calendar',
             [

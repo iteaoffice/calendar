@@ -1,110 +1,57 @@
 <?php
 
 /**
- * ITEA Office all rights reserved
+ * Jield copyright message placeholder.
  *
- * @category   Calendar
+ * @category    Admin
  *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @author      Johan van der Heide <info@jield.nl>
+ * @copyright   Copyright (c) 2004-2015 Jield (http://jield.nl)
  */
 
 declare(strict_types=1);
 
 namespace Calendar\View\Helper;
 
-use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
-use Calendar\Entity;
+use Calendar\Acl\Assertion;
+use Calendar\Entity\Document;
+use function sprintf;
 
 /**
  * Class DocumentLink
  *
  * @package Calendar\View\Helper
  */
-class DocumentLink extends LinkAbstract
+final class DocumentLink extends AbstractLink
 {
-    /**
-     * @var Entity\Document
-     */
-    protected $document;
+    public function __invoke(Document $document, string $action = 'view', string $show = 'name'): string
+    {
+        $this->reset();
 
-    /**
-     * @param Entity\Document $document
-     * @param string $action
-     * @param string $show
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function __invoke(
-        Entity\Document $document = null,
-        $action = 'view',
-        $show = 'text'
-    ) {
-        $this->setDocument($document);
-        $this->setAction($action);
-        $this->setShow($show);
-
-        /**LiLik
-         * Set the non-standard options needed to give an other link value
-         */
-        $this->setShowOptions(
-            [
-
-                'name' => $this->getDocument()->getDocument(),
-            ]
-        );
-
-        /*
-         * Check the access to the object
-         */
-        if (!$this->hasAccess(
-            $this->getDocument(),
-            CalendarDocumentAssertion::class,
-            $this->getAction()
-        )
-        ) {
+        if (!$this->hasAccess($document, Assertion\Document::class, $action)) {
             return '';
         }
 
-        $this->addRouterParam('id', $this->getDocument()->getId());
+        $this->extractLinkContentFromEntity($document, ['document']);
+        $this->extractRouterParams($document, ['id']);
 
-        return $this->createLink();
+
+        $this->parseAction($action, $document);
+
+        return $this->createLink($show);
     }
 
-    /**
-     * @return Entity\Document
-     */
-    public function getDocument()
+    private function parseAction(string $action, Document $document): void
     {
-        if (\is_null($this->document)) {
-            $this->document = new Entity\Document();
-        }
+        $this->action = $action;
 
-        return $this->document;
-    }
-
-    /**
-     * @param Entity\Document $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
-    }
-
-    /**
-     * Parse te action and fill the correct parameters.
-     */
-    public function parseAction(): void
-    {
-        switch ($this->getAction()) {
+        switch ($action) {
             case 'document-community':
                 $this->setRouter('community/calendar/document/document');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-view-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
+                        $document
                     )
                 );
                 break;
@@ -113,7 +60,7 @@ class DocumentLink extends LinkAbstract
                 $this->setText(
                     sprintf(
                         $this->translate("txt-edit-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
+                        $document
                     )
                 );
                 break;
@@ -122,7 +69,7 @@ class DocumentLink extends LinkAbstract
                 $this->setText(
                     sprintf(
                         $this->translate("txt-view-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
+                        $document
                     )
                 );
                 break;
@@ -131,31 +78,20 @@ class DocumentLink extends LinkAbstract
                 $this->setText(
                     sprintf(
                         $this->translate("txt-edit-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
+                        $document
                     )
                 );
                 break;
             case 'download':
-                $this->addRouterParam(
-                    'filename',
-                    $this->getDocument()->parseFileName()
-                );
+                $this->addRouteParam('filename', $document->parseFileName());
                 $this->setRouter('community/calendar/document/download');
                 $this->setText(
                     sprintf(
                         $this->translate("txt-download-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
+                        $document
                     )
                 );
                 break;
-            default:
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        "%s is an incorrect action for %s",
-                        $this->getAction(),
-                        __CLASS__
-                    )
-                );
         }
     }
 }
