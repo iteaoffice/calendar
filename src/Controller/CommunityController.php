@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Calendar\Controller;
 
 use Application\Service\AssertionService;
+use function array_merge_recursive;
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Controller\Plugin\RenderCalendarContactList;
 use Calendar\Controller\Plugin\RenderReviewCalendar;
@@ -26,10 +27,17 @@ use Calendar\Form\SelectAttendee;
 use Calendar\Form\SendMessage;
 use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
+use function ceil;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
+use function file_exists;
+use function file_get_contents;
+use function filesize;
 use General\Service\EmailService;
 use General\Service\GeneralService;
+use function http_build_query;
+use function implode;
+use function nl2br;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
@@ -37,6 +45,10 @@ use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use setasign\Fpdi\TcpdfFpdi;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use function sprintf;
+use function strlen;
+use function sys_get_temp_dir;
+use function unlink;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\TranslatorInterface;
@@ -47,6 +59,7 @@ use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
 use Zend\View\Model\ViewModel;
+use ZipArchive;
 
 /**
  * Class CalendarCommunityController
@@ -172,12 +185,12 @@ final class CommunityController extends AbstractActionController
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
                     foreach ($values as $value) {
-                        $quotedValues[] = \sprintf('"%s"', $value);
+                        $quotedValues[] = sprintf('"%s"', $value);
                     }
 
                     $this->searchService->addFilterQuery(
                         $facetField,
-                        \implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                        implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
                     );
                 }
             }
@@ -194,7 +207,7 @@ final class CommunityController extends AbstractActionController
         );
         $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
-        $paginator->setPageRange(\ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
+        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
 
         return new ViewModel(
             [
@@ -203,7 +216,7 @@ final class CommunityController extends AbstractActionController
                 'direction'       => $data['direction'],
                 'query'           => $data['query'],
                 'badges'          => $form->getBadges(),
-                'arguments'       => \http_build_query($form->getFilteredData()),
+                'arguments'       => http_build_query($form->getFilteredData()),
                 'paginator'       => $paginator,
                 'calendarService' => $this->calendarService,
                 'which'           => $which
@@ -256,7 +269,7 @@ final class CommunityController extends AbstractActionController
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Disposition', 'attachment; filename="Review calendar.pdf"')
             ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
-            ->addHeaderLine('Content-Length', \strlen($reviewCalendar->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
 
         return $response;
@@ -270,7 +283,7 @@ final class CommunityController extends AbstractActionController
             return $this->notFoundAction();
         }
 
-        $data = \array_merge_recursive(
+        $data = array_merge_recursive(
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()
         );
@@ -480,7 +493,7 @@ final class CommunityController extends AbstractActionController
                 'attachment; filename="Presence list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
         $response->setContent($presenceList->getPDFData());
 
         return $response;
@@ -509,7 +522,7 @@ final class CommunityController extends AbstractActionController
                 'attachment; filename="Signature list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
         $response->setContent($presenceList->getPDFData());
 
         return $response;
@@ -546,7 +559,7 @@ final class CommunityController extends AbstractActionController
                 $this->emailService->addTo($calendarContact->getContact());
             }
 
-            $this->emailService->setTemplateVariable('message', \nl2br($form->getData()['message']));
+            $this->emailService->setTemplateVariable('message', nl2br($form->getData()['message']));
             $this->emailService->setTemplateVariable('calendar', $calendar->getCalendar());
             $this->emailService->setTemplateVariable('sender_name', $this->identity()->parseFullName());
 
@@ -597,12 +610,12 @@ final class CommunityController extends AbstractActionController
         /*
          * throw the filename away
          */
-        if (\file_exists(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
-            \unlink(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
+        if (file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
+            unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
         }
 
-        $zip = new \ZipArchive();
-        $res = $zip->open(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName, \ZipArchive::CREATE);
+        $zip = new ZipArchive();
+        $res = $zip->open(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName, ZipArchive::CREATE);
 
         if ($res === true) {
             foreach ($calendar->getDocument() as $document) {
@@ -619,8 +632,8 @@ final class CommunityController extends AbstractActionController
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Type: application/octet-stream')
-            ->addHeaderLine('Content-Length: ' . \filesize(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
-        $response->setContent(\file_get_contents(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+            ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+        $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
 
         return $response;
     }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Calendar\Service;
 
+use Admin\Service\AdminService;
 use Calendar\Entity;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
@@ -51,6 +52,10 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
      */
     private $callService;
     /**
+     * @var AdminService
+     */
+    private $adminService;
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -61,6 +66,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         CalendarSearchService $calendarSearchService,
         ContactService $contactService,
         CallService $callService,
+        AdminService $adminService,
         TranslatorInterface $translator
     ) {
         parent::__construct($entityManager, $selectionContactService);
@@ -68,6 +74,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $this->calendarSearchService = $calendarSearchService;
         $this->contactService = $contactService;
         $this->callService = $callService;
+        $this->adminService = $adminService;
         $this->translator = $translator;
     }
 
@@ -340,7 +347,10 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $contact
         );
 
-        return $repository->filterForAccess($calendarItems, $contact, $limitQueryBuilder);
+        //Find the roles of the contact
+        $roles = $this->adminService->findAccessRolesByContactAsArray($contact);
+
+        return $repository->filterForAccess($calendarItems, $roles, $limitQueryBuilder);
     }
 
     public function findVisibleItems(Contact $contact): array
@@ -354,7 +364,9 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $contact
         );
 
-        return $repository->findVisibleItems($contact, $limitQueryBuilder);
+        $roles = $this->adminService->findAccessRolesByContactAsArray($contact);
+
+        return $repository->findVisibleItems($roles, $limitQueryBuilder);
     }
 
     public function findCalendarByProject(Project $project, $onlyFinal = true): array

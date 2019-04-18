@@ -14,9 +14,11 @@ namespace Calendar\Repository;
 use Admin\Entity\Access;
 use Calendar\Entity;
 use Contact\Entity\Contact;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Project\Entity\Project;
+use function strtolower;
 
 /**
  * Class Calendar
@@ -36,7 +38,7 @@ final class Calendar extends EntityRepository
         if ($upcoming) {
             $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
             $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-            $qb->setParameter(1, new \DateTime());
+            $qb->setParameter(1, new DateTime());
             $qb->andWhere('calendar_entity_calendar.final = ?3');
             $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
         }
@@ -44,7 +46,7 @@ final class Calendar extends EntityRepository
         if ($reviews) {
             $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
             $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-            $qb->setParameter(1, new \DateTime());
+            $qb->setParameter(1, new DateTime());
             $qb->andWhere('calendar_entity_calendar.final = ?3');
             $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
@@ -68,7 +70,7 @@ final class Calendar extends EntityRepository
         $qb->andWhere('pc.project = :project');
         $qb->andWhere('calendar_entity_calendar.dateEnd < ?1');
         $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
-        $qb->setParameter(1, new \DateTime());
+        $qb->setParameter(1, new DateTime());
         $qb->andWhere('calendar_entity_calendar.final = ?3');
         $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
         $qb->setParameter('project', $project);
@@ -78,7 +80,7 @@ final class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function findNextProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
+    public function findNextProjectCalendar(Project $project, DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
@@ -99,7 +101,7 @@ final class Calendar extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function findPreviousProjectCalendar(Project $project, \DateTime $dateTime): ?Entity\Calendar
+    public function findPreviousProjectCalendar(Project $project, DateTime $dateTime): ?Entity\Calendar
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar');
@@ -129,21 +131,21 @@ final class Calendar extends EntityRepository
         $qb->join('calendar_entity_calendar_type.access', 'admin_entity_access');
         $qb->andWhere('admin_entity_access.access = :access');
         $qb->andWhere('calendar_entity_calendar = :calendar');
-        $qb->setParameter('access', \strtolower(Access::ACCESS_PUBLIC));
+        $qb->setParameter('access', strtolower(Access::ACCESS_PUBLIC));
         $qb->setParameter('calendar', $calendar);
 
         return null !== $qb->getQuery()->getOneOrNullResult();
     }
 
     public function findVisibleItems(
-        Contact $contact,
+        array $roles,
         QueryBuilder $limitQueryBuilder
     ): array {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('calendar_entity_calendar.id');
         $qb->from(Entity\Calendar::class, 'calendar_entity_calendar');
 
-        $qb = $this->filterForAccess($qb, $contact, $limitQueryBuilder);
+        $qb = $this->filterForAccess($qb, $roles, $limitQueryBuilder);
 
         $hiddenElements = [];
         foreach ($qb->getQuery()->getArrayResult() as $element) {
@@ -155,7 +157,7 @@ final class Calendar extends EntityRepository
 
     public function filterForAccess(
         QueryBuilder $qb,
-        Contact $contact,
+        array $roles,
         QueryBuilder $limitQueryBuilder
     ): QueryBuilder {
         //Filter based on the type access type
@@ -163,13 +165,7 @@ final class Calendar extends EntityRepository
         $subSelect->select('calendar_entity_calendar_type');
         $subSelect->from(Entity\Type::class, 'calendar_entity_calendar_type');
         $subSelect->join('calendar_entity_calendar_type.access', 'admin_entity_access');
-        $subSelect->andWhere(
-            $qb->expr()
-                ->in(
-                    'admin_entity_access.access',
-                    \array_merge([\strtolower(Access::ACCESS_PUBLIC)], $contact->getRoles())
-                )
-        );
+        $subSelect->andWhere($qb->expr()->in('admin_entity_access.access', $roles));
 
         $qb->andWhere(
             $qb->expr()->orX(

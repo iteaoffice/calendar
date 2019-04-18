@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace Calendar;
 
+use Admin\Service\AdminService;
 use Application\Service\AssertionService;
 use Calendar\Options\ModuleOptions;
 use Calendar\Search\Service\CalendarSearchService;
@@ -96,6 +97,7 @@ return [
             CalendarSearchService::class,
             ContactService::class,
             CallService::class,
+            AdminService::class,
             TranslatorInterface::class
         ],
         Search\Service\CalendarSearchService::class        => [
