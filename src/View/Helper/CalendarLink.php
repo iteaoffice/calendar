@@ -29,7 +29,7 @@ final class CalendarLink extends AbstractLink
         Calendar $calendar = null,
         string $action = 'view',
         string $show = 'name',
-        string $which = 'all',
+        ?string $which = 'all',
         Project $project = null
     ): string {
         $this->reset();
@@ -55,7 +55,7 @@ final class CalendarLink extends AbstractLink
         return $this->createLink($show);
     }
 
-    private function parseAction(string $action, string $which, ?Calendar $calendar, ?Project $project): void
+    private function parseAction(string $action, ?string $which, ?Calendar $calendar, ?Project $project): void
     {
         $this->action = $action;
 
