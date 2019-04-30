@@ -35,6 +35,9 @@ final class DocumentLink extends AbstractLink
         $this->extractLinkContentFromEntity($document, ['document']);
         $this->extractRouterParams($document, ['id']);
 
+        if (null !== $document) {
+            $this->addShowOption('name', $document->parseFileName());
+        }
 
         $this->parseAction($action, $document);
 
