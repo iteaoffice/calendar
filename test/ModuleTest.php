@@ -17,6 +17,7 @@ use Testing\Util\AbstractServiceTest;
 use Zend\Mvc\Application;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\View\HelperPluginManager;
+use function is_string;
 
 /**
  * Class ModuleTest
@@ -30,14 +31,10 @@ class ModuleTest extends AbstractServiceTest
         $module = new Module();
         $config = $module->getConfig();
 
-        $this->assertInternalType('array', $config);
         $this->assertArrayHasKey('service_manager', $config);
         $this->assertArrayHasKey(ConfigAbstractFactory::class, $config);
     }
 
-    /**
-     *
-     */
     public function testInstantiationOfConfigAbstractFactories(): void
     {
         $module = new Module();
@@ -66,7 +63,7 @@ class ModuleTest extends AbstractServiceTest
                     $dependency = HelperPluginManager::class;
                 }
 
-                if (\is_string($dependency)) {
+                if (is_string($dependency)) {
                     $instantiatedDependencies[] = $this->getMockBuilder($dependency)->disableOriginalConstructor()
                         ->getMock();
                 } else {

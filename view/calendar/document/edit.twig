@@ -6,15 +6,13 @@
 <p class="lead">{{ translate("txt-edit-calendar-document-%s-explanation")|format(document) }}</p>
 
 {% do form.prepare() %}
-{% do form.setAttribute('class','form-horizontal') %}
-
 {{ form().openTag(form)|raw }}
 
 <div class="form-group row">
     <label class="col-sm-3 col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static form-control-plaintext">{{ calendarLink(document.calendar,'view-community') }}</p>
+        <p class="form-control-plaintext">{{ calendarLink(document.calendar,'view-community') }}</p>
     </div>
 </div>
 
@@ -24,7 +22,7 @@
     <label class="col-sm-3 col-form-label">{{ translate("txt-current-file") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static form-control-plaintext">{{ calendarDocumentLink(document,'download','name') }}</p>
+        <p class="form-control-plaintext">{{ calendarDocumentLink(document,'download','name') }}</p>
     </div>
 </div>
 

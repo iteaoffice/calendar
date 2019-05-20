@@ -98,9 +98,7 @@
 
                 {% if isAllowed(calendar, 'add-document') %}
                     {% do form.prepare() %}
-                    {% do form.setAttribute('class','form-horizontal') %}
-
-                    {{ form().openTag(form)|raw }}
+{{ form().openTag(form)|raw }}
                     {{ ztbformelement(form.get('document')) }}
                     {{ ztbformelement(form.get('file')) }}
                     {{ formelement(form.get('csrf')) }}

@@ -4,15 +4,13 @@
 <h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
-{% do form.setAttribute('class','form-horizontal') %}
-
 {{ form().openTag(form)|raw }}
 
 <div class="form-group row">
     <label class="col-sm-3 col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static form-control-plaintext">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
+        <p class="form-control-plaintext">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
     </div>
 </div>
 
@@ -294,7 +292,7 @@
             url: '{{ url('zfcadmin/contact-admin/search') }}',
             dataType: 'json',
             data: {
-                search: q
+                q: q
             },
             success: function (result, status) {
                 Contacts.items.length = 0;

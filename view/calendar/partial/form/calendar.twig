@@ -6,7 +6,6 @@
     ) %}
 
 {% do form.prepare() %}
-{% do form.setAttribute('class','form-horizontal') %}
 {{ form().openTag(form)|raw }}
 
 {% set calendar = form.get('calendar_entity_calendar') %}
@@ -16,7 +15,7 @@
         <label class="col-sm-3 col-form-label">{{ translate("txt-project") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static form-control-plaintext">{{ project.parseFullName() }}</p></div>
+            <p class="form-control-plaintext">{{ project.parseFullName() }}</p></div>
     </div>
 {% endif %}
 

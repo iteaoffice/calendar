@@ -3,7 +3,6 @@
 <h1>{{ translate("txt-edit-attendees-of-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
-
 {{ form().openTag(form)|raw }}
 
 {% if calendar.projectCalendar %}
@@ -11,7 +10,7 @@
         <label class="col-sm-3 col-form-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
-            <p class="form-control-static form-control-plaintext">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
+            <p class="form-control-plaintext">{{ projectLink(calendar.projectCalendar.project,'view-community', 'name') }}</p>
         </div>
     </div>
 {% endif %}
@@ -20,7 +19,7 @@
     <label class="col-sm-3 col-form-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static form-control-plaintext">{{ calendar }}</p>
+        <p class="form-control-plaintext">{{ calendar }}</p>
     </div>
 </div>
 

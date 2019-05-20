@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Calendar\Controller;
 
 use Application\Service\AssertionService;
-use function array_merge_recursive;
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Controller\Plugin\RenderCalendarContactList;
 use Calendar\Controller\Plugin\RenderReviewCalendar;
@@ -27,17 +26,10 @@ use Calendar\Form\SelectAttendee;
 use Calendar\Form\SendMessage;
 use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
-use function ceil;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
-use function file_exists;
-use function file_get_contents;
-use function filesize;
 use General\Service\EmailService;
 use General\Service\GeneralService;
-use function http_build_query;
-use function implode;
-use function nl2br;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
@@ -45,10 +37,6 @@ use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use setasign\Fpdi\TcpdfFpdi;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
-use function sprintf;
-use function strlen;
-use function sys_get_temp_dir;
-use function unlink;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\TranslatorInterface;
@@ -60,10 +48,20 @@ use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
 use Zend\View\Model\ViewModel;
 use ZipArchive;
+use function array_merge_recursive;
+use function ceil;
+use function file_exists;
+use function file_get_contents;
+use function filesize;
+use function http_build_query;
+use function implode;
+use function nl2br;
+use function sprintf;
+use function strlen;
+use function sys_get_temp_dir;
+use function unlink;
 
 /**
- * Class CalendarCommunityController
- *
  * @package Calendar\Controller
  * @method Identity|\Contact\Entity\Contact identity()
  * @method FlashMessenger flashMessenger()
@@ -490,7 +488,7 @@ final class CommunityController extends AbstractActionController
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="Presence list ' . $calendar->getCalendar() . '.pdf"'
+                'attachment; filename="Attendees list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
             ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
