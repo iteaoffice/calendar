@@ -217,7 +217,7 @@
                 </thead>
                 <tbody>
                 {% for calendarContact in calendar.calendarContact %}
-                    <tr {% if identity().getId() == contact.id %}class="success"{% endif %}>
+                    <tr {% if identity().getId() == contact.id %}class="table-success"{% endif %}>
                         <td>
                             {% if identity().getId() == contact.id %}
                                 <i class="fa fa-user"></i>

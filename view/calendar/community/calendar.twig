@@ -303,7 +303,7 @@
                 <tbody>
                 {% for calendarContact in calendarContacts %}
 
-                    <tr {% if identity().getId() == calendarContact.contact.contact.id %}class="success"{% endif %}>
+                    <tr {% if identity().getId() == calendarContact.contact.contact.id %}class="table-success"{% endif %}>
                         <td>
                             {% if identity().getId() == calendarContact.contact.contact.id %}
                                 <i class="fa fa-user"></i>

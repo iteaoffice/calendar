@@ -38,7 +38,7 @@
         </tfoot>
         <tbody>
         {% for calendar in calendarItems %}
-            <tr {% if 'final' in calendar.calendar %}class="success"{% endif %}>
+            <tr {% if 'final' in calendar.calendar %}class="table-success"{% endif %}>
 
                 <td>{{ projectLink(calendar.projectCalendar.project,'view-community', 'number') }}</td>
                 <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
