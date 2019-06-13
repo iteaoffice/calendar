@@ -67,8 +67,8 @@ class EntityTest extends TestCase
                         $labels[] = $element->getOptions()['placeholder'];
                     }
 
-                    $this->assertInternalType('array', ($element->getAttributes()));
-                    $this->assertInternalType('array', ($element->getOptions()));
+                    $this->assertIsArray($element->getAttributes());
+                    $this->assertIsArray($element->getOptions());
                 }
 
                 foreach ($testClass->getStaticProperties() as $constant) {

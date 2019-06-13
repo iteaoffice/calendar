@@ -280,16 +280,11 @@
         return true;
     }
 
-
-    /**
-     * Load the contacts based on a search action
-     * @param q
-     */
     function getContacts(q) {
 
         $.ajax({
             method: 'post',
-            url: '{{ url('zfcadmin/contact-admin/search') }}',
+            url: '{{ url('zfcadmin/contact/search') }}',
             dataType: 'json',
             data: {
                 q: q
@@ -309,10 +304,6 @@
         });
     }
 
-    /**
-     * Load the contacts based on a search action
-     * @param q
-     */
     function getContactsFromSelection(q) {
 
         $.ajax({

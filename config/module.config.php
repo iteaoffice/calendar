@@ -15,15 +15,6 @@ use Gedmo\Timestampable\TimestampableListener;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\Stdlib;
 
-/**
- * ITEA Office copyright message placeholder
- *
- * @category    Calendar
- * @package     Config
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
- */
-
 $config = [
     'controllers'        => [
         'factories' => [
