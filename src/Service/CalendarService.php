@@ -20,6 +20,7 @@ use Calendar\Search\Service\CalendarSearchService;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Contact\Service\SelectionContactService;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Program\Entity\Call\Call;
@@ -31,6 +32,11 @@ use Solarium\Client;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\QueryType\Update\Query\Document;
 use Zend\I18n\Translator\TranslatorInterface;
+use function count;
+use function date;
+use function explode;
+use function range;
+use function sprintf;
 
 /**
  * Class CalendarService
@@ -109,7 +115,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         }
 
 
-        return \count($cannotDeleteCalendar) === 0;
+        return count($cannotDeleteCalendar) === 0;
     }
 
     public function updateCalendarContacts(Calendar $calendar, array $data): void
@@ -147,7 +153,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
         //Update the contacts
         if (!empty($data['removed'])) {
-            foreach (\explode(',', $data['removed']) as $contactId) {
+            foreach (explode(',', $data['removed']) as $contactId) {
                 foreach ($calendar->getCalendarContact() as $calendarContact) {
                     if ($calendarContact->getContact()->getId() === (int)$contactId) {
                         $this->delete($calendarContact);
@@ -387,7 +393,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             if (!$onlyFinal
                 || $calendarItem->isFinal()
             ) {
-                if ($calendarItem->getDateEnd() > new \DateTime()) {
+                if ($calendarItem->getDateEnd() > new DateTime()) {
                     $calendar[$calendarItem->getId()] = $calendarItem;
                 }
             }
@@ -406,7 +412,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function findNextProjectCalendar(
         Project $project,
-        \DateTime $datetime
+        DateTime $datetime
     ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
@@ -416,7 +422,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function findPreviousProjectCalendar(
         Project $project,
-        \DateTime $datetime
+        DateTime $datetime
     ): ?Calendar {
         /** @var \Calendar\Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
@@ -469,17 +475,17 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-po-open-date'),
                 $call->__toString(),
-                \sprintf(
+                sprintf(
                     $this->translator->translate('txt-po-open-calendar-description-call-%s-date-%s'),
                     $call,
-                    $call->getPoCloseDate()->format('l, d F Y')
+                    $call->getPoOpenDate()->format('l, d F Y')
                 ),
                 $call->getPoOpenDate()
             );
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-po-close-date'),
                 $call->__toString(),
-                \sprintf(
+                sprintf(
                     $this->translator->translate('txt-po-close-calendar-description-call-%s-date-%s'),
                     $call,
                     $call->getPoCloseDate()->format('l, d F Y H:i:s T')
@@ -489,7 +495,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-fpp-open-date'),
                 $call->__toString(),
-                \sprintf(
+                sprintf(
                     $this->translator->translate('txt-fpp-open-calendar-description-call-%s-date-%s'),
                     $call,
                     $call->getFppOpenDate()->format('l, d F Y')
@@ -499,7 +505,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-fpp-close-date'),
                 $call->__toString(),
-                \sprintf(
+                sprintf(
                     $this->translator->translate('txt-fpp-close-calendar-description-call-%s-date-%s'),
                     $call,
                     $call->getFppCloseDate()->format('l, d F Y H:i:s T')
@@ -510,7 +516,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-loi-submission-deadline'),
                     $call->__toString(),
-                    \sprintf(
+                    sprintf(
                         $this->translator->translate(
                             'txt-loi-submission-deadline-calendar-description-call-%s-date-%s'
                         ),
@@ -524,7 +530,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-label-announcement-date'),
                     $call->__toString(),
-                    \sprintf(
+                    sprintf(
                         $this->translator->translate(
                             'txt-label-announcement-date-calendar-description-call-%s-date-%s'
                         ),
@@ -538,7 +544,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-doa-submission-deadline'),
                     $call->__toString(),
-                    \sprintf(
+                    sprintf(
                         $this->translator->translate(
                             'txt-doa-submission-deadline-calendar-description-call-%s-date-%s'
                         ),
@@ -558,8 +564,8 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $searchClient = new Client();
         $update = $searchClient->createUpdate();
 
-        $currentYear = \date('Y');
-        $yearSpan = \range($currentYear - 3, $currentYear + 3);
+        $currentYear = date('Y');
+        $yearSpan = range($currentYear - 3, $currentYear + 3);
 
         foreach ($yearSpan as $year) {
 
@@ -567,7 +573,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $calendarDocument = $update->createDocument();
             // Calendar properties
             $calendarDocument->setField('id', 'birthday_' . $contact->getId() . '_' . $year);
-            $name = \sprintf(
+            $name = sprintf(
                 'Birthday of %s (%s)',
                 $contact->getDisplayName(),
                 $year - $contact->getDateOfBirth()->format('Y')
@@ -595,9 +601,9 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             $calendarDocument->setField('location_sort', 'NLD, Eindhoven');
             $calendarDocument->setField('location_search', 'NLD, Eindhoven');
 
-            $dateFrom = \DateTime::createFromFormat(
+            $dateFrom = DateTime::createFromFormat(
                 'd-m-Y',
-                \sprintf($contact->getDateOfBirth()->format('d-m-' . $year))
+                sprintf($contact->getDateOfBirth()->format('d-m-' . $year))
             );
 
             $calendarDocument->setField(
@@ -642,7 +648,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         string $eventName,
         string $call,
         string $description,
-        \DateTime $date
+        DateTime $date
     ): AbstractQuery {
         $searchClient = new Client();
         $update = $searchClient->createUpdate();
