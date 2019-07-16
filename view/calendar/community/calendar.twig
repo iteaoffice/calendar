@@ -116,7 +116,7 @@
             {% if calendar.projectCalendar %}
                 <div class="tab-pane" role="tabpanel" id="version-documents">
 
-                    {% set version = projectService.getLatestProjectVersion(calendar.projectCalendar.project) %}
+                    {% set version = projectService.getLatestApprovedProjectVersion(calendar.projectCalendar.project) %}
 
                     <h2>{{ translate("txt-version-documents") }}</h2>
 
