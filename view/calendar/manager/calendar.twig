@@ -191,7 +191,7 @@
                     {% for reviewer in calendar.projectCalendar.review %}
                         <tr>
                             <td>{{ contactLink(reviewer.getContact(), 'view-admin', 'name') }}</td>
-                            <td>{{ reviewContactLink(reviewer.getContact().getProjectReviewerContact(), 'view', 'handle') }}</td>
+                            <td>{{ reviewerContactLink(reviewer.getContact().getProjectReviewerContact(), 'view', 'handle') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
