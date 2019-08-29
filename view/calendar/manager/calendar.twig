@@ -199,6 +199,8 @@
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-reviewers-found-for-this-review-meeting"))|raw }}
             {% endif %}
+
+            {{ projectCalendarReviewerLink(null, 'new', 'button', calendar.projectCalendar) }}
         </div>
     {% endif %}
 

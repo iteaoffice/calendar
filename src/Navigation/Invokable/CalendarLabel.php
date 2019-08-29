@@ -28,17 +28,13 @@ use Zend\Navigation\Page\Mvc;
  */
 class CalendarLabel extends AbstractNavigationInvokable
 {
-    /**
-     * @param Mvc $page
-     *
-     * @return void;
-     */
     public function __invoke(Mvc $page): void
     {
+        $label = $this->translate('txt-nav-calendar');
         if ($this->getEntities()->containsKey(Calendar::class)) {
+
             /** @var Calendar $calendar */
             $calendar = $this->getEntities()->get(Calendar::class);
-
 
             $page->setParams(
                 array_merge(
@@ -49,8 +45,6 @@ class CalendarLabel extends AbstractNavigationInvokable
                 )
             );
             $label = (string)$calendar;
-        } else {
-            $label = $this->translate('txt-nav-calendar');
         }
         $page->set('label', $label);
     }
