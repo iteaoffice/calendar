@@ -24,7 +24,7 @@
     "php": "^7.3",
     "zendframework/zend-mvc": "^3.0.1",
     "zendframework/zend-mvc-form": "^1.0.0",
-    "zendframework/zend-code": "@stable",
+    "zendframework/zend-code": "3.3.1",
     "zendframework/zend-mvc-console": "^1.2.0",
     "zendframework/zend-mvc-plugins": "^1.0.1",
     "zendframework/zend-navigation": "^2.9.0",
