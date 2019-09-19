@@ -29,7 +29,7 @@ class Document extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var integer
+     * @var int
      */
     private $id;
     /**
@@ -48,7 +48,7 @@ class Document extends AbstractEntity
     /**
      * @ORM\Column(name="size", type="integer", nullable=true)
      *
-     * @var integer
+     * @var int
      */
     private $size;
     /**

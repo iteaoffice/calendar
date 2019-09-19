@@ -1,12 +1,6 @@
 <?php
-/**
- * ITEA Office copyright message placeholder
- *
- * @category    Calendar
- * @package     Config
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
- */
+
+use BjyAuthorize\Guard\Route;
 
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Acl\Assertion\Contact as ContactAssertion;
@@ -20,11 +14,11 @@ return [
             /* If this guard is specified here (i.e. it is enabled], it will block
              * access to all routes unless they are specified here.
              */
-            'BjyAuthorize\Guard\Route' => [
+            Route::class => [
                 ['route' => 'assets/calendar-type-color-css', 'roles' => []],
                 [
                     'route' => 'community/calendar/overview',
-                    'roles' => [],
+                    'roles' => ['user'],
                 ],
                 [
                     'route'     => 'community/calendar/calendar',

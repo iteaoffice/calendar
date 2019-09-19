@@ -33,6 +33,10 @@ final class Calendar extends AbstractAssertion
             $calendar = $this->calendarService->findCalendarById((int)$id);
         }
 
+        if (!$this->hasContact()) {
+            return false;
+        }
+
         switch ($this->getPrivilege()) {
             case 'edit':
                 return $this->rolesHaveAccess(Access::ACCESS_OFFICE);

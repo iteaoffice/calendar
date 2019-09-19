@@ -73,7 +73,7 @@ class Calendar extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()
-     * @var integer
+     * @var int
      */
     private $id;
     /**
@@ -135,7 +135,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Attributes({"array":"finalTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-final-label"})
      * @Annotation\Options({"help-block":"txt-calendar-final-help-block"})
-     * @var integer
+     * @var int
      */
     private $final;
     /**
@@ -144,7 +144,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Attributes({"array":"onHomepageTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-on-homepage-label"})
      * @Annotation\Options({"help-block":"txt-calendar-on-homepage-help-block"})
-     * @var integer
+     * @var int
      */
     private $onHomepage;
     /**
@@ -153,7 +153,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Attributes({"array":"highlightTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-highlight-label"})
      * @Annotation\Options({"help-block":"txt-calendar-highlight-help-block"})
-     * @var integer
+     * @var int
      */
     private $highlight;
     /**
@@ -170,7 +170,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Attributes({"array":"ownEventTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-own-event-label"})
      * @Annotation\Options({"help-block":"txt-calendar-own-event-help-block"})
-     * @var integer
+     * @var int
      */
     private $ownEvent;
     /**
@@ -179,7 +179,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Attributes({"array":"presentTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-present-label"})
      * @Annotation\Options({"help-block":"txt-calendar-present-help-block"})
-     * @var integer
+     * @var int
      */
     private $present;
     /**

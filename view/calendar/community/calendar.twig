@@ -98,7 +98,7 @@
 
                 {% if isAllowed(calendar, 'add-document') %}
                     {% do form.prepare() %}
-{{ form().openTag(form)|raw }}
+                    {{ form().openTag(form)|raw }}
                     {{ ztbformelement(form.get('document')) }}
                     {{ ztbformelement(form.get('file')) }}
                     {{ formelement(form.get('csrf')) }}
@@ -289,6 +289,8 @@
     <div class="tab-pane" role="tabpanel" id="attendees">
 
         {% set calendarContacts = calendarService.findCalendarContactsByCalendar(calendar) %}
+
+        <h2>{{ translate("txt-attandees") }}</h2>
 
         {% if calendarContacts|length > 0 %}
             <table class="table table-hover table-striped table-sm">
