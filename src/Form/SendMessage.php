@@ -14,6 +14,9 @@ namespace Calendar\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Csrf;
+use Zend\Form\Element\Textarea;
 
 /**
  * Class SendMessage
@@ -31,11 +34,11 @@ final class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Textarea',
+                'type'       => Textarea::class,
                 'name'       => 'message',
                 'options'    => [
-                    'label'      => _("txt-message"),
-                    'help-block' => _("txt-send-message-to-calendar-attendees"),
+                    'label'      => _('txt-message'),
+                    'help-block' => _('txt-send-message-to-calendar-attendees'),
                 ],
                 'attributes' => [
                     'rows'  => 20,
@@ -46,28 +49,28 @@ final class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => Csrf::class,
                 'name' => 'csrf',
             ]
         );
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-send"),
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-send'),
                 ],
             ]
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
                 ],
             ]
         );

@@ -35,7 +35,7 @@ use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
-use setasign\Fpdi\TcpdfFpdi;
+use setasign\Fpdi\Tcpdf\Fpdi;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -65,7 +65,7 @@ use function unlink;
  * @package Calendar\Controller
  * @method Identity|\Contact\Entity\Contact identity()
  * @method FlashMessenger flashMessenger()
- * @method RenderReviewCalendar|TcpdfFpdi renderReviewCalendar(array $calendarItems)
+ * @method RenderReviewCalendar|Fpdi renderReviewCalendar(array $calendarItems)
  * @method RenderCalendarContactList renderCalendarContactList()
  */
 final class CommunityController extends AbstractActionController
@@ -557,7 +557,9 @@ final class CommunityController extends AbstractActionController
                 $this->emailService->addTo($calendarContact->getContact());
             }
 
-            $this->emailService->setTemplateVariable('message', nl2br($form->getData()['message']));
+            //Use HTML Entities to be sure that all chars are escaped
+            $this->emailService->setTemplateVariable('message', nl2br(htmlentities($form->getData()['message'])));
+            $this->emailService->setTemplateVariable('message', nl2br(($form->getData()['message'])));
             $this->emailService->setTemplateVariable('calendar', $calendar->getCalendar());
             $this->emailService->setTemplateVariable('sender_name', $this->identity()->parseFullName());
 
