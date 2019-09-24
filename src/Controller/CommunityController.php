@@ -558,8 +558,7 @@ final class CommunityController extends AbstractActionController
             }
 
             //Use HTML Entities to be sure that all chars are escaped
-            $this->emailService->setTemplateVariable('message', nl2br(htmlentities($form->getData()['message'])));
-            $this->emailService->setTemplateVariable('message', nl2br(($form->getData()['message'])));
+            $this->emailService->setTemplateVariable('message', nl2br($form->getData()['message']));
             $this->emailService->setTemplateVariable('calendar', $calendar->getCalendar());
             $this->emailService->setTemplateVariable('sender_name', $this->identity()->parseFullName());
 

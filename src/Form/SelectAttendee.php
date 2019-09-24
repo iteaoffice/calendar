@@ -17,6 +17,9 @@ use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Csrf;
+use Zend\Form\Element\MultiCheckbox;
 
 /**
  * Class SelectAttendee
@@ -45,39 +48,39 @@ final class SelectAttendee extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type'    => 'Zend\Form\Element\MultiCheckbox',
+                'type'    => MultiCheckbox::class,
                 'name'    => 'contact',
                 'options' => [
                     'value_options' => $contacts,
-                    'label'         => _("txt-contact-name"),
+                    'label'         => _('txt-contact-name'),
                 ],
             ]
         );
 
         $this->add(
             [
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => Csrf::class,
                 'name' => 'csrf',
             ]
         );
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-update"),
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-update'),
                 ],
             ]
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
                 ],
             ]
         );

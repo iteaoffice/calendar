@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace Calendar\Form;
 
+use Zend\Filter\HtmlEntities;
+use Zend\Form\Element\Csrf;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Textarea;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\Textarea;
 
 /**
  * Class SendMessage
@@ -81,7 +82,11 @@ final class SendMessage extends Form implements InputFilterProviderInterface
         return [
             'message' => [
                 'required' => true,
+                'filters'  => [
+                    ['name' => HtmlEntities::class],
+                ],
             ],
+
         ];
     }
 }

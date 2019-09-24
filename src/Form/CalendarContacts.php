@@ -17,6 +17,8 @@ use Contact\Entity\Selection;
 use Doctrine\ORM\EntityManager;
 use DoctrineORMModule\Form\Element\EntitySelect;
 use Zend\Form\Form;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Hidden;
 
 /**
  * Class CalendarContacts
@@ -39,7 +41,7 @@ final class CalendarContacts extends Form
                 'options'    => [
                     'target_class'   => Selection::class,
                     'object_manager' => $entityManager,
-                    'help-block'     => _("txt-form-calendar-contacts-selection-help-block"),
+                    'help-block'     => _('txt-form-calendar-contacts-selection-help-block'),
                     'find_method'    => [
                         'name'   => 'findActive',
                         'params' => [
@@ -58,7 +60,7 @@ final class CalendarContacts extends Form
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Hidden',
+                'type'       => Hidden::class,
                 'name'       => 'added',
                 'attributes' => [
                     'id' => 'added',
@@ -68,7 +70,7 @@ final class CalendarContacts extends Form
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Hidden',
+                'type'       => Hidden::class,
                 'name'       => 'removed',
                 'attributes' => [
                     'id' => 'removed',
@@ -78,7 +80,7 @@ final class CalendarContacts extends Form
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
                     'id'    => 'submit',
@@ -90,7 +92,7 @@ final class CalendarContacts extends Form
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
                     'id'    => 'cancel',
