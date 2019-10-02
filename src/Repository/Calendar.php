@@ -5,7 +5,7 @@
  * @category  Calendar
  * @package   Repository
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2004-2017 ITEA Office (https://itea3.org) (https://itea3.org)
+ * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2019 ITEA Office (https://itea3.org) (https://itea3.org)
  */
 declare(strict_types=1);
 
