@@ -35,6 +35,7 @@ abstract class AbstractLink extends AbstractViewHelper
         = [
             'new'                      => 'fa-plus',
             'new-community'            => 'fa-plus',
+            'add-contact'              => 'fa-plus',
             'review-calendar'          => 'fa-calendar',
             'overview'                 => 'fa-calendar',
             'contact'                  => 'fa-calendar',

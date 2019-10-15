@@ -18,7 +18,7 @@ return [
             'assets'    => [
                 'type'          => 'Literal',
                 'options'       => [
-                    'route' => '/assets/' . (defined("ITEAOFFICE_HOST")
+                    'route' => '/assets/' . (defined('ITEAOFFICE_HOST')
                             ? ITEAOFFICE_HOST : 'test'),
                 ],
                 'may_terminate' => true,
@@ -26,7 +26,7 @@ return [
                     'calendar-type-color-css' => [
                         'type'    => 'Literal',
                         'options' => [
-                            'route'    => "/css/calendar-type-color.css",
+                            'route'    => '/css/calendar-type-color.css',
                             'defaults' => [
                                 //Explicitly add the controller here as the assets are collected
                                 'controller' => Controller\CalendarController::class,
@@ -290,6 +290,15 @@ return [
                                     ],
                                 ],
                             ],
+                            'add-contact'      => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/add-contact/contact-[:contactId].html',
+                                    'defaults' => [
+                                        'action' => 'add-contact',
+                                    ],
+                                ],
+                            ],
                             'json'             => [
                                 'type'          => 'Segment',
                                 'options'       => [
@@ -352,7 +361,7 @@ return [
                                     ],
                                 ],
                             ],
-                            'type'     => [
+                            'type'             => [
                                 'type'          => 'Segment',
                                 'options'       => [
                                     'route'    => '/type',

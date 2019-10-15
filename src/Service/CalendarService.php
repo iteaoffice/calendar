@@ -21,6 +21,8 @@ use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Contact\Service\SelectionContactService;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Program\Entity\Call\Call;
@@ -82,11 +84,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $this->callService = $callService;
         $this->adminService = $adminService;
         $this->translator = $translator;
-    }
-
-    public function findCalendarById(int $id): ?Calendar
-    {
-        return $this->entityManager->getRepository(Calendar::class)->find($id);
     }
 
     public function findCalendarByDocRef(string $docRef): ?Calendar
@@ -308,6 +305,14 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         return $repository->findCalendarContactByContact($contact);
     }
 
+    public function findUpcomingCalendarContactByContact(Contact $contact): array
+    {
+        /** @var Repository\Contact $repository */
+        $repository = $this->entityManager->getRepository(CalendarContact::class);
+
+        return $repository->findUpcomingCalendarContactByContact($contact);
+    }
+
     public function findCalendarContactByContactAndCalendar(
         Contact $contact,
         Calendar $calendar
@@ -342,7 +347,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         bool $upcoming = true,
         bool $review = false
     ): QueryBuilder {
-        /** @var \Calendar\Repository\Calendar $repository */
+        /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         $calendarItems = $repository->findCalendarItems($upcoming, $review);
@@ -361,7 +366,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function findVisibleItems(Contact $contact): array
     {
-        /** @var \Calendar\Repository\Calendar $repository */
+        /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         $limitQueryBuilder = $this->parseWherePermit(
@@ -404,7 +409,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function findLatestProjectCalendar(Project $project): ?Calendar
     {
-        /** @var \Calendar\Repository\Calendar $repository */
+        /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findLatestProjectCalendar($project);
@@ -414,7 +419,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         Project $project,
         DateTime $datetime
     ): ?Calendar {
-        /** @var \Calendar\Repository\Calendar $repository */
+        /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findNextProjectCalendar($project, $datetime);
@@ -424,7 +429,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         Project $project,
         DateTime $datetime
     ): ?Calendar {
-        /** @var \Calendar\Repository\Calendar $repository */
+        /** @var Repository\Calendar $repository */
         $repository = $this->entityManager->getRepository(Entity\Calendar::class);
 
         return $repository->findPreviousProjectCalendar($project, $datetime);
@@ -447,6 +452,73 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $repository = $this->entityManager->getRepository(CalendarContact::class);
 
         return $repository->findGeneralCalendarContactByCalendar($calendar);
+    }
+
+    public function findUpcomingCalendar(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gt('dateFrom', new DateTime()))
+            ->orderBy(['dateFrom' => Criteria::ASC]);
+
+        return $this->entityManager->getRepository(Entity\Calendar::class)->matching($criteria);
+    }
+
+    public function addContactToCalendars(Contact $contact, array $formData): array
+    {
+        //We do need to handle the $formData array, which has the following form
+        /**
+         *
+         * /var/www/dev1/vendor/iteaoffice/calendar/src/Controller/ManagerController.php:496:
+         * array (size=1)
+         * 'calendar' =>
+         * array (size=40)
+         * 1 =>
+         * array (size=2)
+         * 'calendar' => string '3465' (length=4)
+         * 'role' => string '1' (length=1)
+         * 2 =>
+         * array (size=2)
+         * 'calendar' => string '3402' (length=4)
+         * 'role' => string '4' (length=1)
+         * 3 =>
+         *
+         */
+
+        //Short-circuit the service when we have no element calendar at all.
+        if (!isset($formData['calendar'])) {
+            return [];
+        }
+
+        $calendarContacts = [];
+
+        foreach ($formData['calendar'] as $calendarItem) {
+            //If the checkbox is not set, we can skip it.
+            if (!isset($calendarItem['calendar'])) {
+                continue;
+            }
+
+            $calendar = $this->findCalendarById((int)$calendarItem['calendar']);
+            $role = $this->find(Entity\ContactRole::class, (int)$calendarItem['role']);
+            $status = $this->find(Entity\ContactStatus::class, Entity\ContactStatus::STATUS_TENTATIVE);
+
+            if (null !== $calendar && null !== $role) {
+                $calendarContact = new Entity\Contact();
+                $calendarContact->setContact($contact);
+                $calendarContact->setCalendar($calendar);
+                $calendarContact->setStatus($status);
+                $calendarContact->setRole($role);
+                $this->save($calendarContact);
+
+                $calendarContacts[] = $calendarContact;
+            }
+        }
+
+        return $calendarContacts;
+    }
+
+    public function findCalendarById(int $id): ?Calendar
+    {
+        return $this->entityManager->getRepository(Calendar::class)->find($id);
     }
 
     public function updateCollectionInSearchEngine(bool $clearIndex = false): void
@@ -474,7 +546,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-po-open-date'),
-                $call->__toString(),
+                (string)$call,
                 sprintf(
                     $this->translator->translate('txt-po-open-calendar-description-call-%s-date-%s'),
                     $call,
@@ -484,7 +556,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             );
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-po-close-date'),
-                $call->__toString(),
+                (string)$call,
                 sprintf(
                     $this->translator->translate('txt-po-close-calendar-description-call-%s-date-%s'),
                     $call,
@@ -494,7 +566,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             );
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-fpp-open-date'),
-                $call->__toString(),
+                (string)$call,
                 sprintf(
                     $this->translator->translate('txt-fpp-open-calendar-description-call-%s-date-%s'),
                     $call,
@@ -504,7 +576,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             );
             $collection[] = $this->prepareSearchUpdateForCall(
                 $this->translator->translate('txt-fpp-close-date'),
-                $call->__toString(),
+                (string)$call,
                 sprintf(
                     $this->translator->translate('txt-fpp-close-calendar-description-call-%s-date-%s'),
                     $call,
@@ -515,7 +587,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             if (null !== $call->getLoiSubmissionDate()) {
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-loi-submission-deadline'),
-                    $call->__toString(),
+                    (string)$call,
                     sprintf(
                         $this->translator->translate(
                             'txt-loi-submission-deadline-calendar-description-call-%s-date-%s'
@@ -529,7 +601,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             if (null !== $call->getLabelAnnouncementDate()) {
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-label-announcement-date'),
-                    $call->__toString(),
+                    (string)$call,
                     sprintf(
                         $this->translator->translate(
                             'txt-label-announcement-date-calendar-description-call-%s-date-%s'
@@ -543,7 +615,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             if (null !== $call->getDoaSubmissionDate()) {
                 $collection[] = $this->prepareSearchUpdateForCall(
                     $this->translator->translate('txt-doa-submission-deadline'),
-                    $call->__toString(),
+                    (string)$call,
                     sprintf(
                         $this->translator->translate(
                             'txt-doa-submission-deadline-calendar-description-call-%s-date-%s'

@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace Calendar\Repository;
 
 use Calendar\Entity;
-use Calendar\Service\CalendarService;
 use Contact\Entity\Contact as ContactEntity;
+use DateTime;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -24,6 +25,24 @@ use Doctrine\ORM\EntityRepository;
  */
 final class Contact extends EntityRepository
 {
+    public function findUpcomingCalendarContactByContact(ContactEntity $contact): array
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('calendar_entity_contact');
+        $qb->from(Entity\Contact::class, 'calendar_entity_contact');
+        $qb->join('calendar_entity_contact.calendar', 'calendar_entity_calendar');
+        $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
+
+        $qb->andWhere('calendar_entity_contact.contact = :contact');
+        $qb->andWhere('calendar_entity_calendar.dateEnd >= :today');
+        $qb->setParameter('today', new DateTime());
+        $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
+
+        $qb->setParameter('contact', $contact);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findCalendarContactByContact(ContactEntity $contact): array
     {
         $qb = $this->_em->createQueryBuilder();
@@ -32,13 +51,10 @@ final class Contact extends EntityRepository
         $qb->join('calendar_entity_contact.calendar', 'calendar_entity_calendar');
         $qb->join('calendar_entity_contact.contact', 'contact_entity_contact');
 
-        $qb->andWhere('calendar_entity_contact.contact = ?10');
-        $qb->andWhere('calendar_entity_calendar.dateEnd >= :today');
-        $qb->setParameter('today', new \DateTime());
-        $qb->addOrderBy('contact_entity_contact.lastName', 'ASC');
+        $qb->andWhere('calendar_entity_contact.contact = :contact');
+        $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
 
-
-        $qb->setParameter(10, $contact);
+        $qb->setParameter('contact', $contact);
 
         return $qb->getQuery()->getResult();
     }

@@ -241,7 +241,7 @@ final class CommunityController extends AbstractActionController
 
     public function contactAction(): ViewModel
     {
-        $calendarContacts = $this->calendarService->findCalendarContactByContact($this->identity());
+        $calendarContacts = $this->calendarService->findUpcomingCalendarContactByContact($this->identity());
         return new ViewModel(
             [
                 'calendarContacts' => $calendarContacts,

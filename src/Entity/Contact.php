@@ -15,8 +15,6 @@ namespace Calendar\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contact.
- *
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
@@ -36,21 +34,21 @@ class Contact extends AbstractEntity
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      *
-     * @var \Calendar\Entity\ContactRole
+     * @var ContactRole
      */
     private $role;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      *
-     * @var \Calendar\Entity\Calendar
+     * @var Calendar
      */
     private $calendar;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      *
-     * @var \Calendar\Entity\ContactStatus
+     * @var ContactStatus
      */
     private $status;
     /**

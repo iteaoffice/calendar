@@ -38,8 +38,6 @@ final class Calendar extends AbstractAssertion
         }
 
         switch ($this->getPrivilege()) {
-            case 'edit':
-                return $this->rolesHaveAccess(Access::ACCESS_OFFICE);
             case 'select-attendees':
                 /**
                  * Stop this case when there is no project calendar
@@ -65,6 +63,8 @@ final class Calendar extends AbstractAssertion
                 return true;
             case 'overview-admin':
             case 'view-admin':
+            case 'add-contact':
+            case 'edit':
             case 'edit-attendees-admin':
             case 'set-roles-admin':
             case 'new':

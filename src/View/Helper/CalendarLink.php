@@ -15,6 +15,7 @@ namespace Calendar\View\Helper;
 
 use Calendar\Acl\Assertion;
 use Calendar\Entity\Calendar;
+use Contact\Entity\Contact;
 use Project\Entity\Project;
 use function ucfirst;
 
@@ -30,7 +31,8 @@ final class CalendarLink extends AbstractLink
         string $action = 'view',
         string $show = 'name',
         ?string $which = 'all',
-        Project $project = null
+        Project $project = null,
+        Contact $contact = null
     ): string {
         $this->reset();
 
@@ -48,6 +50,10 @@ final class CalendarLink extends AbstractLink
 
         if (null !== $project) {
             $this->addRouteParam('project', $project->getId());
+        }
+
+        if (null !== $contact) {
+            $this->addRouteParam('contactId', $contact->getId());
         }
 
         $this->parseAction($action, $which, $calendar, $project);
@@ -115,6 +121,10 @@ final class CalendarLink extends AbstractLink
             case 'edit-attendees-admin':
                 $this->setRouter('zfcadmin/calendar/select-attendees');
                 $this->setText(sprintf($this->translate('txt-select-attendees-for-calendar-%s'), $calendar));
+                break;
+            case 'add-contact':
+                $this->setRouter('zfcadmin/calendar/add-contact');
+                $this->setText(sprintf($this->translate('txt-add-contact-to-calendar')));
                 break;
             case 'new':
                 $this->setRouter('zfcadmin/calendar/new');

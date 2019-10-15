@@ -1,7 +1,6 @@
 <?php
 
 use BjyAuthorize\Guard\Route;
-
 use Calendar\Acl\Assertion\Calendar as CalendarAssertion;
 use Calendar\Acl\Assertion\Contact as ContactAssertion;
 use Calendar\Acl\Assertion\Document as DocumentAssertion;
@@ -88,6 +87,7 @@ return [
                 ['route' => 'zfcadmin/calendar/edit', 'roles' => ['office'],],
                 ['route' => 'zfcadmin/calendar/calendar', 'roles' => ['office'],],
                 ['route' => 'zfcadmin/calendar/new', 'roles' => ['office'],],
+                ['route' => 'zfcadmin/calendar/add-contact', 'roles' => ['office'],],
                 [
                     'route' => 'zfcadmin/calendar/select-attendees',
                     'roles' => ['office'],

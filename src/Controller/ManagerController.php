@@ -14,13 +14,16 @@ namespace Calendar\Controller;
 
 use Application\Service\AssertionService;
 use Calendar\Entity\Calendar;
+use Calendar\Entity\ContactRole;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
+use Calendar\Form\AddContactToCalendar;
 use Calendar\Form\CalendarContacts;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
+use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
@@ -38,11 +41,13 @@ use Zend\Paginator\Paginator;
 use Zend\Validator\File\FilesSize;
 use Zend\Validator\File\MimeType;
 use Zend\View\Model\ViewModel;
+use function array_merge;
+use function implode;
+use function sprintf;
 
 /**
- * @package Calendar\Controller
  * @method FlashMessenger flashMessenger()
- * @method Identity|\Contact\Entity\Contact identity()
+ * @method Identity|Contact identity()
  */
 final class ManagerController extends AbstractActionController
 {
@@ -149,12 +154,12 @@ final class ManagerController extends AbstractActionController
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
                     foreach ($values as $value) {
-                        $quotedValues[] = \sprintf('"%s"', $value);
+                        $quotedValues[] = sprintf('"%s"', $value);
                     }
 
                     $this->searchService->addFilterQuery(
                         $facetField,
-                        \implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                        implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
                     );
                 }
             }
@@ -205,7 +210,7 @@ final class ManagerController extends AbstractActionController
             $preData['calendar_entity_calendar']['type'] = 6;
         }
 
-        $data = \array_merge($preData, $this->getRequest()->getPost()->toArray());
+        $data = array_merge($preData, $this->getRequest()->getPost()->toArray());
 
         $form = $this->formService->prepare(Calendar::class, $data);
         $form->remove('delete');
@@ -236,7 +241,7 @@ final class ManagerController extends AbstractActionController
 
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-created-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-created-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -284,7 +289,7 @@ final class ManagerController extends AbstractActionController
 
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-deleted-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -307,7 +312,7 @@ final class ManagerController extends AbstractActionController
                 $this->calendarService->save($calendar);
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-updated-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -339,7 +344,7 @@ final class ManagerController extends AbstractActionController
 
             $this->flashMessenger()->addSuccessMessage(
                 sprintf(
-                    $this->translator->translate("txt-contacts-of-calendar-have-been-updated-successfully"),
+                    $this->translator->translate('txt-contacts-of-calendar-have-been-updated-successfully'),
                     $calendar->getCalendar()
                 )
             );
@@ -383,7 +388,7 @@ final class ManagerController extends AbstractActionController
             if ($form->isValid()) {
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-updated-successfully'),
                         $calendar
                     )
                 );
@@ -452,7 +457,7 @@ final class ManagerController extends AbstractActionController
                 ->addInfoMessage(
                     sprintf(
                         $this->translator->translate(
-                            "txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"
+                            'txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded'
                         ),
                         $document->getDocument(),
                         $calendar->getCalendar()
@@ -474,6 +479,45 @@ final class ManagerController extends AbstractActionController
                 'calendar'         => $calendar,
                 'form'             => $form,
                 'assertionService' => $this->assertionService
+            ]
+        );
+    }
+
+    public function addContactAction()
+    {
+        $contact = $this->contactService->findContactById((int)$this->params('contactId'));
+
+        if (null === $contact) {
+            return $this->notFoundAction();
+        }
+
+        $data = $this->getRequest()->getPost()->toArray();
+
+
+        if ($this->getRequest()->isPost()) {
+            if (isset($data['cancel'])) {
+                return $this->redirect()->toRoute('zfcadmin/contact/view/calendar', ['id' => $contact->getId()]);
+            }
+
+            $calendarContacts = $this->calendarService->addContactToCalendars($contact, $data);
+
+            $this->flashMessenger()->addSuccessMessage(
+                sprintf(
+                    $this->translator->translate('txt-contact-%s-has-been-added-to-%d-calendars-successfully'),
+                    $contact->parseFullName(),
+                    count($calendarContacts),
+                )
+            );
+
+            return $this->redirect()->toRoute('zfcadmin/contact/view/calendar', ['id' => $contact->getId()]);
+        }
+
+        return new ViewModel(
+            [
+                'contact'          => $contact,
+                'calendarService'  => $this->calendarService,
+                'upcomingCalendar' => $this->calendarService->findUpcomingCalendar(),
+                'contactRoles'     => $this->calendarService->findAll(ContactRole::class),
             ]
         );
     }

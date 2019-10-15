@@ -11,9 +11,11 @@ declare(strict_types=1);
 
 namespace Calendar\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Program\Entity\Call\Call;
 use Zend\Form\Annotation;
 
 /**
@@ -104,7 +106,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-calendar-date-from-label","help-block": "txt-calendar-date-from-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateFrom;
     /**
@@ -112,21 +114,21 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("\Zend\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-calendar-date-end-label","help-block": "txt-calendar-date-end-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEnd;
     /**
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
      * @Annotation\Exclude()
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateCreated;
     /**
      * @ORM\Column(name="date_updated", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      * @Annotation\Exclude()
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateUpdated;
     /**
@@ -207,7 +209,7 @@ class Calendar extends AbstractEntity
     private $url;
     /**
      * @ORM\Column(name="date_plan", type="datetime", nullable=true)
-     * @var \DateTime
+     * @var DateTime
      */
     private $datePlan;
     /**
@@ -224,7 +226,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-calendar-type-help-block"})
      * @Annotation\Attributes({"label":"txt-calendar-type-label"})
-     * @var \Calendar\Entity\Type
+     * @var Type
      */
     private $type;
     /**
@@ -237,14 +239,14 @@ class Calendar extends AbstractEntity
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
+     * @var Contact[]|Collections\ArrayCollection
      */
     private $calendarContact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
      * @ORM\OrderBy({"document"="ASC"})
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
+     * @var Document[]|Collections\ArrayCollection
      */
     private $document;
     /**
@@ -264,7 +266,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
      * @Annotation\Options({"help-block":"txt-calendar-program-call-help-block"})
      * @Annotation\Options({"label":"txt-program-call"})
-     * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
+     * @var Call[]|Collections\ArrayCollection
      */
     private $call;
 
@@ -514,7 +516,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateFrom(): ?\DateTime
+    public function getDateFrom(): ?DateTime
     {
         return $this->dateFrom;
     }
@@ -526,7 +528,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTime
+    public function getDateEnd(): ?DateTime
     {
         return $this->dateEnd;
     }
@@ -538,7 +540,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateCreated(): ?\DateTime
+    public function getDateCreated(): ?DateTime
     {
         return $this->dateCreated;
     }
@@ -550,7 +552,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateUpdated(): ?\DateTime
+    public function getDateUpdated(): ?DateTime
     {
         return $this->dateUpdated;
     }
@@ -610,12 +612,12 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDatePlan(): ?\DateTime
+    public function getDatePlan(): ?DateTime
     {
         return $this->datePlan;
     }
 
-    public function setDatePlan(\DateTime $datePlan): Calendar
+    public function setDatePlan(DateTime $datePlan): Calendar
     {
         $this->datePlan = $datePlan;
 

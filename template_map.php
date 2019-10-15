@@ -10,6 +10,7 @@ return array(
     'calendar/manager/new'                      => __DIR__ . '//view/calendar/manager/new.twig',
     'calendar/manager/select-attendees'         => __DIR__ . '//view/calendar/manager/select-attendees.twig',
     'calendar/manager/calendar'                 => __DIR__ . '//view/calendar/manager/calendar.twig',
+    'calendar/manager/add-contact'              => __DIR__ . '//view/calendar/manager/add-contact.twig',
     'calendar/manager/edit'                     => __DIR__ . '//view/calendar/manager/edit.twig',
     'calendar/community/overview'               => __DIR__ . '//view/calendar/community/overview.twig',
     'calendar/community/select-attendees'       => __DIR__ . '//view/calendar/community/select-attendees.twig',
