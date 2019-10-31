@@ -25,7 +25,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Program\Entity\Call\Call;
 use Program\Service\CallService;
 use Project\Entity\Project;
 use Search\Service\AbstractSearchService;
@@ -36,7 +35,6 @@ use Solarium\QueryType\Update\Query\Document;
 use Zend\I18n\Translator\TranslatorInterface;
 use function count;
 use function date;
-use function explode;
 use function range;
 use function sprintf;
 
@@ -117,45 +115,40 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function updateCalendarContacts(Calendar $calendar, array $data): void
     {
+        $contacts = $data['contacts'] ?? [];
+
         //Update the contacts
-        if (!empty($data['added'])) {
-            foreach (explode(',', $data['added']) as $contactId) {
-                $contact = $this->contactService->findContactById((int)$contactId);
+        foreach ($contacts as $contactId) {
+            $contact = $this->contactService->findContactById((int)$contactId);
 
-                if (null !== $contact && !$this->calendarHasContact($calendar, $contact)) {
-                    $calendarContact = new CalendarContact();
-                    $calendarContact->setContact($contact);
-                    $calendarContact->setCalendar($calendar);
+            if (null !== $contact && !$this->calendarHasContact($calendar, $contact)) {
+                $calendarContact = new CalendarContact();
+                $calendarContact->setContact($contact);
+                $calendarContact->setCalendar($calendar);
 
-                    /**
-                     * Add every new user as attendee
-                     *
-                     * @var $role Entity\ContactRole
-                     */
-                    $role = $this->find(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
-                    $calendarContact->setRole($role);
+                /**
+                 * Add every new user as attendee
+                 *
+                 * @var $role Entity\ContactRole
+                 */
+                $role = $this->find(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
+                $calendarContact->setRole($role);
 
-                    /**
-                     * Give every new user the status "tentative"
-                     *
-                     * @var $status Entity\ContactStatus
-                     */
-                    $status = $this->find(Entity\ContactStatus::class, Entity\ContactStatus::STATUS_TENTATIVE);
-                    $calendarContact->setStatus($status);
+                /**
+                 * Give every new user the status "tentative"
+                 *
+                 * @var $status Entity\ContactStatus
+                 */
+                $status = $this->find(Entity\ContactStatus::class, Entity\ContactStatus::STATUS_TENTATIVE);
+                $calendarContact->setStatus($status);
 
-                    $this->save($calendarContact);
-                }
+                $this->save($calendarContact);
             }
         }
 
-        //Update the contacts
-        if (!empty($data['removed'])) {
-            foreach (explode(',', $data['removed']) as $contactId) {
-                foreach ($calendar->getCalendarContact() as $calendarContact) {
-                    if ($calendarContact->getContact()->getId() === (int)$contactId) {
-                        $this->delete($calendarContact);
-                    }
-                }
+        foreach ($calendar->getCalendarContact() as $calendarContact) {
+            if (!in_array($calendarContact->getContact()->getId(), $contacts, false)) {
+                $this->delete($calendarContact);
             }
         }
     }
@@ -533,99 +526,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $birthDays = $this->contactService->findContactsWithDateOfBirth();
         foreach ($birthDays as $contactWithBirthday) {
             $collection[] = $this->prepareSearchUpdateForBirthday($contactWithBirthday);
-        }
-
-        //Add the call data
-        $calls = $this->callService->findAll(Call::class);
-
-        /** @var Call $call */
-        foreach ($calls as $call) {
-            if (!$call->isActive()) {
-                continue;
-            }
-
-            $collection[] = $this->prepareSearchUpdateForCall(
-                $this->translator->translate('txt-po-open-date'),
-                (string)$call,
-                sprintf(
-                    $this->translator->translate('txt-po-open-calendar-description-call-%s-date-%s'),
-                    $call,
-                    $call->getPoOpenDate()->format('l, d F Y')
-                ),
-                $call->getPoOpenDate()
-            );
-            $collection[] = $this->prepareSearchUpdateForCall(
-                $this->translator->translate('txt-po-close-date'),
-                (string)$call,
-                sprintf(
-                    $this->translator->translate('txt-po-close-calendar-description-call-%s-date-%s'),
-                    $call,
-                    $call->getPoCloseDate()->format('l, d F Y H:i:s T')
-                ),
-                $call->getPoCloseDate()
-            );
-            $collection[] = $this->prepareSearchUpdateForCall(
-                $this->translator->translate('txt-fpp-open-date'),
-                (string)$call,
-                sprintf(
-                    $this->translator->translate('txt-fpp-open-calendar-description-call-%s-date-%s'),
-                    $call,
-                    $call->getFppOpenDate()->format('l, d F Y')
-                ),
-                $call->getFppOpenDate()
-            );
-            $collection[] = $this->prepareSearchUpdateForCall(
-                $this->translator->translate('txt-fpp-close-date'),
-                (string)$call,
-                sprintf(
-                    $this->translator->translate('txt-fpp-close-calendar-description-call-%s-date-%s'),
-                    $call,
-                    $call->getFppCloseDate()->format('l, d F Y H:i:s T')
-                ),
-                $call->getFppCloseDate()
-            );
-            if (null !== $call->getLoiSubmissionDate()) {
-                $collection[] = $this->prepareSearchUpdateForCall(
-                    $this->translator->translate('txt-loi-submission-deadline'),
-                    (string)$call,
-                    sprintf(
-                        $this->translator->translate(
-                            'txt-loi-submission-deadline-calendar-description-call-%s-date-%s'
-                        ),
-                        $call,
-                        $call->getLoiSubmissionDate()->format('l, d F Y')
-                    ),
-                    $call->getLoiSubmissionDate()
-                );
-            }
-            if (null !== $call->getLabelAnnouncementDate()) {
-                $collection[] = $this->prepareSearchUpdateForCall(
-                    $this->translator->translate('txt-label-announcement-date'),
-                    (string)$call,
-                    sprintf(
-                        $this->translator->translate(
-                            'txt-label-announcement-date-calendar-description-call-%s-date-%s'
-                        ),
-                        $call,
-                        $call->getLabelAnnouncementDate()->format('l, d F Y')
-                    ),
-                    $call->getLabelAnnouncementDate()
-                );
-            }
-            if (null !== $call->getDoaSubmissionDate()) {
-                $collection[] = $this->prepareSearchUpdateForCall(
-                    $this->translator->translate('txt-doa-submission-deadline'),
-                    (string)$call,
-                    sprintf(
-                        $this->translator->translate(
-                            'txt-doa-submission-deadline-calendar-description-call-%s-date-%s'
-                        ),
-                        $call,
-                        $call->getDoaSubmissionDate()->format('l, d F Y')
-                    ),
-                    $call->getDoaSubmissionDate()
-                );
-            }
         }
 
         $this->calendarSearchService->updateIndexWithCollection($collection, $clearIndex);

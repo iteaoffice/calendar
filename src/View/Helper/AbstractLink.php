@@ -52,6 +52,7 @@ abstract class AbstractLink extends AbstractViewHelper
             'signature-list'           => 'fa-file-pdf-o',
             'send-message'             => 'fa-envelope',
             'select-attendees'         => 'fa-users',
+            'edit-attendees-admin'     => 'fa-users',
 
         ];
     /**
@@ -261,6 +262,7 @@ abstract class AbstractLink extends AbstractViewHelper
     {
         $this->linkContent = [];
         $this->classes = [];
+        $this->linkIcon = null;
         $this->javascript = '';
     }
 

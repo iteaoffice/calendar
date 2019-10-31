@@ -17,7 +17,6 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\ContactRole;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
-use Calendar\Form\AddContactToCalendar;
 use Calendar\Form\CalendarContacts;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Search\Service\CalendarSearchService;
@@ -361,48 +360,6 @@ final class ManagerController extends AbstractActionController
                 'contactService'  => $this->contactService,
                 'calendar'        => $calendar,
                 'form'            => $form,
-            ]
-        );
-    }
-
-    public function setRolesAction()
-    {
-        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
-
-        if (null === $calendar) {
-            return $this->notFoundAction();
-        }
-
-        $data = $this->getRequest()->getPost()->toArray();
-
-        $form = $this->formService->prepare($calendar, $calendar, $data);
-        if ($this->getRequest()->isPost()) {
-            /*
-             * Return when cancel is pressed
-             */
-            if (isset($data['cancel'])) {
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
-            }
-
-
-            if ($form->isValid()) {
-                $this->flashMessenger()->addSuccessMessage(
-                    sprintf(
-                        $this->translator->translate('txt-calendar-item-%s-has-been-updated-successfully'),
-                        $calendar
-                    )
-                );
-
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
-            }
-        }
-
-        return new ViewModel(
-            [
-                'form'            => $form,
-                'calendarService' => $this->calendarService,
-                'contactService'  => $this->contactService,
-                'calendar'        => $calendar,
             ]
         );
     }

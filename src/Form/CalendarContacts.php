@@ -16,9 +16,8 @@ namespace Calendar\Form;
 use Contact\Entity\Selection;
 use Doctrine\ORM\EntityManager;
 use DoctrineORMModule\Form\Element\EntitySelect;
-use Zend\Form\Form;
 use Zend\Form\Element\Submit;
-use Zend\Form\Element\Hidden;
+use Zend\Form\Form;
 
 /**
  * Class CalendarContacts
@@ -31,8 +30,8 @@ final class CalendarContacts extends Form
     {
         parent::__construct();
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'form-horizontal');
         $this->setAttribute('action', '');
-        $this->setAttribute('onsubmit', 'return storeChanges();');
 
         $this->add(
             [
@@ -51,30 +50,8 @@ final class CalendarContacts extends Form
                     ],
                 ],
                 'attributes' => [
-                    'id'    => 'selection',
-                    'class' => 'form-control'
+                    'id' => 'selection',
                 ]
-            ]
-        );
-
-
-        $this->add(
-            [
-                'type'       => Hidden::class,
-                'name'       => 'added',
-                'attributes' => [
-                    'id' => 'added',
-                ],
-            ]
-        );
-
-        $this->add(
-            [
-                'type'       => Hidden::class,
-                'name'       => 'removed',
-                'attributes' => [
-                    'id' => 'removed',
-                ],
             ]
         );
 
