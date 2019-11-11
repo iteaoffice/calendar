@@ -75,6 +75,11 @@
                             <th>{{ translate("txt-size") }}</th>
                         </tr>
                         </thead>
+                        <tfoot>
+                        <tr>
+                            <td colspan="4"></td>
+                        </tr>
+                        </tfoot>
                         <tbody>
                         {% for document in calendar.document %}
                             <tr>
@@ -136,6 +141,11 @@
                                 <th>{{ translate("txt-size") }}</th>
                             </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            </tfoot>
                             <tbody>
                             {% for document in version.versionDocument %}
                                 <tr>
@@ -229,42 +239,88 @@
 
                 <div class="tab-pane" role="tabpanel" id="public-project-results">
 
-                    <h2>{{ translate("txt-public-project-results") }}</h2>
+                    {% set hasPublicResults = false %}
+                    {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                        {% set hasPublicResults = true %}
+                    {% endfor %}
 
-                    <table class="table table-hover table-striped table-sm">
-                        <thead>
-                        <tr>
-                            <th>{{ translate("txt-report") }}</th>
-                            <th>{{ translate("txt-date") }}</th>
-                            <th>{{ translate("txt-contact") }}</th>
-                            <th>{{ translate("txt-content-type") }}</th>
-                            <th>{{ translate("txt-size") }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                    {% if hasPublicResults %}
+                        <h2>{{ translate("txt-public-project-results") }}</h2>
+
+                        <table class="table table-hover table-striped table-sm">
+                            <thead>
                             <tr>
-                                <td>
-                                    {{ contentTypeIcon(result.contentType) }}
-                                    {{ resultLink(result,'download', 'public-name') }}
-                                </td>
-                                <td>{{ result.dateCreated|string_date }}</td>
-                                <td>{{ result.contact.displayName }}
-                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
-                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div>
-                                </td>
-                                <td>{{ result.contentType.description }}</td>
-                                <td>{{ result.size|parse_size }}</td>
-                                <td></td>
+                                <th>{{ translate("txt-report") }}</th>
+                                <th>{{ translate("txt-date") }}</th>
+                                <th>{{ translate("txt-contact") }}</th>
+                                <th>{{ translate("txt-content-type") }}</th>
+                                <th>{{ translate("txt-size") }}</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5"></td>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                                <tr>
+                                    <td>
+                                        {{ contentTypeIcon(result.contentType) }}
+                                        {{ resultLink(result,'download', 'public-name') }}
+                                    </td>
+                                    <td>{{ result.dateCreated|string_date }}</td>
+                                    <td>{{ result.contact.displayName }}
+                                        <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
+                                                        class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+                                        </div>
+                                    </td>
+                                    <td>{{ result.contentType.description }}</td>
+                                    <td>{{ result.size|parse_size }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
 
-                    <h3>{{ translate("txt-public-deliverables") }}</h3>
+                    <h2>{{ translate("txt-public-deliverables") }}</h2>
 
-                    {% include 'project/partial/list/workpackage-document' with {'documents':projectService.findPublicWorkpackageDocuments(calendar.projectCalendar.project)} %}
+                    {% set publicWorkpackageDocuments = projectService.findPublicWorkpackageDocuments(calendar.projectCalendar.project) %}
+
+                    {% if publicWorkpackageDocuments|length > 0 %}
+                        <table class="table table-striped table-sm table-hover">
+                            <thead>
+                            <tr>
+                                <th>{{ translate("txt-document") }}</th>
+                                <th>{{ translate("txt-last-update") }}</th>
+                                <th>{{ translate("txt-size") }}</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <td colspan="3"></td>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for document in publicWorkpackageDocuments %}
+                                <tr>
+                                    <td>
+                                        {{ contentTypeIcon(document.contentType) }}
+                                        {{ workpackageDocumentLink(document,'view-community','name') }}
+                                        {{ workpackageDocumentLink(document,'download-community','icon') }}
+                                    </td>
+                                    <td>{{ document.dateUpdated|string_date }}</td>
+                                    <td>{{ document.size|parse_size }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ ztbalert().info(translate("txt-no-public-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
+                            format(workpackage.sequence, workpackage.workpackage,project.parseFullName()))|raw }}
+                    {% endif %}
+
 
                 </div>
 
@@ -274,7 +330,49 @@
 
                     {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(calendar.projectCalendar.project) if workpackage.document.count() > 0 %}
                         <h4 class="home">{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
-                        {% include 'project/partial/list/workpackage-document' with {'documents':workpackage.document} %}
+
+
+                        {% if workpackage.document.count() > 0 %}
+                            <table class="table table-striped table-sm table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ translate("txt-document") }}</th>
+                                    <th>{{ translate("txt-private") }}</th>
+                                    <th>{{ translate("txt-last-update") }}</th>
+                                    <th>{{ translate("txt-size") }}</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="4"></td>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                {% for document in workpackage.document %}
+                                    <tr>
+                                        <td>
+                                            {{ contentTypeIcon(document.contentType) }}
+                                            {{ workpackageDocumentLink(document,'view-community','name') }}
+                                            {{ workpackageDocumentLink(document,'download-community','icon') }}
+                                        </td>
+                                        <td>
+                                            {% if not document.isPublic() %}
+                                                <i class="fa fa-lock"
+                                                   title="{{ translate("txt-document-is-private") }}"></i>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ document.dateUpdated|string_date }}</td>
+                                        <td>{{ document.size|parse_size }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            {{ ztbalert().info(translate("txt-no-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
+                                format(workpackage.sequence, workpackage.workpackage,project.parseFullName()))|raw }}
+                        {% endif %}
+
+
                         <hr>
                     {% endfor %}
 

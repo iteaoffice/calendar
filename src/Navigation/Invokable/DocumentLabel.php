@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
@@ -22,15 +22,12 @@ use Zend\Navigation\Page\Mvc;
  *
  * @package Project\Navigation\Invokable
  */
-class DocumentLabel extends AbstractNavigationInvokable
+final class DocumentLabel extends AbstractNavigationInvokable
 {
-    /**
-     * @param Mvc $page
-     *
-     * @return void;
-     */
     public function __invoke(Mvc $page): void
     {
+        $label = $this->translate('txt-nav-document');
+
         if ($this->getEntities()->containsKey(Document::class)) {
             /** @var Document $document */
             $document = $this->getEntities()->get(Document::class);
@@ -45,8 +42,6 @@ class DocumentLabel extends AbstractNavigationInvokable
                 )
             );
             $label = (string)$document;
-        } else {
-            $label = $this->translate('txt-nav-document');
         }
         $page->set('label', $label);
     }

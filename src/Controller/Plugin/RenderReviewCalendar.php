@@ -24,7 +24,7 @@ use ZfcTwig\View\TwigRenderer;
  *
  * @package Calendar\Controller\Plugin
  */
-class RenderReviewCalendar extends AbstractPlugin
+final class RenderReviewCalendar extends AbstractPlugin
 {
     /**
      * @var TwigRenderer

@@ -25,98 +25,30 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      * Turn off strict options mode.
      */
     protected $__strictMode__ = false;
-    /**
-     * Location of the PDF having the calendar contact template.
-     *
-     * @var string
-     */
+
     protected $calendarContactTemplate = '';
-    /*
-     * Location of the PDF having the NDA template
-     *
-     * @var string
-     */
     protected $reviewCalendarTemplate = '';
-    /**
-     * Default year to show past events
-     *
-     */
-    protected $defaultYear;
 
-    /**
-     * Template to use for upcoming events
-     *
-     * @var string
-     */
-    protected $calendarUpcomingTemplate = '';
-
-    /**
-     * Template to use for past events
-     *
-     * @var string
-     */
-    protected $calendarPastTemplate = '';
-
-
-    /**
-     * @return string
-     */
-    public function getCalendarContactTemplate()
+    public function getCalendarContactTemplate(): string
     {
         return $this->calendarContactTemplate;
     }
 
-    /**
-     * @param $calendarContactTemplate
-     *
-     * @return ModuleOptions
-     */
-    public function setCalendarContactTemplate($calendarContactTemplate)
+    public function setCalendarContactTemplate(string $calendarContactTemplate): ModuleOptions
     {
         $this->calendarContactTemplate = $calendarContactTemplate;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getReviewCalendarTemplate()
+    public function getReviewCalendarTemplate(): string
     {
         return $this->reviewCalendarTemplate;
     }
 
-    /**
-     * @param $reviewCalendarTemplate
-     *
-     * @return ModuleOptions
-     */
-    public function setReviewCalendarTemplate($reviewCalendarTemplate)
+    public function setReviewCalendarTemplate(string $reviewCalendarTemplate): ModuleOptions
     {
         $this->reviewCalendarTemplate = $reviewCalendarTemplate;
-
-        return $this;
-    }
-
-
-    /**
-     * Returns the default year
-     *
-     * @return int
-     */
-    public function getDefaultYear()
-    {
-        return $this->defaultYear;
-    }
-
-    /**
-     * @param $defaultYear
-     *
-     * @return $this
-     */
-    public function setDefaultYear($defaultYear)
-    {
-        $this->defaultYear = $defaultYear;
 
         return $this;
     }

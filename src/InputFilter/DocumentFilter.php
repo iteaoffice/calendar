@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
@@ -21,11 +21,8 @@ use Zend\Validator\File\Size;
  *
  * @package Calendar\InputFilter
  */
-class DocumentFilter extends InputFilter
+final class DocumentFilter extends InputFilter
 {
-    /**
-     * DocumentFilter constructor.
-     */
     public function __construct()
     {
         $inputFilter = new InputFilter();

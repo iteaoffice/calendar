@@ -22,15 +22,15 @@ use Calendar\Service\CalendarService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
 use function array_chunk;
-use function max;
 use function count;
+use function max;
 
 /**
  * Class RenderCalendarContactList
  *
  * @package Calendar\Controller\Plugin
  */
-class RenderCalendarContactList extends AbstractPlugin
+final class RenderCalendarContactList extends AbstractPlugin
 {
     /**
      * @var TwigRenderer

@@ -217,6 +217,11 @@
                     <th>{{ translate("txt-presence") }}</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="4"></td>
+                </tr>
+                </tfoot>
                 <tbody>
                 {% for calendarContact in calendar.calendarContact %}
                     <tr {% if identity().getId() == contact.id %}class="table-success"{% endif %}>

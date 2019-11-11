@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
@@ -21,7 +21,7 @@ use Zend\Navigation\Page\Mvc;
  *
  * @package Project\Navigation\Invokable
  */
-class CalendarLabel extends AbstractNavigationInvokable
+final class CalendarLabel extends AbstractNavigationInvokable
 {
     public function __invoke(Mvc $page): void
     {

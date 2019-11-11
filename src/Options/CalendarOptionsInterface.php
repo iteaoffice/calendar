@@ -17,41 +17,11 @@ namespace Calendar\Options;
  */
 interface CalendarOptionsInterface
 {
-    /**
-     * @param $calendarContactTemplate
-     *
-     * @return CalendarOptionsInterface
-     */
-    public function setCalendarContactTemplate($calendarContactTemplate);
+    public function setCalendarContactTemplate(string $calendarContactTemplate): ModuleOptions;
 
-    /**
-     * @return boolean
-     */
-    public function getCalendarContactTemplate();
+    public function getCalendarContactTemplate(): string;
 
-    /**
-     * @param $reviewCalendarTemplate
-     *
-     * @return CalendarOptionsInterface
-     */
-    public function setReviewCalendarTemplate($reviewCalendarTemplate);
+    public function setReviewCalendarTemplate(string $reviewCalendarTemplate): ModuleOptions;
 
-    /**
-     * @return boolean
-     */
-    public function getReviewCalendarTemplate();
-
-    /**
-     * Returns the default year
-     *
-     * @return int
-     */
-    public function getDefaultYear();
-
-    /**
-     * @param $defaultYear
-     *
-     * @return $this
-     */
-    public function setDefaultYear($defaultYear);
+    public function getReviewCalendarTemplate(): string;
 }
