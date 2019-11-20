@@ -64,9 +64,7 @@ final class GetFilter extends AbstractPlugin
         $direction = $request->getQuery('direction');
 
         // If the form is submitted, refresh the URL
-        if ($request->isGet()
-            && (($request->getQuery('submit') !== null) || ($request->getQuery('presentation') !== null))
-        ) {
+        if ($request->isGet() && ($request->getQuery('submit') !== null)) {
             $query = $request->getQuery()->toArray();
             if (isset($query['filter'])) {
                 $filter = $query['filter'];
