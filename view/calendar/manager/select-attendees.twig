@@ -40,6 +40,11 @@
 
         <input type="button" class="btn btn-outline-info" id="remove-all" value="{{ translate("txt-remove-all") }}">
         <input type="button" class="btn btn-outline-danger" id="reset" value="{{ translate("txt-reset") }}">
+
+        <div class="pull-right">
+            {{ ztbformelement(form.get('submit')) }}
+            {{ ztbformelement(form.get('cancel')) }}
+        </div>
     </div>
     <div class="col">
         <h2>{{ translate("txt-choose-contacts") }}</h2>
@@ -60,33 +65,48 @@
         <input type="button" class="btn btn-outline-success" id="add-all" value="{{ translate("txt-add-all") }}">
         <input type="button" class="btn btn-outline-danger" id="subtract" value="{{ translate("txt-subtract") }}">
 
-        <h2>{{ translate("txt-project-contacts-results") }}</h2>
-        <table class="table table-sm table-hover table-striped">
-            <tbody id="project-contacts-table">
-            {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project) if contact.id not in currentContacts %}
-                <tr data-id="{{ contact.id }}">
-                    <td>
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </td>
-                    <td>
-                        <small class="text-muted">{{ contact.id }}</small></td>
-                    <td>{{ contact.getFormName() }}</td>
-                    <td>{{ contact.contactOrganisation.organisation }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% if calendar.isReview() %}
+            <h2>{{ translate("txt-project-contacts-results") }}</h2>
+            <table class="table table-sm table-hover table-striped">
+                <tbody id="project-contacts-table">
+                {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project) if contact.id not in currentContacts %}
+                    <tr data-id="{{ contact.id }}">
+                        <td>
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </td>
+                        <td>
+                            <small class="text-muted">{{ contact.id }}</small></td>
+                        <td>{{ contact.getFormName() }}
+
+                            {% if contact == calendar.projectCalendar.project.contact %}[PL]{% endif %}
+
+                            {% for proxyContact in calendar.projectCalendar.project.proxyContact %}
+                                {% if contact == proxyContact %}<span
+                                        class="badge badge-primary">PROXY</span>{% endif %}
+                            {% endfor %}
+
+                            {% set hasTC = false %}
+                            {% for affiliation in calendar.projectCalendar.project.affiliation %}
+                                {% if not hasTC and contact == affiliation.contact %}{% set hasTc = true %}<span
+                                        class="badge badge-info">TC</span>{% endif %}
+                            {% endfor %}
+
+                            {% set hasWPL = false %}
+                            {% for workpackage in calendar.projectCalendar.project.workpackage %}
+                                {% if not hasWPL and contact == workpackage.contact %}{% set hasWPL = true %}<span
+                                        class="badge badge-dark">WPL</span>{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ contact.contactOrganisation.organisation }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     </div>
 </div>
 
 <div id="hidden-elements"></div>
-
-<div class="form-group row">
-    <div class="offset-sm-3 col-sm-9">
-        {{ ztbformelement(form.get('submit')) }}
-        {{ ztbformelement(form.get('cancel')) }}
-    </div>
-</div>
 
 {{ form().closeTag()|raw }}
 

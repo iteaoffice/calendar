@@ -22,7 +22,7 @@
     <div class="tab-pane active" id="calendar">
         <br>
         <dl class="dl-horizontal">
-            {% if calendar.projectCalendar %}
+            {% if calendar.isReview() %}
                 <dt>{{ translate("txt-project") }}</dt>
                 <dd>{{ projectLink(calendar.projectCalendar.project,'view-community','name') }}</dd>
             {% endif %}
@@ -45,7 +45,7 @@
         <ul class="nav nav-pills nav-nos-menu">
             <li class="nav-item active"><a class="nav-link active" href="#total-calendar-documents"
                                            data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
-            {% if calendar.projectCalendar %}
+            {% if calendar.isReview() %}
                 <li class="nav-item"><a class="nav-link" href="#version-documents"
                                         data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#reporting"
@@ -118,7 +118,7 @@
                 {% endif %}
             </div>
 
-            {% if calendar.projectCalendar %}
+            {% if calendar.isReview() %}
                 <div class="tab-pane" role="tabpanel" id="version-documents">
 
                     {% set version = projectService.getLatestApprovedProjectVersion(calendar.projectCalendar.project) %}
@@ -172,7 +172,7 @@
                 <div class="tab-pane" role="tabpanel" id="reporting">
 
                     <h2>{{ translate("txt-progress-reports") }}</h2>
-                    {% if calendar.projectCalendar.project.report.count() > 0 %}
+                    {% if calendar.isReview() and calendar.projectCalendar.project.report.count() > 0 %}
                         <table class="table table-hover table-striped table-sm">
                             <thead>
                             <tr>

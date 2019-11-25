@@ -12,7 +12,7 @@
                                    data-toggle="tab" role="tab">{{ translate("txt-general-information") }}</a></li>
     <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab"
                             role="tab">{{ translate("txt-documents") }}</a></li>
-    {% if calendar.projectCalendar %}
+    {% if calendar.isReview() %}
         <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
                                 role="tab">{{ translate("txt-actions") }}</a></li>
         <li class="nav-item"><a class="nav-link" href="#reviewers" data-toggle="tab"
@@ -38,7 +38,7 @@
             <dd>{{ calendar.dateEnd|date }}</dd>
             <dt>{{ translate("txt-calendar-type") }}</dt>
             <dd>{{ calendar.type }}</dd>
-            {% if calendar.projectCalendar %}
+            {% if calendar.isReview() %}
                 <dt>{{ translate("txt-project-name") }}</dt>
                 <dd>{{ projectLink(calendar.projectCalendar.project,'view-admin','name') }} {{ projectLink(calendar.projectCalendar.project,'view-community','icon') }}</dd>
             {% endif %}
@@ -154,19 +154,19 @@
 
     </div>
 
-    {% if calendar.projectCalendar %}
+    {% if calendar.isReview() %}
         <div class="tab-pane" role="tabpanel" id="action">
 
             <h2>{{ translate("txt-planned-project-actions") }}</h2>
 
-            {% if calendar.projectCalendar.plannedAction.count() > 0 %}
+            {% if calendar.isReview() and calendar.projectCalendar.plannedAction.count() > 0 %}
                 {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.plannedAction } %}
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-actions-planned-for-this-review-meeting"))|raw }}
             {% endif %}
 
             <h2>{{ translate("txt-defined-project-actions") }}</h2>
-            {% if calendar.projectCalendar.action.count() > 0 %}
+            {% if calendar.isReview() and calendar.projectCalendar.action.count() > 0 %}
                 {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.action } %}
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-actions-defined-for-this-review-meeting"))|raw }}
@@ -179,7 +179,7 @@
 
             <h2>{{ translate("txt-reviewers") }}</h2>
 
-            {% if calendar.projectCalendar.reviewers.count() > 0 %}
+            {% if calendar.isReview() and calendar.projectCalendar.reviewers.count() > 0 %}
                 <table class="table table-hover table-sm table-striped">
                     <thead>
                     <tr>

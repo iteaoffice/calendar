@@ -268,8 +268,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
         $calendarDocument->setField('is_project', $calendar->isProject());
         $calendarDocument->setField('is_project_text', $calendar->isProject() ? 'Yes' : 'No');
-        $calendarDocument->setField('is_call', $calendar->isCall());
-        $calendarDocument->setField('is_call_text', $calendar->isCall() ? 'Yes' : 'No');
         $calendarDocument->setField('is_review', $calendar->isReview());
         $calendarDocument->setField('is_review_text', $calendar->isReview() ? 'Yes' : 'No');
         $calendarDocument->setField('is_birthday', $calendar->isBirthday());

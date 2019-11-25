@@ -338,11 +338,6 @@ class Calendar extends AbstractEntity
         return false;
     }
 
-    public function isCall(): bool
-    {
-        return false;
-    }
-
     public function onHomepage(): bool
     {
         return $this->isFinal() && $this->onHomepage === self::ON_HOMEPAGE;

@@ -6,7 +6,7 @@
 {% do form.prepare() %}
 {{ form().openTag(form)|raw }}
 
-{% if calendar.projectCalendar %}
+{% if calendar.isReview() %}
     <div class="form-group row">
         <label class="col-sm-3 col-form-label">{{ translate("txt-project-name") }}</label>
 

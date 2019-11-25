@@ -6,3 +6,6 @@ _("txt-remove");
 _("txt-reset");
 _("txt-select-all");
 _("txt-add");
+_("txt-remove-all");
+_("txt-add-all");
+_("txt-subtract");
