@@ -23,50 +23,19 @@ use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 
 /**
- *
+* Class TypeController
+ * @package Calendar\Controller
  */
 final class TypeController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var FormService
-     */
-    private $formService;
+    private CalendarService $calendarService;
+    private FormService $formService;
 
     public function __construct(CalendarService $calendarService, FormService $formService)
     {
         $this->calendarService = $calendarService;
         $this->formService = $formService;
     }
-
-//    public function listAction(): ViewModel
-//    {
-//        $page = $this->params()->fromRoute('page', 1);
-//        $filterPlugin = $this->getCalendarFilter();
-//        $contactQuery = $this->calendarService->findFiltered(Type::class, $filterPlugin->getFilter());
-//
-//        $paginator
-//            = new Paginator(new PaginatorAdapter(new ORMPaginator($contactQuery, false)));
-//        $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 30);
-//        $paginator->setCurrentPageNumber($page);
-//        $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-//
-//        $form = new CalendarTypeFilter($this->calendarService);
-//        $form->setData(['filter' => $filterPlugin->getFilter()]);
-//
-//        return new ViewModel(
-//            [
-//                'paginator'     => $paginator,
-//                'form'          => $form,
-//                'encodedFilter' => urlencode($filterPlugin->getHash()),
-//                'order'         => $filterPlugin->getOrder(),
-//                'direction'     => $filterPlugin->getDirection(),
-//            ]
-//        );
-//    }
 
     public function viewAction(): ViewModel
     {

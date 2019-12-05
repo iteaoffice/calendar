@@ -27,29 +27,14 @@ use Zend\Validator\File\MimeType;
 use Zend\View\Model\ViewModel;
 
 /**
- * Class DocumentController
- *
- * @package Calendar\Controller
  * @method FlashMessenger flashMessenger()
  */
 final class DocumentController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private CalendarService $calendarService;
+    private GeneralService $generalService;
+    private EntityManager $entityManager;
+    private TranslatorInterface $translator;
 
     public function __construct(
         CalendarService $calendarService,
@@ -133,7 +118,7 @@ final class DocumentController extends AbstractActionController
             if (isset($data['delete'])) {
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-document-%s-successfully-removed"),
+                        $this->translator->translate('txt-calendar-document-%s-successfully-removed'),
                         $document->parseFileName()
                     )
                 );
@@ -183,7 +168,7 @@ final class DocumentController extends AbstractActionController
                 $this->calendarService->save($document);
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-document-%s-successfully-updated"),
+                        $this->translator->translate('txt-calendar-document-%s-successfully-updated'),
                         $document->parseFileName()
                     )
                 );

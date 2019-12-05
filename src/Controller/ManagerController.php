@@ -50,46 +50,16 @@ use function sprintf;
  */
 final class ManagerController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var CalendarSearchService
-     */
-    private $searchService;
-    /**
-     * @var FormService
-     */
-    private $formService;
-    /**
-     * @var ProjectService
-     */
-    private $projectService;
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-    /**
-     * @var ContactService
-     */
-    private $contactService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var AssertionService
-     */
-    private $assertionService;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private CalendarService $calendarService;
+    private CalendarSearchService $searchService;
+    private FormService $formService;
+    private ProjectService $projectService;
+    private ActionService $actionService;
+    private ContactService $contactService;
+    private GeneralService $generalService;
+    private AssertionService $assertionService;
+    private EntityManager $entityManager;
+    private TranslatorInterface $translator;
 
     public function __construct(
         CalendarService $calendarService,

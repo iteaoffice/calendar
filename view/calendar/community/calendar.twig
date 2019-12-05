@@ -215,7 +215,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_REVIEW") %}
+                        {% for result in results|filter(result => result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_REVIEW")) -%}
                             <tr>
                                 <td>
                                     {{ contentTypeIcon(result.contentType) }}
@@ -240,7 +240,7 @@
                 <div class="tab-pane" role="tabpanel" id="public-project-results">
 
                     {% set hasPublicResults = false %}
-                    {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                    {% for result in results|filter(result => result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS")) -%}
                         {% set hasPublicResults = true %}
                     {% endfor %}
 
@@ -263,7 +263,7 @@
                             </tr>
                             </tfoot>
                             <tbody>
-                            {% for result in results if result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS") %}
+                            {% for result in results|filter(result => result.type.category.id is constant("Project\\Entity\\Result\\TypeCategory::PROJECT_PUBLICATIONS")) -%}
                                 <tr>
                                     <td>
                                         {{ contentTypeIcon(result.contentType) }}
@@ -328,7 +328,7 @@
 
                     <h2>{{ translate("txt-workpackage-deliverables") }}</h2>
 
-                    {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(calendar.projectCalendar.project) if workpackage.document.count() > 0 %}
+                    {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(calendar.projectCalendar.project)|filter(workpackage => workpackage.document.count() > 0) -%}
                         <h4 class="home">{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
 
 

@@ -26,14 +26,8 @@ use function file_put_contents;
  */
 final class CalendarController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var TwigRenderer
-     */
-    private $renderer;
+    private CalendarService $calendarService;
+    private TwigRenderer $renderer;
 
     public function __construct(CalendarService $calendarService, TwigRenderer $renderer)
     {

@@ -26,8 +26,8 @@ class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
      */
     protected $__strictMode__ = false;
 
-    protected $calendarContactTemplate = '';
-    protected $reviewCalendarTemplate = '';
+    protected string $calendarContactTemplate = '';
+    protected string $reviewCalendarTemplate = '';
 
     public function getCalendarContactTemplate(): string
     {

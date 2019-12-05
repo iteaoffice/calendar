@@ -62,7 +62,6 @@ use function sys_get_temp_dir;
 use function unlink;
 
 /**
- * @package Calendar\Controller
  * @method Identity|\Contact\Entity\Contact identity()
  * @method FlashMessenger flashMessenger()
  * @method RenderReviewCalendar|Fpdi renderReviewCalendar(array $calendarItems)
@@ -70,50 +69,17 @@ use function unlink;
  */
 final class CommunityController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var CalendarSearchService
-     */
-    private $searchService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var ContactService
-     */
-    private $contactService;
-    /**
-     * @var ProjectService
-     */
-    private $projectService;
-    /**
-     * @var WorkpackageService
-     */
-    private $workpackageService;
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-    /**
-     * @var AssertionService
-     */
-    private $assertionService;
-    /**
-     * @var EmailService
-     */
-    private $emailService;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private CalendarService $calendarService;
+    private CalendarSearchService $searchService;
+    private GeneralService $generalService;
+    private ContactService $contactService;
+    private ProjectService $projectService;
+    private WorkpackageService $workpackageService;
+    private ActionService $actionService;
+    private AssertionService $assertionService;
+    private EmailService $emailService;
+    private TranslatorInterface $translator;
+    private EntityManager $entityManager;
 
     public function __construct(
         CalendarService $calendarService,
@@ -323,7 +289,7 @@ final class CommunityController extends AbstractActionController
                 ->addSuccessMessage(
                     sprintf(
                         $this->translator->translate(
-                            "txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"
+                            'txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded'
                         ),
                         $document->getDocument(),
                         $calendar->getCalendar()
@@ -445,7 +411,7 @@ final class CommunityController extends AbstractActionController
             $this->flashMessenger()
                 ->addInfoMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-attendees-for-%s-have-been-updated"),
+                        $this->translator->translate('txt-calendar-attendees-for-%s-have-been-updated'),
                         $calendar->getCalendar()
                     )
                 );
@@ -567,7 +533,7 @@ final class CommunityController extends AbstractActionController
             $this->flashMessenger()
                 ->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-message-to-attendees-for-%s-has-been-sent"),
+                        $this->translator->translate('txt-message-to-attendees-for-%s-has-been-sent'),
                         $calendar->getCalendar()
                     )
                 );
@@ -606,9 +572,6 @@ final class CommunityController extends AbstractActionController
 
         $fileName = $calendar->getDocRef() . '-binder.zip';
 
-        /*
-         * throw the filename away
-         */
         if (file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
             unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
         }

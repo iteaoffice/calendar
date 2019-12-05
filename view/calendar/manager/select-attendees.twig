@@ -69,7 +69,7 @@
             <h2>{{ translate("txt-project-contacts-results") }}</h2>
             <table class="table table-sm table-hover table-striped">
                 <tbody id="project-contacts-table">
-                {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project) if contact.id not in currentContacts %}
+                {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project)|filter(contact => contact.id not in currentContacts) -%}
                     <tr data-id="{{ contact.id }}">
                         <td>
                             <i class="fa fa-plus" aria-hidden="true"></i>

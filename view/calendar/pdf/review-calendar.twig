@@ -26,13 +26,13 @@
             <td>{{ calendar.projectCalendar.project.contact.displayName }}
                 ({{ calendar.projectCalendar.project.contact.contactOrganisation.organisation }})
             </td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 6 %}{{ contact.contact.displayName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 9 %}{{ contact.contact.displayName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 7 %}{{ contact.contact.displayName }}
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 6) -%}{{ contact.contact.displayName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 9) -%}{{ contact.contact.displayName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 7) -%}{{ contact.contact.displayName }}
                     <br>{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 8 %}{{ contact.contact.displayName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 4 %}{{ contact.contact.shortName }}{% endfor %}</td>
-            <td>{% for contact in calendar.calendarContact if contact.role.id == 2 %}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 8) -%}{{ contact.contact.displayName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 4) -%}{{ contact.contact.shortName }}{% endfor %}</td>
+            <td>{% for contact in calendar.calendarContact|filter(contact => contact.role.id == 2) -%}{{ contact.contact.shortName }}{% endfor %}</td>
         </tr>
     {% endfor %}
     </tbody>

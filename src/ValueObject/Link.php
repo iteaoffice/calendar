@@ -21,11 +21,11 @@ use function sprintf;
 
 final class Link
 {
-    private $href;
-    private $title;
-    private $classes;
-    private $linkContent;
-    private $javascript;
+    private string $href;
+    private string $title;
+    private array $classes;
+    private array $linkContent;
+    private ?string $javascript;
 
     public function __construct(string $href, string $title, array $classes, array $linkContent, ?string $javascript)
     {

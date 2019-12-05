@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for calendar in upcomingCalendar if not calendarService.calendarHasContact(calendar,contact) %}
+            {% for calendar in upcomingCalendar|filter(calendar => not calendarService.calendarHasContact(calendar,contact)) -%}
                 <tr>
                     <td><small class="text-muted">{{ loop.index }}</small></td>
                     <td><input type="checkbox" name="calendar[{{ calendar.id }}][calendar]" value="{{ calendar.id }}">

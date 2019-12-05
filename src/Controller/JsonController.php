@@ -25,7 +25,7 @@ use Zend\View\Model\JsonModel;
  */
 final class JsonController extends AbstractActionController
 {
-    private $calendarService;
+    private CalendarService $calendarService;
 
     public function __construct(CalendarService $calendarService)
     {
