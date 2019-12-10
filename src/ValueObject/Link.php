@@ -25,7 +25,7 @@ final class Link
     private string $title;
     private array $classes;
     private array $linkContent;
-    private ?string $javascript;
+    private ? string $javascript;
 
     public function __construct(string $href, string $title, array $classes, array $linkContent, ?string $javascript)
     {
@@ -36,7 +36,7 @@ final class Link
         $this->linkContent = $linkContent;
     }
 
-    public function __toString(): string
+    public function __toString() : string
     {
         $uri = '<a href="%s" title="%s" class="%s" %s>%s</a>';
 

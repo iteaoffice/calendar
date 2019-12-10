@@ -17,6 +17,10 @@ use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\Element\Submit;
+use Zend\Form\Element\Csrf;
+use Zend\Form\Element\File;
+use Zend\Form\Element\Text;
 
 /**
  * Class CreateCalendarDocument
@@ -38,7 +42,7 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Text',
+                'type'       => Text::class,
                 'name'       => 'document',
                 'options'    => [
                     'label'      => _('txt-document-name'),
@@ -52,7 +56,7 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
         );
         $this->add(
             [
-                'type'    => '\Zend\Form\Element\File',
+                'type'    => File::class,
                 'name'    => 'file',
                 'options' => [
                     'label'      => 'txt-file',
@@ -63,13 +67,13 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
         );
         $this->add(
             [
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => Csrf::class,
                 'name' => 'csrf',
             ]
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
                     'class' => 'btn btn-primary',
@@ -79,7 +83,7 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'delete',
                 'attributes' => [
                     'class' => 'btn btn-danger',
@@ -89,7 +93,7 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
                     'class' => 'btn btn-warning',

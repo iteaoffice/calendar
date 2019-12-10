@@ -32,18 +32,9 @@ use function max;
  */
 final class RenderCalendarContactList extends AbstractPlugin
 {
-    /**
-     * @var TwigRenderer
-     */
-    private $twigRenderer;
-    /**
-     * @var ModuleOptions
-     */
-    private $moduleOptions;
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
+    private TwigRenderer $twigRenderer;
+    private ModuleOptions $moduleOptions;
+    private CalendarService $calendarService;
 
     public function __construct(
         TwigRenderer $twigRenderer,

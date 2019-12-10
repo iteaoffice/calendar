@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
@@ -29,14 +29,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 abstract class AbstractService
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-    /**
-     * @var SelectionContactService
-     */
-    protected $selectionContactService;
+    protected EntityManager $entityManager;
+    protected ? SelectionContactService $selectionContactService;
 
     public function __construct(EntityManager $entityManager, SelectionContactService $selectionContactService = null)
     {
@@ -44,7 +38,7 @@ abstract class AbstractService
         $this->selectionContactService = $selectionContactService;
     }
 
-    public function findFilteredByContact(string $entity, $filter, Contact $contact): QueryBuilder
+    public function findFilteredByContact(string $entity, $filter, Contact $contact) : QueryBuilder
     {
         //The 'filter' should always be there to support the repositories
         if (!\array_key_exists('filter', $filter)) {
@@ -118,7 +112,7 @@ abstract class AbstractService
         $role = $this->entityManager->getRepository(Permit\Role::class)->findOneBy(
             [
                 'entity' => $permitEntity,
-                'role'   => $roleName,
+                'role' => $roleName,
             ]
         );
 

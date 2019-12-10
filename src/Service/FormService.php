@@ -19,6 +19,7 @@ namespace Calendar\Service;
 use Calendar\Entity\AbstractEntity;
 use Calendar\Form\CreateObject;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -30,16 +31,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class FormService
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-    /**
-     * @var ServiceLocatorInterface
-     */
-    private $container;
+    protected EntityManager $entityManager;
+    private ContainerInterface $container;
 
-    public function __construct(ServiceLocatorInterface $container, EntityManager $entityManager)
+    public function __construct(ContainerInterface $container, EntityManager $entityManager)
     {
         $this->container = $container;
         $this->entityManager = $entityManager;

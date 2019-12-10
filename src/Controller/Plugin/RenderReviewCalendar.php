@@ -26,14 +26,8 @@ use ZfcTwig\View\TwigRenderer;
  */
 final class RenderReviewCalendar extends AbstractPlugin
 {
-    /**
-     * @var TwigRenderer
-     */
-    private $twigRenderer;
-    /**
-     * @var ModuleOptions
-     */
-    private $moduleOptions;
+    private TwigRenderer $twigRenderer;
+    private ModuleOptions $moduleOptions;
 
     public function __construct(TwigRenderer $twigRenderer, ModuleOptions $moduleOptions)
     {

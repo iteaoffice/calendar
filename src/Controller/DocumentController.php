@@ -137,7 +137,6 @@ final class DocumentController extends AbstractActionController
             if (!isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
                 if (!empty($file['name']) && $file['error'] === 0) {
-
                     /** If no name is given, take the name of the file */
                     if (empty($data['document'])) {
                         $document->setDocument($file['name']);
@@ -180,7 +179,7 @@ final class DocumentController extends AbstractActionController
         return new ViewModel(
             [
                 'document' => $document,
-                'form'     => $form,
+                'form' => $form,
             ]
         );
     }
