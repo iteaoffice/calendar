@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Calendar\Controller;
 
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use Calendar\Entity\Type;
-use Calendar\Service\FormService;
 use Calendar\Service\CalendarService;
+use Calendar\Service\FormService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 
 /**
-* Class TypeController
+ * Class TypeController
  * @package Calendar\Controller
  */
 final class TypeController extends AbstractActionController
@@ -57,7 +54,7 @@ final class TypeController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             if (isset($data['cancel'])) {
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar/type/list');
+                return $this->redirect()->toRoute('zfcadmin/calendar/type/list');
             }
 
             if ($form->isValid()) {
@@ -105,7 +102,7 @@ final class TypeController extends AbstractActionController
             if (isset($data['delete'])) {
                 $this->calendarService->delete($type);
 
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar/type/list');
+                return $this->redirect()->toRoute('zfcadmin/calendar/type/list');
             }
 
             if ($form->isValid()) {

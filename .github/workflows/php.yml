@@ -1,4 +1,4 @@
-name: Calendar PHP 7.4 suite
+name: main
 
 on: [push]
 
@@ -19,7 +19,7 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: '7.4'
-          extension-csv: mbstring, intl, zip, soap, gd
+          extensions: mbstring, intl, zip, soap, gd
           coverage: xdebug #optional, setup coverage driver
 
       - name: Check PHP Version
