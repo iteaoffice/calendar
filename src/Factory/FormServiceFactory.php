@@ -30,7 +30,6 @@ final class FormServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): FormService
     {
-        /** @var FormService $formService */
         return new $requestedName($container, $container->get(EntityManager::class));
     }
 }

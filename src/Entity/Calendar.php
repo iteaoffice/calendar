@@ -348,21 +348,6 @@ class Calendar extends AbstractEntity
         return $this->final === self::FINAL_FINAL;
     }
 
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
     public function addCall(Collections\Collection $collection): void
     {
         foreach ($collection as $call) {

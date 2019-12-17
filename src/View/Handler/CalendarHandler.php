@@ -17,10 +17,12 @@ use Content\Entity\Content;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use Zend\Authentication\AuthenticationService;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Application;
 use Zend\Paginator\Paginator;
 use Zend\View\HelperPluginManager;
+use General\View\Handler\AbstractHandler;
 use ZfcTwig\View\TwigRenderer;
 use function array_filter;
 use function count;
@@ -36,19 +38,15 @@ use function sprintf;
 final class CalendarHandler extends AbstractHandler
 {
     public const LIMIT = 10;
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var CalendarSearchService
-     */
-    private $calendarSearchService;
+
+    private CalendarService $calendarService;
+    private CalendarSearchService $calendarSearchService;
 
     public function __construct(
         Application $application,
         HelperPluginManager $helperPluginManager,
         TwigRenderer $renderer,
+        AuthenticationService $authenticationService,
         TranslatorInterface $translator,
         CalendarService $calendarService,
         CalendarSearchService $calendarSearchService
@@ -57,6 +55,7 @@ final class CalendarHandler extends AbstractHandler
             $application,
             $helperPluginManager,
             $renderer,
+            $authenticationService,
             $translator
         );
 

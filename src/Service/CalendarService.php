@@ -45,26 +45,11 @@ use function sprintf;
  */
 class CalendarService extends AbstractService implements SearchUpdateInterface
 {
-    /**
-     * @var CalendarSearchService
-     */
-    private $calendarSearchService;
-    /**
-     * @var ContactService
-     */
-    private $contactService;
-    /**
-     * @var CallService
-     */
-    private $callService;
-    /**
-     * @var AdminService
-     */
-    private $adminService;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private CalendarSearchService $calendarSearchService;
+    private ContactService $contactService;
+    private CallService $callService;
+    private AdminService $adminService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         EntityManager $entityManager,
@@ -129,7 +114,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 /**
                  * Add every new user as attendee
                  *
-                 * @var $role Entity\ContactRole
+                 * @var Entity\ContactRole $role
                  */
                 $role = $this->find(Entity\ContactRole::class, Entity\ContactRole::ROLE_ATTENDEE);
                 $calendarContact->setRole($role);
@@ -137,7 +122,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
                 /**
                  * Give every new user the status "tentative"
                  *
-                 * @var $status Entity\ContactStatus
+                 * @var Entity\ContactStatus $status
                  */
                 $status = $this->find(Entity\ContactStatus::class, Entity\ContactStatus::STATUS_TENTATIVE);
                 $calendarContact->setStatus($status);
@@ -158,7 +143,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $calendarContact = $this->entityManager->getRepository(CalendarContact::class)->findOneBy(
             [
                 'calendar' => $calendar,
-                'contact'  => $contact,
+                'contact' => $contact,
             ]
         );
 
@@ -534,7 +519,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         $searchClient = new Client();
         $update = $searchClient->createUpdate();
 
-        $currentYear = date('Y');
+        $currentYear = (int)date('Y');
         $yearSpan = range($currentYear - 3, $currentYear + 3);
 
         foreach ($yearSpan as $year) {
@@ -609,79 +594,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
             $update->addDocument($calendarDocument);
         }
-        $update->addCommit();
-
-        return $update;
-    }
-
-    public function prepareSearchUpdateForCall(
-        string $eventName,
-        string $call,
-        string $description,
-        DateTime $date
-    ): AbstractQuery {
-        $searchClient = new Client();
-        $update = $searchClient->createUpdate();
-
-        /** @var Document $calendarDocument */
-        $calendarDocument = $update->createDocument();
-        // Calendar properties
-        $calendarDocument->setField('id', 'call_' . $eventName . '_' . $call . '_' . $date->getTimestamp());
-
-        $calendarDocument->setField('calendar', $eventName);
-        $calendarDocument->setField('calendar_sort', $eventName);
-        $calendarDocument->setField('calendar_search', $eventName);
-
-        $calendarDocument->setField('description', $description);
-        $calendarDocument->setField('description_sort', $description);
-        $calendarDocument->setField('description_search', $description);
-
-
-        $calendarDocument->setField('highlight_description', $description);
-        $calendarDocument->setField('highlight_description_sort', $description);
-        $calendarDocument->setField('highlight_description_search', $description);
-
-        $calendarDocument->setField('type', $this->translator->translate('txt-call-date'));
-        $calendarDocument->setField('type_search', $this->translator->translate('txt-call-date'));
-        $calendarDocument->setField('type_sort', $this->translator->translate('txt-call-date'));
-
-        $calendarDocument->setField('location', $call);
-        $calendarDocument->setField('location_sort', $call);
-        $calendarDocument->setField('location_search', $call);
-
-        $calendarDocument->setField(
-            'date_from',
-            $date->format(AbstractSearchService::DATE_SOLR)
-        );
-        $calendarDocument->setField(
-            'date_end',
-            $date->format(AbstractSearchService::DATE_SOLR)
-        );
-
-        $calendarDocument->setField('year', $date->format('Y'));
-        $calendarDocument->setField('month', $date->format('m'));
-
-        $calendarDocument->setField('highlight', false);
-        $calendarDocument->setField('highlight_text', 'No');
-        $calendarDocument->setField('final', true);
-        $calendarDocument->setField('final_text', 'Final');
-        $calendarDocument->setField('is_project', true);
-        $calendarDocument->setField('is_project_text', 'Yes');
-        $calendarDocument->setField('is_call', true);
-        $calendarDocument->setField('is_call_text', 'Yes');
-        $calendarDocument->setField('is_review', false);
-        $calendarDocument->setField('is_review_text', 'No');
-        $calendarDocument->setField('is_birthday', false);
-        $calendarDocument->setField('is_birthday_text', 'No');
-        $calendarDocument->setField('own_event', true);
-        $calendarDocument->setField('own_event_text', 'Yes');
-        $calendarDocument->setField('is_present', false);
-        $calendarDocument->setField('is_present_text', 'No');
-        $calendarDocument->setField('on_homepage', true);
-        $calendarDocument->setField('on_homepage_text', 'Yes');
-
-        $update->addDocument($calendarDocument);
-
         $update->addCommit();
 
         return $update;

@@ -71,4 +71,9 @@ abstract class AbstractEntity implements EntityInterface, ResourceInterface
     {
         return sprintf('%s:%s', $this->get('full_entity_name'), $this->getId());
     }
+
+    public function isEmpty(): bool
+    {
+        return null === $this->getId();
+    }
 }

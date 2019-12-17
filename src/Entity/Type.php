@@ -98,21 +98,6 @@ class Type extends AbstractEntity
         $this->access = new Collections\ArrayCollection();
     }
 
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
     public function __toString(): string
     {
         return (string)$this->type;
@@ -135,85 +120,50 @@ class Type extends AbstractEntity
             . 'css/calendar-type-color.css';
     }
 
-    /**
-     * Return a normalized CSS name for the type.
-     */
     public function parseCssName(): string
     {
         return 'calendar-type-' . $this->getId();
     }
 
-    /**
-     * @return int|string
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Type
-     */
-    public function setId($id): Type
+    public function setId(?int $id): Type
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return Type
-     */
-    public function setType(string $type): Type
+    public function setType(?string $type): Type
     {
         $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @param string $color
-     *
-     * @return Type
-     */
-    public function setColor(string $color): Type
+    public function setColor(?string $color): Type
     {
         $this->color = $color;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getColorFont(): ?string
     {
         return $this->colorFont;
     }
 
-    /**
-     * @param string $colorFont
-     *
-     * @return Type
-     */
-    public function setColorFont(string $colorFont): Type
+    public function setColorFont(?string $colorFont): Type
     {
         $this->colorFont = $colorFont;
         return $this;
@@ -224,30 +174,17 @@ class Type extends AbstractEntity
         return $this->calendar;
     }
 
-    /**
-     * @param Calendar[]|Collections\ArrayCollection $calendar
-     *
-     * @return Type
-     */
     public function setCalendar($calendar): Type
     {
         $this->calendar = $calendar;
         return $this;
     }
 
-    /**
-     * @return \Admin\Entity\Access[]|Collections\ArrayCollection
-     */
     public function getAccess()
     {
         return $this->access;
     }
 
-    /**
-     * @param \Admin\Entity\Access[] $access
-     *
-     * @return Type
-     */
     public function setAccess($access): Type
     {
         $this->access = $access;

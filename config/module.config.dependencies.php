@@ -1,6 +1,6 @@
 <?php
 /**
-*
+ *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
@@ -27,6 +27,7 @@ use Program\Service\CallService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
+use Zend\Authentication\AuthenticationService;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use ZfcTwig\View\TwigRenderer;
@@ -34,15 +35,15 @@ use ZfcTwig\View\TwigRenderer;
 return [
     ConfigAbstractFactory::class => [
         //Controllers
-        Controller\CalendarController::class               => [
+        Controller\CalendarController::class => [
             CalendarService::class,
             TwigRenderer::class
         ],
-        Controller\TypeController::class                   => [
+        Controller\TypeController::class => [
             CalendarService::class,
             FormService::class
         ],
-        Controller\CommunityController::class              => [
+        Controller\CommunityController::class => [
             CalendarService::class,
             CalendarSearchService::class,
             GeneralService::class,
@@ -55,16 +56,16 @@ return [
             TranslatorInterface::class,
             EntityManager::class
         ],
-        Controller\DocumentController::class               => [
+        Controller\DocumentController::class => [
             CalendarService::class,
             GeneralService::class,
             EntityManager::class,
             TranslatorInterface::class
         ],
-        Controller\JsonController::class                   => [
+        Controller\JsonController::class => [
             CalendarService::class
         ],
-        Controller\ManagerController::class                => [
+        Controller\ManagerController::class => [
             CalendarService::class,
             CalendarSearchService::class,
             FormService::class,
@@ -82,11 +83,11 @@ return [
             ModuleOptions::class,
             CalendarService::class
         ],
-        Controller\Plugin\RenderReviewCalendar::class      => [
+        Controller\Plugin\RenderReviewCalendar::class => [
             TwigRenderer::class,
             ModuleOptions::class
         ],
-        Service\CalendarService::class                     => [
+        Service\CalendarService::class => [
             EntityManager::class,
             SelectionContactService::class,
             CalendarSearchService::class,
@@ -95,13 +96,14 @@ return [
             AdminService::class,
             TranslatorInterface::class
         ],
-        Search\Service\CalendarSearchService::class        => [
+        Search\Service\CalendarSearchService::class => [
             'Config'
         ],
-        View\Handler\CalendarHandler::class                => [
+        View\Handler\CalendarHandler::class => [
             'Application',
             'ViewHelperManager',
             TwigRenderer::class,
+            AuthenticationService::class,
             TranslatorInterface::class,
             Service\CalendarService::class,
             CalendarSearchService::class

@@ -93,21 +93,6 @@ class Document extends AbstractEntity
         $this->size = 0;
     }
 
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
     public function parseFileName(): string
     {
         /**

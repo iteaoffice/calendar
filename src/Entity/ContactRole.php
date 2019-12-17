@@ -17,8 +17,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
 /**
- * CalendarContactRole.
- *
  * @ORM\Table(name="calendar_contact_role")
  * @ORM\Entity(repositoryClass="Calendar\Repository\ContactRole")
  */
@@ -28,13 +26,10 @@ class ContactRole extends AbstractEntity
     public const ROLE_STG_REVIEWER = 7;
     public const ROLE_STG_SPARE_REVIEWER = 8;
 
-    /**
-     * @var array Lookup table for the roles
-     */
-    public static $roles
+    public static array $roles
         = [
-            self::ROLE_ATTENDEE           => 'txt-role-attendees',
-            self::ROLE_STG_REVIEWER       => 'txt-stg-reviewer',
+            self::ROLE_ATTENDEE => 'txt-role-attendees',
+            self::ROLE_STG_REVIEWER => 'txt-stg-reviewer',
             self::ROLE_STG_SPARE_REVIEWER => 'txt-stg-spare-reviewer',
         ];
 
@@ -69,75 +64,52 @@ class ContactRole extends AbstractEntity
         $this->calendarContact = new Collections\ArrayCollection();
     }
 
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
     public function __toString(): string
     {
         return (string)$this->role;
     }
 
-    public function getId()
+    public static function getRoles(): ?array
+    {
+        return self::$roles;
+    }
+
+    /**
+     * @param array $roles
+     */
+    public static function setRoles(array $roles): void
+    {
+        self::$roles = $roles;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return ContactRole
-     */
-    public function setId($id): ContactRole
+    public function setId(?int $id): ContactRole
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRole()
+    public function getRole(): ?string
     {
         return $this->role;
     }
 
-    /**
-     * @param string $role
-     *
-     * @return ContactRole
-     */
-    public function setRole(string $role): ContactRole
+    public function setRole(?string $role): ContactRole
     {
         $this->role = $role;
         return $this;
     }
 
-    /**
-     * @return Contact[]
-     */
-    public function getCalendarContact()
+    public function getCalendarContact(): ?array
     {
         return $this->calendarContact;
     }
 
-    /**
-     * @param Contact[] $calendarContact
-     *
-     * @return ContactRole
-     */
-    public function setCalendarContact(array $calendarContact): ContactRole
+    public function setCalendarContact(?array $calendarContact): ContactRole
     {
         $this->calendarContact = $calendarContact;
         return $this;
