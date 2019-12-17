@@ -33,7 +33,7 @@ class EntityTest extends TestCase
 
 
             if ($testClass->isInstantiable()) {
-                $object = new $className;
+                $object = new $className();
 
                 $this->assertInstanceOf($className, $object);
 

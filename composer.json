@@ -33,9 +33,12 @@
   },
   "require-dev": {
     "iteaoffice/testing": "^1.2",
+    "iteaoffice/general": "^4.1",
     "iteaoffice/search": "^1.1",
+    "iteaoffice/project": "^4.1",
     "iteaoffice/contact": "^4.1",
-    "setasign/fpdi-tcpdf": "^2.2"
+    "setasign/fpdi-tcpdf": "^2.2",
+    "kokspflanze/zfc-twig": "3.0.*"
   },
   "autoload": {
     "psr-4": {
