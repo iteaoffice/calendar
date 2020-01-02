@@ -1,5 +1,5 @@
 <?php
-_("txt-calendar-calendar-placeholder');
+_('txt-calendar-calendar-placeholder');
 _('txt-calendar-calendar-label');
 _('txt-calendar-calendar-help-block');
 _('txt-calendar-location-placeholder');
@@ -68,4 +68,4 @@ _('txt-calendar-type-background-color-help-block');
 _('txt-calendar-font-color-label');
 _('txt-calendar-font-color-help-block');
 _('txt-calendar-type-access-label');
-_('txt-calendar-type-access-help-block");
+_('txt-calendar-type-access-help-block');
