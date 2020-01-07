@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Timestampable\TimestampableListener;
 use General\View\Factory\LinkHelperFactory;
-use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
-use Zend\Stdlib;
+use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Laminas\Stdlib;
 
 $config = [
     'controllers' => [

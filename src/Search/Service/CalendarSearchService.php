@@ -60,7 +60,7 @@ class CalendarSearchService extends AbstractSearchService
 
         $this->getQuery()->setQuery($query);
 
-        $hasTerm = !\in_array($searchTerm, ['*', ''], true);
+        $hasTerm = ! \in_array($searchTerm, ['*', ''], true);
 
         switch ($order) {
             case 'name':
@@ -160,13 +160,13 @@ class CalendarSearchService extends AbstractSearchService
         }
 
         //Apply a filer when the user is not office staff
-        if (!$isOffice) {
+        if (! $isOffice) {
             $query .= ' AND (is_call:true OR calendar_id:(0 ' . \implode(' ', $hiddenItems) . '))';
         }
 
         $this->getQuery()->setQuery($query);
 
-        $hasTerm = !\in_array($searchTerm, ['*', ''], true);
+        $hasTerm = ! \in_array($searchTerm, ['*', ''], true);
 
         switch ($order) {
             case 'name':
@@ -234,7 +234,7 @@ class CalendarSearchService extends AbstractSearchService
             $query .= ' date_end:[NOW TO *] AND ';
         }
 
-        if (!$hasTerm) {
+        if (! $hasTerm) {
             $query .= ' date_end:[* TO NOW] AND ';
         }
 

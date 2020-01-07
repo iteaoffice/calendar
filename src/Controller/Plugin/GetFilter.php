@@ -15,10 +15,10 @@ namespace Calendar\Controller\Plugin;
 
 use Doctrine\Common\Collections\Criteria;
 use Interop\Container\ContainerInterface;
-use Zend\Http\Request;
-use Zend\Json\Json;
-use Zend\Mvc\Application;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Http\Request;
+use Laminas\Json\Json;
+use Laminas\Mvc\Application;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use function base64_decode;
 use function base64_encode;
 use function http_build_query;
@@ -49,7 +49,7 @@ final class GetFilter extends AbstractPlugin
         $request = $application->getMvcEvent()->getRequest();
 
         $filter = [];
-        if (!empty($base64decodedFilter = base64_decode($encodedFilter))) {
+        if (! empty($base64decodedFilter = base64_decode($encodedFilter))) {
             $filter = (array)Json::decode($base64decodedFilter);
         }
 
@@ -65,7 +65,7 @@ final class GetFilter extends AbstractPlugin
         }
 
         // Add a default order and direction if not known in the filter
-        if (!isset($filter['order'])) {
+        if (! isset($filter['order'])) {
             $filter['order'] = '';
             $filter['direction'] = Criteria::ASC;
         }

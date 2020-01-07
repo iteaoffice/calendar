@@ -14,7 +14,7 @@ namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * CalendarType.
@@ -29,14 +29,14 @@ class Type extends AbstractEntity
      * @ORM\Column(name="type_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Annotation\Type("\Zend\Form\Element\Hidden")
+     * @Annotation\Type("\Laminas\Form\Element\Hidden")
      *
      * @var int
      */
     private $id;
     /**
      * @ORM\Column(name="type", type="string", nullable=false, unique=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-type-type-label","help-block": "txt-calendar-type-type-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-type-type-placeholder"})
      *
@@ -45,7 +45,7 @@ class Type extends AbstractEntity
     private $type;
     /**
      * @ORM\Column(name="color", type="string", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Type("\Laminas\Form\Element\Color")
      * @Annotation\Options({"label":"txt-calendar-type-background-color-label","help-block": "txt-calendar-type-background-color-help-block"})
      *
      * @var string
@@ -53,7 +53,7 @@ class Type extends AbstractEntity
     private $color;
     /**
      * @ORM\Column(name="color_font", type="string", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Type("\Laminas\Form\Element\Color")
      * @Annotation\Options({"label":"txt-calendar-font-color-label","help-block": "txt-calendar-font-color-help-block"})
      *
      * @var string

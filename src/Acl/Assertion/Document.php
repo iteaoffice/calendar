@@ -16,9 +16,9 @@ use Admin\Entity\Access;
 use Calendar\Entity\Document as DocumentEntity;
 use Interop\Container\ContainerInterface;
 use Project\Acl\Assertion\Project;
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-use Zend\Permissions\Acl\Role\RoleInterface;
+use Laminas\Permissions\Acl\Acl;
+use Laminas\Permissions\Acl\Resource\ResourceInterface;
+use Laminas\Permissions\Acl\Role\RoleInterface;
 
 final class Document extends AbstractAssertion
 {
@@ -43,7 +43,7 @@ final class Document extends AbstractAssertion
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (!$document instanceof DocumentEntity && null !== $id) {
+        if (! $document instanceof DocumentEntity && null !== $id) {
             $document = $this->calendarService->find(DocumentEntity::class, $id);
         }
 

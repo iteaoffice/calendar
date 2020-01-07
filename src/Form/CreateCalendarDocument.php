@@ -15,12 +15,12 @@ namespace Calendar\Form;
 use Calendar\Entity\Document;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\File;
-use Zend\Form\Element\Text;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Element\Csrf;
+use Laminas\Form\Element\File;
+use Laminas\Form\Element\Text;
 
 /**
  * Class CreateCalendarDocument

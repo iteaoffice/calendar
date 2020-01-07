@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Calendar\Entity;
 
 use InvalidArgumentException;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
+use Laminas\Permissions\Acl\Resource\ResourceInterface;
 use function implode;
 use function sprintf;
 use function str_replace;

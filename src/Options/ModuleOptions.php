@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Calendar\Options;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 /**
  * Class ModuleOptions
@@ -21,11 +21,6 @@ use Zend\Stdlib\AbstractOptions;
  */
 class ModuleOptions extends AbstractOptions implements CalendarOptionsInterface
 {
-    /**
-     * Turn off strict options mode.
-     */
-    protected $__strictMode__ = false;
-
     protected string $calendarContactTemplate = '';
     protected string $reviewCalendarTemplate = '';
 

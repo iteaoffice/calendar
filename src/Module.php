@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Calendar;
 
 use Calendar\Navigation;
-use Zend\ModuleManager\Feature;
+use Laminas\ModuleManager\Feature;
 
 /**
  * @author

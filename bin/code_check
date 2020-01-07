@@ -7,6 +7,8 @@ cd ..
 ./../../bin/parallel-lint ./src
 ./../../bin/phpunit
 ./../../bin/php-cs-fixer fix -v ./src
-./../../bin/phpcbf --standard=PSR12 --extensions=php,twig ./src
+
+./../../bin/phpcbf --standard=../../iteaoffice/testing/ruleset.xml src/
+./../../bin/phpcs --standard=../../iteaoffice/testing/ruleset.xml src/
+
 ./../../bin/phpstan analyse src/ --level=1
-./../../bin/phpcs -n -p --standard=PSR12 --extensions=php,twig ./src

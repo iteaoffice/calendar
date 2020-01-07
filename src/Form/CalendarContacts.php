@@ -16,8 +16,8 @@ namespace Calendar\Form;
 use Contact\Entity\Selection;
 use Doctrine\ORM\EntityManager;
 use DoctrineORMModule\Form\Element\EntitySelect;
-use Zend\Form\Element\Submit;
-use Zend\Form\Form;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Form;
 
 /**
  * Class CalendarContacts

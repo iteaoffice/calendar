@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Calendar\InputFilter;
 
-use Zend\InputFilter\InputFilter;
-use Zend\Validator\Callback;
+use Laminas\InputFilter\InputFilter;
+use Laminas\Validator\Callback;
 
 /**
  * Class CalendarFilter

@@ -19,7 +19,7 @@ use Calendar\Entity\Calendar;
 use Calendar\Entity\Contact as CalendarContact;
 use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
 use function array_chunk;
 use function count;

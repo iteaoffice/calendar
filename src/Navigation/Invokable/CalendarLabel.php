@@ -14,7 +14,7 @@ namespace Calendar\Navigation\Invokable;
 
 use Admin\Navigation\Invokable\AbstractNavigationInvokable;
 use Calendar\Entity\Calendar;
-use Zend\Navigation\Page\Mvc;
+use Laminas\Navigation\Page\Mvc;
 
 /**
  * Class ProjectLabel

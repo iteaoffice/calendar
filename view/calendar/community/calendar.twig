@@ -30,8 +30,10 @@
             <dd>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</dd>
             <dt>{{ translate("txt-type") }}</dt>
             <dd>{{ calendar.type }}</dd>
-            <dt>{{ translate("txt-location") }}</dt>
-            <dd>{{ calendar.location }}</dd>
+            {% if calendar.location %}
+                <dt>{{ translate("txt-location") }}</dt>
+                <dd>{{ calendar.location }}</dd>
+            {% endif %}
             <dt>{{ translate("txt-description") }}</dt>
             <dd>{{ calendar.description|default("-")|raw|nl2br }}</dd>
             <dt>{{ translate("txt-documents") }}</dt>

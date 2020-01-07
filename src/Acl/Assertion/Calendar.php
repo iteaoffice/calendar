@@ -14,9 +14,9 @@ namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
 use Calendar\Entity\Calendar as CalendarEntity;
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-use Zend\Permissions\Acl\Role\RoleInterface;
+use Laminas\Permissions\Acl\Acl;
+use Laminas\Permissions\Acl\Resource\ResourceInterface;
+use Laminas\Permissions\Acl\Role\RoleInterface;
 
 final class Calendar extends AbstractAssertion
 {
@@ -29,11 +29,11 @@ final class Calendar extends AbstractAssertion
         $this->setPrivilege($privilege);
         $id = $id = $this->getId();
 
-        if (!$calendar instanceof CalendarEntity && null !== $id) {
+        if (! $calendar instanceof CalendarEntity && null !== $id) {
             $calendar = $this->calendarService->findCalendarById((int)$id);
         }
 
-        if (!$this->hasContact()) {
+        if (! $this->hasContact()) {
             return false;
         }
 

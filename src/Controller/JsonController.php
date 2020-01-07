@@ -15,8 +15,8 @@ namespace Calendar\Controller;
 use Calendar\Entity\Contact;
 use Calendar\Entity\ContactRole;
 use Calendar\Service\CalendarService;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\JsonModel;
 
 /**
  * Class JsonController

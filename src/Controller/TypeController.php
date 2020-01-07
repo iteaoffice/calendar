@@ -16,8 +16,8 @@ namespace Calendar\Controller;
 use Calendar\Entity\Type;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Class TypeController
@@ -85,7 +85,7 @@ final class TypeController extends AbstractActionController
 
         $form = $this->formService->prepare($type, $data);
 
-        if (!$type->getCalendar()->isEmpty()) {
+        if (! $type->getCalendar()->isEmpty()) {
             $form->remove('delete');
         }
 

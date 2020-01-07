@@ -18,13 +18,13 @@ use Calendar\Form\CreateCalendarDocument;
 use Calendar\Service\CalendarService;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
-use Zend\Http\Response;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Zend\Validator\File\FilesSize;
-use Zend\Validator\File\MimeType;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Model\ViewModel;
 
 /**
  * @method FlashMessenger flashMessenger()
@@ -134,9 +134,9 @@ final class DocumentController extends AbstractActionController
             /*
              * Handle when
              */
-            if (!isset($data['cancel'])) {
+            if (! isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
-                if (!empty($file['name']) && $file['error'] === 0) {
+                if (! empty($file['name']) && $file['error'] === 0) {
                     /** If no name is given, take the name of the file */
                     if (empty($data['document'])) {
                         $document->setDocument($file['name']);

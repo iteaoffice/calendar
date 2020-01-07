@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
 
 /**

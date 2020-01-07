@@ -22,10 +22,10 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Element\EntityMultiCheckbox;
 use DoctrineORMModule\Form\Element\EntityRadio;
 use DoctrineORMModule\Form\Element\EntitySelect;
-use Zend\Form\Annotation\AnnotationBuilder;
-use Zend\Form\Element;
-use Zend\Form\Element\Radio;
-use Zend\Form\Fieldset;
+use Laminas\Form\Annotation\AnnotationBuilder;
+use Laminas\Form\Element;
+use Laminas\Form\Element\Radio;
+use Laminas\Form\Fieldset;
 
 /**
  * Class ObjectFieldset
@@ -62,7 +62,7 @@ class ObjectFieldset extends Fieldset
         foreach ($dataFieldset->getElements() as $element) {
             $this->parseElement($element, $object);
             // Add only when a type is provided
-            if (!array_key_exists('type', $element->getAttributes())) {
+            if (! array_key_exists('type', $element->getAttributes())) {
                 continue;
             }
 
@@ -97,7 +97,7 @@ class ObjectFieldset extends Fieldset
                 )
             );
         }
-        if ($element instanceof Radio && !$element instanceof EntityRadio) {
+        if ($element instanceof Radio && ! $element instanceof EntityRadio) {
             $attributes = $element->getAttributes();
             $valueOptionsArray = sprintf('get%s', ucfirst($attributes['array']));
             $element->setOptions(

@@ -30,7 +30,7 @@ final class DocumentLink extends AbstractLink
         string $action = 'view',
         string $show = 'name'
     ): string {
-        if (!$this->hasAccess($document, Assertion\Document::class, $action)) {
+        if (! $this->hasAccess($document, Assertion\Document::class, $action)) {
             return '';
         }
 

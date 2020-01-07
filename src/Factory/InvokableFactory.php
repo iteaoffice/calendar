@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Calendar\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class InvokableFactory

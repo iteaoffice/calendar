@@ -15,11 +15,11 @@ namespace Calendar\Form;
 use Calendar\Entity\Calendar;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\MultiCheckbox;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Element\Csrf;
+use Laminas\Form\Element\MultiCheckbox;
 
 /**
  * Class SelectAttendee

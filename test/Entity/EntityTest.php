@@ -11,8 +11,8 @@
 namespace CalendarTest\Entity;
 
 use PHPUnit\Framework\TestCase;
-use Zend\Form\Annotation\AnnotationBuilder;
-use Zend\Form\Element;
+use Laminas\Form\Annotation\AnnotationBuilder;
+use Laminas\Form\Element;
 
 class EntityTest extends TestCase
 {

@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Calendar\Form;
 
-use Zend\Filter\HtmlEntities;
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\Submit;
-use Zend\Form\Element\Textarea;
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\Filter\HtmlEntities;
+use Laminas\Form\Element\Csrf;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Element\Textarea;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 /**
  * Class SendMessage

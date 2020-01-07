@@ -14,9 +14,9 @@ namespace CalendarTest;
 
 use Calendar\Module;
 use Testing\Util\AbstractServiceTest;
-use Zend\Mvc\Application;
-use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
-use Zend\View\HelperPluginManager;
+use Laminas\Mvc\Application;
+use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Laminas\View\HelperPluginManager;
 use function is_string;
 
 /**

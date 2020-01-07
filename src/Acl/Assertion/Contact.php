@@ -14,9 +14,9 @@ namespace Calendar\Acl\Assertion;
 
 use Admin\Entity\Access;
 use Calendar\Entity\Contact as ContactEntity;
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-use Zend\Permissions\Acl\Role\RoleInterface;
+use Laminas\Permissions\Acl\Acl;
+use Laminas\Permissions\Acl\Resource\ResourceInterface;
+use Laminas\Permissions\Acl\Role\RoleInterface;
 
 final class Contact extends AbstractAssertion
 {
@@ -29,7 +29,7 @@ final class Contact extends AbstractAssertion
         $this->setPrivilege($privilege);
         $id = $this->getId();
 
-        if (!$contact instanceof ContactEntity && null !== $id) {
+        if (! $contact instanceof ContactEntity && null !== $id) {
             $contact = $this->calendarService->find(ContactEntity::class, $id);
         }
 

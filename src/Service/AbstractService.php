@@ -43,7 +43,7 @@ abstract class AbstractService
     public function findFilteredByContact(string $entity, $filter, Contact $contact) : QueryBuilder
     {
         //The 'filter' should always be there to support the repositories
-        if (!array_key_exists('filter', $filter)) {
+        if (! array_key_exists('filter', $filter)) {
             $filter['filter'] = [];
         }
 
@@ -160,7 +160,7 @@ abstract class AbstractService
 
     public function save(Entity\AbstractEntity $entity): Entity\AbstractEntity
     {
-        if (!$this->entityManager->contains($entity)) {
+        if (! $this->entityManager->contains($entity)) {
             $this->entityManager->persist($entity);
         }
 

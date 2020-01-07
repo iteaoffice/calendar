@@ -31,15 +31,15 @@ use Project\Service\ProjectService;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
-use Zend\Http\Request;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Zend\Mvc\Plugin\Identity\Identity;
-use Zend\Paginator\Paginator;
-use Zend\Validator\File\FilesSize;
-use Zend\Validator\File\MimeType;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Request;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Paginator\Paginator;
+use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Model\ViewModel;
 use function array_merge;
 use function implode;
 use function sprintf;
@@ -239,7 +239,7 @@ final class ManagerController extends AbstractActionController
 
         $form = $this->formService->prepare($calendar, $data);
 
-        if (!$this->calendarService->canDeleteCalendar($calendar)) {
+        if (! $this->calendarService->canDeleteCalendar($calendar)) {
             $form->remove('delete');
         }
 
@@ -274,7 +274,7 @@ final class ManagerController extends AbstractActionController
                 $calendar->setContact($this->identity());
 
                 //Empty the call when the form is not set
-                if (!isset($data['calendar_entity_calendar']['call'])) {
+                if (! isset($data['calendar_entity_calendar']['call'])) {
                     $calendar->setCall([]);
                 }
 

@@ -18,7 +18,7 @@ namespace Calendar\Factory;
 
 use Calendar\Options\ModuleOptions;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ModuleOptionsFactory

@@ -17,11 +17,11 @@ use Content\Entity\Content;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
-use Zend\Authentication\AuthenticationService;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Application;
-use Zend\Paginator\Paginator;
-use Zend\View\HelperPluginManager;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Application;
+use Laminas\Paginator\Paginator;
+use Laminas\View\HelperPluginManager;
 use General\View\Handler\AbstractHandler;
 use ZfcTwig\View\TwigRenderer;
 use function array_filter;
@@ -95,7 +95,7 @@ final class CalendarHandler extends AbstractHandler
             ],
             $this->request->getQuery()->toArray()
         );
-        $hasTerm = !in_array($data['query'], ['*', ''], true) || count($data['facet']) !== 0;
+        $hasTerm = ! in_array($data['query'], ['*', ''], true) || count($data['facet']) !== 0;
 
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
@@ -145,7 +145,7 @@ final class CalendarHandler extends AbstractHandler
         $filteredData = array_filter(
             $data,
             static function ($key) {
-                return !in_array($key, ['order', 'direction'], true);
+                return ! in_array($key, ['order', 'direction'], true);
             },
             ARRAY_FILTER_USE_KEY
         );

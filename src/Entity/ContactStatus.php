@@ -14,7 +14,7 @@ namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * CalendarContactRole.
@@ -31,14 +31,14 @@ class ContactStatus extends AbstractEntity
      * @ORM\Column(name="status_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Annotation\Type("\Zend\Form\Element\Hidden")
+     * @Annotation\Type("\Laminas\Form\Element\Hidden")
      *
      * @var int
      */
     private $id;
     /**
      * @ORM\Column(name="status", type="string", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-contact-status-status-label","help-block": "txt-calendar-contact-status-status-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-contact-status-status-placeholder"})
      *
@@ -47,7 +47,7 @@ class ContactStatus extends AbstractEntity
     private $status;
     /**
      * @ORM\Column(name="status_change", type="string", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-contact-status-status-change-label","help-block": "txt-calendar-contact-status-status-change-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-contact-status-status-change-placeholder"})
      *

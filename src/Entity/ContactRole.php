@@ -14,7 +14,7 @@ namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * @ORM\Table(name="calendar_contact_role")
@@ -37,14 +37,14 @@ class ContactRole extends AbstractEntity
      * @ORM\Column(name="role_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Annotation\Type("\Zend\Form\Element\Hidden")
+     * @Annotation\Type("\Laminas\Form\Element\Hidden")
      *
      * @var int
      */
     private $id;
     /**
      * @ORM\Column(name="role", type="string", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-contact-role-role-label","help-block": "txt-calendar-contact-role-role-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-contact-role-role-placeholder"})     *
      *
@@ -104,12 +104,12 @@ class ContactRole extends AbstractEntity
         return $this;
     }
 
-    public function getCalendarContact(): ?array
+    public function getCalendarContact()
     {
         return $this->calendarContact;
     }
 
-    public function setCalendarContact(?array $calendarContact): ContactRole
+    public function setCalendarContact($calendarContact): ContactRole
     {
         $this->calendarContact = $calendarContact;
         return $this;

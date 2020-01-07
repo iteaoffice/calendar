@@ -38,13 +38,13 @@ final class CalendarLink extends AbstractLink
     ): string {
         $calendar ??= new Calendar();
 
-        if (!$this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
+        if (! $this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
             return '';
         }
 
         $routeParams = [];
         $showOptions = [];
-        if (!$calendar->isEmpty()) {
+        if (! $calendar->isEmpty()) {
             $routeParams['id'] = $calendar->getId();
             $routeParams['docRef'] = $calendar->getDocRef();
             $showOptions['name'] = $calendar->getCalendar();
@@ -126,7 +126,7 @@ final class CalendarLink extends AbstractLink
                 break;
             case 'presence-list':
                 $linkParams = [
-                    'icon' => 'fa-download',
+                    'icon' => 'fa-file-pdf-o',
                     'route' => 'community/calendar/presence-list',
                     'text' => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-presence-list')
@@ -134,7 +134,7 @@ final class CalendarLink extends AbstractLink
                 break;
             case 'signature-list':
                 $linkParams = [
-                    'icon' => 'fa-download',
+                    'icon' => 'fa-file-pdf-o',
                     'route' => 'community/calendar/signature-list',
                     'text' => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-signature-list')
@@ -152,16 +152,14 @@ final class CalendarLink extends AbstractLink
                 $linkParams = [
                     'icon' => 'fa-calendar',
                     'route' => 'community/calendar/calendar',
-                    'text' => $showOptions[$show]
-                        ?? sprintf($this->translator->translate('txt-view-calendar-%s'), $calendar)
+                    'text' => $showOptions[$show] ?? $calendar->getCalendar()
                 ];
                 break;
             case 'view-admin':
                 $linkParams = [
                     'icon' => 'fa-calendar',
                     'route' => 'zfcadmin/calendar/calendar',
-                    'text' => $showOptions[$show]
-                        ?? sprintf($this->translator->translate('txt-view-calendar-%s'), $calendar)
+                    'text' => $showOptions[$show] ?? $calendar->getCalendar()
                 ];
                 break;
             case 'edit-attendees-admin':

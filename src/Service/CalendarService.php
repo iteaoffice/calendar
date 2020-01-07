@@ -32,7 +32,7 @@ use Search\Service\SearchUpdateInterface;
 use Solarium\Client;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\QueryType\Update\Query\Document;
-use Zend\I18n\Translator\TranslatorInterface;
+use Laminas\I18n\Translator\TranslatorInterface;
 use function count;
 use function date;
 use function range;
@@ -86,11 +86,11 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
         $cannotDeleteCalendar = [];
 
-        if (!$calendar->getProjectCalendar()->getAction()->isEmpty()) {
+        if (! $calendar->getProjectCalendar()->getAction()->isEmpty()) {
             $cannotDeleteCalendar[] = 'Calendar has actions';
         }
 
-        if (!$calendar->getProjectCalendar()->getPlannedAction()->isEmpty()) {
+        if (! $calendar->getProjectCalendar()->getPlannedAction()->isEmpty()) {
             $cannotDeleteCalendar[] = 'Calendar has planned actions';
         }
 
@@ -106,7 +106,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         foreach ($contacts as $contactId) {
             $contact = $this->contactService->findContactById((int)$contactId);
 
-            if (null !== $contact && !$this->calendarHasContact($calendar, $contact)) {
+            if (null !== $contact && ! $this->calendarHasContact($calendar, $contact)) {
                 $calendarContact = new CalendarContact();
                 $calendarContact->setContact($contact);
                 $calendarContact->setCalendar($calendar);
@@ -132,7 +132,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         }
 
         foreach ($calendar->getCalendarContact() as $calendarContact) {
-            if (!in_array($calendarContact->getContact()->getId(), $contacts, false)) {
+            if (! in_array($calendarContact->getContact()->getId(), $contacts, false)) {
                 $this->delete($calendarContact);
             }
         }
@@ -363,7 +363,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if (!$onlyFinal
+            if (! $onlyFinal
                 || $calendarItem->getCalendar()->isFinal()
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
@@ -371,7 +371,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (!$onlyFinal
+            if (! $onlyFinal
                 || $calendarItem->isFinal()
             ) {
                 if ($calendarItem->getDateEnd() > new DateTime()) {
@@ -461,7 +461,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
          */
 
         //Short-circuit the service when we have no element calendar at all.
-        if (!isset($formData['calendar'])) {
+        if (! isset($formData['calendar'])) {
             return [];
         }
 
@@ -469,7 +469,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
         foreach ($formData['calendar'] as $calendarItem) {
             //If the checkbox is not set, we can skip it.
-            if (!isset($calendarItem['calendar'])) {
+            if (! isset($calendarItem['calendar'])) {
                 continue;
             }
 

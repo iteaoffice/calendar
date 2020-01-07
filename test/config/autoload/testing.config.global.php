@@ -12,7 +12,7 @@ return [
     ],
     'contact-config'  =>
         [
-            // cache options have to be compatible with Zend\Cache\StorageFactory::factory
+            // cache options have to be compatible with Laminas\Cache\StorageFactory::factory
             'cache_options' => [
                 'adapter' => [
                     'name' => 'memory',
