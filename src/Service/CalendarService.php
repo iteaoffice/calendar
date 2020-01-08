@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office copyright message placeholder
  *
@@ -7,6 +8,7 @@
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
+
 declare(strict_types=1);
 
 namespace Calendar\Service;
@@ -33,6 +35,7 @@ use Solarium\Client;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\QueryType\Update\Query\Document;
 use Laminas\I18n\Translator\TranslatorInterface;
+
 use function count;
 use function date;
 use function range;
@@ -363,7 +366,8 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
          * Add the calendar items from the project
          */
         foreach ($project->getProjectCalendar() as $calendarItem) {
-            if (! $onlyFinal
+            if (
+                ! $onlyFinal
                 || $calendarItem->getCalendar()->isFinal()
             ) {
                 $calendar[$calendarItem->getCalendar()->getId()]
@@ -371,7 +375,8 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
             }
         }
         foreach ($project->getCall()->getCalendar() as $calendarItem) {
-            if (! $onlyFinal
+            if (
+                ! $onlyFinal
                 || $calendarItem->isFinal()
             ) {
                 if ($calendarItem->getDateEnd() > new DateTime()) {

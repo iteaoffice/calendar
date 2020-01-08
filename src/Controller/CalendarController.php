@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -17,6 +18,7 @@ use Calendar\Service\CalendarService;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use ZfcTwig\View\TwigRenderer;
+
 use function file_put_contents;
 
 /**

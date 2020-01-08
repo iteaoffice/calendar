@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -7,6 +8,7 @@
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2017 ITEA Office (http://itea3.org)
  */
+
 declare(strict_types=1);
 
 namespace Calendar\View\Handler;
@@ -24,6 +26,7 @@ use Laminas\Paginator\Paginator;
 use Laminas\View\HelperPluginManager;
 use General\View\Handler\AbstractHandler;
 use ZfcTwig\View\TwigRenderer;
+
 use function array_filter;
 use function count;
 use function http_build_query;

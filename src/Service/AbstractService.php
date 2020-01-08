@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
@@ -22,6 +23,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
+
 use function array_key_exists;
 
 /**
@@ -32,7 +34,7 @@ use function array_key_exists;
 abstract class AbstractService
 {
     protected EntityManager $entityManager;
-    protected ? SelectionContactService $selectionContactService;
+    protected ?SelectionContactService $selectionContactService;
 
     public function __construct(EntityManager $entityManager, SelectionContactService $selectionContactService = null)
     {
@@ -40,7 +42,7 @@ abstract class AbstractService
         $this->selectionContactService = $selectionContactService;
     }
 
-    public function findFilteredByContact(string $entity, $filter, Contact $contact) : QueryBuilder
+    public function findFilteredByContact(string $entity, $filter, Contact $contact): QueryBuilder
     {
         //The 'filter' should always be there to support the repositories
         if (! array_key_exists('filter', $filter)) {

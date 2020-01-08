@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Jield BV all rights reserved
  *
@@ -21,17 +22,18 @@ use Calendar\Entity\AbstractEntity;
 use Calendar\Service\CalendarService;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
-use function count;
 use Doctrine\ORM\PersistentCollection;
-use function in_array;
 use Interop\Container\ContainerInterface;
-use function is_array;
-use function strpos;
-use function strtolower;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\PhpEnvironment\Request;
 use Laminas\Permissions\Acl\Assertion\AssertionInterface;
 use Laminas\Router\Http\RouteMatch;
+
+use function count;
+use function in_array;
+use function is_array;
+use function strpos;
+use function strtolower;
 
 /**
  * Class AbstractAssertion
@@ -157,7 +159,8 @@ abstract class AbstractAssertion implements AssertionInterface
             if ($accessNormalised === strtolower(Access::ACCESS_PUBLIC)) {
                 return true;
             }
-            if ($this->hasContact()
+            if (
+                $this->hasContact()
                 && in_array(
                     $accessNormalised,
                     $this->adminService->findAccessRolesByContactAsArray($this->contact),

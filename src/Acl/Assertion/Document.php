@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -67,7 +68,8 @@ final class Document extends AbstractAssertion
                 /*
                  * The project leader also has rights to invite users
                  */
-                if (null !== $document->getCalendar()->getProjectCalendar()
+                if (
+                    null !== $document->getCalendar()->getProjectCalendar()
                     && $this->projectAssertion->assert(
                         $acl,
                         $role,

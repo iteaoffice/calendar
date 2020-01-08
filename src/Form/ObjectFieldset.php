@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Jield BV all rights reserved.
  *
@@ -87,7 +88,8 @@ class ObjectFieldset extends Fieldset
     {
         // Go over each element to add the objectManager to the EntitySelect
         /** Element $element */
-        if ($element instanceof EntitySelect || $element instanceof EntityMultiCheckbox
+        if (
+            $element instanceof EntitySelect || $element instanceof EntityMultiCheckbox
             || $element instanceof EntityRadio
         ) {
             $element->setOptions(

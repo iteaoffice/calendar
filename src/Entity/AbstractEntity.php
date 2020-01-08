@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -14,6 +15,7 @@ namespace Calendar\Entity;
 
 use InvalidArgumentException;
 use Laminas\Permissions\Acl\Resource\ResourceInterface;
+
 use function implode;
 use function sprintf;
 use function str_replace;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -21,6 +22,7 @@ use Calendar\Options\ModuleOptions;
 use Calendar\Service\CalendarService;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
+
 use function array_chunk;
 use function count;
 use function max;

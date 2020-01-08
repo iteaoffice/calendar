@@ -1,4 +1,5 @@
 <?php
+
 /**
 *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
@@ -31,7 +32,8 @@ final class Type extends EntityRepository
         $queryBuilder->from(Entity\Type::class, 'calendar_entity_type');
 
         $direction = 'DESC';
-        if (isset($filter['direction'])
+        if (
+            isset($filter['direction'])
             && \in_array(strtoupper($filter['direction']), ['ASC', 'DESC'], true)
         ) {
             $direction = strtoupper($filter['direction']);

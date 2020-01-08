@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -12,6 +13,7 @@
  *
  * @link        http://github.com/iteaoffice/main for the canonical source repository
  */
+
 declare(strict_types=1);
 
 namespace Calendar\Service;

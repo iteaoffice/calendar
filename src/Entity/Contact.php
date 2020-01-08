@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA copyright message placeholder.
  *

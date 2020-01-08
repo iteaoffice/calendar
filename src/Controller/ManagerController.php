@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -40,6 +41,7 @@ use Laminas\Paginator\Paginator;
 use Laminas\Validator\File\FilesSize;
 use Laminas\Validator\File\MimeType;
 use Laminas\View\Model\ViewModel;
+
 use function array_merge;
 use function implode;
 use function sprintf;

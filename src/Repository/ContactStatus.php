@@ -1,4 +1,5 @@
 <?php
+
 /**
 *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
@@ -31,7 +32,8 @@ final class ContactStatus extends EntityRepository
         $queryBuilder->from(Entity\ContactStatus::class, 'calendar_entity_contact_status');
 
         $direction = 'DESC';
-        if (isset($filter['direction'])
+        if (
+            isset($filter['direction'])
             && \in_array(strtoupper($filter['direction']), ['ASC', 'DESC'], true)
         ) {
             $direction = strtoupper($filter['direction']);
