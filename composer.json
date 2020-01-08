@@ -51,8 +51,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "5.0-DEV",
-      "dev-develop": "5.1-DEV"
+      "dev-master": "5.0-dev",
+      "dev-develop": "5.1-dev"
     }
   },
   "scripts": {
