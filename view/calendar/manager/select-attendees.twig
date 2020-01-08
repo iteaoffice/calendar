@@ -1,343 +1,239 @@
+{% do headScript().appendFile('//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.js', 'text/javascript') %}
+
 {% do headTitle().append(translate("txt-admin")) %}
 {% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1 class="display-4">{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendar) }}</h1>
+<h1>{{ translate("txt-select-attendees-for-calendar-item-%s")|format(calendar) }}</h1>
 
 {% do form.prepare() %}
-{% do form.setAttribute('class','form-horizontal') %}
-
 {{ form().openTag(form)|raw }}
 
 <div class="form-group row">
-    <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-calendar") }}</label>
+    <label class="col-sm-3 col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
-        <p class="form-control-static form-control-plaintext">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
+        <p class="form-control-plaintext">{{ calendarLink(calendar, 'view-admin', 'name') }} {{ calendarLink(calendar, 'edit', 'icon') }}</p>
     </div>
 </div>
-
-
-{{ ztbformelement(form.get('added')) }}
-    {{ ztbformelement(form.get('removed')) }}
-
 
 <div class="row">
-    <div class="col-md-6">
-        <h2>{{ translate("txt-current-calendar") }}</h2>
+    <div class="col">
+        <h2>{{ translate("txt-current-selection") }}</h2>
 
-        <table class="table table-hover table-striped table-condensed table-sm" id="incalendar"></table>
+        <table class="table table-sm table-hover table-striped">
+            <tbody id="contacts-table">
+            {% set currentContacts = [] %}
+            {% for calendarContact in calendar.calendarContact %}
+                {% set currentContacts = currentContacts|merge([calendarContact.contact.id]) %}
+                <tr data-id="{{ calendarContact.contact.id }}">
+                    <td>
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </td>
+                    <td>
+                        <small class="text-muted">{{ calendarContact.contact.id }}</small></td>
+                    <td>{{ calendarContact.contact.getFormName() }}</td>
+                    <td>{{ calendarContact.contact.contactOrganisation.organisation }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
+        <input type="button" class="btn btn-outline-info" id="remove-all" value="{{ translate("txt-remove-all") }}">
+        <input type="button" class="btn btn-outline-danger" id="reset" value="{{ translate("txt-reset") }}">
 
-        <input type="button" class="btn" onclick="Calendar.SelectAll()" value="{{ translate("txt-select-all") }}">
-        <input type="button" class="btn" onclick="Calendar.Remove()" value="{{ translate("txt-remove") }}">
-        <input type="button" class="btn" onclick="Calendar.Reset()" value="{{ translate("txt-reset") }}">
+        <div class="pull-right">
+            {{ ztbformelement(form.get('submit')) }}
+            {{ ztbformelement(form.get('cancel')) }}
+        </div>
     </div>
-
-    <div class="col-md-6">
+    <div class="col">
         <h2>{{ translate("txt-choose-contacts") }}</h2>
+        {{ selectionformelement(form.get('selection'), true) }}
+        <input type="button" id="selection-search" class="mt-2 btn btn-outline-primary" value="Get selection">
 
-        <div class="input-group">
-            {{ formelement(form.get('selection'),"%s%s%s") }}
-            <span class="input-group-btn">
-        <input type="button" class="btn btn-primary"
-               onclick="selectionSearch(document.getElementById('selection').value)"
-               value="GET">
-      </span>
+        <div class="input-group pt-3">
+            <input type="text" id="contact-search-string" placeholder="Search ..." class="form-control">
+            <div class="input-group-append">
+                <input type="button" id="contact-search" class="btn btn-outline-primary" value="Search">
+            </div>
         </div>
-        <br>
-        <div class="input-group">
-            <input type="text" id="searchstring" class="form-control">
-            <span class="input-group-btn">
-        <input type="button" class="btn btn-primary" onclick="wildSearch(document.getElementById('searchstring').value)"
-               value="GET">
-      </span>
-        </div>
+        <h2>{{ translate("txt-search-results") }}</h2>
+        <table class="table table-sm table-hover table-striped">
+            <tbody id="choose-contacts-table"></tbody>
+        </table>
 
+        <input type="button" class="btn btn-outline-success" id="add-all" value="{{ translate("txt-add-all") }}">
+        <input type="button" class="btn btn-outline-danger" id="subtract" value="{{ translate("txt-subtract") }}">
 
-        <h3>{{ translate("txt-search-results") }}</h3>
-        <table class="table table-hover table-striped table-condensed table-sm" id="contacts"></table>
+        {% if calendar.isReview() %}
+            <h2>{{ translate("txt-project-contacts-results") }}</h2>
+            <table class="table table-sm table-hover table-striped">
+                <tbody id="project-contacts-table">
+                {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project)|filter(contact => contact.id not in currentContacts) -%}
+                    <tr data-id="{{ contact.id }}">
+                        <td>
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </td>
+                        <td>
+                            <small class="text-muted">{{ contact.id }}</small></td>
+                        <td>{{ contact.getFormName() }}
 
+                            {% if contact == calendar.projectCalendar.project.contact %}[PL]{% endif %}
 
-        <input type="button" class="btn" onclick="Contacts.SelectAll()" value="{{ translate("txt-select-all") }}">
-        <input type="button" class="btn" onclick="Contacts.MoveTo(Calendar)" value="{{ translate("txt-add") }}">
-    </div>
-</div>
+                            {% for proxyContact in calendar.projectCalendar.project.proxyContact %}
+                                {% if contact == proxyContact %}<span
+                                        class="badge badge-primary">PROXY</span>{% endif %}
+                            {% endfor %}
 
-<div class="form-group row">
-    <div class="offset-md-3 col-sm-offset-3 col-sm-9">
-        {{ ztbformelement(form.get('submit')) }}
-        {{ ztbformelement(form.get('cancel')) }}
-        {% if form.has('delete') %}
-            {{ ztbformelement(form.get('delete')) }}
+                            {% set hasTC = false %}
+                            {% for affiliation in calendar.projectCalendar.project.affiliation %}
+                                {% if not hasTC and contact == affiliation.contact %}{% set hasTc = true %}<span
+                                        class="badge badge-info">TC</span>{% endif %}
+                            {% endfor %}
+
+                            {% set hasWPL = false %}
+                            {% for workpackage in calendar.projectCalendar.project.workpackage %}
+                                {% if not hasWPL and contact == workpackage.contact %}{% set hasWPL = true %}<span
+                                        class="badge badge-dark">WPL</span>{% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ contact.contactOrganisation.organisation }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
     </div>
 </div>
 
+<div id="hidden-elements"></div>
+
 {{ form().closeTag()|raw }}
 
-<style type="text/css">
-    #sql {
-        position: relative;
-        width: 1200px;
-        height: 600px;
-    }
-</style>
-
-
 <script type="text/javascript">
-    var Calendar;
-
-    function oItem(id, displayName, email, org, added, removed) {
-        this.id = id;
-        this.displayName = displayName;
-        this.email = email;
-        this.org = org;
-        this.removed = removed;
-        this.added = added;
-        this.selected = false;
-    }
-
-    function oCalendar(oName, Box) {
-
-        this.oName = oName;
-        this.RenderBox = Box;
-        this.items = [];
-
-        this.Add = function (id, displayName, email, org, added, removed) {
-            this.items[this.items.length] = new oItem(id, displayName, email, org, added, removed)
+    $(document).ready(function () {
+        function getContacts($query) {
+            $.post('{{ url('zfcadmin/contact/search') }}', {'q': $query}, function (result) {
+                let $template = $('#contact-row-template');
+                let html = Mustache.render($template.html(), {'contacts': result, 'type': 'plus'});
+                $('#choose-contacts-table').html(html);
+            });
         }
 
-        this.Reset = function () {
-            for (var i = this.items.length - 1; i >= 0; i--) {
-                if (this.items[i].added) {
-                    this.items.splice(i, 1);
-                } else {
-                    this.items[i].removed = false;
-                }
-            }
-            this.Render();
+        function getContactsFromSelection($selection, $template) {
+            $.post('{{ url('zfcadmin/selection/get-contacts') }}', {'id': $selection}, function (result) {
+                let $contactTemplate = $('#contact-row-template');
+                let html = Mustache.render($contactTemplate.html(), {'contacts': result.contacts, 'type': 'plus'});
+                $template.html(html);
+            });
         }
 
-        this.Render = function () {
-            var out = '';
-            var item = null;
-            if (this.items.length == 0) {
-                out = 'No items.';
-            } else {
-                for (var i = 0; i < this.items.length; i++) {
-                    item = this.items[i];
-
-                    out += '<tr class="' + (item.selected ? 'success' : '') + (item.removed ? 'danger' : '') + '" ' +
-                        '    id="item' + i + '" ' +
-                        '    onclick="' + this.oName + '.Select(' + i + ')" ' +
-                        '    >' +
-                        '<td>' + (item.added ? '*' : '') + item.displayName + '</td>' +
-                        '<td>' + item.org + '</td>' +
-                        '</tr>';
-                }
-            }
-            document.getElementById(this.RenderBox).innerHTML = out;
-        }
-
-        this.Select = function (i) {
-            this.items[i].selected = !this.items[i].selected;
-            this.Render();
-        }
-
-        this.SelectAll = function (i) {
-            var item = null;
-            for (var i = 0; i < this.items.length; i++) {
-                item = this.items[i];
-                if (!item.removed) {
-                    item.selected = true;
-                }
-            }
-            this.Render();
-        }
-
-        this.getAddList = function () {
-            var out = '';
-            for (var i = 0; i < this.items.length; i++) {
-                if (this.items[i].added) {
-                    out += ((out != '') ? ',' : '') + this.items[i].id;
-                }
-            }
-            return out;
-        }
-
-        this.getRemoveList = function () {
-            var out = '';
-            for (var i = 0; i < this.items.length; i++) {
-                if (this.items[i].removed) {
-                    out += ((out != '') ? ',' : '') + this.items[i].id;
-                }
-            }
-            return out;
-        }
-
-        this.UnSelect = function (id) {
-            var item = null;
-            for (var i = this.items.length - 1; i >= 0; i--) {
-                item = this.items[i];
-                if (item.id == id) {
-                    item.selected = false;
-                    break;
-                }
-            }
-        }
-
-
-        this.Delete = function (id) {
-            var item = null;
-            for (var i = this.items.length - 1; i >= 0; i--) {
-                item = this.items[i];
-                if (item.id == id) {
-                    if (item.added) {
-                        this.items.splice(i, 1);
-                    } else {
-                        item.selected = false;
-                        item.removed = !item.removed;
-                    }
-                    break;
-                }
-            }
-        }
-
-        this.Remove = function () {
-            var item = null;
-            for (var i = this.items.length - 1; i >= 0; i--) {
-                item = this.items[i];
-                if (item.selected) {
-                    if (item.added) {
-                        this.items.splice(i, 1);
-                    } else {
-                        item.selected = false;
-                        item.removed = true;
-                    }
-                }
-            }
-            this.Render();
-        }
-
-        this.MoveTo = function (oSel) {
-            var item = null;
-            var p = oSel.items.length;
-            for (var i = this.items.length - 1; i >= 0; i--) {
-                item = this.items[i];
-                if (item.selected) {
-                    if (p > 0) {
-                        while (item.lname < oSel.items[p - 1].lname) {
-                            p--;
-                            if (p == 0) {
-                                break;
-                            }
-                        }
-                    }
-                    if (p == oSel.items.length) {
-                        oSel.items[p] = item;
-                    } else {
-                        oSel.items.splice(p, 0, item);
-                    }
-                    item.added = true;
-                    item.selected = false;
-                    this.items.splice(i, 1);
-                }
-            }
-            this.Render();
-            oSel.Render();
-        }
-    }
-
-    function init() {
-        Calendar = new oCalendar('Calendar', 'incalendar');
-        {
-            {% for calendarContact in calendar.calendarContact %}
-            Calendar.Add(
-                "{{ calendarContact.contact.id }}",
-                "{{ calendarContact.contact.displayName }}",
-                "{{ calendarContact.contact.email }}",
-                "{{ calendarContact.contact.contactOrganisation.organisation }}", false, false
-            );
-            {% endfor %}
-        }
-        Calendar.Render();
-        Contacts = new oCalendar('Contacts', 'contacts');
-    }
-
-    function loadCalendar(id) {
-        getContacts('get=calendar&calendar=' + id);
-    }
-
-    function wildSearch(id) {
-        getContacts(id);
-    }
-
-    function selectionSearch(id) {
-        getContactsFromSelection(id);
-    }
-
-    function storeChanges() {
-        document.getElementById('added').value = Calendar.getAddList();
-        document.getElementById('removed').value = Calendar.getRemoveList();
-        return true;
-    }
-
-
-    /**
-     * Load the contacts based on a search action
-     * @param q
-     */
-    function getContacts(q) {
-
-        $.ajax({
-            method: 'post',
-            url: '{{ url('zfcadmin/contact-admin/search') }}',
-            dataType: 'json',
-            data: {
-                search: q
-            },
-            success: function (result, status) {
-                Contacts.items.length = 0;
-                for (var i = 0; i < result.length; i++) {
-                    Contacts.Add(
-                        result[i].id,
-                        result[i].name,
-                        result[i].email,
-                        result[i].organisation
-                    );
-                }
-                Contacts.Render();
-            }
+        $('#selection-search').click(function () {
+            let $selection = $('#selection').val();
+            getContactsFromSelection($selection, $('#choose-contacts-table'));
         });
-    }
-
-    /**
-     * Load the contacts based on a search action
-     * @param q
-     */
-    function getContactsFromSelection(q) {
-
-        $.ajax({
-            method: 'post',
-            url: '{{ url('zfcadmin/selection/get-contacts') }}',
-            dataType: 'json',
-            data: {
-                id: q
-            },
-            success: function (result, status) {
-                Contacts.items.length = 0;
-                for (var i = 0; i < result.length; i++) {
-                    Contacts.Add(
-                        result[i].id,
-                        result[i].name,
-                        result[i].email,
-                        result[i].organisation
-                    );
-                }
-                Contacts.Render();
-            }
+        $('#contact-search').click(function () {
+            let $query = $('#contact-search-string').val();
+            getContacts($query, $('#choose-contacts-table'));
         });
-    }
 
-    window.onload = init;
+        var $in = [];
+
+        function init() {
+            $('#contacts-table > tr').each(function () {
+                $in.push($(this).data('id'));
+            });
+            updateHiddenElements();
+        }
+
+        init();
+
+        function moveItem($element) {
+            let $icon = $element.find('i');
+            let $contactId = $element.data('id');
+
+            if ($icon.hasClass('fa-plus') && $.inArray($contactId, $in) === -1) {
+                $icon.addClass('fa-minus').removeClass('fa-plus');
+                $in.push($contactId);
+                $('#contacts-table').append($element);
+            } else if ($icon.hasClass('fa-minus')) {
+                $icon.addClass('fa-plus').removeClass('fa-minus');
+                $in.remove($contactId);
+                $('#choose-contacts-table').append($element);
+            }
+            updateHiddenElements();
+        }
+
+        function updateHiddenElements() {
+            let $hiddenElementTemplate = $('#hidden-element-template');
+            let html = Mustache.render($hiddenElementTemplate.html(), {'elements': $in});
+            $('#hidden-elements').html(html);
+        }
+
+        $('.table').on('click', 'tr', function () {
+            moveItem($(this));
+        });
+
+        $('#remove-all').click(function () {
+            $('#contacts-table > tr').each(function () {
+                moveItem($(this));
+            });
+        });
+
+        $('#add-all').click(function () {
+            $('#choose-contacts-table > tr').each(function () {
+                moveItem($(this));
+            });
+        });
+        $('#reset').click(function () {
+            location.reload();
+        });
+        $('#subtract').click(function () {
+            let $contactsChosen = [];
+            $('#choose-contacts-table > tr').each(function () {
+                $contactsChosen.push($(this).data('id'));
+            });
+
+            $('#contacts-table > tr').each(function () {
+                if ($.inArray($(this).data('id'), $contactsChosen) !== -1) {
+                    $in.remove($(this).data('id'));
+                    $(this).remove();
+                }
+            });
+            updateHiddenElements();
+        });
+
+        Array.prototype.remove = function () {
+            let what, a = arguments, L = a.length, ax;
+            while (L && this.length) {
+                what = a[--L];
+                while ((ax = this.indexOf(what)) !== -1) {
+                    this.splice(ax, 1);
+                }
+            }
+            return this;
+        };
+    });
 </script>
+
+
+{% verbatim %}
+<template id="contact-row-template">
+        {{#contacts}}
+            <tr data-id="{{ id }}">
+                <td>
+                    <i class="fa fa-{{ type }}" aria-hidden="true"></i>
+                </td>
+                <td>
+                    <small class="text-muted">{{ id }}</small></td>
+                <td>{{ name }}</td>
+                <td>{{ organisation }}</td>
+            </tr>
+         {{/contacts}}
+</template>
+<template id="hidden-element-template">
+        {{#elements}}
+            <input type="hidden" name="contacts[]" value="{{ . }}">
+        {{/elements}}
+</template>
+{% endverbatim %}

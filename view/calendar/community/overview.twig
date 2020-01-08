@@ -1,29 +1,110 @@
+{% do headTitle().append(translate("txt-admin")) %}
 {% do headTitle().append(translate("txt-calendar")) %}
-{% do headTitle().append(translate("txt-community-calendar")) %}
-<h1 class="display-4">{{ translate("txt-community-calendar") }}</h1>
 
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-    {% for whichValue in whichValues if whichValue != constant("Calendar\\Service\\CalendarService::WHICH_UPDATED") %}
-        <li class="nav-item {% if (which == whichValue) %}active{% endif %}">
+{% do headLink().appendStylesheet(url('assets/calendar-type-color-css')) %}
 
-            {% set classes = ['nav-link'] %}
-            {% if (which == whichValue) %}
-                {% set classes = classes|merge(['active']) %}
-            {% endif %}
+<h1>{{ translate("txt-%s-events")|format(which|capitalize) }}
+    {{ calendarLink(null,'overview','button', 'all') }}
+    {{ calendarLink(null,'overview','button', 'past') }}
+    {{ calendarLink(null,'overview','button', 'upcoming') }}
+    {{ calendarLink(null,'new','button') }}</h1>
 
-            {{ calendarLink(null,'overview', 'text-which-tab', whichValue, null, null, null, classes) }}
-        </li>
-    {% endfor %}
-</ul>
+{% do form.prepare() %}
+{{ form().openTag(form)|raw }}
 
-<!-- Tab panes -->
-<div class="tab-content">
-    <div class="tab-pane active" id="upcoming">
-        <h2>{{ translate("txt-%s-events")|format(which|capitalize) }}</h2>
 
-        {% include 'calendar/partial/list/calendar-community' with {'elements': paginator.getCurrentItems()} %}
+<div class="row">
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="lead">{{ translate("txt-calendar-overview-explanation") }}</p>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    {{ formelement(form.get('query')) }}
+                    <div class="input-group-append input-group-btn">
+                        {{ formelement(form.get('search')) }}
+                        {{ formelement(form.get('reset')) }}
+                    </div>
+                </div>
+                <p class="text-muted">{{ translate("txt-%s-items-on-%s-pages")|format(paginator.adapter.count,paginator.pageRange) }}</p>
+            </div>
+        </div>
 
-        {% include 'calendar/partial/pagination-control' %}
+        {% if paginator.pageRange > 0 %}
+            <table class="table table-hover table-striped table-sm">
+                <thead>
+                <tr>
+                    <th colspan="2">{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'date', 'text': translate("txt-date")} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'name', 'text': translate("txt-name")} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'location', 'text': translate("txt-location")} %}</th>
+                    <th>{% include 'application/partial/sortable-table-header' with {'route': 'community/calendar/overview', 'criteria': 'type', 'text': translate("txt-type")} %}</th>
+                </tr>
+                </thead>
+                <tfoot>
+                </tfoot>
+                <tbody>
+                {% for result in paginator.getCurrentItems() %}
+                    {% if result.fields['calendar_id'] %}
+
+                        {% set calendar = calendarService.findCalendarById(result.fields['calendar_id']) %}
+
+                        {% set calendarHasContact = calendarService.calendarHasContact(calendar, identity()) %}
+                        <tr {% if calendarHasContact %}class="table-itea"{% endif %}>
+                            <td>
+                                {% if calendarHasContact %}<i class="fa fa-user text-itea"></i>{% endif %}
+                            </td>
+                            <td>
+                                {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
+                            <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
+                            <td>{{ calendar.location }}</td>
+                            <td><i class="fa fa-calendar-o {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td></td>
+                            <td>{{ result.fields.date_from|solr_date('d M Y') }}</td>
+                            <td>{{ result.fields.calendar }}</td>
+                            <td>{{ result.fields.location }}</td>
+                            <td>{{ result.fields.type }}</td>
+                            <td colspan="3"></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'application/partial/pagination-control' with {'paginator': paginator} %}
+        {% else %}
+            {{ ztbalert().info(translate("txt-no-calendar-found"))|raw }}
+        {% endif %}
+    </div>
+    <div class="col-md-2">
+        <div class="well well-sm">
+            {% set facets = form.get('facet') %}
+            {% for facet in facets %}
+                {{ ztbformelement(facet, true) }}
+            {% endfor %}
+        </div>
     </div>
 </div>
+
+{{ form().closeTag()|raw }}
+
+<script type="text/javascript">
+    $(function () {
+        $('input[type="checkbox"]').on('click', function () {
+            $('#search').submit();
+        });
+        $('#searchButton').on('click', function () {
+            $('#search').submit();
+        });
+        $('#resetButton').on('click', function () {
+            $('input[type="checkbox"]').each(function () {
+                this.removeAttribute('checked');
+            });
+            $('input[name="query"]').val('');
+            $('#search').submit();
+        });
+    });
+</script>

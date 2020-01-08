@@ -1,7 +1,7 @@
 {% do headTitle().append(translate("txt-admin")) %}
 {% do headTitle().append(translate("txt-calendar-item-%s")|format(calendar)) %}
 
-<h1 class="display-4">{{ translate("txt-calendar-item-%s")|format(calendar) }} </h1>
+<h1>{{ translate("txt-calendar-item-%s")|format(calendar) }} </h1>
 
 <p class="lead">{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}
     , {{ calendar.location }} {{ calendarLink(calendar,'view-community','icon') }}</p>
@@ -12,7 +12,7 @@
                                    data-toggle="tab" role="tab">{{ translate("txt-general-information") }}</a></li>
     <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab"
                             role="tab">{{ translate("txt-documents") }}</a></li>
-    {% if calendar.projectCalendar %}
+    {% if calendar.isReview() %}
         <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
                                 role="tab">{{ translate("txt-actions") }}</a></li>
         <li class="nav-item"><a class="nav-link" href="#reviewers" data-toggle="tab"
@@ -25,7 +25,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="general">
-        <h3>{{ translate("txt-calendar-details") }}</h3>
+        <h2>{{ translate("txt-calendar-details") }}</h2>
 
         <dl class="dl-horizontal">
             <dt>{{ translate("txt-calendar-name") }}</dt>
@@ -38,7 +38,7 @@
             <dd>{{ calendar.dateEnd|date }}</dd>
             <dt>{{ translate("txt-calendar-type") }}</dt>
             <dd>{{ calendar.type }}</dd>
-            {% if calendar.projectCalendar %}
+            {% if calendar.isReview() %}
                 <dt>{{ translate("txt-project-name") }}</dt>
                 <dd>{{ projectLink(calendar.projectCalendar.project,'view-admin','name') }} {{ projectLink(calendar.projectCalendar.project,'view-community','icon') }}</dd>
             {% endif %}
@@ -71,7 +71,7 @@
             <dd>{{ translate(calendar.getPresent(true)) }}</dd>
             {% if calendar.description %}
                 <dt>{{ translate("txt-description") }}</dt>
-                <dd>{{ calendar.description|raw }}</dd>
+                <dd>{{ calendar.description|raw|nl2br }}</dd>
             {% endif %}
             {% if calendar.imageUrl %}
                 <dt>{{ translate("txt-image-url") }}</dt>
@@ -108,7 +108,7 @@
         <h2>{{ translate("txt-calendar-documents") }}</h2>
         {% if calendar.document.count() > 0 %}
 
-            <table class="table table-hover table-striped table-condensed table-sm">
+            <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-document") }}</th>
@@ -145,7 +145,7 @@
         {{ ztbformelement(form.get('csrf')) }}
 
         <div class="form-group row">
-            <div class="offset-md-3 col-sm-offset-3 col-sm-9">
+            <div class="offset-sm-3 col-sm-9">
                 {{ ztbformelement(form.get('submit')) }}
             </div>
         </div>
@@ -154,12 +154,19 @@
 
     </div>
 
-    {% if calendar.projectCalendar %}
+    {% if calendar.isReview() %}
         <div class="tab-pane" role="tabpanel" id="action">
 
-            <h2>{{ translate("txt-project-actions") }}</h2>
+            <h2>{{ translate("txt-planned-project-actions") }}</h2>
 
-            {% if calendar.projectCalendar.action.count() > 0 %}
+            {% if calendar.isReview() and calendar.projectCalendar.plannedAction.count() > 0 %}
+                {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.plannedAction } %}
+            {% else %}
+                {{ ztbalert().info(translate("txt-there-are-no-actions-planned-for-this-review-meeting"))|raw }}
+            {% endif %}
+
+            <h2>{{ translate("txt-defined-project-actions") }}</h2>
+            {% if calendar.isReview() and calendar.projectCalendar.action.count() > 0 %}
                 {% include 'project/partial/list/action' with {'actions' : calendar.projectCalendar.action } %}
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-actions-defined-for-this-review-meeting"))|raw }}
@@ -172,8 +179,8 @@
 
             <h2>{{ translate("txt-reviewers") }}</h2>
 
-            {% if calendar.projectCalendar.review.count() > 0 %}
-                <table class="table table-hover table-condensed table-sm table-striped">
+            {% if calendar.isReview() and calendar.projectCalendar.reviewers.count() > 0 %}
+                <table class="table table-hover table-sm table-striped">
                     <thead>
                     <tr>
                         <th>{{ translate("txt-contact") }}</th>
@@ -181,10 +188,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for reviewer in calendar.projectCalendar.review %}
+                    {% for reviewer in calendar.projectCalendar.reviewers %}
                         <tr>
                             <td>{{ contactLink(reviewer.getContact(), 'view-admin', 'name') }}</td>
-                            <td>{{ reviewContactLink(reviewer.getContact().getProjectReviewContact(), 'view', 'handle') }}</td>
+                            <td>{{ reviewerContactLink(reviewer.getContact().getProjectReviewerContact(), 'view', 'handle') }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -192,6 +199,8 @@
             {% else %}
                 {{ ztbalert().info(translate("txt-there-are-no-reviewers-found-for-this-review-meeting"))|raw }}
             {% endif %}
+
+            {{ projectCalendarReviewerLink(null, 'new', 'button', calendar.projectCalendar) }}
         </div>
     {% endif %}
 
@@ -199,7 +208,7 @@
 
         <h2>{{ translate("txt-calendar-attendees") }}</h2>
         {% if calendar.calendarContact.count() > 0 %}
-            <table class="table table-hover table-striped table-condensed table-sm">
+            <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
                     <th>{{ translate("txt-name") }}</th>
@@ -208,9 +217,14 @@
                     <th>{{ translate("txt-presence") }}</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="4"></td>
+                </tr>
+                </tfoot>
                 <tbody>
                 {% for calendarContact in calendar.calendarContact %}
-                    <tr {% if identity().getId() == contact.id %}class="success"{% endif %}>
+                    <tr {% if identity().getId() == contact.id %}class="table-success"{% endif %}>
                         <td>
                             {% if identity().getId() == contact.id %}
                                 <i class="fa fa-user"></i>
@@ -239,18 +253,21 @@
                         <td>
                             {% do assertionService.addResource(calendarContact,'Calendar\\Acl\\Assertion\\Contact') %}
                             {% if isAllowed(calendarContact,'update-status') %}
-                            <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                               class="presence-icon fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}active{% endif %}"></i>
-                            <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                               class="presence-icon fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}active{% endif %}"></i>
-                            <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
-                               rel="{{ calendarContact.id }}-{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                               class="presence-icon fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}active{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                                   class="presence-icon cursor-pointer fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                                   class="presence-icon cursor-pointer fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
+                                <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                                   data-contact="{{ calendarContact.id }}"
+                                   data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                                   class="presence-icon cursor-pointer fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
                             {% else %}
-                            {{ calendarContact.status }}</td>
-                        {% endif %}
+                                {{ calendarContact.status }}
+                            {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>

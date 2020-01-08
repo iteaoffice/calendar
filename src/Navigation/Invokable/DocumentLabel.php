@@ -1,13 +1,9 @@
 <?php
+
 /**
- * ITEA Office all rights reserved
- *
- * PHP Version 7
- *
- * @category    Project
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
  *
  * @link        http://github.com/iteaoffice/project for the canonical source repository
@@ -20,22 +16,19 @@ namespace Calendar\Navigation\Invokable;
 use Admin\Navigation\Invokable\AbstractNavigationInvokable;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Document;
-use Zend\Navigation\Page\Mvc;
+use Laminas\Navigation\Page\Mvc;
 
 /**
  * Class ProjectLabel
  *
  * @package Project\Navigation\Invokable
  */
-class DocumentLabel extends AbstractNavigationInvokable
+final class DocumentLabel extends AbstractNavigationInvokable
 {
-    /**
-     * @param Mvc $page
-     *
-     * @return void;
-     */
     public function __invoke(Mvc $page): void
     {
+        $label = $this->translate('txt-nav-document');
+
         if ($this->getEntities()->containsKey(Document::class)) {
             /** @var Document $document */
             $document = $this->getEntities()->get(Document::class);
@@ -50,8 +43,6 @@ class DocumentLabel extends AbstractNavigationInvokable
                 )
             );
             $label = (string)$document;
-        } else {
-            $label = $this->translate('txt-nav-document');
         }
         $page->set('label', $label);
     }

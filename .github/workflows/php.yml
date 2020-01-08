@@ -1,0 +1,47 @@
+name: main
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Start the SSH agent and add the deploy key
+        uses: webfactory/ssh-agent@v0.1.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl, zip, soap, gd
+          coverage: xdebug #optional, setup coverage driver
+
+      - name: Check PHP Version
+        run: php -v
+
+      - name: Check Composer Version
+        run: composer -V
+
+      - name: Check PHP Extensions
+        run: php -m
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run fix suite
+        run: composer fix
+
+      - name: Run check suite
+        run: composer check
+
+      - name: Run test suite
+        run: composer test

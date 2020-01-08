@@ -5,7 +5,7 @@
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -15,9 +15,8 @@ namespace Calendar\Controller;
 use Calendar\Entity\Contact;
 use Calendar\Entity\ContactRole;
 use Calendar\Service\CalendarService;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\JsonModel;
 
 /**
  * Class JsonController
@@ -26,7 +25,7 @@ use Zend\View\Model\ViewModel;
  */
 final class JsonController extends AbstractActionController
 {
-    private $calendarService;
+    private CalendarService $calendarService;
 
     public function __construct(CalendarService $calendarService)
     {
@@ -50,6 +49,26 @@ final class JsonController extends AbstractActionController
         }
 
         return new JsonModel($roles);
+    }
+
+    public function updateStatusAction(): JsonModel
+    {
+        $calendarContactId = (int)$this->params()->fromPost('id');
+        $statusId = (string)$this->params()->fromPost('status');
+
+        /** @var Contact $calendarContact */
+        $calendarContact = $this->calendarService->find(Contact::class, $calendarContactId);
+
+        if (null === $calendarContact) {
+            return new JsonModel(['result' => 'error']);
+        }
+        $this->calendarService->updateContactStatus($calendarContact, $statusId);
+
+        return new JsonModel(
+            [
+                'result' => 'success',
+            ]
+        );
     }
 
     public function updateRoleAction()

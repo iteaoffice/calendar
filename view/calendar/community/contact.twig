@@ -1,8 +1,45 @@
 {% do headTitle().append(translate("txt-calendar")) %}
-<h1 class="display-4">{{ translate("txt-calender-contact-items") }}</h1>
+<h1>{{ translate("txt-calender-contact-items") }}</h1>
 
 {% if calendarContacts|length > 0 %}
-    {% include 'calendar/partial/list/calendar-contact' with {'elements': calendarContacts} %}
+    <table class="table table-sm table-listed table-striped table-hover">
+        <thead>
+        <tr>
+            <th>{{ translate("txt-date") }}</th>
+            <th>{{ translate("txt-event-meeting") }}</th>
+            <th>{{ translate("txt-location") }}</th>
+            <th>{{ translate("txt-role") }}</th>
+            <th>{{ translate("txt-presence") }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for calendarContact in calendarContacts %}
+            <tr>
+                <td>
+                    {{ calendarContact.calendar.dateFrom|from_to_date(calendarContact.calendar.dateEnd) }}
+                </td>
+
+                <td>{{ calendarLink(calendarContact.calendar,'view-community', 'name') }}</td>
+                <td>{{ calendarContact.calendar.location }}</td>
+                <td>{{ calendarContact.role }}</td>
+                <td>
+                    <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
+                       data-contact="{{ calendarContact.id }}"
+                       data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
+                       class="presence-icon cursor-pointer fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
+                    <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
+                       data-contact="{{ calendarContact.id }}"
+                       data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
+                       class="presence-icon cursor-pointer fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
+                    <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
+                       data-contact="{{ calendarContact.id }}"
+                       data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
+                       class="presence-icon cursor-pointer fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     {{ ztbalert().info(translate("txt-no-calendar-items-found"))|raw }}
 {% endif %}

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -24,82 +25,67 @@ use Calendar\Entity\DocumentObject;
 use Calendar\Form\CreateCalendarDocument;
 use Calendar\Form\SelectAttendee;
 use Calendar\Form\SendMessage;
+use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
 use General\Service\EmailService;
 use General\Service\GeneralService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
 use Project\Service\WorkpackageService;
-use setasign\Fpdi\TcpdfFpdi;
-use Zend\Http\Response;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Zend\Mvc\Plugin\Identity\Identity;
-use Zend\Paginator\Paginator;
-use Zend\Validator\File\FilesSize;
-use Zend\Validator\File\MimeType;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
+use Search\Form\SearchResult;
+use Search\Paginator\Adapter\SolariumPaginator;
+use setasign\Fpdi\Tcpdf\Fpdi;
+use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use Laminas\Http\Request;
+use Laminas\Http\Response;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Paginator\Paginator;
+use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Model\ViewModel;
+use ZipArchive;
+
+use function array_merge_recursive;
+use function ceil;
+use function file_exists;
+use function file_get_contents;
+use function filesize;
+use function http_build_query;
+use function implode;
+use function nl2br;
+use function sprintf;
+use function strlen;
+use function sys_get_temp_dir;
+use function unlink;
 
 /**
- * Class CalendarCommunityController
- *
- * @package Calendar\Controller
  * @method Identity|\Contact\Entity\Contact identity()
  * @method FlashMessenger flashMessenger()
- * @method RenderReviewCalendar|TcpdfFpdi renderReviewCalendar(array $calendarItems)
+ * @method RenderReviewCalendar|Fpdi renderReviewCalendar(array $calendarItems)
  * @method RenderCalendarContactList renderCalendarContactList()
  */
 final class CommunityController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var ContactService
-     */
-    private $contactService;
-    /**
-     * @var ProjectService
-     */
-    private $projectService;
-    /**
-     * @var WorkpackageService
-     */
-    private $workpackageService;
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-    /**
-     * @var AssertionService
-     */
-    private $assertionService;
-    /**
-     * @var EmailService
-     */
-    private $emailService;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private CalendarService $calendarService;
+    private CalendarSearchService $searchService;
+    private GeneralService $generalService;
+    private ContactService $contactService;
+    private ProjectService $projectService;
+    private WorkpackageService $workpackageService;
+    private ActionService $actionService;
+    private AssertionService $assertionService;
+    private EmailService $emailService;
+    private TranslatorInterface $translator;
+    private EntityManager $entityManager;
 
     public function __construct(
         CalendarService $calendarService,
+        CalendarSearchService $searchService,
         GeneralService $generalService,
         ContactService $contactService,
         ProjectService $projectService,
@@ -111,6 +97,7 @@ final class CommunityController extends AbstractActionController
         EntityManager $entityManager
     ) {
         $this->calendarService = $calendarService;
+        $this->searchService = $searchService;
         $this->generalService = $generalService;
         $this->contactService = $contactService;
         $this->projectService = $projectService;
@@ -124,36 +111,81 @@ final class CommunityController extends AbstractActionController
 
     public function overviewAction(): ViewModel
     {
-        $which = $this->params('which', CalendarService::WHICH_UPCOMING);
+        /** @var Request $request */
+        $request = $this->getRequest();
         $page = $this->params('page', 1);
-        $calendarItems = $this->calendarService
-            ->findCalendarItems($which, $this->identity());
-        $paginator = new Paginator(new PaginatorAdapter(new ORMPaginator($calendarItems)));
-        $paginator::setDefaultItemCountPerPage(($page === 'all') ? PHP_INT_MAX : 25);
+        $which = $this->params('which', 'upcoming');
+
+        $visibleItems = $this->calendarService->findVisibleItems($this->identity());
+
+        $form = new SearchResult();
+        $data = array_merge(
+            [
+                'order'     => '',
+                'direction' => '',
+                'query'     => '',
+                'facet'     => [],
+            ],
+            $request->getQuery()->toArray()
+        );
+        $searchFields = [
+            'calendar_search', //To search for numbers
+            'description_search',
+            'highlight_description_search',
+            'location_search',
+            'type_search'
+        ];
+
+        if ($request->isGet()) {
+            $this->searchService->setCommunitySearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                $which === 'upcoming',
+                $which === 'past',
+                $visibleItems,
+                $this->identity()->isOffice()
+            );
+            if (isset($data['facet'])) {
+                foreach ($data['facet'] as $facetField => $values) {
+                    $quotedValues = [];
+                    foreach ($values as $value) {
+                        $quotedValues[] = sprintf('"%s"', $value);
+                    }
+
+                    $this->searchService->addFilterQuery(
+                        $facetField,
+                        implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                    );
+                }
+            }
+
+            $form->addSearchResults(
+                $this->searchService->getQuery()->getFacetSet(),
+                $this->searchService->getResultSet()->getFacetSet()
+            );
+            $form->setData($data);
+        }
+
+        $paginator = new Paginator(
+            new SolariumPaginator($this->searchService->getSolrClient(), $this->searchService->getQuery())
+        );
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-        $whichValues = $this->calendarService->getWhichValues();
 
         return new ViewModel(
             [
-                'calendarService' => $this->calendarService,
-                'which'           => $which,
+                'form'            => $form,
+                'order'           => $data['order'],
+                'direction'       => $data['direction'],
+                'query'           => $data['query'],
+                'badges'          => $form->getBadges(),
+                'arguments'       => http_build_query($form->getFilteredData()),
                 'paginator'       => $paginator,
-                'whichValues'     => $whichValues,
-            ]
-        );
-    }
-
-    public function contactAction(): ViewModel
-    {
-        $calendarContacts = $this->calendarService->findCalendarContactByContact(
-            CalendarService::WHICH_UPCOMING,
-            $this->identity()
-        );
-
-        return new ViewModel(
-            [
-                'calendarContacts' => $calendarContacts,
+                'calendarService' => $this->calendarService,
+                'which'           => $which
             ]
         );
     }
@@ -162,10 +194,11 @@ final class CommunityController extends AbstractActionController
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(
-                CalendarService::WHICH_REVIEWS,
-                $this->identity()
+                $this->identity(),
+                true,
+                true
             )
-            ->getResult();
+            ->getQuery()->getResult();
 
         return new ViewModel(
             [
@@ -174,26 +207,35 @@ final class CommunityController extends AbstractActionController
         );
     }
 
+    public function contactAction(): ViewModel
+    {
+        $calendarContacts = $this->calendarService->findUpcomingCalendarContactByContact($this->identity());
+        return new ViewModel(
+            [
+                'calendarContacts' => $calendarContacts,
+            ]
+        );
+    }
+
     public function downloadReviewCalendarAction(): Response
     {
         $calendarItems = $this->calendarService
             ->findCalendarItems(
-                CalendarService::WHICH_REVIEWS,
-                $this->identity()
+                $this->identity(),
+                true,
+                true
             )
-            ->getResult();
+            ->getQuery()->getResult();
 
         $reviewCalendar = $this->renderReviewCalendar($calendarItems);
 
         /** @var Response $response */
         $response = $this->getResponse();
         $response->getHeaders()
-            ->addHeaderLine('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Disposition', 'attachment; filename="Review calendar.pdf"')
             ->addHeaderLine('Content-Type: application/pdf; charset="UTF-8')
-            ->addHeaderLine('Content-Length', \strlen($reviewCalendar->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($reviewCalendar->getPDFData()));
         $response->setContent($reviewCalendar->getPDFData());
 
         return $response;
@@ -207,14 +249,13 @@ final class CommunityController extends AbstractActionController
             return $this->notFoundAction();
         }
 
-        $data = \array_merge_recursive(
+        $data = array_merge_recursive(
             $this->getRequest()->getPost()->toArray(),
             $this->getRequest()->getFiles()->toArray()
         );
 
         $form = new CreateCalendarDocument($this->entityManager);
         $form->bind(new Document());
-
 
         $form->setData($data);
         if ($this->getRequest()->isPost() && $form->isValid()) {
@@ -250,7 +291,7 @@ final class CommunityController extends AbstractActionController
                 ->addSuccessMessage(
                     sprintf(
                         $this->translator->translate(
-                            "txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"
+                            'txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded'
                         ),
                         $document->getDocument(),
                         $calendar->getCalendar()
@@ -297,25 +338,6 @@ final class CommunityController extends AbstractActionController
         );
     }
 
-    public function updateStatusAction(): JsonModel
-    {
-        $calendarContactId = (int)$this->getEvent()->getRequest()->getPost()->get('id');
-        $statusId = (string)$this->getEvent()->getRequest()->getPost()->get('status');
-
-        /** @var Contact $calendarContact */
-        $calendarContact = $this->calendarService->find(Contact::class, $calendarContactId);
-
-        if (null === $calendarContact) {
-            return new JsonModel(['result' => 'error']);
-        }
-        $this->calendarService->updateContactStatus($calendarContact, $statusId);
-
-        return new JsonModel(
-            [
-                'result' => 'success',
-            ]
-        );
-    }
 
     public function selectAttendeesAction()
     {
@@ -391,7 +413,7 @@ final class CommunityController extends AbstractActionController
             $this->flashMessenger()
                 ->addInfoMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-attendees-for-%s-have-been-updated"),
+                        $this->translator->translate('txt-calendar-attendees-for-%s-have-been-updated'),
                         $calendar->getCalendar()
                     )
                 );
@@ -430,15 +452,14 @@ final class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderPresenceList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
-                'attachment; filename="Presence list ' . $calendar->getCalendar() . '.pdf"'
+                'attachment; filename="Attendees list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
         $response->setContent($presenceList->getPDFData());
 
         return $response;
@@ -460,15 +481,14 @@ final class CommunityController extends AbstractActionController
         $presenceList = $this->renderCalendarContactList()->renderSignatureList($calendar);
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine(
                 'Content-Disposition',
                 'attachment; filename="Signature list ' . $calendar->getCalendar() . '.pdf"'
             )
             ->addHeaderLine('Content-Type: application/pdf')
-            ->addHeaderLine('Content-Length', \strlen($presenceList->getPDFData()));
+            ->addHeaderLine('Content-Length', strlen($presenceList->getPDFData()));
         $response->setContent($presenceList->getPDFData());
 
         return $response;
@@ -505,7 +525,8 @@ final class CommunityController extends AbstractActionController
                 $this->emailService->addTo($calendarContact->getContact());
             }
 
-            $this->emailService->setTemplateVariable('message', \nl2br($form->getData()['message']));
+            //Use HTML Entities to be sure that all chars are escaped
+            $this->emailService->setTemplateVariable('message', nl2br($form->getData()['message']));
             $this->emailService->setTemplateVariable('calendar', $calendar->getCalendar());
             $this->emailService->setTemplateVariable('sender_name', $this->identity()->parseFullName());
 
@@ -514,7 +535,7 @@ final class CommunityController extends AbstractActionController
             $this->flashMessenger()
                 ->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-message-to-attendees-for-%s-has-been-sent"),
+                        $this->translator->translate('txt-message-to-attendees-for-%s-has-been-sent'),
                         $calendar->getCalendar()
                     )
                 );
@@ -553,15 +574,12 @@ final class CommunityController extends AbstractActionController
 
         $fileName = $calendar->getDocRef() . '-binder.zip';
 
-        /*
-         * throw the filename away
-         */
-        if (\file_exists(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
-            \unlink(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
+        if (file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName)) {
+            unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName);
         }
 
-        $zip = new \ZipArchive();
-        $res = $zip->open(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName, \ZipArchive::CREATE);
+        $zip = new ZipArchive();
+        $res = $zip->open(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName, ZipArchive::CREATE);
 
         if ($res === true) {
             foreach ($calendar->getDocument() as $document) {
@@ -574,13 +592,12 @@ final class CommunityController extends AbstractActionController
         }
 
 
-        $response->getHeaders()->addHeaderLine('Expires: ' . \gmdate('D, d M Y H:i:s \G\M\T', time() + 36000))
-            ->addHeaderLine('Cache-Control: max-age=36000, must-revalidate')
+        $response->getHeaders()
             ->addHeaderLine('Content-Disposition', 'attachment; filename="' . $fileName)
             ->addHeaderLine('Pragma: public')
             ->addHeaderLine('Content-Type: application/octet-stream')
-            ->addHeaderLine('Content-Length: ' . \filesize(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
-        $response->setContent(\file_get_contents(\sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+            ->addHeaderLine('Content-Length: ' . filesize(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
+        $response->setContent(file_get_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName));
 
         return $response;
     }

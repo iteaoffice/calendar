@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -15,8 +16,6 @@ namespace Calendar\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contact.
- *
  * @ORM\Table(name="calendar_contact")
  * @ORM\Entity(repositoryClass="Calendar\Repository\Contact")
  */
@@ -25,32 +24,32 @@ class Contact extends AbstractEntity
     public const STATUS_ALL = 1;
     public const STATUS_NO_DECLINED = 2;
     /**
-     * @ORM\Column(name="calendar_contact_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_contact_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var integer
+     * @var int
      */
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      *
-     * @var \Calendar\Entity\ContactRole
+     * @var ContactRole
      */
     private $role;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      *
-     * @var \Calendar\Entity\Calendar
+     * @var Calendar
      */
     private $calendar;
     /**
      * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade="persist", inversedBy="calendarContact")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      *
-     * @var \Calendar\Entity\ContactStatus
+     * @var ContactStatus
      */
     private $status;
     /**
@@ -61,120 +60,65 @@ class Contact extends AbstractEntity
      */
     private $contact;
 
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
     public function __toString(): string
     {
         return (string)$this->role;
     }
 
-    /**
-     * @return int
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Contact
-     */
-    public function setId($id)
+    public function setId($id): Contact
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return ContactRole
-     */
-    public function getRole()
+    public function getRole(): ?ContactRole
     {
         return $this->role;
     }
 
-    /**
-     * @param ContactRole $role
-     *
-     * @return Contact
-     */
-    public function setRole($role)
+    public function setRole($role): Contact
     {
         $this->role = $role;
 
         return $this;
     }
 
-    /**
-     * @return Calendar
-     */
-    public function getCalendar()
+    public function getCalendar(): ?Calendar
     {
         return $this->calendar;
     }
 
-    /**
-     * @param Calendar $calendar
-     *
-     * @return Contact
-     */
-    public function setCalendar($calendar)
+    public function setCalendar($calendar): Contact
     {
         $this->calendar = $calendar;
 
         return $this;
     }
 
-    /**
-     * @return ContactStatus
-     */
-    public function getStatus()
+    public function getStatus(): ?ContactStatus
     {
         return $this->status;
     }
 
-    /**
-     * @param ContactStatus $status
-     *
-     * @return Contact
-     */
-    public function setStatus($status)
+    public function setStatus($status): Contact
     {
         $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * @return \Contact\Entity\Contact
-     */
-    public function getContact()
+    public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }
 
-    /**
-     * @param \Contact\Entity\Contact $contact
-     *
-     * @return Contact
-     */
-    public function setContact($contact)
+    public function setContact($contact): Contact
     {
         $this->contact = $contact;
 

@@ -1,13 +1,9 @@
 <?php
+
 /**
- * ITEA Office all rights reserved
- *
- * PHP Version 7
- *
- * @category    Project
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
  *
  * @link        http://github.com/iteaoffice/project for the canonical source repository
@@ -26,6 +22,9 @@ use Contact\Service\SelectionContactService;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
+
+use function array_key_exists;
 
 /**
  * Class AbstractService
@@ -34,14 +33,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 abstract class AbstractService
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-    /**
-     * @var SelectionContactService
-     */
-    protected $selectionContactService;
+    protected EntityManager $entityManager;
+    protected ?SelectionContactService $selectionContactService;
 
     public function __construct(EntityManager $entityManager, SelectionContactService $selectionContactService = null)
     {
@@ -52,7 +45,7 @@ abstract class AbstractService
     public function findFilteredByContact(string $entity, $filter, Contact $contact): QueryBuilder
     {
         //The 'filter' should always be there to support the repositories
-        if (!\array_key_exists('filter', $filter)) {
+        if (! array_key_exists('filter', $filter)) {
             $filter['filter'] = [];
         }
 
@@ -111,19 +104,19 @@ abstract class AbstractService
         return $qb;
     }
 
-    public function parseWherePermit(Entity\AbstractEntity $entity, string $roleName, Contact $contact): ?QueryBuilder
+    public function parseWherePermit(Entity\AbstractEntity $entity, string $roleName, Contact $contact): QueryBuilder
     {
         $permitEntity = $this->findPermitEntityByEntity($entity);
 
         if (null === $permitEntity) {
-            throw new \InvalidArgumentException(sprintf("Entity '%s' cannot be found as permit", $entity));
+            throw new InvalidArgumentException(sprintf("Entity '%s' cannot be found as permit", $entity));
         }
 
         //Try to find the corresponding role
         $role = $this->entityManager->getRepository(Permit\Role::class)->findOneBy(
             [
                 'entity' => $permitEntity,
-                'role'   => $roleName,
+                'role' => $roleName,
             ]
         );
 
@@ -131,9 +124,9 @@ abstract class AbstractService
         if (null === $role) {
             //We have no roles found, so return a query which gives always zeros
             //We will simply return NULL
-            print sprintf("Role '%s' on entity '%s' could not be found", $roleName, $entity);
-
-            return null;
+            throw new InvalidArgumentException(
+                sprintf("Role '%s' on entity '%s' could not be found", $roleName, $permitEntity)
+            );
         }
 
         //@todo; fix this when no role is found (equals to NULL for example)
@@ -169,7 +162,7 @@ abstract class AbstractService
 
     public function save(Entity\AbstractEntity $entity): Entity\AbstractEntity
     {
-        if (!$this->entityManager->contains($entity)) {
+        if (! $this->entityManager->contains($entity)) {
             $this->entityManager->persist($entity);
         }
 

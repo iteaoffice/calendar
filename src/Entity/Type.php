@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -14,7 +15,7 @@ namespace Calendar\Entity;
 
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
  * CalendarType.
@@ -26,17 +27,17 @@ use Zend\Form\Annotation;
 class Type extends AbstractEntity
 {
     /**
-     * @ORM\Column(name="type_id", type="integer", nullable=false)
+     * @ORM\Column(name="type_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Annotation\Type("\Zend\Form\Element\Hidden")
+     * @Annotation\Type("\Laminas\Form\Element\Hidden")
      *
-     * @var integer
+     * @var int
      */
     private $id;
     /**
      * @ORM\Column(name="type", type="string", nullable=false, unique=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-type-type-label","help-block": "txt-calendar-type-type-help-block"})
      * @Annotation\Attributes({"placeholder":"txt-calendar-type-type-placeholder"})
      *
@@ -45,7 +46,7 @@ class Type extends AbstractEntity
     private $type;
     /**
      * @ORM\Column(name="color", type="string", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Type("\Laminas\Form\Element\Color")
      * @Annotation\Options({"label":"txt-calendar-type-background-color-label","help-block": "txt-calendar-type-background-color-help-block"})
      *
      * @var string
@@ -53,7 +54,7 @@ class Type extends AbstractEntity
     private $color;
     /**
      * @ORM\Column(name="color_font", type="string", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Color")
+     * @Annotation\Type("\Laminas\Form\Element\Color")
      * @Annotation\Options({"label":"txt-calendar-font-color-label","help-block": "txt-calendar-font-color-help-block"})
      *
      * @var string
@@ -92,35 +93,10 @@ class Type extends AbstractEntity
      */
     private $access;
 
-    /**
-     * Type constructor.
-     */
     public function __construct()
     {
         $this->calendar = new Collections\ArrayCollection();
         $this->access = new Collections\ArrayCollection();
-    }
-
-    /**
-     * Magic Getter
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
     }
 
     public function __toString(): string
@@ -145,85 +121,50 @@ class Type extends AbstractEntity
             . 'css/calendar-type-color.css';
     }
 
-    /**
-     * Return a normalized CSS name for the type.
-     */
     public function parseCssName(): string
     {
         return 'calendar-type-' . $this->getId();
     }
 
-    /**
-     * @return int|string
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Type
-     */
-    public function setId($id): Type
+    public function setId(?int $id): Type
     {
         $this->id = $id;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return Type
-     */
-    public function setType(string $type): Type
+    public function setType(?string $type): Type
     {
         $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getColor(): ?string
     {
         return $this->color;
     }
 
-    /**
-     * @param string $color
-     *
-     * @return Type
-     */
-    public function setColor(string $color): Type
+    public function setColor(?string $color): Type
     {
         $this->color = $color;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getColorFont(): ?string
     {
         return $this->colorFont;
     }
 
-    /**
-     * @param string $colorFont
-     *
-     * @return Type
-     */
-    public function setColorFont(string $colorFont): Type
+    public function setColorFont(?string $colorFont): Type
     {
         $this->colorFont = $colorFont;
         return $this;
@@ -234,30 +175,17 @@ class Type extends AbstractEntity
         return $this->calendar;
     }
 
-    /**
-     * @param Calendar[]|Collections\ArrayCollection $calendar
-     *
-     * @return Type
-     */
     public function setCalendar($calendar): Type
     {
         $this->calendar = $calendar;
         return $this;
     }
 
-    /**
-     * @return \Admin\Entity\Access[]|Collections\ArrayCollection
-     */
     public function getAccess()
     {
         return $this->access;
     }
 
-    /**
-     * @param \Admin\Entity\Access[] $access
-     *
-     * @return Type
-     */
     public function setAccess($access): Type
     {
         $this->access = $access;

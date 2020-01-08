@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category   Program
  *
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright  Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license    https://itea3.org/license.txt proprietary
  *
  * @link       https://itea3.org
@@ -16,7 +17,7 @@ declare(strict_types=1);
 namespace Calendar\Controller\Plugin;
 
 use Calendar\Options\ModuleOptions;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use ZfcTwig\View\TwigRenderer;
 
 /**
@@ -24,34 +25,17 @@ use ZfcTwig\View\TwigRenderer;
  *
  * @package Calendar\Controller\Plugin
  */
-class RenderReviewCalendar extends AbstractPlugin
+final class RenderReviewCalendar extends AbstractPlugin
 {
-    /**
-     * @var TwigRenderer
-     */
-    protected $twigRenderer;
-    /**
-     * @var ModuleOptions
-     */
-    protected $moduleOptions;
+    private TwigRenderer $twigRenderer;
+    private ModuleOptions $moduleOptions;
 
-    /**
-     * RenderReviewCalendar constructor.
-     *
-     * @param TwigRenderer  $twigRenderer
-     * @param ModuleOptions $moduleOptions
-     */
     public function __construct(TwigRenderer $twigRenderer, ModuleOptions $moduleOptions)
     {
         $this->twigRenderer = $twigRenderer;
         $this->moduleOptions = $moduleOptions;
     }
 
-    /**
-     * @param array $calendarItems
-     *
-     * @return CalendarPdf
-     */
     public function __invoke(array $calendarItems): CalendarPdf
     {
         $pdf = new CalendarPdf();
@@ -61,9 +45,6 @@ class RenderReviewCalendar extends AbstractPlugin
         $pdf->AddPage();
         $pdf->SetFont('freesans', '', 12);
 
-        /*
-         * Use the NDA object to render the filename
-         */
         $contactListContent = $this->twigRenderer->render(
             'calendar/pdf/review-calendar',
             [

@@ -5,7 +5,7 @@
  * @category    Calendar
  * @package     Config
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 namespace Calendar;
@@ -18,7 +18,7 @@ return [
             'assets'    => [
                 'type'          => 'Literal',
                 'options'       => [
-                    'route' => '/assets/' . (defined("ITEAOFFICE_HOST")
+                    'route' => '/assets/' . (defined('ITEAOFFICE_HOST')
                             ? ITEAOFFICE_HOST : 'test'),
                 ],
                 'may_terminate' => true,
@@ -26,7 +26,7 @@ return [
                     'calendar-type-color-css' => [
                         'type'    => 'Literal',
                         'options' => [
-                            'route'    => "/css/calendar-type-color.css",
+                            'route'    => '/css/calendar-type-color.css',
                             'defaults' => [
                                 //Explicitly add the controller here as the assets are collected
                                 'controller' => Controller\CalendarController::class,
@@ -149,16 +149,6 @@ return [
                                     ],
                                 ],
                             ],
-                            'update-status'            => [
-                                'type'    => 'Segment',
-                                'options' => [
-                                    'route'    => '/update-status.html',
-                                    'defaults' => [
-                                        'action'    => 'update-status',
-                                        'privilege' => 'update-status',
-                                    ],
-                                ],
-                            ],
                             'document'                 => [
                                 'type'          => 'Segment',
                                 'options'       => [
@@ -206,6 +196,39 @@ return [
                     ],
                 ],
             ],
+            'json'      => [
+                'type'         => 'Literal',
+                'options'      => [
+                    'route' => '/json',
+                ],
+                'child_routes' => [
+                    'calendar' => [
+                        'type'          => 'Segment',
+                        'priority'      => 1000,
+                        'options'       => [
+                            'route'    => '/calendar',
+                            'defaults' => [
+                                'controller' => Controller\ManagerController::class,
+                                'action'     => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes'  => [
+                            'update-status' => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/update-status.json',
+                                    'defaults' => [
+                                        'controller' => Controller\JsonController::class,
+                                        'action'     => 'update-status',
+                                        'privilege'  => 'update-status',
+                                    ],
+                                ],
+                            ],
+                        ]
+                    ]
+                ]
+            ],
             'zfcadmin'  => [
                 'child_routes' => [
                     'calendar' => [
@@ -224,7 +247,7 @@ return [
                                 'type'     => 'Segment',
                                 'priority' => 1000,
                                 'options'  => [
-                                    'route'    => '/overview[/:which][/page-:page].html',
+                                    'route'    => '/overview[/which-:which][/page-:page].html',
                                     'defaults' => [
                                         'action' => 'overview',
                                     ],
@@ -264,6 +287,15 @@ return [
                                     'route'    => '/select-attendees/[:id].html',
                                     'defaults' => [
                                         'action' => 'select-attendees',
+                                    ],
+                                ],
+                            ],
+                            'add-contact'      => [
+                                'type'    => 'Segment',
+                                'options' => [
+                                    'route'    => '/add-contact/contact-[:contactId].html',
+                                    'defaults' => [
+                                        'action' => 'add-contact',
                                     ],
                                 ],
                             ],
@@ -319,6 +351,57 @@ return [
                                         ],
                                     ],
                                     'edit'     => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/edit/[:id].html',
+                                            'defaults' => [
+                                                'action' => 'edit',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'type'             => [
+                                'type'          => 'Segment',
+                                'options'       => [
+                                    'route'    => '/type',
+                                    'defaults' => [
+                                        'action'     => 'list',
+                                        'controller' => Controller\TypeController::class,
+                                    ],
+                                ],
+                                'may_terminate' => true,
+                                'child_routes'  => [
+                                    'list' => [
+                                        'type'     => 'Segment',
+                                        'priority' => 1000,
+                                        'options'  => [
+                                            'route'    => '/list[/f-:encodedFilter][/page-:page].html',
+                                            'defaults' => [
+                                                'action' => 'list',
+                                            ],
+                                        ],
+                                    ],
+                                    'new'  => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/new.html',
+                                            'defaults' => [
+                                                'action' => 'new',
+                                            ],
+                                        ],
+                                    ],
+                                    'view' => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/view/[:id].html',
+                                            'defaults' => [
+                                                'action' => 'view',
+
+                                            ],
+                                        ],
+                                    ],
+                                    'edit' => [
                                         'type'    => 'Segment',
                                         'options' => [
                                             'route'    => '/edit/[:id].html',

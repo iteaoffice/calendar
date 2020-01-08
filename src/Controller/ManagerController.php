@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -14,75 +15,57 @@ namespace Calendar\Controller;
 
 use Application\Service\AssertionService;
 use Calendar\Entity\Calendar;
+use Calendar\Entity\ContactRole;
 use Calendar\Entity\Document;
 use Calendar\Entity\DocumentObject;
 use Calendar\Form\CalendarContacts;
 use Calendar\Form\CreateCalendarDocument;
+use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
+use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
 use Project\Service\ActionService;
 use Project\Service\ProjectService;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Zend\Mvc\Plugin\Identity\Identity;
-use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Paginator;
-use Zend\Validator\File\FilesSize;
-use Zend\Validator\File\MimeType;
-use Zend\View\Model\ViewModel;
+use Search\Form\SearchResult;
+use Search\Paginator\Adapter\SolariumPaginator;
+use Solarium\QueryType\Select\Query\Query as SolariumQuery;
+use Laminas\Http\Request;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Paginator\Paginator;
+use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Model\ViewModel;
+
+use function array_merge;
+use function implode;
+use function sprintf;
 
 /**
- * Class ManagerController
- *
- * @package Calendar\Controller
  * @method FlashMessenger flashMessenger()
- * @method Identity|\Contact\Entity\Contact identity()
+ * @method Identity|Contact identity()
  */
 final class ManagerController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var FormService
-     */
-    private $formService;
-    /**
-     * @var ProjectService
-     */
-    private $projectService;
-    /**
-     * @var ActionService
-     */
-    private $actionService;
-    /**
-     * @var ContactService
-     */
-    private $contactService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var AssertionService
-     */
-    private $assertionService;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private CalendarService $calendarService;
+    private CalendarSearchService $searchService;
+    private FormService $formService;
+    private ProjectService $projectService;
+    private ActionService $actionService;
+    private ContactService $contactService;
+    private GeneralService $generalService;
+    private AssertionService $assertionService;
+    private EntityManager $entityManager;
+    private TranslatorInterface $translator;
 
     public function __construct(
         CalendarService $calendarService,
+        CalendarSearchService $searchService,
         FormService $formService,
         ProjectService $projectService,
         ActionService $actionService,
@@ -93,6 +76,7 @@ final class ManagerController extends AbstractActionController
         TranslatorInterface $translator
     ) {
         $this->calendarService = $calendarService;
+        $this->searchService = $searchService;
         $this->formService = $formService;
         $this->projectService = $projectService;
         $this->actionService = $actionService;
@@ -105,70 +89,77 @@ final class ManagerController extends AbstractActionController
 
     public function overviewAction(): ViewModel
     {
-        $which = (string)$this->params('which', CalendarService::WHICH_UPCOMING);
+        /** @var Request $request */
+        $request = $this->getRequest();
         $page = $this->params('page', 1);
+        $which = $this->params('which', 'upcoming');
 
-        $birthDays = $this->contactService->findContactsWithDateOfBirth();
-        $calendarItems = $this->calendarService->findCalendarItems($which, $this->identity())->getResult();
+        $form = new SearchResult();
+        $data = array_merge(
+            [
+                'order'     => '',
+                'direction' => '',
+                'query'     => '',
+                'facet'     => [],
+            ],
+            $request->getQuery()->toArray()
+        );
+        $searchFields = [
+            'calendar_search', //To search for numbers
+            'description_search',
+            'highlight_description_search',
+            'location_search',
+            'type_search'
+        ];
 
-        $calender = [];
+        if ($request->isGet()) {
+            $this->searchService->setAdminSearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                $which === 'upcoming',
+                $which === 'past'
+            );
+            if (isset($data['facet'])) {
+                foreach ($data['facet'] as $facetField => $values) {
+                    $quotedValues = [];
+                    foreach ($values as $value) {
+                        $quotedValues[] = sprintf('"%s"', $value);
+                    }
 
-        /** @var Calendar $calendarItem */
-        foreach ($calendarItems as $calendarItem) {
-            $index = $calendarItem->getDateFrom()->format('Y-m-d');
-
-            $calender[$index][] = [
-                'item'     => $calendarItem->getCalendar(),
-                'calendar' => $calendarItem,
-                'date'     => null,
-            ];
-        }
-
-        if ($which === CalendarService::WHICH_UPCOMING) {
-            $today = new \DateTime();
-            foreach ($birthDays as $birthDay) {
-                /*
-                 * Produce a index which holds the current year
-                 */
-                /** @var \DateTime $dateOfBirth */
-                $dateOfBirth = $birthDay->getDateOfBirth();
-
-                $birthDayDate = \DateTime::createFromFormat(
-                    'Y-m-d',
-                    \sprintf('%s-%s', date('Y'), $dateOfBirth->format('m-d'))
-                );
-
-                if ($birthDayDate < $today) {
-                    continue;
+                    $this->searchService->addFilterQuery(
+                        $facetField,
+                        implode(' ' . SolariumQuery::QUERY_OPERATOR_OR . ' ', $quotedValues)
+                    );
                 }
-
-                $index = $birthDayDate->format('Y-m-d');
-
-                $calender[$index][] = [
-                    'item' => \sprintf(
-                        $this->translator->translate('Birthday of %s (%s)'),
-                        $birthDay->getDisplayName(),
-                        date('Y') - $birthDay->getDateOfBirth()->format('Y')
-                    ),
-                    'date' => $birthDayDate,
-                ];
             }
 
-            ksort($calender);
+            $form->addSearchResults(
+                $this->searchService->getQuery()->getFacetSet(),
+                $this->searchService->getResultSet()->getFacetSet()
+            );
+            $form->setData($data);
         }
 
-        $paginator = new Paginator(new ArrayAdapter($calender));
-        $paginator::setDefaultItemCountPerPage(25);
+        $paginator = new Paginator(
+            new SolariumPaginator($this->searchService->getSolrClient(), $this->searchService->getQuery())
+        );
+        $paginator::setDefaultItemCountPerPage(($page === 'all') ? 1000 : 25);
         $paginator->setCurrentPageNumber($page);
         $paginator->setPageRange(ceil($paginator->getTotalItemCount() / $paginator::getDefaultItemCountPerPage()));
-        $whichValues = $this->calendarService->getWhichValues();
 
         return new ViewModel(
             [
-                'which'           => $which,
+                'form'            => $form,
+                'order'           => $data['order'],
+                'direction'       => $data['direction'],
+                'query'           => $data['query'],
+                'badges'          => $form->getBadges(),
+                'arguments'       => http_build_query($form->getFilteredData()),
                 'paginator'       => $paginator,
-                'whichValues'     => $whichValues,
                 'calendarService' => $this->calendarService,
+                'which'           => $which
             ]
         );
     }
@@ -177,15 +168,21 @@ final class ManagerController extends AbstractActionController
     {
         $project = null;
 
+        $preData = [];
+
         if (null !== $this->params('project')) {
             $project = $this->projectService->findProjectById((int)$this->params('project'));
 
             if (null === $project) {
                 return $this->notFoundAction();
             }
+
+            $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
+            $preData['calendar_entity_calendar']['type'] = 6;
         }
 
-        $data = $this->getRequest()->getPost()->toArray();
+        $data = array_merge($preData, $this->getRequest()->getPost()->toArray());
+
         $form = $this->formService->prepare(Calendar::class, $data);
         $form->remove('delete');
 
@@ -215,7 +212,7 @@ final class ManagerController extends AbstractActionController
 
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-created-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-created-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -244,6 +241,10 @@ final class ManagerController extends AbstractActionController
 
         $form = $this->formService->prepare($calendar, $data);
 
+        if (! $this->calendarService->canDeleteCalendar($calendar)) {
+            $form->remove('delete');
+        }
+
         if ($this->getRequest()->isPost()) {
             /*
              * Return when cancel is pressed
@@ -254,12 +255,12 @@ final class ManagerController extends AbstractActionController
             /*
              * Return when cancel is pressed
              */
-            if (isset($data['delete'])) {
+            if (isset($data['delete']) && $this->calendarService->canDeleteCalendar($calendar)) {
                 $this->calendarService->delete($calendar);
 
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-deleted-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-deleted-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -275,14 +276,14 @@ final class ManagerController extends AbstractActionController
                 $calendar->setContact($this->identity());
 
                 //Empty the call when the form is not set
-                if (!isset($data['calendar_entity_calendar']['call'])) {
+                if (! isset($data['calendar_entity_calendar']['call'])) {
                     $calendar->setCall([]);
                 }
 
                 $this->calendarService->save($calendar);
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
+                        $this->translator->translate('txt-calendar-item-%s-has-been-updated-successfully'),
                         $calendar->getCalendar()
                     )
                 );
@@ -314,7 +315,7 @@ final class ManagerController extends AbstractActionController
 
             $this->flashMessenger()->addSuccessMessage(
                 sprintf(
-                    $this->translator->translate("txt-contacts-of-calendar-have-been-updated-successfully"),
+                    $this->translator->translate('txt-contacts-of-calendar-have-been-updated-successfully'),
                     $calendar->getCalendar()
                 )
             );
@@ -331,48 +332,6 @@ final class ManagerController extends AbstractActionController
                 'contactService'  => $this->contactService,
                 'calendar'        => $calendar,
                 'form'            => $form,
-            ]
-        );
-    }
-
-    public function setRolesAction()
-    {
-        $calendar = $this->calendarService->findCalendarById((int)$this->params('id'));
-
-        if (null === $calendar) {
-            return $this->notFoundAction();
-        }
-
-        $data = $this->getRequest()->getPost()->toArray();
-
-        $form = $this->formService->prepare($calendar, $calendar, $data);
-        if ($this->getRequest()->isPost()) {
-            /*
-             * Return when cancel is pressed
-             */
-            if (isset($data['cancel'])) {
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
-            }
-
-
-            if ($form->isValid()) {
-                $this->flashMessenger()->addSuccessMessage(
-                    sprintf(
-                        $this->translator->translate("txt-calendar-item-%s-has-been-updated-successfully"),
-                        $calendar
-                    )
-                );
-
-                return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
-            }
-        }
-
-        return new ViewModel(
-            [
-                'form'            => $form,
-                'calendarService' => $this->calendarService,
-                'contactService'  => $this->contactService,
-                'calendar'        => $calendar,
             ]
         );
     }
@@ -427,7 +386,7 @@ final class ManagerController extends AbstractActionController
                 ->addInfoMessage(
                     sprintf(
                         $this->translator->translate(
-                            "txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded"
+                            'txt-calendar-document-%s-for-calendar-%s-has-successfully-been-uploaded'
                         ),
                         $document->getDocument(),
                         $calendar->getCalendar()
@@ -449,6 +408,45 @@ final class ManagerController extends AbstractActionController
                 'calendar'         => $calendar,
                 'form'             => $form,
                 'assertionService' => $this->assertionService
+            ]
+        );
+    }
+
+    public function addContactAction()
+    {
+        $contact = $this->contactService->findContactById((int)$this->params('contactId'));
+
+        if (null === $contact) {
+            return $this->notFoundAction();
+        }
+
+        $data = $this->getRequest()->getPost()->toArray();
+
+
+        if ($this->getRequest()->isPost()) {
+            if (isset($data['cancel'])) {
+                return $this->redirect()->toRoute('zfcadmin/contact/view/calendar', ['id' => $contact->getId()]);
+            }
+
+            $calendarContacts = $this->calendarService->addContactToCalendars($contact, $data);
+
+            $this->flashMessenger()->addSuccessMessage(
+                sprintf(
+                    $this->translator->translate('txt-contact-%s-has-been-added-to-%d-calendars-successfully'),
+                    $contact->parseFullName(),
+                    count($calendarContacts),
+                )
+            );
+
+            return $this->redirect()->toRoute('zfcadmin/contact/view/calendar', ['id' => $contact->getId()]);
+        }
+
+        return new ViewModel(
+            [
+                'contact'          => $contact,
+                'calendarService'  => $this->calendarService,
+                'upcomingCalendar' => $this->calendarService->findUpcomingCalendar(),
+                'contactRoles'     => $this->calendarService->findAll(ContactRole::class),
             ]
         );
     }

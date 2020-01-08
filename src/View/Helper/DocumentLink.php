@@ -1,161 +1,95 @@
 <?php
 
 /**
- * ITEA Office all rights reserved
+ * Jield copyright message placeholder.
  *
- * @category   Calendar
+ * @category    Admin
  *
- * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright  Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @author      Johan van der Heide <info@jield.nl>
+ * @copyright   Copyright (c) 2004-2015 Jield (http://jield.nl)
  */
 
 declare(strict_types=1);
 
 namespace Calendar\View\Helper;
 
-use Calendar\Acl\Assertion\Document as CalendarDocumentAssertion;
-use Calendar\Entity;
+use Calendar\Acl\Assertion;
+use Calendar\Entity\Document;
+use General\ValueObject\Link\Link;
+use General\View\Helper\AbstractLink;
 
 /**
  * Class DocumentLink
  *
  * @package Calendar\View\Helper
  */
-class DocumentLink extends LinkAbstract
+final class DocumentLink extends AbstractLink
 {
-    /**
-     * @var Entity\Document
-     */
-    protected $document;
-
-    /**
-     * @param Entity\Document $document
-     * @param string $action
-     * @param string $show
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
     public function __invoke(
-        Entity\Document $document = null,
-        $action = 'view',
-        $show = 'text'
-    ) {
-        $this->setDocument($document);
-        $this->setAction($action);
-        $this->setShow($show);
-
-        /**LiLik
-         * Set the non-standard options needed to give an other link value
-         */
-        $this->setShowOptions(
-            [
-
-                'name' => $this->getDocument()->getDocument(),
-            ]
-        );
-
-        /*
-         * Check the access to the object
-         */
-        if (!$this->hasAccess(
-            $this->getDocument(),
-            CalendarDocumentAssertion::class,
-            $this->getAction()
-        )
-        ) {
+        Document $document,
+        string $action = 'view',
+        string $show = 'name'
+    ): string {
+        if (! $this->hasAccess($document, Assertion\Document::class, $action)) {
             return '';
         }
 
-        $this->addRouterParam('id', $this->getDocument()->getId());
+        $routeParams = [];
+        $showOptions = [];
 
-        return $this->createLink();
-    }
+        $routeParams['id'] = $document->getId();
+        $routeParams['filename'] = $document->parseFileName();
 
-    /**
-     * @return Entity\Document
-     */
-    public function getDocument()
-    {
-        if (\is_null($this->document)) {
-            $this->document = new Entity\Document();
-        }
+        $showOptions['name'] = $document->getDocument();
 
-        return $this->document;
-    }
 
-    /**
-     * @param Entity\Document $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
-    }
-
-    /**
-     * Parse te action and fill the correct parameters.
-     */
-    public function parseAction(): void
-    {
-        switch ($this->getAction()) {
+        switch ($action) {
             case 'document-community':
-                $this->setRouter('community/calendar/document/document');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-view-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
-                    )
-                );
+                $linkParams = [
+                    'icon' => 'fa-file-o',
+                    'route' => 'community/calendar/document/document',
+                    'text' => $showOptions[$show] ?? $document->getDocument()
+                ];
+
                 break;
             case 'edit-community':
-                $this->setRouter('community/calendar/document/edit');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-edit-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
-                    )
-                );
+                $linkParams = [
+                    'icon' => 'fa-pencil-square-o',
+                    'route' => 'community/calendar/document/edit',
+                    'text' => $showOptions[$show] ?? $this->translator->translate('txt-edit-document')
+                ];
+
                 break;
             case 'document-admin':
-                $this->setRouter('zfcadmin/calendar/document/document');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-view-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
-                    )
-                );
+                $linkParams = [
+                    'icon' => 'fa-file-o',
+                    'route' => 'zfcadmin/calendar/document/document',
+                    'text' => $showOptions[$show] ?? $document->getDocument()
+                ];
+
                 break;
             case 'edit':
-                $this->setRouter('zfcadmin/calendar/document/edit');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-edit-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
-                    )
-                );
+                $linkParams = [
+                    'icon' => 'fa-pencil-square-o',
+                    'route' => 'zfcadmin/calendar/document/edit',
+                    'text' => $showOptions[$show] ?? $this->translator->translate('txt-edit-document')
+                ];
+
                 break;
             case 'download':
-                $this->addRouterParam(
-                    'filename',
-                    $this->getDocument()->parseFileName()
-                );
-                $this->setRouter('community/calendar/document/download');
-                $this->setText(
-                    sprintf(
-                        $this->translate("txt-download-calendar-document-%s"),
-                        $this->getDocument()->getDocument()
-                    )
-                );
+                $linkParams = [
+                    'icon' => 'fa-download',
+                    'route' => 'community/calendar/document/download',
+                    'text' => $showOptions[$show] ?? $this->translator->translate('txt-download-document')
+                ];
                 break;
-            default:
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        "%s is an incorrect action for %s",
-                        $this->getAction(),
-                        __CLASS__
-                    )
-                );
         }
+
+
+        $linkParams['action'] = $action;
+        $linkParams['show'] = $show;
+        $linkParams['routeParams'] = $routeParams;
+
+        return $this->parse(Link::fromArray($linkParams));
     }
 }

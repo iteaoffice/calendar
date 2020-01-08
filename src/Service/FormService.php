@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -7,11 +8,12 @@
  * @category    Calendar
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2018 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  * @license     https://itea3.org/license.txt proprietary
  *
  * @link        http://github.com/iteaoffice/main for the canonical source repository
  */
+
 declare(strict_types=1);
 
 namespace Calendar\Service;
@@ -19,54 +21,30 @@ namespace Calendar\Service;
 use Calendar\Entity\AbstractEntity;
 use Calendar\Form\CreateObject;
 use Doctrine\ORM\EntityManager;
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilter;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class FormService
  *
- * @package Application\Service
+ * @package Calendar\Service
  */
 class FormService
 {
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
+    protected EntityManager $entityManager;
+    private ContainerInterface $container;
 
-    /**
-     * FormService constructor.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param EntityManager           $entityManager
-     */
-    public function __construct(ServiceLocatorInterface $serviceLocator, EntityManager $entityManager)
+    public function __construct(ContainerInterface $container, EntityManager $entityManager)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->container = $container;
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param string|AbstractEntity $classNameOrEntity
-     * @param array                 $data
-     * @param array                 $options
-     *
-     * @return Form
-     */
     public function prepare($classNameOrEntity, array $data = [], array $options = []): Form
     {
-        /**
-         * The form can be created from an empty element, we then expect the $formClassName to be filled
-         * This should be a string, indicating the class
-         *
-         * But if the class a class is injected, we will change it into the className but hint the user to use a string
-         */
-        if (!$classNameOrEntity instanceof AbstractEntity) {
+        if (! $classNameOrEntity instanceof AbstractEntity) {
             $classNameOrEntity = new $classNameOrEntity();
         }
 
@@ -76,12 +54,6 @@ class FormService
         return $form;
     }
 
-    /**
-     * @param AbstractEntity $entity
-     * @param array          $options
-     *
-     * @return Form
-     */
     private function getForm(AbstractEntity $entity, array $options = []): Form
     {
         $formName = $entity->get('entity_form_name');
@@ -91,15 +63,15 @@ class FormService
          * The filter and the form can dynamically be created by pulling the form from the serviceManager
          * if the form or filter is not give in the serviceManager we will create it by default
          */
-        if ($this->serviceLocator->has($formName)) {
-            $form = $this->serviceLocator->build($formName, $options);
+        if ($this->container->has($formName)) {
+            $form = $this->container->build($formName, $options);
         } else {
-            $form = new CreateObject($this->entityManager, $entity, $this->serviceLocator);
+            $form = new CreateObject($this->entityManager, $entity, $this->container);
         }
 
-        if ($this->serviceLocator->has($filterName)) {
+        if ($this->container->has($filterName)) {
             /** @var InputFilter $filter */
-            $filter = $this->serviceLocator->get($filterName);
+            $filter = $this->container->get($filterName);
             $form->setInputFilter($filter);
         }
 

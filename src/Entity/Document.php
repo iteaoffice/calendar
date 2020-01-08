@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA copyright message placeholder.
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -16,22 +17,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use General\Entity\ContentType;
-use Zend\Form\Annotation;
+use Laminas\Form\Annotation;
 
 /**
- * CalendarDocument.
- *
  * @ORM\Table(name="calendar_document")
  * @ORM\Entity
  */
 class Document extends AbstractEntity
 {
     /**
-     * @ORM\Column(name="document_id", type="integer", nullable=false)
+     * @ORM\Column(name="document_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var integer
+     * @var int
      */
     private $id;
     /**
@@ -42,7 +41,7 @@ class Document extends AbstractEntity
      */
     private $dateCreated;
     /**
-     * @ORM\Column(name="document", type="string", length=60, nullable=false)
+     * @ORM\Column(name="document", type="string", nullable=false)
      *
      * @var string
      */
@@ -50,11 +49,11 @@ class Document extends AbstractEntity
     /**
      * @ORM\Column(name="size", type="integer", nullable=true)
      *
-     * @var integer
+     * @var int
      */
     private $size;
     /**
-     * @ORM\Column(name="date_updated", type="datetime", nullable=false)
+     * @ORM\Column(name="date_updated", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
@@ -90,53 +89,11 @@ class Document extends AbstractEntity
      */
     private $object;
 
-    /**
-     * Document constructor.
-     *
-     */
     public function __construct()
     {
         $this->size = 0;
     }
 
-    /**
-     * Magic Getter.
-     *
-     * @param $property
-     *
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic Setter.
-     *
-     * @param $property
-     * @param $value
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    /**
-     * @param $property
-     *
-     * @return bool
-     */
-    public function __isset($property)
-    {
-        return isset($this->$property);
-    }
-
-    /**
-     * Parse a filename.
-     *
-     * @return string
-     */
     public function parseFileName(): string
     {
         /**
@@ -158,19 +115,11 @@ class Document extends AbstractEntity
         );
     }
 
-    /**
-     * @return ContentType|null
-     */
     public function getContentType(): ?ContentType
     {
         return $this->contentType;
     }
 
-    /**
-     * @param ContentType $contentType
-     *
-     * @return Document
-     */
     public function setContentType(ContentType $contentType): Document
     {
         $this->contentType = $contentType;
@@ -178,27 +127,16 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return (string)$this->document;
     }
 
-    /**
-     * @return string
-     */
     public function getDocument(): ?string
     {
         return $this->document;
     }
 
-    /**
-     * @param string $document
-     *
-     * @return Document
-     */
     public function setDocument(string $document): Document
     {
         $this->document = $document;
@@ -206,19 +144,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Document
-     */
     public function setId(int $id)
     {
         $this->id = $id;
@@ -226,19 +156,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
 
-    /**
-     * @param \DateTime $dateCreated
-     *
-     * @return Document
-     */
     public function setDateCreated(\DateTime $dateCreated): Document
     {
         $this->dateCreated = $dateCreated;
@@ -246,19 +168,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     *
-     * @return Document
-     */
     public function setSize(int $size): Document
     {
         $this->size = $size;
@@ -266,19 +180,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDateUpdated(): ?\DateTime
     {
         return $this->dateUpdated;
     }
 
-    /**
-     * @param \DateTime $dateUpdated
-     *
-     * @return Document
-     */
     public function setDateUpdated(\DateTime $dateUpdated): Document
     {
         $this->dateUpdated = $dateUpdated;
@@ -286,19 +192,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return Calendar|null
-     */
     public function getCalendar(): ?Calendar
     {
         return $this->calendar;
     }
 
-    /**
-     * @param Calendar $calendar
-     *
-     * @return Document
-     */
     public function setCalendar($calendar): Document
     {
         $this->calendar = $calendar;
@@ -306,19 +204,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return \Contact\Entity\Contact|null
-     */
     public function getContact(): ?\Contact\Entity\Contact
     {
         return $this->contact;
     }
 
-    /**
-     * @param \Contact\Entity\Contact $contact
-     *
-     * @return Document
-     */
     public function setContact(\Contact\Entity\Contact $contact): Document
     {
         $this->contact = $contact;
@@ -326,19 +216,11 @@ class Document extends AbstractEntity
         return $this;
     }
 
-    /**
-     * @return DocumentObject[]|ArrayCollection
-     */
     public function getObject()
     {
         return $this->object;
     }
 
-    /**
-     * @param DocumentObject[]|ArrayCollection $object
-     *
-     * @return Document
-     */
     public function setObject($object): Document
     {
         $this->object = $object;

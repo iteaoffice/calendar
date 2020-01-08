@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category    Calendar
  *
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -17,41 +18,11 @@ namespace Calendar\Options;
  */
 interface CalendarOptionsInterface
 {
-    /**
-     * @param $calendarContactTemplate
-     *
-     * @return CalendarOptionsInterface
-     */
-    public function setCalendarContactTemplate($calendarContactTemplate);
+    public function setCalendarContactTemplate(string $calendarContactTemplate): ModuleOptions;
 
-    /**
-     * @return boolean
-     */
-    public function getCalendarContactTemplate();
+    public function getCalendarContactTemplate(): string;
 
-    /**
-     * @param $reviewCalendarTemplate
-     *
-     * @return CalendarOptionsInterface
-     */
-    public function setReviewCalendarTemplate($reviewCalendarTemplate);
+    public function setReviewCalendarTemplate(string $reviewCalendarTemplate): ModuleOptions;
 
-    /**
-     * @return boolean
-     */
-    public function getReviewCalendarTemplate();
-
-    /**
-     * Returns the default year
-     *
-     * @return int
-     */
-    public function getDefaultYear();
-
-    /**
-     * @param $defaultYear
-     *
-     * @return $this
-     */
-    public function setDefaultYear($defaultYear);
+    public function getReviewCalendarTemplate(): string;
 }

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -13,19 +14,21 @@ declare(strict_types=1);
 namespace Calendar\Form;
 
 use Calendar\Entity\Calendar;
+use Contact\Entity\Contact;
 use Contact\Service\ContactService;
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Element\Csrf;
+use Laminas\Form\Element\MultiCheckbox;
 
 /**
+ * Class SelectAttendee
  *
+ * @package Calendar\Form
  */
-class SelectAttendee extends Form implements InputFilterProviderInterface
+final class SelectAttendee extends Form implements InputFilterProviderInterface
 {
-    /**
-     * @param Calendar $calendar
-     * @param ContactService $contactService
-     */
     public function __construct(Calendar $calendar, ContactService $contactService)
     {
         parent::__construct();
@@ -34,6 +37,7 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
         $this->setAttribute('action', '');
 
         $contacts = [];
+        /** @var Contact $contact */
         foreach ($contactService->findPossibleContactByCalendar($calendar) as $contact) {
             $contacts[$contact->getId()] = sprintf(
                 '%s (%s, %s)',
@@ -45,50 +49,44 @@ class SelectAttendee extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type'    => 'Zend\Form\Element\MultiCheckbox',
+                'type'    => MultiCheckbox::class,
                 'name'    => 'contact',
                 'options' => [
                     'value_options' => $contacts,
-                    'label'         => _("txt-contact-name"),
+                    'label'         => _('txt-contact-name'),
                 ],
             ]
         );
 
         $this->add(
             [
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => Csrf::class,
                 'name' => 'csrf',
             ]
         );
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-update"),
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-update'),
                 ],
             ]
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
                 ],
             ]
         );
     }
 
-    /**
-     * Should return an array specification compatible with
-     * {@link Zend\InputFilter\Factory::createInputFilter()}.
-     *
-     * @return array
-     */
     public function getInputFilterSpecification(): array
     {
         return [

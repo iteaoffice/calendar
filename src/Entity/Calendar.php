@@ -1,20 +1,24 @@
 <?php
+
 /**
  * ITEA copyright message placeholder
  *
  * @category  Calendar
  * @package   Entity
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
+
 declare(strict_types=1);
 
 namespace Calendar\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Zend\Form\Annotation;
+use Program\Entity\Call\Call;
+use Laminas\Form\Annotation;
 
 /**
  * @ORM\Table(name="calendar")
@@ -69,31 +73,31 @@ class Calendar extends AbstractEntity
             self::PRESENT     => 'txt-office-present'
         ];
     /**
-     * @ORM\Column(name="calendar_id", type="integer", nullable=false)
+     * @ORM\Column(name="calendar_id", type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Annotation\Exclude()
-     * @var integer
+     * @var int
      */
     private $id;
     /**
      * @ORM\Column(name="calendar", type="string")
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-calendar-label","help-block": "txt-calendar-calendar-help-block"})
      * @Annotation\Attributes({"placeholder": "txt-calendar-calendar-placeholder"})
      * @var string
      */
     private $calendar;
     /**
-     * @ORM\Column(name="location", type="string", length=255, nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @ORM\Column(name="location", type="string", nullable=true)
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-location-label","help-block": "txt-calendar-location-help-block"})
      * @Annotation\Attributes({"placeholder": "txt-calendar-location-placeholder"})
      * @var string
      */
     private $location;
     /**
-     * @ORM\Column(name="docref", type="string", length=255, nullable=false, unique=true)
+     * @ORM\Column(name="docref", type="string", nullable=false, unique=true)
      * @Gedmo\Slug(fields={"calendar","location"})
      * @Annotation\Exclude()
      * @var string
@@ -101,105 +105,105 @@ class Calendar extends AbstractEntity
     private $docRef;
     /**
      * @ORM\Column(name="date_from", type="datetime", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\DateTime")
+     * @Annotation\Type("\Laminas\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-calendar-date-from-label","help-block": "txt-calendar-date-from-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateFrom;
     /**
      * @ORM\Column(name="date_end", type="datetime", nullable=false)
-     * @Annotation\Type("\Zend\Form\Element\DateTime")
+     * @Annotation\Type("\Laminas\Form\Element\DateTime")
      * @Annotation\Options({"label":"txt-calendar-date-end-label","help-block": "txt-calendar-date-end-help-block", "format": "Y-m-d H:i"})
      * @Annotation\Attributes({"step":"any"})
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateEnd;
     /**
      * @ORM\Column(name="date_created", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
      * @Annotation\Exclude()
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateCreated;
     /**
      * @ORM\Column(name="date_updated", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      * @Annotation\Exclude()
-     * @var \DateTime
+     * @var DateTime
      */
     private $dateUpdated;
     /**
      * @ORM\Column(name="final", type="smallint", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"array":"finalTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-final-label"})
      * @Annotation\Options({"help-block":"txt-calendar-final-help-block"})
-     * @var integer
+     * @var int
      */
     private $final;
     /**
      * @ORM\Column(name="on_homepage", type="smallint", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"array":"onHomepageTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-on-homepage-label"})
      * @Annotation\Options({"help-block":"txt-calendar-on-homepage-help-block"})
-     * @var integer
+     * @var int
      */
     private $onHomepage;
     /**
      * @ORM\Column(name="highlight", type="smallint", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"array":"highlightTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-highlight-label"})
      * @Annotation\Options({"help-block":"txt-calendar-highlight-help-block"})
-     * @var integer
+     * @var int
      */
     private $highlight;
     /**
      * @ORM\Column(name="highlight_description", type="text", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Textarea")
+     * @Annotation\Type("\Laminas\Form\Element\Textarea")
      * @Annotation\Options({"label":"txt-calendar-highlight-description-label","help-block": "txt-calendar-highlight-description-help-block"})
-     * @Annotation\Attributes({"placeholder": "txt-calendar-highlight-description-placeholder"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-highlight-description-placeholder","rows":8})
      * @var string
      */
     private $highlightDescription;
     /**
      * @ORM\Column(name="own_event", type="smallint", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"array":"ownEventTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-own-event-label"})
      * @Annotation\Options({"help-block":"txt-calendar-own-event-help-block"})
-     * @var integer
+     * @var int
      */
     private $ownEvent;
     /**
      * @ORM\Column(name="present", type="smallint", nullable=false)
-     * @Annotation\Type("Zend\Form\Element\Radio")
+     * @Annotation\Type("Laminas\Form\Element\Radio")
      * @Annotation\Attributes({"array":"presentTemplates"})
      * @Annotation\Attributes({"label":"txt-calendar-present-label"})
      * @Annotation\Options({"help-block":"txt-calendar-present-help-block"})
-     * @var integer
+     * @var int
      */
     private $present;
     /**
      * @ORM\Column(name="sequence", type="smallint")
-     * @Annotation\Type("\Zend\Form\Element\Number")
+     * @Annotation\Type("\Laminas\Form\Element\Number")
      * @Annotation\Options({"label":"txt-calendar-sequence-label","help-block":"txt-calendar-sequence-help-block"})
      * @var int
      */
     private $sequence;
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Textarea")
+     * @Annotation\Type("\Laminas\Form\Element\Textarea")
      * @Annotation\Options({"label":"txt-calendar-description-label","help-block": "txt-calendar-description-help-block"})
-     * @Annotation\Attributes({"placeholder": "txt-calendar-description-placeholder"})
+     * @Annotation\Attributes({"placeholder": "txt-calendar-description-placeholder","rows":8})
      * @var string
      */
     private $description;
     /**
-     * @ORM\Column(name="url", length=1000, type="string")
-     * @Annotation\Type("\Zend\Form\Element\Url")
+     * @ORM\Column(name="url", length=1000, type="string", nullable=true)
+     * @Annotation\Type("\Laminas\Form\Element\Url")
      * @Annotation\Options({"label":"txt-calendar-url-label","help-block": "txt-calendar-url-help-block"})
      * @Annotation\Attributes({"placeholder": "txt-calendar-url-placeholder"})
      * @var string
@@ -207,12 +211,12 @@ class Calendar extends AbstractEntity
     private $url;
     /**
      * @ORM\Column(name="date_plan", type="datetime", nullable=true)
-     * @var \DateTime
+     * @var DateTime
      */
     private $datePlan;
     /**
      * @ORM\Column(name="image_url", type="string", length=125, nullable=true)
-     * @Annotation\Type("\Zend\Form\Element\Text")
+     * @Annotation\Type("\Laminas\Form\Element\Text")
      * @Annotation\Options({"label":"txt-calendar-image-url-label","help-block": "txt-calendar-image-url-help-block"})
      * @Annotation\Attributes({"placeholder": "txt-calendar-image-url-placeholder"})
      * @var string
@@ -224,7 +228,7 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-calendar-type-help-block"})
      * @Annotation\Attributes({"label":"txt-calendar-type-label"})
-     * @var \Calendar\Entity\Type
+     * @var Type
      */
     private $type;
     /**
@@ -235,16 +239,16 @@ class Calendar extends AbstractEntity
      */
     private $contact;
     /**
-     * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist"}, mappedBy="calendar")
+     * @ORM\OneToMany(targetEntity="Calendar\Entity\Contact", cascade={"persist","remove"}, mappedBy="calendar")
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Contact[]|Collections\ArrayCollection
+     * @var Contact[]|Collections\ArrayCollection
      */
     private $calendarContact;
     /**
      * @ORM\OneToMany(targetEntity="Calendar\Entity\Document", cascade={"persist","remove"}, mappedBy="calendar")
      * @ORM\OrderBy({"document"="ASC"})
      * @Annotation\Exclude()
-     * @var \Calendar\Entity\Document[]|Collections\ArrayCollection
+     * @var Document[]|Collections\ArrayCollection
      */
     private $document;
     /**
@@ -263,8 +267,8 @@ class Calendar extends AbstractEntity
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntityMultiCheckbox")
      * @Annotation\Options({"target_class":"Program\Entity\Call\Call"})
      * @Annotation\Options({"help-block":"txt-calendar-program-call-help-block"})
-     * @Annotation\Attributes({"label":"txt-program-call"})
-     * @var \Program\Entity\Call\Call[]|Collections\ArrayCollection
+     * @Annotation\Options({"label":"txt-program-call"})
+     * @var Call[]|Collections\ArrayCollection
      */
     private $call;
 
@@ -274,11 +278,11 @@ class Calendar extends AbstractEntity
         $this->document = new Collections\ArrayCollection();
         $this->call = new Collections\ArrayCollection();
 
-        $this->final = self::FINAL_DRAFT;
-        $this->onHomepage = self::ON_HOMEPAGE;
+        $this->onHomepage = self::NOT_ON_HOMEPAGE;
         $this->highlight = self::NO_HIGHLIGHT;
         $this->ownEvent = self::NO_OWN_EVENT;
         $this->present = self::NOT_PRESENT;
+        $this->final = self::FINAL_FINAL;
     }
 
     public static function getFinalTemplates(): array
@@ -321,6 +325,21 @@ class Calendar extends AbstractEntity
         return $this->present === self::PRESENT;
     }
 
+    public function isProject(): bool
+    {
+        return null !== $this->projectCalendar;
+    }
+
+    public function isReview(): bool
+    {
+        return null !== $this->projectCalendar;
+    }
+
+    public function isBirthday(): bool
+    {
+        return false;
+    }
+
     public function onHomepage(): bool
     {
         return $this->isFinal() && $this->onHomepage === self::ON_HOMEPAGE;
@@ -329,21 +348,6 @@ class Calendar extends AbstractEntity
     public function isFinal(): bool
     {
         return $this->final === self::FINAL_FINAL;
-    }
-
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    public function __isset($property)
-    {
-        return isset($this->$property);
     }
 
     public function addCall(Collections\Collection $collection): void
@@ -494,7 +498,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateFrom(): ?\DateTime
+    public function getDateFrom(): ?DateTime
     {
         return $this->dateFrom;
     }
@@ -506,7 +510,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTime
+    public function getDateEnd(): ?DateTime
     {
         return $this->dateEnd;
     }
@@ -518,7 +522,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateCreated(): ?\DateTime
+    public function getDateCreated(): ?DateTime
     {
         return $this->dateCreated;
     }
@@ -530,7 +534,7 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDateUpdated(): ?\DateTime
+    public function getDateUpdated(): ?DateTime
     {
         return $this->dateUpdated;
     }
@@ -590,12 +594,12 @@ class Calendar extends AbstractEntity
         return $this;
     }
 
-    public function getDatePlan(): ?\DateTime
+    public function getDatePlan(): ?DateTime
     {
         return $this->datePlan;
     }
 
-    public function setDatePlan(\DateTime $datePlan): Calendar
+    public function setDatePlan(DateTime $datePlan): Calendar
     {
         $this->datePlan = $datePlan;
 

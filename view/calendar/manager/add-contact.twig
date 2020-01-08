@@ -1,0 +1,47 @@
+{% do headTitle().append(translate("txt-admin")) %}
+{% do headTitle().append(translate("txt-add-contact-to-upcoming-calendar")) %}
+
+<h1>{{ translate("txt-add-contact-%s-to-upcoming-calendar")|format(contact.parseFullName()) }}</h1>
+
+{% if not upcomingCalendar.isEmpty() %}
+    <form method="post" action="">
+        <h3>{{ translate("txt-upcoming") }}</h3>
+        <table class="table table-hover table-striped table-sm table-calendar">
+            <thead>
+            <tr>
+                <th>{{ translate("txt-id") }}</th>
+                <th>{{ translate("txt-select") }}</th>
+                <th>{{ translate("txt-calendar") }}</th>
+                <th>{{ translate("txt-date") }}</th>
+                <th>{{ translate("txt-role") }}</th>
+                <th>{{ translate("txt-location") }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for calendar in upcomingCalendar|filter(calendar => not calendarService.calendarHasContact(calendar,contact)) -%}
+                <tr>
+                    <td><small class="text-muted">{{ loop.index }}</small></td>
+                    <td><input type="checkbox" name="calendar[{{ calendar.id }}][calendar]" value="{{ calendar.id }}">
+                    </td>
+                    <td>{{ calendarLink(calendar, 'view-admin', 'name') }}</td>
+                    <td>{{ calendar.dateFrom|from_to_date(calendar.dateEnd) }} </td>
+                    <td>
+                        <select name="calendar[{{ calendar.id }}][role]" class="form-control">
+                            {% for contactRole in contactRoles %}
+                                <option value="{{ contactRole.id }}">{{ contactRole }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>{{ calendar.location }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <input type="submit" class="btn btn-primary" value="{{ translate("txt-add-to-selected-meetings") }}">
+        <input type="submit" class="btn btn-danger" value="{{ translate("txt-cancel") }}">
+    </form>
+{% else %}
+    {{ ztbalert().info(translate("txt-no-upcoming-events-found"))|raw }}
+{% endif %}
+

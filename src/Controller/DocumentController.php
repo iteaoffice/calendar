@@ -1,11 +1,12 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -18,38 +19,23 @@ use Calendar\Form\CreateCalendarDocument;
 use Calendar\Service\CalendarService;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
-use Zend\Http\Response;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Zend\Validator\File\FilesSize;
-use Zend\Validator\File\MimeType;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Response;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Model\ViewModel;
 
 /**
- * Class DocumentController
- *
- * @package Calendar\Controller
  * @method FlashMessenger flashMessenger()
  */
 final class DocumentController extends AbstractActionController
 {
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var GeneralService
-     */
-    private $generalService;
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private CalendarService $calendarService;
+    private GeneralService $generalService;
+    private EntityManager $entityManager;
+    private TranslatorInterface $translator;
 
     public function __construct(
         CalendarService $calendarService,
@@ -133,7 +119,7 @@ final class DocumentController extends AbstractActionController
             if (isset($data['delete'])) {
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-document-%s-successfully-removed"),
+                        $this->translator->translate('txt-calendar-document-%s-successfully-removed'),
                         $document->parseFileName()
                     )
                 );
@@ -149,10 +135,9 @@ final class DocumentController extends AbstractActionController
             /*
              * Handle when
              */
-            if (!isset($data['cancel'])) {
+            if (! isset($data['cancel'])) {
                 $file = $form->get('file')->getValue();
-                if (!empty($file['name']) && $file['error'] === 0) {
-
+                if (! empty($file['name']) && $file['error'] === 0) {
                     /** If no name is given, take the name of the file */
                     if (empty($data['document'])) {
                         $document->setDocument($file['name']);
@@ -183,7 +168,7 @@ final class DocumentController extends AbstractActionController
                 $this->calendarService->save($document);
                 $this->flashMessenger()->addSuccessMessage(
                     sprintf(
-                        $this->translator->translate("txt-calendar-document-%s-successfully-updated"),
+                        $this->translator->translate('txt-calendar-document-%s-successfully-updated'),
                         $document->parseFileName()
                     )
                 );
@@ -195,7 +180,7 @@ final class DocumentController extends AbstractActionController
         return new ViewModel(
             [
                 'document' => $document,
-                'form'     => $form,
+                'form' => $form,
             ]
         );
     }

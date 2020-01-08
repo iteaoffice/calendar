@@ -10,7 +10,7 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://packages.itea3.eu"
+      "url": "https://packages.itea4.org"
     }
   ],
   "authors": [
@@ -21,20 +21,23 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.2",
-    "zendframework/zend-mvc": "^3.0.1",
-    "zendframework/zend-mvc-form": "^1.0.0",
-    "zendframework/zend-code": "@stable",
-    "zendframework/zend-mvc-console": "^1.2.0",
-    "zendframework/zend-mvc-plugins": "^1.0.1",
-    "zendframework/zend-navigation": "^2.9.0",
+    "php": "^7.4",
+    "laminas/laminas-mvc": "^3.1",
+    "laminas/laminas-mvc-form": "^1.0.0",
+    "laminas/laminas-mvc-console": "^1.2.0",
+    "laminas/laminas-mvc-plugins": "^1.0.1",
+    "laminas/laminas-navigation": "^2.9.0",
     "jield-webdev/bjy-authorize": "^1.4.0",
     "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
-    "iteaoffice/testing": "^1.2",
-    "iteaoffice/search": "^1.1",
-    "iteaoffice/contact": "^4.1"
+    "iteaoffice/testing": "^2.1",
+    "iteaoffice/general": "^5.1",
+    "iteaoffice/search": "^5.1",
+    "iteaoffice/project": "^5.1",
+    "iteaoffice/contact": "^5.1",
+    "setasign/fpdi-tcpdf": "^2.2",
+    "kokspflanze/zfc-twig": "4.0.*"
   },
   "autoload": {
     "psr-4": {
@@ -48,8 +51,25 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "4.0.x-dev",
-      "dev-develop": "4.1.x-dev"
+      "dev-master": "5.0-DEV",
+      "dev-develop": "5.1-DEV"
     }
+  },
+  "scripts": {
+    "check": [
+      "@php-lint",
+      "@phpstan",
+      "@cs"
+    ],
+    "fix": [
+      "@cbf",
+      "@cs-fix"
+    ],
+    "php-lint": "./vendor/bin/parallel-lint src",
+    "phpstan": "./vendor/bin/phpstan analyse src/ --level=1",
+    "cs": "./vendor/bin/phpcs",
+    "cbf": "./vendor/bin/phpcbf",
+    "cs-fix": "./vendor/bin/php-cs-fixer fix -v src",
+    "test": "./vendor/bin/phpunit"
   }
 }

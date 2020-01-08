@@ -1,30 +1,32 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
  * @category  Calendar
  *
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2004-2017 ITEA Office (https://itea3.org)
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
 
 namespace Calendar\Form;
 
-use Zend\Form\Form;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\Filter\HtmlEntities;
+use Laminas\Form\Element\Csrf;
+use Laminas\Form\Element\Submit;
+use Laminas\Form\Element\Textarea;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 /**
  * Class SendMessage
  *
  * @package Calendar\Form
  */
-class SendMessage extends Form implements InputFilterProviderInterface
+final class SendMessage extends Form implements InputFilterProviderInterface
 {
-    /**
-     * SendMessage constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -34,11 +36,11 @@ class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Textarea',
+                'type'       => Textarea::class,
                 'name'       => 'message',
                 'options'    => [
-                    'label'      => _("txt-message"),
-                    'help-block' => _("txt-send-message-to-calendar-attendees"),
+                    'label'      => _('txt-message'),
+                    'help-block' => _('txt-send-message-to-calendar-attendees'),
                 ],
                 'attributes' => [
                     'rows'  => 20,
@@ -49,45 +51,43 @@ class SendMessage extends Form implements InputFilterProviderInterface
 
         $this->add(
             [
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => Csrf::class,
                 'name' => 'csrf',
             ]
         );
 
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'submit',
                 'attributes' => [
-                    'class' => "btn btn-primary",
-                    'value' => _("txt-send"),
+                    'class' => 'btn btn-primary',
+                    'value' => _('txt-send'),
                 ],
             ]
         );
         $this->add(
             [
-                'type'       => 'Zend\Form\Element\Submit',
+                'type'       => Submit::class,
                 'name'       => 'cancel',
                 'attributes' => [
-                    'class' => "btn btn-warning",
-                    'value' => _("txt-cancel"),
+                    'class' => 'btn btn-warning',
+                    'value' => _('txt-cancel'),
                 ],
             ]
         );
     }
 
-    /**
-     * Should return an array specification compatible with
-     * {@link Zend\InputFilter\Factory::createInputFilter()}.
-     *
-     * @return array
-     */
     public function getInputFilterSpecification(): array
     {
         return [
             'message' => [
                 'required' => true,
+                'filters'  => [
+                    ['name' => HtmlEntities::class],
+                ],
             ],
+
         ];
     }
 }

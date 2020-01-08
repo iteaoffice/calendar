@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA Office all rights reserved
  *
@@ -7,45 +8,48 @@
  * @author     Johan van der Heide <johan.van.der.heide@itea3.org>
  * @copyright  Copyright (c) 2004-2017 ITEA Office (http://itea3.org)
  */
+
 declare(strict_types=1);
 
 namespace Calendar\View\Handler;
 
-use Calendar\Entity\Calendar;
 use Calendar\Search\Service\CalendarSearchService;
 use Calendar\Service\CalendarService;
-use Calendar\View\Helper\CalendarLink;
 use Content\Entity\Content;
 use Search\Form\SearchResult;
 use Search\Paginator\Adapter\SolariumPaginator;
 use Solarium\QueryType\Select\Query\Query as SolariumQuery;
-use Zend\I18n\Translator\TranslatorInterface;
-use Zend\Mvc\Application;
-use Zend\Paginator\Paginator;
-use Zend\View\HelperPluginManager;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Mvc\Application;
+use Laminas\Paginator\Paginator;
+use Laminas\View\HelperPluginManager;
+use General\View\Handler\AbstractHandler;
 use ZfcTwig\View\TwigRenderer;
+
+use function array_filter;
+use function count;
+use function http_build_query;
+use function in_array;
+use function sprintf;
 
 /**
  * Class CalendarHandler
  *
  * @package Calendar\View\Handler
  */
-class CalendarHandler extends AbstractHandler
+final class CalendarHandler extends AbstractHandler
 {
     public const LIMIT = 10;
-    /**
-     * @var CalendarService
-     */
-    private $calendarService;
-    /**
-     * @var CalendarSearchService
-     */
-    private $calendarSearchService;
+
+    private CalendarService $calendarService;
+    private CalendarSearchService $calendarSearchService;
 
     public function __construct(
         Application $application,
         HelperPluginManager $helperPluginManager,
         TwigRenderer $renderer,
+        AuthenticationService $authenticationService,
         TranslatorInterface $translator,
         CalendarService $calendarService,
         CalendarSearchService $calendarSearchService
@@ -54,6 +58,7 @@ class CalendarHandler extends AbstractHandler
             $application,
             $helperPluginManager,
             $renderer,
+            $authenticationService,
             $translator
         );
 
@@ -63,35 +68,13 @@ class CalendarHandler extends AbstractHandler
 
     public function __invoke(Content $content): ?string
     {
-        $params = $this->extractContentParam($content);
-
-        $calendar = $this->getCalendarByParams($params);
-
         switch ($content->getHandler()->getHandler()) {
-            case 'calendar_item':
-                if (null === $calendar) {
-                    $this->response->setStatusCode(404);
-
-                    return 'The selected calendar item cannot be found';
-                }
-
-                $this->getHeadTitle()->append($this->translate('txt-calendar-item'));
-                $this->getHeadTitle()->append($calendar->getCalendar());
-
-                $this->getHeadMeta()->setProperty('og:type', $this->translate("txt-calendar"));
-                $this->getHeadMeta()->setProperty('og:title', $calendar->getCalendar());
-                $this->getHeadMeta()->setProperty('og:url', $this->getCalendarLink()($calendar, 'view', 'social'));
-
-                return $this->parseCalendarItem($calendar);
             case 'calendar':
             case 'calendar_past':
             case 'calendar_upcoming':
                 $this->getHeadTitle()->append($this->translate('txt-upcoming-calendar'));
 
                 return $this->parseCalendar();
-
-            case 'calendar_small':
-                return $this->parseCalendarSmall($params['limit']);
             default:
                 return sprintf(
                     'No handler available for <code>%s</code> in class <code>%s</code>',
@@ -99,35 +82,6 @@ class CalendarHandler extends AbstractHandler
                     __CLASS__
                 );
         }
-    }
-
-    private function getCalendarByParams(array $params): ?Calendar
-    {
-        $calendar = null;
-        if (null !== $params['id']) {
-            $calendar = $this->calendarService->findCalendarById((int)$params['id']);
-        }
-
-        if (null !== $params['docRef']) {
-            $calendar = $this->calendarService->findCalendarByDocRef($params['docRef']);
-        }
-
-        return $calendar;
-    }
-
-    public function getCalendarLink(): CalendarLink
-    {
-        return $this->helperPluginManager->get(CalendarLink::class);
-    }
-
-    public function parseCalendarItem(Calendar $calendar): string
-    {
-        return $this->renderer->render(
-            'cms/calendar/calendar-item',
-            [
-                'calendar' => $calendar,
-            ]
-        );
     }
 
     public function parseCalendar(): string
@@ -144,16 +98,25 @@ class CalendarHandler extends AbstractHandler
             ],
             $this->request->getQuery()->toArray()
         );
+        $hasTerm = ! in_array($data['query'], ['*', ''], true) || count($data['facet']) !== 0;
+
         $searchFields = ['calendar_search', 'description_search', 'highlight_description_search', 'location_search'];
 
         if ($this->request->isGet()) {
-            $this->calendarSearchService->setSearch($data['query'], $searchFields, $data['order'], $data['direction']);
+            $this->calendarSearchService->setSearch(
+                $data['query'],
+                $searchFields,
+                $data['order'],
+                $data['direction'],
+                false,
+                $hasTerm
+            );
             if (isset($data['facet'])) {
                 foreach ($data['facet'] as $facetField => $values) {
                     $quotedValues = [];
 
                     foreach ($values as $value) {
-                        $quotedValues[] = \sprintf('%s"', $value);
+                        $quotedValues[] = \sprintf('"%s"', $value);
                     }
 
                     $this->calendarSearchService->addFilterQuery(
@@ -166,7 +129,7 @@ class CalendarHandler extends AbstractHandler
             $form->addSearchResults(
                 $this->calendarSearchService->getQuery()->getFacetSet(),
                 $this->calendarSearchService->getResultSet()->getFacetSet(),
-                true
+                ['year']
             );
             $form->setData($data);
         }
@@ -184,8 +147,8 @@ class CalendarHandler extends AbstractHandler
         // Remove order and direction from the GET params to prevent duplication
         $filteredData = array_filter(
             $data,
-            function ($key) {
-                return !\in_array($key, ['order', 'direction'], true);
+            static function ($key) {
+                return ! in_array($key, ['order', 'direction'], true);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -193,28 +156,20 @@ class CalendarHandler extends AbstractHandler
         return $this->renderer->render(
             'cms/calendar/list',
             [
-                'form'             => $form,
-                'order'            => $data['order'],
-                'direction'        => $data['direction'],
-                'query'            => $data['query'],
-                'arguments'        => http_build_query($filteredData),
-                'paginator'        => $paginator,
-                'page'             => $page,
-                'calendarService'  => $this->calendarService,
-                'upcomingCalendar' => $this->calendarSearchService->findUpcomingCalendar(),
+                'form'              => $form,
+                'order'             => $data['order'],
+                'direction'         => $data['direction'],
+                'query'             => $data['query'],
+                'badges'            => $form->getBadges(),
+                'arguments'         => http_build_query($filteredData),
+                'route'             => $this->routeMatch->getMatchedRouteName(),
+                'params'            => $this->routeMatch->getParams(),
+                'paginator'         => $paginator,
+                'page'              => $page,
+                'hasTerm'           => $hasTerm,
+                'calendarService'   => $this->calendarService,
+                'upcomingCalendar'  => $this->calendarSearchService->findUpcomingCalendar(50),
                 'highlightCalendar' => $this->calendarSearchService->findHighlightCalendar(),
-            ]
-        );
-    }
-
-
-    public function parseCalendarSmall(int $limit = self::LIMIT): string
-    {
-        return $this->renderer->render(
-            'cms/calendar/calendar-small',
-            [
-                'calendarItems'   => $this->calendarSearchService->findUpcomingCalendar($limit),
-                'calendarService' => $this->calendarService
             ]
         );
     }

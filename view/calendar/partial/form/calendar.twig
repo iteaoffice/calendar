@@ -2,28 +2,28 @@
 {% do headScript().appendFile('assets/js/jquery.slideraccess.js', 'text/javascript') %}
 {% do headLink().appendStylesheet('assets/css/jquery.timepicker.css') %}
 {% do headLink().appendStylesheet(
-'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css'
-) %}
+    '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css'
+    ) %}
 
 {% do form.prepare() %}
-{% do form.setAttribute('class','form-horizontal') %}
 {{ form().openTag(form)|raw }}
 
-
 {% set calendar = form.get('calendar_entity_calendar') %}
+
+{% if project %}
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">{{ translate("txt-project") }}</label>
+
+        <div class="col-sm-9">
+            <p class="form-control-plaintext">{{ project.parseFullName() }}</p></div>
+    </div>
+{% endif %}
 
 {{ ztbformelement(calendar.get('calendar')) }}
 {{ ztbformelement(calendar.get('type')) }}
 {{ ztbformelement(calendar.get('location')) }}
 
-{% if project %}
-    <div class="form-group row">
-        <label class="col-md-3 form-control-label control-label col-form-label">{{ translate("txt-project") }}</label>
 
-        <div class="col-sm-9">
-            <p class="form-control-static form-control-plaintext">{{ project.parseFullName() }}</p></div>
-    </div>
-{% endif %}
 
 {{ ztbformelement(calendar.get('final')) }}
 {{ ztbformelement(calendar.get('onHomepage')) }}
@@ -43,7 +43,7 @@
 
 
 <div class="form-group row">
-    <div class="offset-md-3 col-sm-offset-3 col-sm-9">
+    <div class="offset-sm-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {% if form.has('delete') %}
             {{ ztbformelement(form.get('delete')) }}
