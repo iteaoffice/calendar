@@ -31,11 +31,11 @@
     "doctrine/doctrine-orm-module": "@stable"
   },
   "require-dev": {
-    "iteaoffice/testing": "2.*",
-    "iteaoffice/general": "5.*",
-    "iteaoffice/search": "5.*",
-    "iteaoffice/project": "5.*",
-    "iteaoffice/contact": "5.*",
+    "iteaoffice/testing": "^2.1",
+    "iteaoffice/general": "^5.1",
+    "iteaoffice/search": "^5.1",
+    "iteaoffice/project": "^5.1",
+    "iteaoffice/contact": "^5.1",
     "setasign/fpdi-tcpdf": "^2.2",
     "kokspflanze/zfc-twig": "4.0.*"
   },
