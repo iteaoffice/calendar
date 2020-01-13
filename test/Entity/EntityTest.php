@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ITEA copyright message placeholder
  *
@@ -20,7 +21,6 @@ class EntityTest extends TestCase
     {
         $labels = [];
         foreach (glob(__DIR__ . '/../../src/Entity/*.php') as $file) {
-
             // get the file name of the current file without the extension
             // which is essentially the class name
             $class = basename($file, '.php');
@@ -38,9 +38,8 @@ class EntityTest extends TestCase
 
                 /** @var Element $element */
                 foreach ($dataFieldset->getElements() as $element) {
-
                     // Add only when a type is provided
-                    if (!array_key_exists('type', $element->getAttributes())) {
+                    if (! array_key_exists('type', $element->getAttributes())) {
                         continue;
                     }
 

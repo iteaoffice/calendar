@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Jield BV all rights reserved
  *
@@ -17,6 +18,7 @@ use Testing\Util\AbstractServiceTest;
 use Laminas\Mvc\Application;
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\View\HelperPluginManager;
+
 use function is_string;
 
 /**
