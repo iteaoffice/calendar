@@ -8,7 +8,7 @@ cd ..
 ./../../bin/phpunit
 ./../../bin/php-cs-fixer fix -v ./src
 
-./../../bin/phpcbf --standard=../../iteaoffice/testing/ruleset.xml src/
-./../../bin/phpcs --standard=../../iteaoffice/testing/ruleset.xml src/
+./../../bin/phpcbf --standard=../../iteaoffice/testing/ruleset.xml .
+./../../bin/phpcs --standard=../../iteaoffice/testing/ruleset.xml .
 
 ./../../bin/phpstan analyse src/ --level=1
