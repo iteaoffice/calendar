@@ -1,6 +1,6 @@
 <?php
 
-use Admin\Navigation\Factory\NavigationInvokableFactory;
+use General\Navigation\Factory\NavigationInvokableFactory;
 use Calendar\Acl;
 use Calendar\Controller;
 use Calendar\Factory;

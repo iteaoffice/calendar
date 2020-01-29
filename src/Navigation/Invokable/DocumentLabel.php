@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Calendar\Navigation\Invokable;
 
-use Admin\Navigation\Invokable\AbstractNavigationInvokable;
+use General\Navigation\Invokable\AbstractNavigationInvokable;
 use Calendar\Entity\Calendar;
 use Calendar\Entity\Document;
 use Laminas\Navigation\Page\Mvc;
