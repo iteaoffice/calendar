@@ -227,12 +227,12 @@
                     <tr {% if identity().getId() == contact.id %}class="table-success"{% endif %}>
                         <td>
                             {% if identity().getId() == contact.id %}
-                                <i class="fa fa-user"></i>
+                                <i class="fas fa-user"></i>
                             {% endif %}
                             {{ calendarContact.contact.displayName }}
-                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
-                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
-                            </div>
+                            <a href="mailto:{{ calendarContact.contact.email }}"><i
+                                            class="far fa-envelope"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+
                         </td>
                         <td>{{ contactService.parseOrganisation(calendarContact.contact) }}
                             ({{ contactService.parseCountry(calendarContact.contact) }})
@@ -256,15 +256,15 @@
                                 <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                                   class="presence-icon cursor-pointer fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
                                 <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                                   class="presence-icon cursor-pointer fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
                                 <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                                   class="presence-icon cursor-pointer fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-check {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
                             {% else %}
                                 {{ calendarContact.status }}
                             {% endif %}

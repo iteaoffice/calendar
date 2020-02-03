@@ -30,7 +30,7 @@ final class DocumentLink extends AbstractLink
         string $action = 'view',
         string $show = 'name'
     ): string {
-        if (! $this->hasAccess($document, Assertion\Document::class, $action)) {
+        if (!$this->hasAccess($document, Assertion\Document::class, $action)) {
             return '';
         }
 
@@ -46,7 +46,7 @@ final class DocumentLink extends AbstractLink
         switch ($action) {
             case 'document-community':
                 $linkParams = [
-                    'icon' => 'fa-file-o',
+                    'icon' => 'far fa-file',
                     'route' => 'community/calendar/document/document',
                     'text' => $showOptions[$show] ?? $document->getDocument()
                 ];
@@ -54,7 +54,7 @@ final class DocumentLink extends AbstractLink
                 break;
             case 'edit-community':
                 $linkParams = [
-                    'icon' => 'fa-pencil-square-o',
+                    'icon' => 'far fa-edit',
                     'route' => 'community/calendar/document/edit',
                     'text' => $showOptions[$show] ?? $this->translator->translate('txt-edit-document')
                 ];
@@ -62,7 +62,7 @@ final class DocumentLink extends AbstractLink
                 break;
             case 'document-admin':
                 $linkParams = [
-                    'icon' => 'fa-file-o',
+                    'icon' => 'far fa-file',
                     'route' => 'zfcadmin/calendar/document/document',
                     'text' => $showOptions[$show] ?? $document->getDocument()
                 ];
@@ -70,7 +70,7 @@ final class DocumentLink extends AbstractLink
                 break;
             case 'edit':
                 $linkParams = [
-                    'icon' => 'fa-pencil-square-o',
+                    'icon' => 'far fa-edit',
                     'route' => 'zfcadmin/calendar/document/edit',
                     'text' => $showOptions[$show] ?? $this->translator->translate('txt-edit-document')
                 ];
@@ -78,7 +78,7 @@ final class DocumentLink extends AbstractLink
                 break;
             case 'download':
                 $linkParams = [
-                    'icon' => 'fa-download',
+                    'icon' => 'fas fa-download',
                     'route' => 'community/calendar/document/download',
                     'text' => $showOptions[$show] ?? $this->translator->translate('txt-download-document')
                 ];

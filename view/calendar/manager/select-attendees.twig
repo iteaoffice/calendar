@@ -27,7 +27,7 @@
                 {% set currentContacts = currentContacts|merge([calendarContact.contact.id]) %}
                 <tr data-id="{{ calendarContact.contact.id }}">
                     <td>
-                        <i class="fa fa-minus" aria-hidden="true"></i>
+                        <i class="fas fa-minus"></i>
                     </td>
                     <td>
                         <small class="text-muted">{{ calendarContact.contact.id }}</small></td>
@@ -41,10 +41,8 @@
         <input type="button" class="btn btn-outline-info" id="remove-all" value="{{ translate("txt-remove-all") }}">
         <input type="button" class="btn btn-outline-danger" id="reset" value="{{ translate("txt-reset") }}">
 
-        <div class="pull-right">
-            {{ ztbformelement(form.get('submit')) }}
-            {{ ztbformelement(form.get('cancel')) }}
-        </div>
+        {{ ztbformelement(form.get('submit')) }}
+        {{ ztbformelement(form.get('cancel')) }}
     </div>
     <div class="col">
         <h2>{{ translate("txt-choose-contacts") }}</h2>
@@ -72,7 +70,7 @@
                 {% for contact in contactService.findContactsInProject(calendar.projectCalendar.project)|filter(contact => contact.id not in currentContacts) -%}
                     <tr data-id="{{ contact.id }}">
                         <td>
-                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <i class="fas fa-plus"></i>
                         </td>
                         <td>
                             <small class="text-muted">{{ contact.id }}</small></td>
@@ -222,7 +220,7 @@
         {{#contacts}}
             <tr data-id="{{ id }}">
                 <td>
-                    <i class="fa fa-{{ type }}" aria-hidden="true"></i>
+                    <i class="fas fa-{{ type }}"></i>
                 </td>
                 <td>
                     <small class="text-muted">{{ id }}</small></td>

@@ -42,24 +42,24 @@
                 {% set calendarHasContact = calendarService.calendarHasContact(calendar, identity()) %}
                 <tr {% if calendarHasContact %}class="active"{% endif %}>
                     <td>
-                        {% if calendarHasContact %}<i class="fa fa-user text-itea"></i>{% endif %}
+                        {% if calendarHasContact %}<i class="fas fa-user text-primary"></i>{% endif %}
                     </td>
-                    <td>{% if not result.fields.final %}<i class="fa fa-question-circle-o" aria-hidden="true"
+                    <td>{% if not result.fields.final %}<i class="far fa-question-circle"
                                                            title="{{ translate("txt-event-is-tentative") }}"></i>{% endif %}
                         {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
                     <td>{{ calendarLink(calendar,'view-admin', 'name') }}</td>
                     <td>{{ calendar.location }}</td>
-                    <td><i class="fa fa-calendar-o {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
-                    <td>{% if result.fields.highlight %}<i class="fa fa-check text-success"
+                    <td><i class="far fa-calendar-alt {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
+                    <td>{% if result.fields.highlight %}<i class="fas fa-check text-success"
                                                            title="{{ translate("txt-event-is-highlight") }}"></i>{% endif %}
                     </td>
-                    <td>{% if result.fields.own_event %}<i class="fa fa-check text-success"
+                    <td>{% if result.fields.own_event %}<i class="fas fa-check text-success"
                                                            title="{{ translate("txt-is-own-event") }}"></i>{% endif %}
                     </td>
-                    <td>{% if result.fields.is_present %}<i class="fa fa-check text-success"
+                    <td>{% if result.fields.is_present %}<i class="fas fa-check text-success"
                                                             title="{{ translate("txt-office-is-present") }}"></i>{% endif %}
                     </td>
-                    <td>{% if result.fields.on_homepage %}<i class="fa fa-check text-success"
+                    <td>{% if result.fields.on_homepage %}<i class="fas fa-check text-success"
                                                              title="{{ translate("txt-event-on-frontpage") }}"></i>{% endif %}
                     </td>
 

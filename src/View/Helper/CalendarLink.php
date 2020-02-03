@@ -36,19 +36,20 @@ final class CalendarLink extends AbstractLink
         ?string $which = 'all',
         Project $project = null,
         Contact $contact = null
-    ): string {
+    ): string
+    {
         $calendar ??= new Calendar();
 
-        if (! $this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
+        if (!$this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
             return '';
         }
 
         $routeParams = [];
         $showOptions = [];
-        if (! $calendar->isEmpty()) {
-            $routeParams['id'] = $calendar->getId();
+        if (!$calendar->isEmpty()) {
+            $routeParams['id']     = $calendar->getId();
             $routeParams['docRef'] = $calendar->getDocRef();
-            $showOptions['name'] = $calendar->getCalendar();
+            $showOptions['name']   = $calendar->getCalendar();
         }
 
         $routeParams['which'] = $which;
@@ -63,119 +64,119 @@ final class CalendarLink extends AbstractLink
         switch ($action) {
             case 'edit':
                 $linkParams = [
-                    'icon' => 'fa-pencil-square-o',
+                    'icon'  => 'far fa-edit',
                     'route' => 'zfcadmin/calendar/edit',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? sprintf($this->translator->translate('txt-edit-calendar-%s'), $calendar)
                 ];
                 break;
             case 'overview':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'community/calendar/overview',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? sprintf($this->translator->translate('txt-%s-events'), ucfirst($which))
                 ];
                 break;
             case 'contact':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'community/calendar/contact',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-view-review-invitations')
                 ];
                 break;
             case 'review-calendar':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'community/calendar/review-calendar',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-view-review-calendar')
                 ];
                 break;
             case 'download-review-calendar':
                 $linkParams = [
-                    'icon' => 'fa-download',
+                    'icon'  => 'far fa-download',
                     'route' => 'community/calendar/download-review-calendar',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-review-calendar')
                 ];
                 break;
             case 'select-attendees':
                 $linkParams = [
-                    'icon' => 'fa-user-plus',
+                    'icon'  => 'fas fa-user-plus',
                     'route' => 'community/calendar/select-attendees',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-select-attendees-from-project')
                 ];
                 break;
             case 'send-message':
                 $linkParams = [
-                    'icon' => 'fa-envelope-o',
+                    'icon'  => 'far fa-envelope',
                     'route' => 'community/calendar/send-message',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-send-message-to-attendees')
                 ];
                 break;
             case 'download-binder':
                 $linkParams = [
-                    'icon' => 'fa-file-archive-o',
+                    'icon'  => 'far fa-file-archive',
                     'route' => 'community/calendar/download-binder',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-binder')
                 ];
                 break;
             case 'presence-list':
                 $linkParams = [
-                    'icon' => 'fa-file-pdf-o',
+                    'icon'  => 'far fa-file-pdf',
                     'route' => 'community/calendar/presence-list',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-presence-list')
                 ];
                 break;
             case 'signature-list':
                 $linkParams = [
-                    'icon' => 'fa-file-pdf-o',
+                    'icon'  => 'far fa-file-pdf',
                     'route' => 'community/calendar/signature-list',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-download-signature-list')
                 ];
                 break;
             case 'overview-admin':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'zfcadmin/calendar/overview',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? sprintf($this->translator->translate('txt-%s-events'), ucfirst($which))
                 ];
                 break;
             case 'view-community':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'community/calendar/calendar',
-                    'text' => $showOptions[$show] ?? $calendar->getCalendar()
+                    'text'  => $showOptions[$show] ?? $calendar->getCalendar()
                 ];
                 break;
             case 'view-admin':
                 $linkParams = [
-                    'icon' => 'fa-calendar',
+                    'icon'  => 'far fa-calendar-alt',
                     'route' => 'zfcadmin/calendar/calendar',
-                    'text' => $showOptions[$show] ?? $calendar->getCalendar()
+                    'text'  => $showOptions[$show] ?? $calendar->getCalendar()
                 ];
                 break;
             case 'edit-attendees-admin':
                 $linkParams = [
-                    'icon' => 'fa-user-plus',
+                    'icon'  => 'fas fa-user-plus',
                     'route' => 'zfcadmin/calendar/select-attendees',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-select-attendees')
                 ];
                 break;
             case 'add-contact':
                 $linkParams = [
-                    'icon' => 'fa-user-plus',
+                    'icon'  => 'fas fa-user-plus',
                     'route' => 'zfcadmin/calendar/add-contact',
-                    'text' => $showOptions[$show]
+                    'text'  => $showOptions[$show]
                         ?? $this->translator->translate('txt-add-contact-to-calendar')
                 ];
                 break;
@@ -187,16 +188,16 @@ final class CalendarLink extends AbstractLink
                 }
 
                 $linkParams = [
-                    'icon' => 'fa-calendar-plus-o',
+                    'icon'  => 'far fa-calendar-plus',
                     'route' => 'zfcadmin/calendar/new',
-                    'text' => $showOptions[$show] ?? $text
+                    'text'  => $showOptions[$show] ?? $text
                 ];
 
                 break;
         }
 
-        $linkParams['action'] = $action;
-        $linkParams['show'] = $show;
+        $linkParams['action']      = $action;
+        $linkParams['show']        = $show;
         $linkParams['routeParams'] = $routeParams;
 
         return $this->parse(Link::fromArray($linkParams));

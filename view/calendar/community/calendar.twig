@@ -189,9 +189,9 @@
                                 <tr>
                                     <td>{{ reportLink(report,'report-community', 'name') }} {{ reportLink(report,'download', 'icon') }}</td>
                                     <td>{{ report.contact.displayName }}
-                                        <div class="pull-right"><a href="mailto:{{ report.contact.email }}"><i
-                                                        class="fa fa-envelope-o"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
-                                        </div>
+                                        <a href="mailto:{{ report.contact.email }}"><i
+                                                    class="far fa-envelope"></i></a> {{ contactLink(report.contact,'view-admin','icon') }}
+
                                     </td>
                                     <td>{{ report.dateCreated|string_date }}</td>
                                     <td>{{ report.item.count() }}</td>
@@ -225,9 +225,9 @@
                                 </td>
                                 <td>{{ result.dateCreated|string_date }}</td>
                                 <td>{{ result.contact.displayName }}
-                                    <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
-                                                    class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                    </div>
+                                    <a href="mailto:{{ result.contact.email }}"><i
+                                                class="far fa-envelope"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
+
                                 </td>
                                 <td>{{ result.contentType.description }}</td>
                                 <td>{{ result.size|parse_size }}</td>
@@ -273,9 +273,8 @@
                                     </td>
                                     <td>{{ result.dateCreated|string_date }}</td>
                                     <td>{{ result.contact.displayName }}
-                                        <div class="pull-right"><a href="mailto:{{ result.contact.email }}"><i
-                                                        class="fa fa-envelope-o"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
-                                        </div>
+                                        <a href="mailto:{{ result.contact.email }}"><i
+                                                    class="far fa-envelope"></i></a> {{ contactLink(result.contact,'view-admin','icon') }}
                                     </td>
                                     <td>{{ result.contentType.description }}</td>
                                     <td>{{ result.size|parse_size }}</td>
@@ -359,7 +358,7 @@
                                         </td>
                                         <td>
                                             {% if not document.isPublic() %}
-                                                <i class="fa fa-lock"
+                                                <i class="fas fa-lock"
                                                    title="{{ translate("txt-document-is-private") }}"></i>
                                             {% endif %}
                                         </td>
@@ -408,12 +407,11 @@
                     <tr {% if identity().getId() == calendarContact.contact.contact.id %}class="table-success"{% endif %}>
                         <td>
                             {% if identity().getId() == calendarContact.contact.contact.id %}
-                                <i class="fa fa-user"></i>
+                                <i class="fas fa-user"></i>
                             {% endif %}
                             {{ calendarContact.contact.displayName }}
-                            <div class="pull-right"><a href="mailto:{{ calendarContact.contact.email }}"><i
-                                            class="fa fa-envelope-o"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
-                            </div>
+                            <a href="mailto:{{ calendarContact.contact.email }}"><i
+                                        class="far fa-envelope"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
                         </td>
                         <td>{{ calendarContact.contact.contactOrganisation.organisation }}
                             ({{ calendarContact.contact.contactOrganisation.organisation.country }})
@@ -425,15 +423,15 @@
                                 <i title="{{ translate("txt-presence-status-tentative-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") }}"
-                                   class="presence-icon cursor-pointer fa fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-question-circle {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_TENTATIVE") %}text-highlight{% endif %}"></i>
                                 <i title="{{ translate("txt-presence-status-decline-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") }}"
-                                   class="presence-icon cursor-pointer fa fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-ban {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_DECLINE") %}text-highlight{% endif %}"></i>
                                 <i title="{{ translate("txt-presence-status-accept-hover-text") }}"
                                    data-contact="{{ calendarContact.id }}"
                                    data-status="{{ constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") }}"
-                                   class="presence-icon cursor-pointer fa fa-check-square-o {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
+                                   class="presence-icon cursor-pointer fas fa-check {% if calendarContact.status.id == constant("Calendar\\Entity\\ContactStatus::STATUS_ACCEPT") %}text-highlight{% endif %}"></i>
 
                             {% else %}
                                 {{ calendarContact.status }}

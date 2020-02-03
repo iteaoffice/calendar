@@ -52,13 +52,13 @@
                         {% set calendarHasContact = calendarService.calendarHasContact(calendar, identity()) %}
                         <tr {% if calendarHasContact %}class="table-itea"{% endif %}>
                             <td>
-                                {% if calendarHasContact %}<i class="fa fa-user text-itea"></i>{% endif %}
+                                {% if calendarHasContact %}<i class="fas fa-user text-primary"></i>{% endif %}
                             </td>
                             <td>
                                 {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
                             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
                             <td>{{ calendar.location }}</td>
-                            <td><i class="fa fa-calendar-o {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
+                            <td><i class="far fa-calendar-alt {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
                         </tr>
                     {% else %}
                         <tr>

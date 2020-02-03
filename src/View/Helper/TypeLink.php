@@ -32,7 +32,7 @@ final class TypeLink extends AbstractLink
 
         $routeParams = [];
         $showOptions = [];
-        if (! $type->isEmpty()) {
+        if (!$type->isEmpty()) {
             $routeParams['id'] = $type->getId();
             $showOptions['name'] = $type->getType();
         }
@@ -40,7 +40,7 @@ final class TypeLink extends AbstractLink
         switch ($action) {
             case 'new':
                 $linkParams = [
-                    'icon' => 'fa-plus',
+                    'icon' => 'fas fa-plus',
                     'route' => 'zfcadmin/calendar/type/new',
                     'text' => $showOptions[$show]
                         ?? $this->translator->translate('txt-new-type')
@@ -48,7 +48,7 @@ final class TypeLink extends AbstractLink
                 break;
             case 'edit':
                 $linkParams = [
-                    'icon' => 'fa-pencil-square-o',
+                    'icon' => 'far fa-edit',
                     'route' => 'zfcadmin/calendar/type/edit',
                     'text' => $showOptions[$show]
                         ?? $this->translator->translate('txt-edit-type')
@@ -56,7 +56,7 @@ final class TypeLink extends AbstractLink
                 break;
             case 'view':
                 $linkParams = [
-                    'icon' => 'fa-link',
+                    'icon' => 'fas fa-link',
                     'route' => 'zfcadmin/calendar/type/view',
                     'text' => $showOptions[$show] ?? $type->getType()
                 ];
