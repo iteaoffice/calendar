@@ -36,17 +36,16 @@ final class CalendarLink extends AbstractLink
         ?string $which = 'all',
         Project $project = null,
         Contact $contact = null
-    ): string
-    {
+    ): string {
         $calendar ??= new Calendar();
 
-        if (!$this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
+        if (! $this->hasAccess($calendar, Assertion\Calendar::class, $action)) {
             return '';
         }
 
         $routeParams = [];
         $showOptions = [];
-        if (!$calendar->isEmpty()) {
+        if (! $calendar->isEmpty()) {
             $routeParams['id']     = $calendar->getId();
             $routeParams['docRef'] = $calendar->getDocRef();
             $showOptions['name']   = $calendar->getCalendar();

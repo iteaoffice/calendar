@@ -330,7 +330,7 @@
                     <h2>{{ translate("txt-workpackage-deliverables") }}</h2>
 
                     {% for workpackage in workpackageService.findWorkpackageByProjectAndWhich(calendar.projectCalendar.project)|filter(workpackage => workpackage.document.count() > 0) -%}
-                        <h4 class="home">{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
+                        <h4>{{ workpackageLink(workpackage,'view-community','sequence-and-name') }}</h4>
 
 
                         {% if workpackage.document.count() > 0 %}
