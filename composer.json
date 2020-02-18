@@ -28,7 +28,7 @@
     "laminas/laminas-mvc-plugins": "^1.0.1",
     "laminas/laminas-navigation": "^2.9.0",
     "jield-webdev/bjy-authorize": "^2.1.0",
-    "doctrine/doctrine-orm-module": "@stable"
+    "doctrine/doctrine-orm-module": "3.*"
   },
   "require-dev": {
     "iteaoffice/testing": "^2.1",
