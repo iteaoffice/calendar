@@ -78,7 +78,7 @@ class EntityTest extends TestCase
 
         file_put_contents(
             __DIR__ . '/../../config/language.php',
-            "<?php\n_('" . implode("');\n_('", array_unique($labels)) . "');\n"
+            "<?php\n\n_('" . implode("');\n_('", array_unique($labels)) . "');\n"
         );
     }
 }
