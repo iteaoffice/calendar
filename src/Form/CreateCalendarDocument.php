@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Calendar\Form;
 
 use Calendar\Entity\Document;
+use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Laminas\Form\Form;
-use Laminas\InputFilter\InputFilterProviderInterface;
-use Laminas\Form\Element\Submit;
 use Laminas\Form\Element\Csrf;
 use Laminas\Form\Element\File;
+use Laminas\Form\Element\Submit;
 use Laminas\Form\Element\Text;
+use Laminas\Form\Form;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 /**
  * Class CreateCalendarDocument
@@ -33,7 +33,7 @@ final class CreateCalendarDocument extends Form implements InputFilterProviderIn
     public function __construct(EntityManager $entityManager)
     {
         parent::__construct();
-        $document = new Document();
+        $document         = new Document();
         $doctrineHydrator = new DoctrineHydrator($entityManager);
         $this->setHydrator($doctrineHydrator)->setObject($document);
         $this->setAttribute('method', 'post');

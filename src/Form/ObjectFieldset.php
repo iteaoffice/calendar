@@ -3,10 +3,6 @@
 /**
  * Jield BV all rights reserved.
  *
- * PHP Version 5
- *
- * @category    Project
- *
  * @author      Dr. ir. Johan van der Heide <info@jield.nl>
  * @copyright   Copyright (c) 2004-2017 Jield BV (https://jield.nl)
  * @license     https://jield.nl/license.txt proprietary
@@ -18,8 +14,8 @@ declare(strict_types=1);
 namespace Calendar\Form;
 
 use Calendar\Entity;
+use Doctrine\Laminas\Hydrator\DoctrineObject;
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Element\EntityMultiCheckbox;
 use DoctrineORMModule\Form\Element\EntityRadio;
 use DoctrineORMModule\Form\Element\EntitySelect;
@@ -27,6 +23,8 @@ use Laminas\Form\Annotation\AnnotationBuilder;
 use Laminas\Form\Element;
 use Laminas\Form\Element\Radio;
 use Laminas\Form\Fieldset;
+
+use function get_class;
 
 /**
  * Class ObjectFieldset
@@ -44,7 +42,7 @@ class ObjectFieldset extends Fieldset
     {
         parent::__construct($object->get('underscore_entity_name'));
         $this->entityManager = $entityManager;
-        $doctrineHydrator = new DoctrineHydrator($entityManager);
+        $doctrineHydrator = new DoctrineObject($entityManager);
         $this->setHydrator($doctrineHydrator)->setObject($object);
         $builder = new AnnotationBuilder();
 
@@ -78,7 +76,7 @@ class ObjectFieldset extends Fieldset
         foreach ($dataFieldset->getFieldsets() as $subFieldset) {
             /** @var Fieldset $subFieldset */
             $subFieldset->setHydrator($this->getHydrator());
-            $subFieldset->setAllowedObjectBindingClass(\get_class($subFieldset->getObject()));
+            $subFieldset->setAllowedObjectBindingClass(get_class($subFieldset->getObject()));
             $this->addElements($subFieldset, $subFieldset->getObject());
             $this->add($subFieldset);
         }

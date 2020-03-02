@@ -1,4 +1,5 @@
 <?php
+
 _('txt-calendar-calendar-placeholder');
 _('txt-calendar-calendar-label');
 _('txt-calendar-calendar-help-block');
