@@ -147,7 +147,7 @@
         init();
 
         function moveItem($element) {
-            let $icon = $element.find('i');
+            let $icon = $element.find('svg');
             let $contactId = $element.data('id');
 
             if ($icon.hasClass('fa-plus') && $.inArray($contactId, $in) === -1) {
