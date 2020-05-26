@@ -27,11 +27,6 @@ use Contact\Entity\Contact;
 use Contact\Service\ContactService;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
-use Project\Service\ActionService;
-use Project\Service\ProjectService;
-use Search\Form\SearchResult;
-use Search\Paginator\Adapter\SolariumPaginator;
-use Solarium\QueryType\Select\Query\Query as SolariumQuery;
 use Laminas\Http\Request;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -41,6 +36,11 @@ use Laminas\Paginator\Paginator;
 use Laminas\Validator\File\FilesSize;
 use Laminas\Validator\File\MimeType;
 use Laminas\View\Model\ViewModel;
+use Project\Service\ActionService;
+use Project\Service\ProjectService;
+use Search\Form\SearchResult;
+use Search\Paginator\Adapter\SolariumPaginator;
+use Solarium\QueryType\Select\Query\Query as SolariumQuery;
 
 use function array_merge;
 use function implode;
@@ -74,28 +74,29 @@ final class ManagerController extends AbstractActionController
         AssertionService $assertionService,
         EntityManager $entityManager,
         TranslatorInterface $translator
-    ) {
-        $this->calendarService = $calendarService;
-        $this->searchService = $searchService;
-        $this->formService = $formService;
-        $this->projectService = $projectService;
-        $this->actionService = $actionService;
-        $this->contactService = $contactService;
-        $this->generalService = $generalService;
+    )
+    {
+        $this->calendarService  = $calendarService;
+        $this->searchService    = $searchService;
+        $this->formService      = $formService;
+        $this->projectService   = $projectService;
+        $this->actionService    = $actionService;
+        $this->contactService   = $contactService;
+        $this->generalService   = $generalService;
         $this->assertionService = $assertionService;
-        $this->entityManager = $entityManager;
-        $this->translator = $translator;
+        $this->entityManager    = $entityManager;
+        $this->translator       = $translator;
     }
 
     public function overviewAction(): ViewModel
     {
         /** @var Request $request */
         $request = $this->getRequest();
-        $page = $this->params('page', 1);
-        $which = $this->params('which', 'upcoming');
+        $page    = $this->params('page', 1);
+        $which   = $this->params('which', 'upcoming');
 
-        $form = new SearchResult();
-        $data = array_merge(
+        $form         = new SearchResult();
+        $data         = array_merge(
             [
                 'order'     => '',
                 'direction' => '',
@@ -178,7 +179,7 @@ final class ManagerController extends AbstractActionController
             }
 
             $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
-            $preData['calendar_entity_calendar']['type'] = 6;
+            $preData['calendar_entity_calendar']['type']     = 6;
         }
 
         $data = array_merge($preData, $this->getRequest()->getPost()->toArray());
@@ -241,7 +242,7 @@ final class ManagerController extends AbstractActionController
 
         $form = $this->formService->prepare($calendar, $data);
 
-        if (! $this->calendarService->canDeleteCalendar($calendar)) {
+        if (!$this->calendarService->canDeleteCalendar($calendar)) {
             $form->remove('delete');
         }
 
@@ -276,7 +277,7 @@ final class ManagerController extends AbstractActionController
                 $calendar->setContact($this->identity());
 
                 //Empty the call when the form is not set
-                if (! isset($data['calendar_entity_calendar']['call'])) {
+                if (!isset($data['calendar_entity_calendar']['call'])) {
                     $calendar->setCall([]);
                 }
 
@@ -319,8 +320,6 @@ final class ManagerController extends AbstractActionController
                     $calendar->getCalendar()
                 )
             );
-
-
             $this->calendarService->updateCalendarContacts($calendar, $data);
 
             return $this->redirect()->toRoute('zfcadmin/calendar/calendar', ['id' => $calendar->getId()]);
@@ -362,7 +361,7 @@ final class ManagerController extends AbstractActionController
             /**
              * Add the file
              */
-            $file = $data['file'];
+            $file              = $data['file'];
             $fileSizeValidator = new FilesSize(PHP_INT_MAX);
             $fileSizeValidator->isValid($file);
             $document->setSize($fileSizeValidator->size);

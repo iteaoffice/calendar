@@ -42,32 +42,32 @@ class Calendar extends AbstractEntity
     public const NOT_PRESENT = 0;
     public const PRESENT = 1;
 
-    private static $finalTemplates
+    private static array $finalTemplates
         = [
             self::FINAL_DRAFT     => 'txt-draft',
             self::FINAL_TENTATIVE => 'txt-tentative',
             self::FINAL_FINAL     => 'txt-final',
         ];
 
-    private static $onHomepageTemplates
+    private static array $onHomepageTemplates
         = [
             self::NOT_ON_HOMEPAGE => 'txt-not-on-homepage',
             self::ON_HOMEPAGE     => 'txt-on-homepage'
         ];
 
-    private static $highlightTemplates
+    private static array $highlightTemplates
         = [
             self::NO_HIGHLIGHT => 'txt-no-highlight',
             self::HIGHLIGHT    => 'txt-highlight-on-event-page'
         ];
 
-    private static $ownEventTemplates
+    private static array $ownEventTemplates
         = [
             self::NO_OWN_EVENT => 'txt-no-own-event',
             self::OWN_EVENT    => 'txt-own-event'
         ];
 
-    private static $presentTemplates
+    private static array $presentTemplates
         = [
             self::NOT_PRESENT => 'txt-office-not-present',
             self::PRESENT     => 'txt-office-present'
