@@ -176,15 +176,14 @@ abstract class AbstractAssertion implements AssertionInterface
 
     private function prepareAccessRoles($accessRoleOrCollection): array
     {
-        if (!$accessRoleOrCollection instanceof PersistentCollection) {
+        if (! $accessRoleOrCollection instanceof PersistentCollection) {
             /*
              * We only have a string or array, so we need to lookup the role
              */
             if (is_array($accessRoleOrCollection)) {
                 foreach ($accessRoleOrCollection as $key => $accessItem) {
-
                     $access = $accessItem;
-                    if (!$accessItem instanceof Access) {
+                    if (! $accessItem instanceof Access) {
                         $access = $this->adminService->findAccessByName($accessItem);
                     }
 

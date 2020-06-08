@@ -74,8 +74,7 @@ final class ManagerController extends AbstractActionController
         AssertionService $assertionService,
         EntityManager $entityManager,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->calendarService  = $calendarService;
         $this->searchService    = $searchService;
         $this->formService      = $formService;
@@ -242,7 +241,7 @@ final class ManagerController extends AbstractActionController
 
         $form = $this->formService->prepare($calendar, $data);
 
-        if (!$this->calendarService->canDeleteCalendar($calendar)) {
+        if (! $this->calendarService->canDeleteCalendar($calendar)) {
             $form->remove('delete');
         }
 
@@ -277,7 +276,7 @@ final class ManagerController extends AbstractActionController
                 $calendar->setContact($this->identity());
 
                 //Empty the call when the form is not set
-                if (!isset($data['calendar_entity_calendar']['call'])) {
+                if (! isset($data['calendar_entity_calendar']['call'])) {
                     $calendar->setCall([]);
                 }
 
