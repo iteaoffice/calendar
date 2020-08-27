@@ -17,6 +17,7 @@ use Calendar\Entity;
 use Contact\Entity\Contact as ContactEntity;
 use DateTime;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -36,7 +37,7 @@ final class Contact extends EntityRepository
 
         $qb->andWhere('calendar_entity_contact.contact = :contact');
         $qb->andWhere('calendar_entity_calendar.dateEnd >= :today');
-        $qb->setParameter('today', new DateTime());
+        $qb->setParameter('today', new DateTime(), Types::DATETIME_MUTABLE);
         $qb->addOrderBy('calendar_entity_calendar.dateFrom', Criteria::ASC);
 
         $qb->setParameter('contact', $contact);

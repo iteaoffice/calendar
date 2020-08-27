@@ -6,7 +6,7 @@
  * @category  Calendar
  * @package   Repository
  * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2019 ITEA Office (https://itea3.org) (https://itea3.org)
+ * @copyright Copyright (calendar_entity_calendar) Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -17,6 +17,7 @@ use Admin\Entity\Access;
 use Calendar\Entity;
 use Contact\Entity\Contact;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Project\Entity\Project;
@@ -41,7 +42,7 @@ final class Calendar extends EntityRepository
         if ($upcoming) {
             $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
             $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-            $qb->setParameter(1, new DateTime());
+            $qb->setParameter(1, new DateTime(), Types::DATETIME_MUTABLE);
             $qb->andWhere('calendar_entity_calendar.final = ?3');
             $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
         }
@@ -49,7 +50,7 @@ final class Calendar extends EntityRepository
         if ($reviews) {
             $qb->andWhere('calendar_entity_calendar.dateEnd >= ?1');
             $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
-            $qb->setParameter(1, new DateTime());
+            $qb->setParameter(1, new DateTime(), Types::DATETIME_MUTABLE);
             $qb->andWhere('calendar_entity_calendar.final = ?3');
             $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
@@ -73,7 +74,7 @@ final class Calendar extends EntityRepository
         $qb->andWhere('pc.project = :project');
         $qb->andWhere('calendar_entity_calendar.dateEnd < ?1');
         $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
-        $qb->setParameter(1, new DateTime());
+        $qb->setParameter(1, new DateTime(), Types::DATETIME_MUTABLE);
         $qb->andWhere('calendar_entity_calendar.final = ?3');
         $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
         $qb->setParameter('project', $project);
@@ -95,7 +96,7 @@ final class Calendar extends EntityRepository
         $qb->andWhere('calendar_entity_calendar.final = ?3');
         $qb->orderBy('calendar_entity_calendar.dateFrom', 'ASC');
 
-        $qb->setParameter(1, $dateTime);
+        $qb->setParameter(1, $dateTime, Types::DATETIME_MUTABLE);
         $qb->setParameter('project', $project);
         $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
@@ -116,7 +117,7 @@ final class Calendar extends EntityRepository
         $qb->andWhere('calendar_entity_calendar.final = ?3');
         $qb->orderBy('calendar_entity_calendar.dateFrom', 'DESC');
 
-        $qb->setParameter(1, $dateTime);
+        $qb->setParameter(1, $dateTime, Types::DATETIME_MUTABLE);
         $qb->setParameter('project', $project);
         $qb->setParameter(3, Entity\Calendar::FINAL_FINAL);
 
