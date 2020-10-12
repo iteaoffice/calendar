@@ -17,11 +17,6 @@ use Laminas\InputFilter\FileInput;
 use Laminas\InputFilter\InputFilter;
 use Laminas\Validator\File\Size;
 
-/**
- * Class DocumentFilter
- *
- * @package Calendar\InputFilter
- */
 final class DocumentFilter extends InputFilter
 {
     public function __construct()
