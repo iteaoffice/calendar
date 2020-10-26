@@ -18,9 +18,8 @@ use Calendar\Entity\Calendar;
 use Laminas\Navigation\Page\Mvc;
 
 /**
- * Class ProjectLabel
- *
- * @package Project\Navigation\Invokable
+ * Class CalendarLabel
+ * @package Calendar\Navigation\Invokable
  */
 final class CalendarLabel extends AbstractNavigationInvokable
 {
