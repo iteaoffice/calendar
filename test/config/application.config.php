@@ -5,7 +5,6 @@ return [
         'DoctrineModule',
         'DoctrineORMModule',
         'BjyAuthorize',
-        'ZfcUser',
         'Admin',
         'Publication',
         'Content',
