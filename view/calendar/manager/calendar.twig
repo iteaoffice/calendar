@@ -111,15 +111,22 @@
             <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
+                    <th>{{ translate("txt-id") }}</th>
                     <th>{{ translate("txt-document") }}</th>
                     <th>{{ translate("txt-type") }}</th>
                     <th>{{ translate("txt-date") }}</th>
                     <th>{{ translate("txt-size") }}</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                </tr>
+                </tfoot>
                 <tbody>
                 {% for document in calendar.document %}
                     <tr>
+                        <td><small class="text-muted">{{ document.id }}</small></td>
                         <td>{{ calendarDocumentLink(document,'document-admin','name') }}
                             {{ calendarDocumentLink(document,'download','icon') }}
                         </td>
@@ -231,7 +238,7 @@
                             {% endif %}
                             {{ calendarContact.contact.displayName }}
                             <a href="mailto:{{ calendarContact.contact.email }}"><i
-                                            class="far fa-envelope"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
+                                        class="far fa-envelope"></i></a> {{ contactLink(calendarContact.contact,'view-admin','icon') }}
 
                         </td>
                         <td>{{ contactService.parseOrganisation(calendarContact.contact) }}

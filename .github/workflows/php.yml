@@ -8,18 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Start the SSH agent and add the deploy key
-        uses: webfactory/ssh-agent@v0.1.1
+        uses: webfactory/ssh-agent@v0.4.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: mbstring, intl, zip, soap, gd
+          extensions: mbstring, intl, zip, gd, soap
           coverage: xdebug #optional, setup coverage driver
 
       - name: Check PHP Version
@@ -40,11 +40,5 @@ jobs:
       - name: Dump the autoloader
         run: composer dump-autoload
 
-      - name: Run fix suite
-        run: composer fix
-
-      - name: Run check suite
-        run: composer check
-
-      - name: Run test suite
-        run: composer test
+      - name: Run lint checker
+        run: composer php-lint
