@@ -1,12 +1,11 @@
 <?php
 
 /**
- * ITEA copyright message placeholder
+ * ITEA Office all rights reserved
  *
- * @category  Calendar
- * @package   Entity
- * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2021 ITEA Office (https://itea3.org)
+ * @license     https://itea3.org/license.txt proprietary
  */
 
 declare(strict_types=1);
@@ -17,8 +16,8 @@ use DateTime;
 use Doctrine\Common\Collections;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Program\Entity\Call\Call;
 use Laminas\Form\Annotation;
+use Program\Entity\Call\Call;
 
 /**
  * @ORM\Table(name="calendar")
@@ -26,21 +25,21 @@ use Laminas\Form\Annotation;
  */
 class Calendar extends AbstractEntity
 {
-    public const FINAL_DRAFT = -1;
-    public const FINAL_FINAL = 1;
+    public const FINAL_DRAFT     = -1;
+    public const FINAL_FINAL     = 1;
     public const FINAL_TENTATIVE = 0;
 
     public const NOT_ON_HOMEPAGE = 0;
-    public const ON_HOMEPAGE = 1;
+    public const ON_HOMEPAGE     = 1;
 
     public const NO_HIGHLIGHT = 0;
-    public const HIGHLIGHT = 1;
+    public const HIGHLIGHT    = 1;
 
     public const NO_OWN_EVENT = 0;
-    public const OWN_EVENT = 1;
+    public const OWN_EVENT    = 1;
 
     public const NOT_PRESENT = 0;
-    public const PRESENT = 1;
+    public const PRESENT     = 1;
 
     private static array $finalTemplates
         = [
@@ -275,14 +274,14 @@ class Calendar extends AbstractEntity
     public function __construct()
     {
         $this->calendarContact = new Collections\ArrayCollection();
-        $this->document = new Collections\ArrayCollection();
-        $this->call = new Collections\ArrayCollection();
+        $this->document        = new Collections\ArrayCollection();
+        $this->call            = new Collections\ArrayCollection();
 
         $this->onHomepage = self::NOT_ON_HOMEPAGE;
-        $this->highlight = self::NO_HIGHLIGHT;
-        $this->ownEvent = self::NO_OWN_EVENT;
-        $this->present = self::NOT_PRESENT;
-        $this->final = self::FINAL_FINAL;
+        $this->highlight  = self::NO_HIGHLIGHT;
+        $this->ownEvent   = self::NO_OWN_EVENT;
+        $this->present    = self::NOT_PRESENT;
+        $this->final      = self::FINAL_FINAL;
     }
 
     public static function getFinalTemplates(): array

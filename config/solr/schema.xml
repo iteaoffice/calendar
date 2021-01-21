@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!--
+  ~ ITEA Office all rights reserved
+  ~
+  ~ @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+  ~ @copyright   Copyright (c) 2021 ITEA Office (https://itea3.org)
+  ~ @license     https://itea3.org/license.txt proprietary
+  -->
+
 <schema name="calendar_calendar" version="1.5">
 
     <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml

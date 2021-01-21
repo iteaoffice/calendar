@@ -1,12 +1,11 @@
 <?php
 
 /**
- * ITEA copyright message placeholder
+ * ITEA Office all rights reserved
  *
- * @category    CalendarTest
- * @package     Entity
  * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
+ * @copyright   Copyright (c) 2021 ITEA Office (https://itea3.org)
+ * @license     https://itea3.org/license.txt proprietary
  */
 
 namespace CalendarTest\Entity;

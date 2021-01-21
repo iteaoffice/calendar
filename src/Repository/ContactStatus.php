@@ -1,12 +1,11 @@
 <?php
 
 /**
-*
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2019 ITEA Office (https://itea3.org)
- * @license     https://itea3.org/license.txt proprietary
+ * ITEA Office all rights reserved
  *
- * @link        http://github.com/iteaoffice/project for the canonical source repository
+ * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright   Copyright (c) 2021 ITEA Office (https://itea3.org)
+ * @license     https://itea3.org/license.txt proprietary
  */
 
 declare(strict_types=1);
