@@ -12,6 +12,12 @@
     <dd>{{ document.contentType.description }}</dd>
     <dt>{{ translate("txt-size") }}</dt>
     <dd>{{ document.size|parse_size }}</dd>
+    <dt>{{ translate("txt-date-created") }}</dt>
+    <dd>{{ document.dateCreated|date('d-m-Y H:i:s') }}</dd>
+    {% if document.dateUpdated %}
+        <dt>{{ translate("txt-date-update") }}</dt>
+        <dd>{{ document.dateUpdated|date('d-m-Y H:i:s') }}</dd>
+    {% endif %}
 </dl>
 {{ calendarDocumentLink(document, 'edit-community', 'button') }}
 {{ calendarDocumentLink(document, 'download', 'button') }}

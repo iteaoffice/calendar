@@ -75,6 +75,7 @@
                             <th>{{ translate("txt-document") }}</th>
                             <th>{{ translate("txt-content-type") }}</th>
                             <th>{{ translate("txt-created") }}</th>
+                            <th>{{ translate("txt-last-update") }}</th>
                             <th>{{ translate("txt-size") }}</th>
                         </tr>
                         </thead>
@@ -93,6 +94,7 @@
                                 </td>
                                 <td>{{ contentTypeIcon(document.contentType) }}{{ document.contentType.description }}</td>
                                 <td>{{ document.dateCreated|date('d-m-Y H:i:s') }}</td>
+                                <td>{% if document.dateUpdated %}{{ document.dateUpdated|date('d-m-Y H:i:s') }}{% endif %}</td>
                                 <td>{{ document.size|parse_size }}</td>
                             </tr>
                         {% endfor %}
@@ -410,16 +412,23 @@
             <table class="table table-hover table-striped table-sm">
                 <thead>
                 <tr>
+                    <th>{{ translate("txt-no") }}</th>
                     <th>{{ translate("txt-name") }}</th>
                     <th>{{ translate("txt-organisation") }}</th>
                     <th>{{ translate("txt-role") }}</th>
                     <th>{{ translate("txt-presence") }}</th>
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                </tr>
+                </tfoot>
                 <tbody>
                 {% for calendarContact in calendarContacts %}
 
                     <tr {% if identity().getId() == calendarContact.contact.contact.id %}class="table-success"{% endif %}>
+                        <td><small class="text-muted">{{ loop.index }}</small></td>
                         <td>
                             {% if identity().getId() == calendarContact.contact.contact.id %}
                                 <i class="fas fa-user"></i>

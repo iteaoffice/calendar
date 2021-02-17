@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th></th>
+        <th></th>
         <th>{{ translate("txt-date") }}</th>
         <th>{{ translate("txt-event-meeting") }}</th>
         <th>{{ translate("txt-location") }}</th>
@@ -13,6 +14,11 @@
         {% endif %}
     </tr>
     </thead>
+    <tfoot>
+    <tr>
+        <td colspan="{% if communityCalendarContactEnabled %}9{% else %}7{% endif %}"></td>
+    </tr>
+    </tfoot>
     <tbody>
     {% for calendar in elements %}
         {% if calendarService.calendarHasContact(calendar, identity()) %}
@@ -20,8 +26,8 @@
         {% else %}
             {% set calendarContact = false %}
         {% endif %}
-
         <tr {% if calendarContact %}class="table-success"{% endif %}>
+            <td><small class="text-muted">{{ loop.index }}</small></td>
             <td>
                 {% if calendarContact %}
                     <i class="fas fa-user text-success"></i>

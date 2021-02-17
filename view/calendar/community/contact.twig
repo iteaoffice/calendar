@@ -5,6 +5,7 @@
     <table class="table table-sm table-listed table-striped table-hover">
         <thead>
         <tr>
+            <th>{{ translate("txt-no") }}</th>
             <th>{{ translate("txt-date") }}</th>
             <th>{{ translate("txt-event-meeting") }}</th>
             <th>{{ translate("txt-location") }}</th>
@@ -12,13 +13,18 @@
             <th>{{ translate("txt-presence") }}</th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+        </tfoot>
         <tbody>
         {% for calendarContact in calendarContacts %}
             <tr>
+                <td><small class="text-muted">{{ loop.index }}</small></td>
                 <td>
                     {{ calendarContact.calendar.dateFrom|from_to_date(calendarContact.calendar.dateEnd) }}
                 </td>
-
                 <td>{{ calendarLink(calendarContact.calendar,'view-community', 'name') }}</td>
                 <td>{{ calendarContact.calendar.location }}</td>
                 <td>{{ calendarContact.role }}</td>
