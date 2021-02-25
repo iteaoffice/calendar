@@ -20,7 +20,6 @@ use Laminas\ModuleManager\Feature;
  */
 class Module implements Feature\ConfigProviderInterface
 {
-
     /**
      * F * @return array
      */
