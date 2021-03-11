@@ -154,7 +154,7 @@ return [
                                         'id' => 'projectCalendarId',
                                     ],
                                     'invokables' => [
-                                        Project\Navigation\Invokable\ProjectCalendarReviewLabel::class,
+                                        Project\Navigation\Invokable\Project\CalendarReviewLabel::class,
                                     ],
                                 ],
                                 'pages' => [
