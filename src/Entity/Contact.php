@@ -31,28 +31,28 @@ class Contact extends AbstractEntity
      */
     private $id;
     /**
-     * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade="persist", inversedBy="calendarContact")
+     * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactRole", cascade={"persist"}, inversedBy="calendarContact")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="role_id", nullable=false)
      *
      * @var ContactRole
      */
     private $role;
     /**
-     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="calendarContact")
+     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade={"persist"}, inversedBy="calendarContact")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id")
      *
      * @var Calendar
      */
     private $calendar;
     /**
-     * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade="persist", inversedBy="calendarContact")
+     * @ORM\ManyToOne(targetEntity="Calendar\Entity\ContactStatus", cascade={"persist"}, inversedBy="calendarContact")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="status_id", nullable=false)
      *
      * @var ContactStatus
      */
     private $status;
     /**
-     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendarContact")
+     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade={"persist"}, inversedBy="calendarContact")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id")
      *
      * @var \Contact\Entity\Contact

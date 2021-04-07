@@ -222,7 +222,7 @@ class Calendar extends AbstractEntity
      */
     private $imageUrl;
     /**
-     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Type", cascade="persist", inversedBy="calendar")
+     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Type", cascade={"persist"}, inversedBy="calendar")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id", nullable=false)
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Options({"target_class":"Calendar\Entity\Type","help-block":"txt-calendar-type-help-block"})
@@ -231,7 +231,7 @@ class Calendar extends AbstractEntity
      */
     private $type;
     /**
-     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendar")
+     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade={"persist"}, inversedBy="calendar")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      * @Annotation\Exclude()
      * @var \Contact\Entity\Contact

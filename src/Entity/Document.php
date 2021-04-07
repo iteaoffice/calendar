@@ -59,14 +59,14 @@ class Document extends AbstractEntity
      */
     private $dateUpdated;
     /**
-     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade="persist", inversedBy="document")
+     * @ORM\ManyToOne(targetEntity="Calendar\Entity\Calendar", cascade={"persist"}, inversedBy="document")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="calendar_id", nullable=false)
      *
      * @var \Calendar\Entity\Calendar
      */
     private $calendar;
     /**
-     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade="persist", inversedBy="calendarDocument")
+     * @ORM\ManyToOne(targetEntity="Contact\Entity\Contact", cascade={"persist"}, inversedBy="calendarDocument")
      * @ORM\JoinColumn(name="contact_id", referencedColumnName="contact_id", nullable=false)
      *
      * @var \Contact\Entity\Contact

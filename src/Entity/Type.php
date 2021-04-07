@@ -68,7 +68,7 @@ class Type extends AbstractEntity
     private $calendar;
     /**
      * @ORM\ManyToMany(targetEntity="Admin\Entity\Access", inversedBy="calendarType")
-     * @ORM\OrderBy=({"name"="ASC"})
+     * @ORM\OrderBy({"access"="ASC"})
      * @ORM\JoinTable(name="calendar_type_access",
      *            joinColumns={@ORM\JoinColumn(name="type_id", referencedColumnName="type_id")},
      *            inverseJoinColumns={@ORM\JoinColumn(name="access_id", referencedColumnName="access_id")}
