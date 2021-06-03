@@ -6,7 +6,7 @@
 {{ form().openTag(form)|raw }}
 
 {% if calendar.isReview() %}
-    <div class="form-group row">
+    <div class="row mb-3">
         <label class="col-sm-3 col-form-label">{{ translate("txt-project-name") }}</label>
 
         <div class="col-sm-9">
@@ -15,7 +15,7 @@
     </div>
 {% endif %}
 
-<div class="form-group row">
+<div class="row mb-3">
     <label class="col-sm-3 col-form-label">{{ translate("txt-name") }}</label>
 
     <div class="col-sm-9">
@@ -50,7 +50,7 @@
 
 <hr>
 
-<div class="form-group row">
+<div class="row mb-3">
     <div class="offset-sm-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {{ ztbformelement(form.get('cancel')) }}

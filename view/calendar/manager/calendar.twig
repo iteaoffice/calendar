@@ -9,16 +9,16 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item active"><a class="nav-link active" href="#general"
-                                   data-toggle="tab" role="tab">{{ translate("txt-general-information") }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab"
+                                   data-toggle="tab" data-bs-toggle="tab" role="tab">{{ translate("txt-general-information") }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-documents") }}</a></li>
     {% if calendar.isReview() %}
-        <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
+        <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab" data-bs-toggle="tab"
                                 role="tab">{{ translate("txt-actions") }}</a></li>
-        <li class="nav-item"><a class="nav-link" href="#reviewers" data-toggle="tab"
+        <li class="nav-item"><a class="nav-link" href="#reviewers" data-toggle="tab" data-bs-toggle="tab"
                                 role="tab">{{ translate("txt-reviewers") }}</a></li>
     {% endif %}
-    <li class="nav-item"><a class="nav-link" href="#attendee" data-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#attendee" data-toggle="tab" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-attendees") }}</a></li>
 </ul>
 
@@ -151,7 +151,7 @@
         {{ ztbformelement(form.get('file')) }}
         {{ ztbformelement(form.get('csrf')) }}
 
-        <div class="form-group row">
+        <div class="row mb-3">
             <div class="offset-sm-3 col-sm-9">
                 {{ ztbformelement(form.get('submit')) }}
             </div>

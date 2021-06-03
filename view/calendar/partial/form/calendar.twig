@@ -11,7 +11,7 @@
 {% set calendar = form.get('calendar_entity_calendar') %}
 
 {% if project %}
-    <div class="form-group row">
+    <div class="row mb-3">
         <label class="col-sm-3 col-form-label">{{ translate("txt-project") }}</label>
 
         <div class="col-sm-9">
@@ -42,7 +42,7 @@
 {{ formelement(form.get('csrf')) }}
 
 
-<div class="form-group row">
+<div class="row mb-3">
     <div class="offset-sm-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {% if form.has('delete') %}

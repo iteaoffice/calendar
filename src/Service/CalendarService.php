@@ -354,7 +354,6 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
         );
 
         $roles = $this->adminService->findAccessRolesByContactAsArray($contact);
-
         return $repository->findVisibleItems($roles, $limitQueryBuilder);
     }
 

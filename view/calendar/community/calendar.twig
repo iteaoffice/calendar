@@ -7,13 +7,13 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab"
+    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab" data-bs-toggle="tab"
                                    role="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-documents")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-actions")|capitalize }}</a></li>
 </ul>
 
@@ -113,7 +113,7 @@
                     {{ ztbformelement(form.get('file')) }}
                     {{ formelement(form.get('csrf')) }}
 
-                    <div class="form-group row">
+                    <div class="row mb-3">
                         <div class="offset-sm-3 col-sm-9">
                             {{ ztbformelement(form.get('submit')) }}
                         </div>

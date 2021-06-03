@@ -8,7 +8,7 @@
 {% do form.prepare() %}
 {{ form().openTag(form)|raw }}
 
-<div class="form-group row">
+<div class="row mb-3">
     <label class="col-sm-3 col-form-label">{{ translate("txt-calendar") }}</label>
 
     <div class="col-sm-9">
@@ -18,7 +18,7 @@
 
 {{ ztbformelement(form.get('document')) }}
 
-<div class="form-group row">
+<div class="row mb-3">
     <label class="col-sm-3 col-form-label">{{ translate("txt-current-file") }}</label>
 
     <div class="col-sm-9">
@@ -30,7 +30,7 @@
 {{ formelement(form.get('csrf')) }}
 
 
-<div class="form-group row">
+<div class="row mb-3">
     <div class="offset-sm-3 col-sm-9">
         {{ ztbformelement(form.get('submit')) }}
         {{ ztbformelement(form.get('delete')) }}
