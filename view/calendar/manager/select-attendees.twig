@@ -80,19 +80,19 @@
 
                             {% for proxyContact in calendar.projectCalendar.project.proxyContact %}
                                 {% if contact == proxyContact %}<span
-                                        class="badge badge-primary">PROXY</span>{% endif %}
+                                        class="badge bg-primary">PROXY</span>{% endif %}
                             {% endfor %}
 
                             {% set hasTC = false %}
                             {% for affiliation in calendar.projectCalendar.project.affiliation %}
                                 {% if not hasTC and contact == affiliation.contact %}{% set hasTc = true %}<span
-                                        class="badge badge-info">TC</span>{% endif %}
+                                        class="badge bg-info">TC</span>{% endif %}
                             {% endfor %}
 
                             {% set hasWPL = false %}
                             {% for workpackage in calendar.projectCalendar.project.workpackage %}
                                 {% if not hasWPL and contact == workpackage.contact %}{% set hasWPL = true %}<span
-                                        class="badge badge-dark">WPL</span>{% endif %}
+                                        class="badge bg-dark">WPL</span>{% endif %}
                             {% endfor %}
                         </td>
                         <td>{{ contact.contactOrganisation.organisation }}</td>
