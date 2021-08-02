@@ -7,13 +7,13 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-toggle="tab" data-bs-toggle="tab"
+    <li class="nav-item active"><a class="nav-link active" href="#calendar" data-bs-toggle="tab"
                                    role="tab">{{ translate("txt-calendar")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#documents" data-toggle="tab" data-bs-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#documents" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-documents")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#attendees" data-toggle="tab" data-bs-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#attendees" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-attendees")|capitalize }}</a></li>
-    <li class="nav-item"><a class="nav-link" href="#action" data-toggle="tab" data-bs-toggle="tab"
+    <li class="nav-item"><a class="nav-link" href="#action" data-bs-toggle="tab"
                             role="tab">{{ translate("txt-actions")|capitalize }}</a></li>
 </ul>
 
@@ -46,23 +46,20 @@
         <br>
         <ul class="nav nav-pills nav-nos-menu">
             <li class="nav-item active"><a class="nav-link active" href="#total-calendar-documents"
-                                           data-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
+                                           data-bs-toggle="pill">{{ translate("txt-calendar-documents") }}</a></li>
             {% if calendar.isReview() %}
                 <li class="nav-item"><a class="nav-link" href="#version-documents"
-                                        data-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
+                                        data-bs-toggle="pill">{{ translate("txt-version-documents") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#reporting"
-                                        data-toggle="pill">{{ translate("txt-reporting") }}</a></li>
+                                        data-bs-toggle="pill">{{ translate("txt-reporting") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#public-project-results"
-                                        data-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
+                                        data-bs-toggle="pill">{{ translate("txt-public-project-results") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#workpackage-deliverables"
-                                        data-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
+                                        data-bs-toggle="pill">{{ translate("txt-workpackage-deliverables") }}</a></li>
             {% endif %}
         </ul>
 
-
         <div class="tab-content">
-
-
             <div class="tab-pane active" id="total-calendar-documents">
 
                 <h2>{{ translate("txt-calendar-documents") }}</h2>
@@ -103,7 +100,7 @@
 
                     {{ calendarLink(calendar, 'download-binder', 'button') }}
                 {% else %}
-                    {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
+                    {{ lbs5alert().info(translate("txt-no-documents-attached"))|raw }}
                 {% endif %}
 
                 {% if isAllowed(calendar, 'add-document') %}
@@ -130,7 +127,7 @@
 
                     <h2>{{ translate("txt-version-documents") }}</h2>
 
-                    {{ ztbalert().info(translate("txt-this-version-%s-has-been-submitted-on-%s-and-was-%s")|format(
+                    {{ lbs5alert().info(translate("txt-this-version-%s-has-been-submitted-on-%s-and-was-%s")|format(
                         version.versionType,
                         translate(version.getApproved(true)),
                         version.dateReviewed|date('d F Y')
@@ -169,7 +166,7 @@
                         </table>
                         {{ versionLink(version,'download-version-document-binder','button') }}
                     {% else %}
-                        {{ ztbalert().info(translate("txt-no-documents-attached"))|raw }}
+                        {{ lbs5alert().info(translate("txt-no-documents-attached"))|raw }}
                     {% endif %}
 
                 </div>
@@ -209,7 +206,7 @@
                         </table>
 
                     {% else %}
-                        {{ ztbalert().info(translate("txt-no-report-documents-attached"))|raw }}
+                        {{ lbs5alert().info(translate("txt-no-report-documents-attached"))|raw }}
                     {% endif %}
 
                     {% set hasReviewDocuments = false %}
@@ -307,7 +304,6 @@
                         <table class="table table-striped table-sm table-hover">
                             <thead>
                             <tr>
-                                <th>{{ translate("txt-no") }}</th>
                                 <th>{{ translate("txt-document") }}</th>
                                 <th>{{ translate("txt-content-type") }}</th>
                                 <th>{{ translate("txt-last-update") }}</th>
@@ -316,18 +312,19 @@
                             </thead>
                             <tfoot>
                             <tr>
-                                <td colspan="5"></td>
+                                <td colspan="4"></td>
                             </tr>
                             </tfoot>
                             <tbody>
                             {% for document in publicWorkpackageDocuments %}
                                 <tr>
                                     <td>
+                                        {{ contentTypeIcon(document.contentType) }}
                                         {{ workpackageDocumentLink(document,'download-community','name') }}
                                         {{ workpackageDocumentLink(document,'download-community','icon') }}
                                     </td>
                                     <td>
-                                        {{ contentTypeIcon(document.contentType) }}{{ document.contentType.description }}
+                                        {{ document.contentType.description }}
                                     </td>
                                     <td>{{ document.dateUpdated|string_date }}</td>
                                     <td>{{ document.size|parse_size }}</td>
@@ -336,7 +333,7 @@
                             </tbody>
                         </table>
                     {% else %}
-                        {{ ztbalert().info(translate("txt-no-public-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
+                        {{ lbs5alert().info(translate("txt-no-public-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
                             format(workpackage.sequence, workpackage.workpackage,project.parseFullName()))|raw }}
                     {% endif %}
 
@@ -386,7 +383,7 @@
                                 </tbody>
                             </table>
                         {% else %}
-                            {{ ztbalert().info(translate("txt-no-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
+                            {{ lbs5alert().info(translate("txt-no-deliverables-uploaded-for-this-workpackage-%s:-%s-in-project-%s")|
                                 format(workpackage.sequence, workpackage.workpackage,project.parseFullName()))|raw }}
                         {% endif %}
 
@@ -466,7 +463,7 @@
                 </tbody>
             </table>
         {% else %}
-            {{ ztbalert().info(translate("txt-no-attendees-selected"))|raw }}
+            {{ lbs5alert().info(translate("txt-no-attendees-selected"))|raw }}
         {% endif %}
 
         {{ calendarLink(calendar,'select-attendees', 'button') }}
@@ -483,7 +480,7 @@
         {% if openActions|length > 0 %}
             {% include 'project/partial/list/action-community' with {'actions' : openActions,'deadline' : calendar } %}
         {% else %}
-            {{ ztbalert().info(translate("txt-there-are-no-open-actions-defined-for-this-project"))|raw }}
+            {{ lbs5alert().info(translate("txt-there-are-no-open-actions-defined-for-this-project"))|raw }}
         {% endif %}
     </div>
 </div>

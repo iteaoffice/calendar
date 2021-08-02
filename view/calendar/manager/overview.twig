@@ -81,7 +81,7 @@
 
     {% include 'application/partial/pagination-control' with {'paginator': paginator} %}
 {% else %}
-    {{ ztbalert().info(translate("txt-no-calendar-found"))|raw }}
+    {{ lbs5alert().info(translate("txt-no-calendar-found"))|raw }}
 {% endif %}
 
 
