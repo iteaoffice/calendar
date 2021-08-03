@@ -19,36 +19,36 @@
     </div>
 {% endif %}
 
-{{ ztbformelement(calendar.get('calendar')) }}
-{{ ztbformelement(calendar.get('type')) }}
-{{ ztbformelement(calendar.get('location')) }}
+{{ lbs5formelement(calendar.get('calendar')) }}
+{{ lbs5formelement(calendar.get('type')) }}
+{{ lbs5formelement(calendar.get('location')) }}
 
 
 
-{{ ztbformelement(calendar.get('final')) }}
-{{ ztbformelement(calendar.get('onHomepage')) }}
-{{ ztbformelement(calendar.get('highlight')) }}
-{{ ztbformelement(calendar.get('highlightDescription')) }}
-{{ ztbformelement(calendar.get('ownEvent')) }}
-{{ ztbformelement(calendar.get('present')) }}
-{{ ztbformelement(calendar.get('sequence')) }}
-{{ ztbformelement(calendar.get('dateFrom')) }}
-{{ ztbformelement(calendar.get('dateEnd')) }}
-{{ ztbformelement(calendar.get('description')) }}
-{{ ztbformelement(calendar.get('call')) }}
-{{ ztbformelement(calendar.get('imageUrl')) }}
-{{ ztbformelement(calendar.get('url')) }}
+{{ lbs5formelement(calendar.get('final')) }}
+{{ lbs5formelement(calendar.get('onHomepage')) }}
+{{ lbs5formelement(calendar.get('highlight')) }}
+{{ lbs5formelement(calendar.get('highlightDescription')) }}
+{{ lbs5formelement(calendar.get('ownEvent')) }}
+{{ lbs5formelement(calendar.get('present')) }}
+{{ lbs5formelement(calendar.get('sequence')) }}
+{{ lbs5formelement(calendar.get('dateFrom')) }}
+{{ lbs5formelement(calendar.get('dateEnd')) }}
+{{ lbs5formelement(calendar.get('description')) }}
+{{ lbs5formelement(calendar.get('call')) }}
+{{ lbs5formelement(calendar.get('imageUrl')) }}
+{{ lbs5formelement(calendar.get('url')) }}
 
 {{ formelement(form.get('csrf')) }}
 
 
 <div class="row mb-3">
     <div class="offset-sm-3 col-sm-9">
-        {{ ztbformelement(form.get('submit')) }}
+        {{ lbs5formelement(form.get('submit')) }}
         {% if form.has('delete') %}
-            {{ ztbformelement(form.get('delete')) }}
+            {{ lbs5formelement(form.get('delete')) }}
         {% endif %}
-        {{ ztbformelement(form.get('cancel')) }}
+        {{ lbs5formelement(form.get('cancel')) }}
     </div>
 </div>
 

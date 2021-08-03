@@ -12,7 +12,6 @@
 {% do form.prepare() %}
 {{ form().openTag(form)|raw }}
 
-
 <div class="row">
     <div class="col-md-10">
         <div class="row">
@@ -58,7 +57,9 @@
                                 {{ calendar.dateFrom|from_to_date(calendar.dateEnd) }}</td>
                             <td>{{ calendarLink(calendar,'view-community', 'name') }}</td>
                             <td>{{ calendar.location }}</td>
-                            <td><i class="far fa-calendar-alt {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}</td>
+                            <td>
+                                <i class="far fa-calendar-alt {{ calendar.type.parseCssName() }}"></i> {{ calendar.type }}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
@@ -80,12 +81,10 @@
         {% endif %}
     </div>
     <div class="col-md-2">
-        <div class="well well-sm">
-            {% set facets = form.get('facet') %}
-            {% for facet in facets %}
-                {{ ztbformelement(facet, true) }}
-            {% endfor %}
-        </div>
+        {% set facets = form.get('facet') %}
+        {% for facet in facets %}
+            {{ lbs5formelement(facet, 'default') }}
+        {% endfor %}
     </div>
 </div>
 
