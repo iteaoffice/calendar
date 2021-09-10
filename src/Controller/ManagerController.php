@@ -3,9 +3,10 @@
 /**
  * ITEA Office all rights reserved
  *
- * @author      Johan van der Heide <johan.van.der.heide@itea3.org>
- * @copyright   Copyright (c) 2021 ITEA Office (https://itea3.org)
- * @license     https://itea3.org/license.txt proprietary
+ * @category  Calendar
+ *
+ * @author    Johan van der Heide <johan.van.der.heide@itea3.org>
+ * @copyright Copyright (c) 2019 ITEA Office (https://itea3.org)
  */
 
 declare(strict_types=1);
@@ -24,6 +25,8 @@ use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
 use Laminas\Http\Request;
@@ -178,6 +181,14 @@ final class ManagerController extends AbstractActionController
 
             $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
             $preData['calendar_entity_calendar']['type']     = 6;
+        }
+        // Date from GET
+        if (!$this->getRequest()->isPost()) {
+            $dateString = $this->params()->fromQuery('date');
+            if (null !== $dateString) {
+                $date = (new DateTime($dateString))->add(new DateInterval('PT9H'));
+                $preData['calendar_entity_calendar']['dateFrom'] = $date->format('Y-m-d H:i');
+            }
         }
 
         $data = array_merge($preData, $this->getRequest()->getPost()->toArray());
