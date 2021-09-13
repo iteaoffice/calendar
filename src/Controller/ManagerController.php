@@ -24,6 +24,8 @@ use Calendar\Service\CalendarService;
 use Calendar\Service\FormService;
 use Contact\Entity\Contact;
 use Contact\Service\ContactService;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use General\Service\GeneralService;
 use Laminas\Http\Request;
@@ -178,6 +180,14 @@ final class ManagerController extends AbstractActionController
 
             $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
             $preData['calendar_entity_calendar']['type']     = 6;
+        }
+        // Date from GET
+        if (!$this->getRequest()->isPost()) {
+            $dateString = $this->params()->fromQuery('date');
+            if (null !== $dateString) {
+                $date = (new DateTime($dateString))->add(new DateInterval('PT9H'));
+                $preData['calendar_entity_calendar']['dateFrom'] = $date->format('Y-m-d H:i');
+            }
         }
 
         $data = array_merge($preData, $this->getRequest()->getPost()->toArray());
