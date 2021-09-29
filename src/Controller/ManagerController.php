@@ -181,12 +181,13 @@ final class ManagerController extends AbstractActionController
             $preData['calendar_entity_calendar']['calendar'] = $project->getProject();
             $preData['calendar_entity_calendar']['type']     = 6;
         }
+
         // Date from GET
-        if (!$this->getRequest()->isPost()) {
+        if ($this->getRequest()->isGet()) {
             $dateString = $this->params()->fromQuery('date');
             if (null !== $dateString) {
                 $date = (new DateTime($dateString))->add(new DateInterval('PT9H'));
-                $preData['calendar_entity_calendar']['dateFrom'] = $date->format('Y-m-d H:i');
+                $preData['calendar_entity_calendar']['dateFrom'] = $date;
             }
         }
 
