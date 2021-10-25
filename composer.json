@@ -23,7 +23,7 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "laminas/laminas-mvc": "^3.2",
-    "laminas/laminas-mvc-form": "^1.1",
+    "laminas/laminas-mvc-form": "^2.1",
     "laminas/laminas-cli": "^1.0",
     "laminas/laminas-mvc-plugins": "^1.1",
     "laminas/laminas-navigation": "^2.10",
