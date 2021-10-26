@@ -1,5 +1,4 @@
 <?php
-
 return [
     'calendar/document/document' => __DIR__ . '/./view/calendar/document/document.twig',
     'calendar/document/edit' => __DIR__ . '/./view/calendar/document/edit.twig',
