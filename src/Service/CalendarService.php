@@ -31,9 +31,12 @@ use Project\Entity\Project;
 use Search\Service\AbstractSearchService;
 use Search\Service\SearchUpdateInterface;
 use Solarium\Client;
+use Solarium\Core\Client\Adapter\Http;
 use Solarium\Core\Query\AbstractQuery;
 use Solarium\QueryType\Update\Query\Document;
 use Laminas\I18n\Translator\TranslatorInterface;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function count;
 use function date;
@@ -180,7 +183,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
      */
     public function prepareSearchUpdate($calendar): AbstractQuery
     {
-        $searchClient = new Client();
+        $searchClient = new Client(new Http(), new EventDispatcher(), []);
         $update = $searchClient->createUpdate();
 
         /** @var Document $calendarDocument */
@@ -519,7 +522,7 @@ class CalendarService extends AbstractService implements SearchUpdateInterface
 
     public function prepareSearchUpdateForBirthday(Contact $contact): AbstractQuery
     {
-        $searchClient = new Client();
+        $searchClient = new Client(new Http(), new EventDispatcher(), []);
         $update = $searchClient->createUpdate();
 
         $currentYear = (int)date('Y');
